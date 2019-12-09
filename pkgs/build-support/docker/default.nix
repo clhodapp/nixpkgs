@@ -295,7 +295,9 @@ rec {
     # Docker has a 125-layer maximum, we pick 100 to ensure there is
     # plenty of room for extension.
     # https://github.com/moby/moby/blob/b3e9f7b13b0f0c414fa6253e1f17a86b2cff68b5/layer/layer_store.go#L23-L26
-    maxLayers ? 100
+    maxLayers ? 100,
+    uid ? 0,
+    gid ? 0
   }:
     let
       storePathToLayer = substituteAll
@@ -309,6 +311,7 @@ rec {
       paths = referencesByPopularity closure;
       nativeBuildInputs = [ jshon rsync tarsum ];
       enableParallelBuilding = true;
+      inherit uid gid;
     }
     ''
       # Delete impurities for store path layers, so they don't get
@@ -557,7 +560,7 @@ rec {
           # One layer will be taken up by the customisationLayer, so
           # take up one less.
           maxLayers = maxLayers - 1;
-          inherit configJson;
+          inherit configJson uid gid;
         };
       customisationLayer = mkCustomisationLayer {
           name = baseName;

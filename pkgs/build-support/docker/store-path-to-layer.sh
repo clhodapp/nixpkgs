@@ -11,10 +11,10 @@ echo "Creating layer #$layerNumber for $@"
 mkdir -p "$layerPath"
 tar --no-recursion -rf "$layerPath/layer.tar" \
     --mtime="@$SOURCE_DATE_EPOCH" \
-    --owner=0 --group=0 /nix /nix/store
+    --owner=$uid --group=$gid /nix /nix/store
 tar -rpf "$layerPath/layer.tar" --hard-dereference --sort=name \
     --mtime="@$SOURCE_DATE_EPOCH" \
-    --owner=0 --group=0 "$@"
+    --owner=$uid --group=$gid "$@"
 
 # Compute a checksum of the tarball.
 tarhash=$(tarsum < $layerPath/layer.tar)
