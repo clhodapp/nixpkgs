@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, fetchpatch, buildPackages
+{ stdenv, lib, fetchurl, buildPackages
 , pkgconfig, intltool, ninja, meson
 , file, flex, bison, expat, libdrm, xorg, wayland, wayland-protocols, openssl
 , llvmPackages, libffi, libomxil-bellagio, libva-minimal
@@ -31,7 +31,7 @@ with stdenv.lib;
 let
   # Release calendar: https://www.mesa3d.org/release-calendar.html
   # Release frequency: https://www.mesa3d.org/releasing.html#schedule
-  version = "20.2.3";
+  version = "21.0-dev";
   branch  = versions.major version;
 in
 
@@ -41,12 +41,9 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     urls = [
-      "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
-      "ftp://ftp.freedesktop.org/pub/mesa/mesa-${version}.tar.xz"
-      "ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-${version}.tar.xz"
-      "ftp://ftp.freedesktop.org/pub/mesa/older-versions/${branch}.x/${version}/mesa-${version}.tar.xz"
+      "https://github.com/mesa3d/mesa/archive/master.tar.gz"
     ];
-    sha256 = "0axqrqg1fas91fx30qjwhcp4yasdvk919hjds4lga7ak247286xf";
+    sha256 = "03c5bzxwc6gbm9yp5wsp9qspffyrzrism1xavf9hrq1rblz6lzxr";
   };
 
   prePatch = "patchShebangs .";
@@ -58,38 +55,7 @@ stdenv.mkDerivation {
     ./missing-includes.patch # dev_t needs sys/stat.h, time_t needs time.h, etc.-- fixes build w/musl
     ./opencl-install-dir.patch
     ./disk_cache-include-dri-driver-path-in-cache-key.patch
-  ]
-    ++ lib.optionals stdenv.hostPlatform.isMusl [
-      # Fix `-Werror=int-conversion` pthread warnings on musl.
-      # TODO: Remove when https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/6121 is merged and available
-      (fetchpatch {
-        name = "nine_debug-Make-tid-more-type-correct";
-        # Patch adjusted for version `20.1`, before the big mesa dirs change
-        # `gallium: rename 'state tracker' to 'frontend'`.
-        # Patch for versions after that change is at
-        #     https://gitlab.freedesktop.org/mesa/mesa/commit/aebbf819df6d1e3b4745ef16d0e833300ad67044.patch
-        url = "https://gitlab.freedesktop.org/nh2/mesa/commit/3385c49684375f1153a52ed7ccda3f5135268a41.patch";
-        sha256 = "1ci694sqjll44c9g2md4krhk6qlvq51r7ad5rnnfdnf3l8ys0i50";
-      })
-    ]
-    # do not prefix user provided dri-drivers-path
-    ++ lib.optional (lib.versionOlder version "19.0.0") (fetchpatch {
-      url = "https://gitlab.freedesktop.org/mesa/mesa/commit/f6556ec7d126b31da37c08d7cb657250505e01a0.patch";
-      sha256 = "0z6phi8hbrbb32kkp1js7ggzviq7faz1ria36wi4jbc4in2392d9";
-    })
-    ++ lib.optionals (lib.versionOlder version "19.1.0") [
-      # do not prefix user provided d3d-drivers-path
-      (fetchpatch {
-        url = "https://gitlab.freedesktop.org/mesa/mesa/commit/dcc48664197c7e44684ccfb970a4ae083974d145.patch";
-        sha256 = "1nhs0xpx3hiy8zfb5gx1zd7j7xha6h0hr7yingm93130a5902lkb";
-      })
-
-      # don't build libGLES*.so with GLVND
-      (fetchpatch {
-        url = "https://gitlab.freedesktop.org/mesa/mesa/commit/b01524fff05eef66e8cd24f1c5aacefed4209f03.patch";
-        sha256 = "1pszr6acx2xw469zq89n156p3bf3xf84qpbjw5fr1sj642lbyh7c";
-      })
-    ];
+  ];
 
   postPatch = ''
     substituteInPlace meson.build --replace \
@@ -130,6 +96,7 @@ stdenv.mkDerivation {
     "-Dd3d-drivers-path=${placeholder "drivers"}/lib/d3d"
     "-Dgallium-nine=${boolToString enableGalliumNine}" # Direct3D in Wine
     "-Dosmesa=${if enableOSMesa then "gallium" else "none"}" # used by wine
+    "-Dmicrosoft-clc=disabled"
   ] ++ optionals stdenv.isLinux [
     "-Dglvnd=true"
   ];
