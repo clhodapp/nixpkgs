@@ -72,7 +72,8 @@ let
       });
       deviceOpts = mkOpts (deviceExtraOpts // {
         drive = drvId;
-        nguid = mkIf (cfg.qemu.diskInterface == "nvme") "auto";
+      } // lib.optionalAttrs (cfg.qemu.diskInterface == "nvme") {
+        nguid = "auto";
       });
       device =
         if cfg.qemu.diskInterface == "scsi" then
