@@ -140,6 +140,7 @@
 , withRemote ? !stdenv.hostPlatform.isMusl
 , withResolved ? true
 , withShellCompletions ? true
+, withStorageTm ? true
 , withSysusers ? true
 , withSysupdate ? true
 , withTimedated ? true
@@ -624,6 +625,7 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.mesonBool "coredump" withCoredump)
     (lib.mesonBool "firstboot" withFirstboot)
     (lib.mesonBool "resolve" withResolved)
+    (lib.mesonBool "storagetm" withStorageTm)
     (lib.mesonBool "sysusers" withSysusers)
     (lib.mesonBool "efi" withEfi)
     (lib.mesonBool "utmp" withUtmp)

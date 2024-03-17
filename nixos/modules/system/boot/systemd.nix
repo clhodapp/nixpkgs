@@ -161,6 +161,9 @@ let
     ] ++ [
       "systemd-exit.service"
       "systemd-update-done.service"
+    ] optionals cfg.package.withStorageTm [
+      "systemd-storagetm.service"
+      "storage-target-mode.target"
     ] ++ cfg.additionalUpstreamSystemUnits;
 
   upstreamSystemWants =
