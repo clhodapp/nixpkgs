@@ -72,14 +72,12 @@ let
       });
       deviceOpts = mkOpts (deviceExtraOpts // {
         drive = drvId;
-      } // lib.optionalAttrs (cfg.qemu.diskInterface == "nvme") {
-        nguid = "auto";
       });
       device =
         if cfg.qemu.diskInterface == "scsi" then
           "-device lsi53c895a -device scsi-hd,${deviceOpts}"
         else if cfg.qemu.diskInterface == "nvme" then
-          "-device nvme,${deviceOpts}"
+          "-device nvme,${deviceOpts} -device nvme-ns,nguid=auto"
         else
           "-device virtio-blk-pci,${deviceOpts}";
     in
