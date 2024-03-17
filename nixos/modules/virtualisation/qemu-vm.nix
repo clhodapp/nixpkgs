@@ -76,6 +76,8 @@ let
       device =
         if cfg.qemu.diskInterface == "scsi" then
           "-device lsi53c895a -device scsi-hd,${deviceOpts}"
+        else if cfg.qemu.diskInterface == "nvme" then
+          "-device nvme,${deviceOpts}"
         else
           "-device virtio-blk-pci,${deviceOpts}";
     in
@@ -751,7 +753,7 @@ in
 
       diskInterface =
         mkOption {
-          type = types.enum [ "virtio" "scsi" "ide" ];
+          type = types.enum [ "virtio" "scsi" "ide" "nvme" ];
           default = "virtio";
           example = "scsi";
           description = lib.mdDoc "The interface used for the virtual hard disks.";
