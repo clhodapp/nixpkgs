@@ -869,7 +869,7 @@ stdenv.mkDerivation (finalAttrs: {
     interfaceVersion = 2;
 
     inherit withBootloader withCryptsetup withHostnamed withImportd withKmod
-      withLocaled withMachined withPortabled withTimedated withUtmp util-linux kmod kbd;
+      withLocaled withMachined withPortabled withStorageTm withTimedated withUtmp util-linux kmod kbd;
 
     tests = {
       inherit (nixosTests)
