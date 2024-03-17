@@ -1108,6 +1108,7 @@ in
 
     boot.initrd.availableKernelModules =
       optional cfg.writableStore "overlay"
+      ++ optional (cfg.qemu.diskInterface == "nvme") "nvme"
       ++ optional (cfg.qemu.diskInterface == "scsi") "sym53c8xx"
       ++ optional (cfg.tpm.enable) "tpm_tis";
 
