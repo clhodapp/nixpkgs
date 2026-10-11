@@ -231,6 +231,12 @@ pub struct SourceComparison {
     pub files: usize,
     /// Files that do not parse or cannot be read.
     pub unreadable: usize,
+    /// Everything the reader found: one for each path a file writes.
+    pub findings: usize,
+    /// Of those, declarations of options.
+    pub declarations: usize,
+    /// Of those, the ones that were set aside, by the reason.
+    pub set_aside: BTreeMap<String, usize>,
     /// Files in which every setting was read.
     pub read_fully: usize,
     /// Files in which nothing could be read, because the module as a
@@ -267,6 +273,71 @@ pub struct SourceComparison {
     pub not_written_out_and_shared: Vec<(String, String)>,
 }
 
+/// What a finding of the reader turns out to be, once the options that
+/// exist are known. This is the second step: the reader finds every path
+/// that a module writes, and here each finding is given its meaning or
+/// is set aside for a reason that is recorded.
+enum Meaning {
+    /// A setting of the option, at the whole path that was found.
+    Setting { option: String, path: String },
+    /// The declaration of an option.
+    Declaration,
+    /// Settings somewhere below a group of options, built by something
+    /// that is not written out.
+    NotRead { path: String },
+    /// Set aside, with the reason.
+    SetAside(&'static str),
+}
+
+const PART_OF_THE_MODULE: &str =
+    "a part of the module and not a setting: imports, disabledModules, _file, key or _class";
+const NO_OPTION: &str = "no option is declared on this path in the given evaluations";
+const COMPUTED_NAME: &str = "the name of a group of options is computed";
+const NOTHING_SET: &str = "an empty attribute set above any option: it sets nothing";
+
+fn meaning_of(finding: &crate::listing::Finding, options: &OptionTree) -> Meaning {
+    use crate::listing::Place;
+    let mut path = finding.path.clone();
+    match finding.place {
+        Place::Options => return Meaning::Declaration,
+        Place::Config => {}
+        Place::Top => match path.first().map(String::as_str) {
+            Some("imports" | "disabledModules" | "_file" | "key" | "_class") => {
+                return Meaning::SetAside(PART_OF_THE_MODULE);
+            }
+            // The module system puts this attribute of a module into
+            // its settings under another name.
+            Some("freeformType") => {
+                path.splice(0..1, ["_module".to_string(), "freeformType".to_string()]);
+            }
+            _ => {}
+        },
+    }
+    let mut node = options;
+    for name in &path {
+        if name == "*" {
+            return Meaning::SetAside(COMPUTED_NAME);
+        }
+        let Some(child) = node.child(name) else {
+            return Meaning::SetAside(NO_OPTION);
+        };
+        node = child;
+        if let Some(option) = node.option() {
+            return Meaning::Setting {
+                option: option.to_string(),
+                path: path.join("."),
+            };
+        }
+    }
+    if finding.written_out {
+        Meaning::SetAside(NOTHING_SET)
+    } else {
+        Meaning::NotRead {
+            path: path.join("."),
+        }
+    }
+}
+
 pub fn compare_with_source(dependencies: &Dependencies, settings: &Settings) -> SourceComparison {
     let option_tree = OptionTree::new(dependencies.declarations.keys());
     let mut reported: BTreeMap<&str, BTreeSet<&str>> = BTreeMap::new();
@@ -286,13 +357,44 @@ pub fn compare_with_source(dependencies: &Dependencies, settings: &Settings) -> 
         } else {
             module.clone()
         };
-        let listing = fs::read_to_string(settings.root.join(&source))
+        let findings = fs::read_to_string(settings.root.join(&source))
             .ok()
-            .and_then(|text| crate::listing::read(&text, &option_tree));
-        let Some(listing) = listing else {
+            .and_then(|text| crate::listing::read(&text));
+        let Some(findings) = findings else {
             comparison.unreadable += 1;
             continue;
         };
+        struct Listing {
+            sets: BTreeSet<String>,
+            not_read: BTreeSet<String>,
+        }
+        let mut listing = Listing {
+            sets: BTreeSet::new(),
+            not_read: BTreeSet::new(),
+        };
+        for finding in &findings {
+            comparison.findings += 1;
+            match meaning_of(finding, &option_tree) {
+                Meaning::Declaration => comparison.declarations += 1,
+                Meaning::SetAside(reason) => {
+                    *comparison.set_aside.entry(reason.to_string()).or_default() += 1;
+                }
+                Meaning::NotRead { path } => {
+                    listing.not_read.insert(path);
+                }
+                Meaning::Setting { option, path } => {
+                    listing.sets.insert(option);
+                    comparison.settings += 1;
+                    files_of
+                        .entry(path.clone())
+                        .or_default()
+                        .insert(module.clone());
+                    if !finding.written_out {
+                        not_written_out.push((path, module.clone()));
+                    }
+                }
+            }
+        }
         if listing.not_read.is_empty() {
             comparison.read_fully += 1;
         } else if listing.not_read.contains("") {
@@ -302,16 +404,6 @@ pub fn compare_with_source(dependencies: &Dependencies, settings: &Settings) -> 
         }
         for path in &listing.not_read {
             *comparison.not_read.entry(path.clone()).or_default() += 1;
-        }
-        for (path, value_not_written_out) in &listing.settings {
-            comparison.settings += 1;
-            files_of
-                .entry(path.clone())
-                .or_default()
-                .insert(module.clone());
-            if *value_not_written_out {
-                not_written_out.push((path.clone(), module.clone()));
-            }
         }
         // An option that the file declares itself is not a use of
         // another module, and the module system leaves it out as well.

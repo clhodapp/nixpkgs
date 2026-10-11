@@ -1,65 +1,57 @@
-//! Reading from the source of a module file which options it can set.
+//! Reading from the source of a module file what the file writes.
 //!
-//! No condition is looked at: a setting under `mkIf`, in a branch of an
-//! `if`, or in an `optionalAttrs` counts whatever the condition is. An
-//! attribute path is followed down to the first declared option, and
-//! what is below that is the value of the option and is not read. Where
-//! the settings are not written out, for example where a function
-//! builds them, the place is recorded as one that was not read.
+//! This is the first of two steps, and it decides nothing. It needs the
+//! source of one file and nothing else: no evaluation, no list of the
+//! options that exist. It gives one finding for every attribute path
+//! that the module writes, whatever the path is. Whether a finding
+//! counts, and for what, is decided afterwards, where every finding that
+//! is set aside gets a reason.
+//!
+//! No condition is looked at: what is written under `mkIf`, in a branch
+//! of an `if`, or in an `optionalAttrs` is found whatever the condition
+//! is. A path is followed as far as it is written out, so a finding
+//! names `systemd.services.nginx.wantedBy` and not only
+//! `systemd.services`.
 
 use std::collections::{BTreeMap, BTreeSet};
 
 use rnix::ast::{self, HasEntry};
 use rowan::ast::AstNode;
+use serde::Serialize;
 
-use crate::source::{OptionTree, attr_name};
+use crate::source::attr_name;
 
-/// What the source of one module file shows.
-#[derive(Default)]
-pub struct Listing {
-    /// The options the file can set.
-    pub sets: BTreeSet<String>,
-    /// The settings the file can make, each as the whole path that is
-    /// written in the source, into the value of the option:
-    /// `systemd.services.nginx.wantedBy`. A name that is computed is
-    /// written `*`. The flag says that the value is not written out,
-    /// for example a call of a function, so that it can hold settings
-    /// below the path.
-    pub settings: BTreeSet<(String, bool)>,
-    /// The paths under which the settings were not read. The empty path
-    /// stands for the whole module.
-    pub not_read: BTreeSet<String>,
+/// Where in the module a path is written.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Place {
+    /// Under `options`.
+    Options,
+    /// Under `config`.
+    Config,
+    /// At the top of the module, under neither. In a module without
+    /// `options` and `config` these are its settings. The attributes
+    /// that are parts of a module, such as `imports`, are found here as
+    /// well, and are told apart afterwards.
+    Top,
 }
 
-/// The attributes of a module that are not settings. `meta` is not
-/// among them: the module system puts the `meta` of a module into its
-/// settings, so `meta.maintainers` is a setting of an option like any
-/// other.
-const NOT_SETTINGS: [&str; 7] = [
-    "options",
-    "imports",
-    "disabledModules",
-    "_file",
-    "key",
-    "freeformType",
-    "_class",
-];
-
-/// Where a path of names leads.
-enum Reached<'t> {
-    /// To a group of options. The settings are in the value.
-    Group(&'t OptionTree),
-    /// To an option, and maybe on into its value.
-    Option,
-    /// To nothing that is declared, or to a place that was not read.
-    Nothing,
+/// One attribute path that a module writes.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+pub struct Finding {
+    pub place: Place,
+    /// The path, with `*` for a name that is computed.
+    pub path: Vec<String>,
+    /// Whether the value at the path is written out. It is not when a
+    /// function builds it or when it comes from elsewhere, and then the
+    /// value can hold more below the path than the source shows here.
+    pub written_out: bool,
 }
 
-struct Reader<'a> {
-    options: &'a OptionTree,
+struct Reader {
     /// The names that a `let` of the file gives to an expression.
     bound: BTreeMap<String, ast::Expr>,
-    listing: Listing,
+    findings: BTreeSet<Finding>,
 }
 
 /// The name of the function of a call and its arguments. `lib.mkIf a b`
@@ -77,54 +69,26 @@ fn call(expr: &ast::Expr) -> Option<(String, Vec<ast::Expr>)> {
     Some((name, arguments))
 }
 
-impl Reader<'_> {
-    fn not_read(&mut self, path: &[String]) {
-        self.listing.not_read.insert(path.join("."));
+fn name_of(attr: &ast::Attr) -> String {
+    attr_name(attr).unwrap_or_else(|| "*".to_string())
+}
+
+impl Reader {
+    fn found(&mut self, place: Place, path: &[String], written_out: bool) {
+        self.findings.insert(Finding {
+            place,
+            path: path.to_vec(),
+            written_out,
+        });
     }
 
-    /// Go down `names` from `node`.
-    fn descend<'t>(
-        &mut self,
-        path: &mut Vec<String>,
-        mut node: &'t OptionTree,
-        names: &[Option<String>],
-    ) -> Reached<'t> {
-        for (index, name) in names.iter().enumerate() {
-            let Some(name) = name else {
-                // The name is computed.
-                self.not_read(path);
-                return Reached::Nothing;
-            };
-            path.push(name.clone());
-            // A path that leads to no option and to no group of options
-            // is not a setting of an option of this evaluation.
-            let Some(child) = node.child(name) else {
-                return Reached::Nothing;
-            };
-            node = child;
-            if let Some(option) = node.option() {
-                self.listing.sets.insert(option.to_string());
-                // The names that follow lead into the value of the option.
-                for name in &names[index + 1..] {
-                    path.push(name.clone().unwrap_or_else(|| "*".to_string()));
-                }
-                return Reached::Option;
-            }
-        }
-        Reached::Group(node)
-    }
-
-    fn setting(&mut self, path: &[String], written_out: bool) {
-        self.listing.settings.insert((path.join("."), !written_out));
-    }
-
-    /// Read the settings inside the value of an option, at `path`.
-    fn inside(&mut self, expr: Option<ast::Expr>, path: &[String], depth: usize) {
+    /// Read what is written in the value at `path`.
+    fn value(&mut self, expr: Option<ast::Expr>, place: Place, path: &[String], depth: usize) {
         let Some(expr) = expr else {
-            return self.setting(path, false);
+            return self.found(place, path, false);
         };
         if depth > 24 {
-            return self.setting(path, false);
+            return self.found(place, path, false);
         }
         match &expr {
             ast::Expr::AttrSet(set) => {
@@ -135,50 +99,48 @@ impl Reader<'_> {
                         continue;
                     };
                     let mut here = path.to_vec();
-                    for attr in attrpath.attrs() {
-                        here.push(attr_name(&attr).unwrap_or_else(|| "*".to_string()));
-                    }
-                    self.inside(entry.value(), &here, depth + 1);
+                    here.extend(attrpath.attrs().map(|attr| name_of(&attr)));
+                    self.value(entry.value(), place, &here, depth + 1);
                 }
                 for inherit in set.inherits() {
                     for attr in inherit.attrs() {
                         any = true;
                         let mut here = path.to_vec();
-                        here.push(attr_name(&attr).unwrap_or_else(|| "*".to_string()));
-                        self.setting(&here, false);
+                        here.push(name_of(&attr));
+                        self.found(place, &here, false);
                     }
                 }
                 if !any {
-                    self.setting(path, true);
+                    self.found(place, path, true);
                 }
             }
-            ast::Expr::Paren(paren) => self.inside(paren.expr(), path, depth + 1),
-            ast::Expr::LetIn(let_in) => self.inside(let_in.body(), path, depth + 1),
-            ast::Expr::With(with) => self.inside(with.body(), path, depth + 1),
-            ast::Expr::Assert(assert) => self.inside(assert.body(), path, depth + 1),
+            ast::Expr::Paren(paren) => self.value(paren.expr(), place, path, depth + 1),
+            ast::Expr::LetIn(let_in) => self.value(let_in.body(), place, path, depth + 1),
+            ast::Expr::With(with) => self.value(with.body(), place, path, depth + 1),
+            ast::Expr::Assert(assert) => self.value(assert.body(), place, path, depth + 1),
             ast::Expr::IfElse(if_else) => {
-                self.inside(if_else.body(), path, depth + 1);
-                self.inside(if_else.else_body(), path, depth + 1);
+                self.value(if_else.body(), place, path, depth + 1);
+                self.value(if_else.else_body(), place, path, depth + 1);
             }
             ast::Expr::BinOp(op) if op.operator() == Some(ast::BinOpKind::Update) => {
-                self.inside(op.lhs(), path, depth + 1);
-                self.inside(op.rhs(), path, depth + 1);
+                self.value(op.lhs(), place, path, depth + 1);
+                self.value(op.rhs(), place, path, depth + 1);
             }
             ast::Expr::Ident(ident) => {
                 let name = ident.syntax().text().to_string();
                 if matches!(name.as_str(), "true" | "false" | "null") {
-                    self.setting(path, true);
+                    self.found(place, path, true);
                 } else {
                     match self.bound.get(&name).cloned() {
-                        Some(bound) => self.inside(Some(bound), path, depth + 1),
-                        None => self.setting(path, false),
+                        Some(bound) => self.value(Some(bound), place, path, depth + 1),
+                        None => self.found(place, path, false),
                     }
                 }
             }
             ast::Expr::Apply(_) => match call(&expr) {
                 Some((name, arguments)) => match (name.as_str(), arguments.as_slice()) {
                     ("mkIf" | "optionalAttrs" | "mkOverride" | "mkOrder", [_, content]) => {
-                        self.inside(Some(content.clone()), path, depth + 1)
+                        self.value(Some(content.clone()), place, path, depth + 1)
                     }
                     (
                         "mkDefault"
@@ -188,133 +150,54 @@ impl Reader<'_> {
                         | "mkVMOverride"
                         | "mkImageMediaOverride",
                         [content],
-                    ) => self.inside(Some(content.clone()), path, depth + 1),
+                    ) => self.value(Some(content.clone()), place, path, depth + 1),
                     ("mkMerge", [ast::Expr::List(list)]) => {
                         for item in list.items() {
-                            self.inside(Some(item), path, depth + 1);
+                            self.value(Some(item), place, path, depth + 1);
                         }
                     }
-                    _ => self.setting(path, false),
+                    _ => self.found(place, path, false),
                 },
-                None => self.setting(path, false),
+                None => self.found(place, path, false),
             },
             ast::Expr::Str(_) | ast::Expr::List(_) | ast::Expr::Literal(_) | ast::Expr::Path(_) => {
-                self.setting(path, true)
+                self.found(place, path, true)
             }
-            _ => self.setting(path, false),
+            _ => self.found(place, path, false),
         }
     }
 
-    fn entries(&mut self, set: &ast::AttrSet, path: &[String], node: &OptionTree, top: bool) {
+    /// Read the attribute set that is the module. What is under
+    /// `options` and under `config` is found with that place and without
+    /// the first name. Everything else is found as it is written.
+    fn module(&mut self, set: &ast::AttrSet) {
         for entry in set.attrpath_values() {
-            let (Some(attrpath), Some(value)) = (entry.attrpath(), entry.value()) else {
+            let Some(attrpath) = entry.attrpath() else {
                 continue;
             };
-            let mut names: Vec<Option<String>> =
-                attrpath.attrs().map(|attr| attr_name(&attr)).collect();
-            if top {
-                match names.first().and_then(|name| name.as_deref()) {
-                    Some("config") => {
-                        names.remove(0);
-                    }
-                    Some(name) if NOT_SETTINGS.contains(&name) => continue,
-                    _ => {}
-                }
-            }
-            let mut here = path.to_vec();
-            match self.descend(&mut here, node, &names) {
-                Reached::Group(below) => self.value(value, &here, below, 0),
-                Reached::Option => self.inside(Some(value), &here, 0),
-                Reached::Nothing => {}
-            }
+            let names: Vec<String> = attrpath.attrs().map(|attr| name_of(&attr)).collect();
+            let (place, path) = match names.first().map(String::as_str) {
+                Some("options") => (Place::Options, &names[1..]),
+                Some("config") => (Place::Config, &names[1..]),
+                _ => (Place::Top, &names[..]),
+            };
+            self.value(entry.value(), place, path, 0);
         }
         for inherit in set.inherits() {
             for attr in inherit.attrs() {
-                let name = attr_name(&attr);
-                if top
-                    && name
-                        .as_deref()
-                        .is_some_and(|name| NOT_SETTINGS.contains(&name))
-                {
-                    continue;
-                }
-                let mut here = path.to_vec();
-                match self.descend(&mut here, node, &[name]) {
-                    // The value comes from elsewhere and is a group of
-                    // options.
-                    Reached::Group(_) => self.not_read(&here),
-                    Reached::Option => self.setting(&here, false),
-                    Reached::Nothing => {}
+                let name = name_of(&attr);
+                match name.as_str() {
+                    "options" => self.found(Place::Options, &[], false),
+                    "config" => self.found(Place::Config, &[], false),
+                    _ => self.found(Place::Top, &[name], false),
                 }
             }
-        }
-    }
-
-    /// Read the settings in an expression that stands at `path`.
-    fn value(&mut self, expr: ast::Expr, path: &[String], node: &OptionTree, depth: usize) {
-        if depth > 16 {
-            self.not_read(path);
-            return;
-        }
-        match &expr {
-            ast::Expr::AttrSet(set) => self.entries(set, path, node, false),
-            ast::Expr::Paren(paren) => self.inner(paren.expr(), path, node, depth),
-            ast::Expr::LetIn(let_in) => self.inner(let_in.body(), path, node, depth),
-            ast::Expr::With(with) => self.inner(with.body(), path, node, depth),
-            ast::Expr::Assert(assert) => self.inner(assert.body(), path, node, depth),
-            ast::Expr::IfElse(if_else) => {
-                self.inner(if_else.body(), path, node, depth);
-                self.inner(if_else.else_body(), path, node, depth);
-            }
-            ast::Expr::BinOp(op) if op.operator() == Some(ast::BinOpKind::Update) => {
-                self.inner(op.lhs(), path, node, depth);
-                self.inner(op.rhs(), path, node, depth);
-            }
-            ast::Expr::Ident(ident) => {
-                let name = ident.syntax().text().to_string();
-                match self.bound.get(&name).cloned() {
-                    Some(bound) => self.value(bound, path, node, depth + 1),
-                    None => self.not_read(path),
-                }
-            }
-            ast::Expr::Apply(_) => match call(&expr) {
-                Some((name, arguments)) => match (name.as_str(), arguments.as_slice()) {
-                    ("mkIf" | "optionalAttrs" | "mkOverride" | "mkOrder", [_, content]) => {
-                        self.value(content.clone(), path, node, depth + 1)
-                    }
-                    (
-                        "mkDefault"
-                        | "mkForce"
-                        | "mkBefore"
-                        | "mkAfter"
-                        | "mkVMOverride"
-                        | "mkImageMediaOverride",
-                        [content],
-                    ) => self.value(content.clone(), path, node, depth + 1),
-                    ("mkMerge", [ast::Expr::List(list)]) => {
-                        for item in list.items() {
-                            self.value(item, path, node, depth + 1);
-                        }
-                    }
-                    _ => self.not_read(path),
-                },
-                None => self.not_read(path),
-            },
-            _ => self.not_read(path),
-        }
-    }
-
-    fn inner(&mut self, expr: Option<ast::Expr>, path: &[String], node: &OptionTree, depth: usize) {
-        match expr {
-            Some(expr) => self.value(expr, path, node, depth + 1),
-            None => self.not_read(path),
         }
     }
 }
 
-/// Read the options that a module file can set. `None` when the file
-/// does not parse.
-pub fn read(text: &str, options: &OptionTree) -> Option<Listing> {
+/// Read what a module file writes. `None` when the file does not parse.
+pub fn read(text: &str) -> Option<BTreeSet<Finding>> {
     let parse = rnix::Root::parse(text);
     if !parse.errors().is_empty() {
         return None;
@@ -336,9 +219,8 @@ pub fn read(text: &str, options: &OptionTree) -> Option<Listing> {
         }
     }
     let mut reader = Reader {
-        options,
         bound,
-        listing: Listing::default(),
+        findings: BTreeSet::new(),
     };
     // The module, behind the function, `let`, `with` and parentheses
     // that may be written around it.
@@ -353,45 +235,41 @@ pub fn read(text: &str, options: &OptionTree) -> Option<Listing> {
             _ => break,
         };
     }
-    let options = reader.options;
     match expr {
-        Some(ast::Expr::AttrSet(set)) => reader.entries(&set, &[], options, true),
+        Some(ast::Expr::AttrSet(set)) => reader.module(&set),
         // A module that is not written as an attribute set, such as
-        // `lib.mkIf condition { ... }`, is all settings.
-        Some(other) => reader.value(other, &[], options, 0),
-        None => reader.not_read(&[]),
+        // `lib.mkIf condition { ... }`.
+        other => reader.value(other, Place::Top, &[], 0),
     }
-    Some(reader.listing)
+    Some(reader.findings)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    fn listing(text: &str) -> (Vec<String>, Vec<String>) {
-        let names: Vec<String> = [
-            "services.web.enable",
-            "services.web.port",
-            "systemd.services",
-            "environment.systemPackages",
-            "networking.firewall.allowedTCPPorts",
-            "users.users",
-        ]
-        .iter()
-        .map(|name| name.to_string())
-        .collect();
-        let options = OptionTree::new(names.iter());
-        let listing = read(text, &options).unwrap();
-        (
-            listing.sets.into_iter().collect(),
-            listing.not_read.into_iter().collect(),
-        )
+    /// The findings as text: the place, the path, and `?` after a path
+    /// whose value is not written out.
+    fn findings(text: &str) -> Vec<String> {
+        read(text)
+            .unwrap()
+            .into_iter()
+            .map(|finding| {
+                format!(
+                    "{:?} {}{}",
+                    finding.place,
+                    finding.path.join("."),
+                    if finding.written_out { "" } else { "?" }
+                )
+            })
+            .collect()
     }
 
     #[test]
-    fn reads_settings_whatever_their_condition() {
-        let (sets, not_read) = listing(
-            r#"{ config, lib, pkgs, ... }:
+    fn finds_what_is_written_whatever_its_condition() {
+        assert_eq!(
+            findings(
+                r#"{ config, lib, pkgs, ... }:
 let
   cfg = config.services.web;
   firewall = { networking.firewall.allowedTCPPorts = [ cfg.port ]; };
@@ -407,82 +285,43 @@ in
     (if cfg.port == 80 then firewall else { })
   ]);
 }
-"#,
-        );
-        assert_eq!(
-            sets,
+"#
+            ),
             [
-                "environment.systemPackages",
-                "networking.firewall.allowedTCPPorts",
-                "systemd.services",
-                "users.users"
-            ]
-        );
-        assert!(not_read.is_empty());
-    }
-
-    #[test]
-    fn reads_into_the_value_of_an_option() {
-        let names: Vec<String> = [
-            "systemd.services",
-            "users.users",
-            "environment.systemPackages",
-        ]
-        .iter()
-        .map(|name| name.to_string())
-        .collect();
-        let options = OptionTree::new(names.iter());
-        let listing = read(
-            r#"{ config, lib, pkgs, name, ... }:
-let
-  cfg = config.services.web;
-in
-{
-  systemd.services.web = {
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.ExecStart = "web";
-    path = lib.mkIf cfg.enable [ pkgs.hello ];
-  };
-  systemd.services.${name}.enable = true;
-  users.users.web.group = cfg.group;
-  environment.systemPackages = lib.attrValues cfg.packages;
-}
-"#,
-            &options,
-        )
-        .unwrap();
-        let settings: Vec<(String, bool)> = listing.settings.into_iter().collect();
-        assert_eq!(
-            settings,
-            [
-                ("environment.systemPackages".to_string(), true),
-                ("systemd.services.*.enable".to_string(), false),
-                ("systemd.services.web.path".to_string(), false),
-                (
-                    "systemd.services.web.serviceConfig.ExecStart".to_string(),
-                    false
-                ),
-                ("systemd.services.web.wantedBy".to_string(), false),
-                ("users.users.web.group".to_string(), true),
+                "Options services.web.enable?",
+                "Config ",
+                "Config environment.systemPackages?",
+                "Config networking.firewall.allowedTCPPorts",
+                "Config systemd.services.web.wantedBy",
+                "Config users.users.web",
             ]
         );
     }
 
     #[test]
-    fn records_where_the_settings_are_not_written_out() {
-        let (sets, not_read) = listing(
-            "{ lib, ... }:\n{\n  systemd = lib.mapAttrs (name: value: value) { };\n  environment.systemPackages = [ ];\n  services.${\"web\"}.port = 1;\n}\n",
+    fn finds_every_attribute_of_the_module() {
+        // Nothing is left out here. `imports` and `meta` are found like
+        // any other path, and what they are is decided afterwards.
+        assert_eq!(
+            findings(
+                "{ lib, name, ... }:\n{\n  imports = [ ./a.nix ];\n  meta.maintainers = [ ];\n  systemd.services.${name}.enable = true;\n  users = lib.mapAttrs (n: v: v) { };\n}\n"
+            ),
+            [
+                "Top imports",
+                "Top meta.maintainers",
+                "Top systemd.services.*.enable",
+                "Top users?",
+            ]
         );
-        assert_eq!(sets, ["environment.systemPackages"]);
-        assert_eq!(not_read, ["services", "systemd"]);
     }
 
     #[test]
     fn reads_a_module_that_is_not_an_attribute_set() {
-        let (sets, not_read) = listing(
-            "{ lib, config, ... }:\nlib.mkIf config.services.web.enable {\n  users.users.web = { };\n}\n",
+        assert_eq!(
+            findings(
+                "{ lib, config, ... }:\nlib.mkIf config.services.web.enable {\n  users.users.web.group = config.services.web.group;\n}\n"
+            ),
+            ["Top users.users.web.group?"]
         );
-        assert_eq!(sets, ["users.users"]);
-        assert!(not_read.is_empty());
     }
 }
