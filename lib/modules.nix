@@ -2526,6 +2526,65 @@ let
   missingImports =
     evaluation:
     let
+      inherit (moduleDependencies evaluation) imports uses;
+
+      # The files a file reaches through imports, itself included.
+      reachableFrom =
+        file:
+        map (item: item.key) (genericClosure {
+          startSet = [ { key = file; } ];
+          operator = item: map (next: { key = next; }) (imports.${item.key} or [ ]);
+        });
+
+      reachable = mapAttrs (file: _imports: reachableFrom file) imports;
+    in
+    filter (
+      use: !(any (declaring: elem declaring (reachable.${use.file} or [ use.file ])) use.declaredIn)
+    ) uses;
+
+  /**
+    List what each module of an evaluation uses of other modules, and what
+    each module imports.
+
+    `missingImports` compares the two. A tool that writes the imports of a
+    module needs both: what the module uses says which imports the module
+    needs, whether or not it has them already.
+
+    # Inputs
+
+    `evaluation`
+
+    : The result of `evalModules`.
+
+    # Output
+
+    An attribute set with these attributes:
+
+    `uses`
+
+    : A list with one entry for each pair of an option and a file that defines
+      the option without declaring it. An entry has the attributes `option`,
+      the option as a string, `file`, the file that defines it, and
+      `declaredIn`, the files that declare it.
+
+    `imports`
+
+    : For each file of a module, the files of the modules it imports directly.
+
+    The limits of `missingImports` apply here as well.
+
+    # Type
+
+    ```
+    moduleDependencies :: Evaluation -> {
+      uses :: [ { option :: String; file :: String; declaredIn :: [ String ]; } ];
+      imports :: AttrsOf [ String ];
+    }
+    ```
+  */
+  moduleDependencies =
+    evaluation:
+    let
       # The module system declares the options under `_module` in a
       # module with this file. Every evaluation has it.
       ownFile = "lib/modules.nix";
@@ -2551,16 +2610,6 @@ let
         }) everyModule
       );
 
-      # The files a file reaches through imports, itself included.
-      reachableFrom =
-        file:
-        map (item: item.key) (genericClosure {
-          startSet = [ { key = file; } ];
-          operator = item: map (next: { key = next; }) (directImports.${item.key} or [ ]);
-        });
-
-      reachable = mapAttrs (file: _imports: reachableFrom file) directImports;
-
       # Every option below `tree`, with its path.
       optionsBelow =
         path: tree:
@@ -2583,7 +2632,7 @@ let
             [ ]
         ) (attrNames tree);
 
-      findingsOf =
+      usesOf =
         { path, option }:
         let
           declaredIn = map toString option.declarations;
@@ -2591,20 +2640,15 @@ let
         if elem ownFile declaredIn then
           [ ]
         else
-          concatMap (
-            file:
-            if any (declaring: elem declaring (reachable.${file} or [ file ])) declaredIn then
-              [ ]
-            else
-              [
-                {
-                  option = showOption path;
-                  inherit file declaredIn;
-                }
-              ]
-          ) (unique (map toString option.filesWithAnyDefinition));
+          map (file: {
+            option = showOption path;
+            inherit file declaredIn;
+          }) (filter (file: !(elem file declaredIn)) (unique (map toString option.filesWithAnyDefinition)));
     in
-    concatMap findingsOf (optionsBelow [ ] evaluation.options);
+    {
+      uses = concatMap usesOf (optionsBelow [ ] evaluation.options);
+      imports = directImports;
+    };
 
 in
 private
@@ -2657,6 +2701,7 @@ private
     mkRenamedOptionModule
     mkRenamedOptionModuleWith
     mkVMOverride
+    moduleDependencies
     setDefaultModuleLocation
     sortProperties
     ;

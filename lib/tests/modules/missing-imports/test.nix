@@ -32,7 +32,19 @@ let
     (toString ./defines-through-another.nix)
     (toString ./defines-without-import.nix)
   ];
+
+  dependencies = lib.modules.moduleDependencies evaluation;
+
+  # Every file that defines `greeting` without declaring it uses it,
+  # also the files that import the declaration.
+  usingFiles = lib.sort lib.lessThan (map (use: use.file) dependencies.uses);
 in
 assert actual == expected;
+assert usingFiles == expectedDefiningFiles;
+assert
+  dependencies.imports.${toString ./defines-through-another.nix} == [
+    (toString ./defines-with-import.nix)
+  ];
+assert dependencies.imports.${toString ./declares.nix} == [ ];
 assert definingFiles == expectedDefiningFiles;
 null
