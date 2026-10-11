@@ -13,7 +13,7 @@
   root,
   evaluations,
   definitionsOnly ? false,
-  searchSeconds ? null,
+  smallestSetTimeout ? null,
 }:
 let
   # The files in the dependencies are named as the evaluations saw them,
@@ -38,9 +38,9 @@ stdenvNoCC.mkDerivation {
   inherit dependencies evaluatedRoot;
   flags =
     lib.optional definitionsOnly "--definitions-only"
-    ++ lib.optionals (searchSeconds != null) [
-      "--search-seconds"
-      (toString searchSeconds)
+    ++ lib.optionals (smallestSetTimeout != null) [
+      "--smallest-set-timeout"
+      (toString smallestSetTimeout)
     ];
   doCheck = true;
   dontConfigure = true;

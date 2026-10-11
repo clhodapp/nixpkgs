@@ -27,8 +27,9 @@ pub struct Group {
     pub modules: usize,
     /// The imports inside the group that the tool keeps.
     pub kept: usize,
-    /// Whether the search for the smallest set finished in time.
-    pub searched: bool,
+    /// Whether the kept imports are a smallest set. They may not be
+    /// when the time for finding one was up.
+    pub smallest: bool,
     /// No set of imports for the group is smaller than this.
     pub lower_bound: usize,
 }
@@ -423,7 +424,7 @@ pub fn reduce(
     }
     let mut result = Vec::new();
     // The small groups go first, so that a large group that uses up the
-    // time does not keep them from being searched.
+    // time does not keep them from getting their smallest set.
     members.retain(|group| group.len() > 1);
     members.sort_by_key(|group| (group.len(), group[0]));
     for group in &members {
@@ -450,7 +451,7 @@ pub fn reduce(
         result.push(Group {
             modules: group.len(),
             kept: chosen.keep.len(),
-            searched: chosen.smallest,
+            smallest: chosen.smallest,
             lower_bound: chosen
                 .bound
                 .max(lower_bound(group, &inside, removable))
@@ -488,8 +489,9 @@ mod tests {
     #[test]
     fn falls_back_when_the_time_is_up() {
         // The ring with an import across it from every module, and no
-        // time to search. The result still lets every module reach
-        // every other one, and it is marked as not searched.
+        // time for the exact smallest set. The result still lets every
+        // module reach every other one, and it is not marked as a
+        // smallest set.
         let mut imports = Vec::new();
         for module in 0..6 {
             imports.push((module, (module + 1) % 6));
@@ -498,7 +500,7 @@ mod tests {
         let mut edges = graph(6, &imports);
         let removable = imports.iter().copied().collect();
         let groups = reduce(&mut edges, &removable, Instant::now());
-        assert!(!groups[0].searched);
+        assert!(!groups[0].smallest);
         assert!(groups[0].lower_bound <= groups[0].kept);
         for from in 0..6 {
             for to in 0..6 {

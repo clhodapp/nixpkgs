@@ -76,13 +76,13 @@ struct Input {
     /// options it reads
     #[arg(long)]
     definitions_only: bool,
-    /// The most seconds to spend on the search for the smallest set of
+    /// About the most seconds to spend on finding the smallest set of
     /// imports among modules that import each other. When the time is
-    /// up, the groups that are left get a set that has no import that
-    /// could be left out, and that may not be the smallest. With 0 no
-    /// group is searched.
+    /// up, the tool goes on from what it has found and writes a set
+    /// that has no import that could be left out, and that may not be
+    /// the smallest. With 0 it does that for every group at once.
     #[arg(long, value_name = "SECONDS", default_value_t = 300)]
-    search_seconds: u64,
+    smallest_set_timeout: u64,
 }
 
 fn load(input: &Input) -> Result<Plan, String> {
@@ -109,7 +109,7 @@ fn load(input: &Input) -> Result<Plan, String> {
             root: &root,
             evaluated_root: &evaluated_root,
             definitions_only: input.definitions_only,
-            search: Duration::from_secs(input.search_seconds),
+            smallest_set_timeout: Duration::from_secs(input.smallest_set_timeout),
         },
     ))
 }
@@ -158,14 +158,14 @@ fn print_unsupported(plan: &Plan) {
     }
 }
 
-/// Say when the time for the search was up before every group was
-/// searched. The imports of those groups depend on how far the search
-/// came, so another run or another machine can give other imports.
-fn say_not_searched(plan: &Plan) {
-    if plan.cycles.not_searched > 0 {
+/// Say when the time for finding the smallest set was up before every
+/// group had one. The imports of the other groups depend on how far the
+/// tool came, so another run or another machine can give other imports.
+fn say_approximated(plan: &Plan) {
+    if plan.cycles.approximated > 0 {
         say!(
-            "the time for the search was up: {} of {} groups of modules that import each other did not get the smallest set of imports (see --search-seconds)",
-            plan.cycles.not_searched,
+            "the time for finding the smallest set was up: {} of {} groups of modules that import each other got a set that may not be the smallest (see --smallest-set-timeout)",
+            plan.cycles.approximated,
             plan.cycles.groups
         );
     }
@@ -210,7 +210,7 @@ fn report(plan: &Plan) {
         plan.cycles.imports,
         plan.cycles.lower_bound
     );
-    say_not_searched(plan);
+    say_approximated(plan);
 
     let mut imported: BTreeMap<&str, usize> = BTreeMap::new();
     for import in plan.files.iter().flat_map(|file| &file.generated) {
@@ -259,7 +259,7 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
         }
         Command::Fix { input } => {
             let plan = load(&input)?;
-            say_not_searched(&plan);
+            say_approximated(&plan);
             let root = &input.root;
             let mut written = 0;
             for file in &plan.files {
@@ -281,7 +281,7 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
         }
         Command::Check { input } => {
             let plan = load(&input)?;
-            say_not_searched(&plan);
+            say_approximated(&plan);
             let stale = count(&plan, Status::Stale);
             let unsupported = count(&plan, Status::Unsupported);
             if stale == 0 && unsupported == 0 {
