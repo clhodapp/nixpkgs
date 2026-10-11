@@ -3,6 +3,7 @@
   pkgsLibPath,
   nixosPath,
   modules,
+  eager ? [ ],
   stateVersion,
   release,
 }:
@@ -45,7 +46,13 @@ let
         attrs: (import "${nixosPath}/lib/make-options-doc") ({ inherit pkgs lib; } // attrs);
     };
     config = config.config;
-    options = eval.options;
+    # A module in `modules` can import a module in `eager`. The options
+    # of that module are documented outside the sandbox, and here they
+    # are left out before they are rendered, because rendering them can
+    # need module arguments that the sandbox does not have.
+    options = lib.options.withoutOptionsDeclaredOnlyIn (map (
+      m: "${modulesPath}/${m}"
+    ) eager) eval.options;
     version = release;
     revision = "release-${release}";
     prefix = modulesPath;

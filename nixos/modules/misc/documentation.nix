@@ -105,7 +105,11 @@ let
               value
           ) pkgSet;
       in
-      scrubbedEval.options;
+      # A module in this evaluation can import a module of
+      # `docModules.lazy`. The options of that module are documented in
+      # the sandbox, and here they are left out before they are rendered,
+      # so that this evaluation does not do that work a second time.
+      lib.options.withoutOptionsDeclaredOnlyIn docModules.lazy scrubbedEval.options;
 
     baseOptionsJSON =
       let
@@ -141,6 +145,15 @@ let
             "[ "
             + concatMapStringsSep " " (p: ''"${removePrefix "${modulesPath}/" (toString p)}"'') docModules.lazy
             + " ]";
+          # The modules whose options are documented outside the
+          # sandbox. A module in the sandbox can import one of them,
+          # and the sandbox then leaves the options of it out.
+          eager =
+            "[ "
+            + concatMapStringsSep " " (p: ''"${removePrefix "${modulesPath}/" (toString p)}"'') (
+              builtins.filter (m: isPath m && lib.hasPrefix "${modulesPath}/" (toString m)) docModules.eager
+            )
+            + " ]";
           disallowedReferences = [
             filteredModules
             pkgsLibPath
@@ -150,6 +163,8 @@ let
         ''
           modulesPath="$TMPDIR/modules"
           printf "%s" "$modules" > "$modulesPath"
+          eagerPath="$TMPDIR/eager"
+          printf "%s" "$eager" > "$eagerPath"
           export NIX_STORE_DIR=$TMPDIR/store
           export NIX_STATE_DIR=$TMPDIR/state
           ${pkgs.buildPackages.nix}/bin/nix-instantiate \
@@ -159,6 +174,7 @@ let
             --argstr pkgsLibPath "$pkgsLibPath" \
             --argstr nixosPath "$nixosPath" \
             --arg modules "import $modulesPath" \
+            --arg eager "import $eagerPath" \
             --argstr stateVersion "${options.system.stateVersion.default}" \
             --argstr release "${config.system.nixos.release}" \
             $nixosPath/lib/eval-cacheable-options.nix > $out \
