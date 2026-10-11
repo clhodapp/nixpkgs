@@ -410,6 +410,9 @@ checkConfigError 'toInt: Could not convert .* to int' config.value ./declare-coe
 # Check `graph` attribute
 checkExpression './graph/test.nix'
 
+# Check modules that import each other, and a module that is reached along many paths
+checkExpression './import-graph/test.nix'
+
 # Check `missingImports` and the option attribute `filesWithAnyDefinition`
 checkExpression './missing-imports/test.nix'
 
