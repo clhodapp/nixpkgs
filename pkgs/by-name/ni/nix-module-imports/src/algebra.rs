@@ -1426,33 +1426,39 @@ impl Interpreter {
                 };
                 let mut value = self.eval(&base, env, file);
                 let mut missing = false;
+                // Whether every name of the path is known to be there:
+                // a name of a set that lists it, or a builtin.
+                let mut there = true;
                 if let Some(attrpath) = select.attrpath() {
                     for attr in attrpath.attrs() {
                         value = match self.name_of(&attr, env, file) {
-                            Some(name) => match self.select_one(&value, &name) {
-                                Some(found) => found,
-                                None => {
-                                    missing = true;
-                                    break;
+                            Some(name) => {
+                                there &= self.has(&value, &name) == Some(true)
+                                    || matches!(value, Value::Builtin("builtins", _));
+                                match self.select_one(&value, &name) {
+                                    Some(found) => found,
+                                    None => {
+                                        missing = true;
+                                        break;
+                                    }
                                 }
-                            },
+                            }
                             // A name that is not known: any entry.
-                            None => self.any_entry(&value),
+                            None => {
+                                there = false;
+                                self.any_entry(&value)
+                            }
                         };
                     }
                 }
                 match (select.default_expr(), missing) {
                     (Some(default), true) => self.eval(&default, env, file),
-                    // The default is taken when the path is not there,
-                    // which is not known for a value that is not known.
+                    // The default is taken when the path is not there.
+                    // Where that is not known, the result is either.
+                    (Some(_), false) if there => value,
                     (Some(default), false) => {
                         let default = self.eval(&default, env, file);
-                        match value {
-                            Value::Attrs(_) | Value::Lambda(_) | Value::List(_) | Value::Str(_) => {
-                                value
-                            }
-                            other => either(vec![other, default]),
-                        }
+                        either(vec![value, default])
                     }
                     (None, true) => nothing(),
                     (None, false) => value,
@@ -2076,6 +2082,45 @@ impl Interpreter {
                 }
                 Some(self.force(&so_far))
             }
+            // With a list that is written out, of sets whose names are
+            // all known, each name gets the values of the sets that
+            // have it, in the order of the list. `recursiveUpdate` asks
+            // how many values a name has, and goes on without end when
+            // that is not known.
+            "zipAttrsWith" => {
+                let list = self.force(&arguments[1]);
+                let items = self.exact(&list)?;
+                let mut by_name: BTreeMap<String, Vec<Thunk>> = BTreeMap::new();
+                for item in items.iter() {
+                    match self.force(item) {
+                        Value::Attrs(attrs) if attrs.any.is_none() => {
+                            for (field, value) in &attrs.fields {
+                                by_name
+                                    .entry(field.clone())
+                                    .or_default()
+                                    .push(value.clone());
+                            }
+                        }
+                        _ => return None,
+                    }
+                }
+                let fields = by_name
+                    .into_iter()
+                    .map(|(field, values)| {
+                        let mut sees = Sees::default().value(&first);
+                        sees.thunks.extend(values.iter().cloned());
+                        let (function, key) = (first.clone(), Value::Str(field.as_str().into()));
+                        let values = Thunk::done(Value::Seq(Rc::new(values)));
+                        let value = self.delayed(sees, move |interpreter| {
+                            let partly =
+                                interpreter.apply(function.clone(), Thunk::done(key.clone()));
+                            interpreter.apply(partly, values.clone())
+                        });
+                        (field, value)
+                    })
+                    .collect();
+                Some(Value::Attrs(Rc::new(Attrs { fields, any: None })))
+            }
             "attrNames" | "attrValues" => match &first {
                 Value::Attrs(attrs) if attrs.any.is_none() => {
                     let items = attrs
@@ -2484,6 +2529,8 @@ impl Interpreter {
                 let function = self.force(&first);
                 let list = self.force(&arguments[1]);
                 let mut by_name: BTreeMap<Option<String>, Vec<Thunk>> = BTreeMap::new();
+                // The sets whose names are not all known.
+                let mut open: Vec<Value> = Vec::new();
                 for item in self.elements(&list) {
                     match self.force(&item) {
                         Value::Attrs(attrs) if name == "zipAttrsWith" => {
@@ -2495,18 +2542,48 @@ impl Interpreter {
                             }
                             if let Some(any) = &attrs.any {
                                 by_name.entry(None).or_default().push(any.clone());
+                                open.push(Value::Attrs(attrs.clone()));
                             }
+                        }
+                        other if name == "zipAttrsWith" => {
+                            // A set that is not known: any of its
+                            // entries, under a name that is not known.
+                            let set = other.clone();
+                            let entry = self
+                                .delayed(Sees::default().value(&other), move |interpreter| {
+                                    interpreter.any_entry(&set)
+                                });
+                            by_name.entry(None).or_default().push(entry);
+                            open.push(other);
                         }
                         other => {
                             // `groupBy` calls the function with the
                             // element to get the name, which is not
                             // tracked.
-                            if name == "groupBy" {
-                                let key = self.apply(function.clone(), Thunk::done(other.clone()));
-                                self.escape(&key);
-                            }
+                            let key = self.apply(function.clone(), Thunk::done(other.clone()));
+                            self.escape(&key);
                             by_name.entry(None).or_default().push(Thunk::done(other));
                         }
+                    }
+                }
+                // A set whose names are not all known can have a name
+                // that another set has. Its entry is then among the
+                // values of that name.
+                for (field, values) in by_name.iter_mut() {
+                    let Some(field) = field else {
+                        continue;
+                    };
+                    for set in &open {
+                        if matches!(set, Value::Attrs(attrs) if attrs.fields.contains_key(field)) {
+                            continue;
+                        }
+                        let (set, field) = (set.clone(), field.clone());
+                        values.push(self.delayed(
+                            Sees::default().value(&set),
+                            move |interpreter| {
+                                interpreter.select_one(&set, &field).unwrap_or_else(nothing)
+                            },
+                        ));
                     }
                 }
                 let mut entries = Vec::new();

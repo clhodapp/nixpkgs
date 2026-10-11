@@ -381,6 +381,14 @@ mod tests {
   mapAttrs' = f: set: builtins.listToAttrs (map (name: f name set.${name}) (builtins.attrNames set));
   nameValuePair = name: value: { inherit name value; };
   genAttrs = names: f: builtins.listToAttrs (map (name: nameValuePair name (f name)) names);
+  recursiveUpdate = lhs: rhs:
+    let
+      f = builtins.zipAttrsWith (name: values:
+        if builtins.length values == 1 || !(builtins.isAttrs (builtins.elemAt values 1) && builtins.isAttrs (builtins.head values))
+        then builtins.head values
+        else f values);
+    in
+    f [ rhs lhs ];
   setAttrByPath = path: value:
     let
       go = n: if n == builtins.length path then value else { ${builtins.elemAt path n} = go (n + 1); };
@@ -498,6 +506,57 @@ in
                 "Read config.x",
                 "Read config.x.y ..."
             ]
+        );
+    }
+
+    #[test]
+    fn sets_that_are_written_out_are_put_together_name_by_name() {
+        // `recursiveUpdate` of the library is written with
+        // `zipAttrsWith` and asks how many sets have a name. With sets
+        // that are written out that is known, and the declarations are
+        // the two that are written.
+        assert_eq!(
+            touches(
+                "zip",
+                r#"{ lib, ... }:
+{
+  options = builtins.foldl' lib.recursiveUpdate { } [
+    { services.old.address = lib.mkOption { }; }
+    { services.old.port = lib.mkOption { }; }
+  ];
+}
+"#
+            ),
+            ["Declare services.old.address", "Declare services.old.port"]
+        );
+    }
+
+    #[test]
+    fn a_set_that_is_not_known_can_replace_a_name_that_is_written() {
+        // The name of the setting comes from `recursiveUpdate` of a set
+        // that is written out and a part of the configuration. The
+        // configuration can replace `store.path`, so the name is not
+        // only the one that is written.
+        let found = touches(
+            "replace",
+            r#"{ config, lib, ... }:
+let
+  merged = lib.recursiveUpdate { store.path = "/written"; } config.program.settings;
+in
+{
+  files.${merged.store.path}.mode = "0700";
+}
+"#,
+        );
+        assert!(
+            found.iter().any(|touch| touch.starts_with("Set files.*")),
+            "{found:?}"
+        );
+        assert!(
+            found
+                .iter()
+                .any(|touch| touch.starts_with("Read config.program.settings.store.path")),
+            "{found:?}"
         );
     }
 
