@@ -4,6 +4,7 @@
 //! more evaluations of the modules, as JSON. The tool knows nothing about
 //! the project the modules belong to.
 
+mod listing;
 mod plan;
 mod reduce;
 mod source;
@@ -54,6 +55,13 @@ enum Command {
     },
     /// Fail when a module file does not have the imports it needs
     Check {
+        #[command(flatten)]
+        input: Input,
+    },
+    /// Print, as JSON, what the source of the modules shows about the
+    /// settings each file can make, next to what the module system
+    /// reports
+    Source {
         #[command(flatten)]
         input: Input,
     },
@@ -112,7 +120,12 @@ fn time(text: &str) -> Result<Duration, String> {
         .ok_or_else(|| format!("`{text}` is too long a time"))
 }
 
-fn load(input: &Input) -> Result<Plan, String> {
+/// Read the dependencies and the settings of the run, and hand them to
+/// `work`.
+fn with_input<T>(
+    input: &Input,
+    work: impl FnOnce(&Dependencies, &Settings) -> T,
+) -> Result<T, String> {
     let mut dependencies = Dependencies::default();
     for path in &input.dependencies {
         let text =
@@ -130,7 +143,7 @@ fn load(input: &Input) -> Result<Plan, String> {
             .ok_or("the name of the root directory is not UTF-8")?
             .to_string(),
     };
-    Ok(plan::plan(
+    Ok(work(
         &dependencies,
         &Settings {
             root: &root,
@@ -139,6 +152,10 @@ fn load(input: &Input) -> Result<Plan, String> {
             search_approximate_after: input.search_approximate_after,
         },
     ))
+}
+
+fn load(input: &Input) -> Result<Plan, String> {
+    with_input(input, plan::plan)
 }
 
 fn count(plan: &Plan, status: Status) -> usize {
@@ -273,6 +290,13 @@ fn report(plan: &Plan) {
 
 fn run(cli: Cli) -> Result<ExitCode, String> {
     match cli.command {
+        Command::Source { input } => {
+            let comparison = with_input(&input, plan::compare_with_source)?;
+            let text =
+                serde_json::to_string_pretty(&comparison).map_err(|error| error.to_string())?;
+            say!("{text}");
+            Ok(ExitCode::SUCCESS)
+        }
         Command::Report { input, json } => {
             let plan = load(&input)?;
             if json {

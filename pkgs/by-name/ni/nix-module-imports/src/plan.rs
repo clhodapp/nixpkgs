@@ -224,6 +224,153 @@ fn directory_of(path: &str) -> &str {
     path.rfind('/').map_or("", |index| &path[..index])
 }
 
+/// How the options that the source of the modules shows compare with the
+/// options that the module system reports for the evaluations.
+#[derive(Serialize, Default)]
+pub struct SourceComparison {
+    pub files: usize,
+    /// Files that do not parse or cannot be read.
+    pub unreadable: usize,
+    /// Files in which every setting was read.
+    pub read_fully: usize,
+    /// Files in which nothing could be read, because the module as a
+    /// whole is not written out.
+    pub not_read_at_all: usize,
+    /// Files with a part that was not read.
+    pub read_partly: usize,
+    /// "File sets option" facts that the module system reports.
+    pub reported: usize,
+    /// Of those, the ones the source shows as well.
+    pub reported_and_in_source: usize,
+    /// Of the others, the ones in a file with a part that was not read.
+    pub reported_in_a_part_not_read: usize,
+    /// Reported, not in the source, although the file was read fully.
+    pub reported_but_missed: Vec<(String, String)>,
+    /// Facts that only the source shows: settings that do not exist in
+    /// the evaluations, because of a condition around them.
+    pub only_in_source: Vec<(String, String)>,
+    /// The paths that were not read, with the number of files.
+    pub not_read: BTreeMap<String, usize>,
+    /// The settings that the source shows, counted once for each file
+    /// and path, at any depth inside the value of an option.
+    pub settings: usize,
+    /// The number of different paths among them.
+    pub setting_paths: usize,
+    /// The paths that more than one file can set, with the files. The
+    /// order of the modules can matter only at these, and below the
+    /// paths in `not_written_out_and_shared`.
+    pub shared: Vec<(String, Vec<String>)>,
+    /// Settings whose value is not written out, so that it can hold
+    /// settings below the path.
+    pub not_written_out: usize,
+    /// Of those, the ones below which another file sets something.
+    pub not_written_out_and_shared: Vec<(String, String)>,
+}
+
+pub fn compare_with_source(dependencies: &Dependencies, settings: &Settings) -> SourceComparison {
+    let option_tree = OptionTree::new(dependencies.declarations.keys());
+    let mut reported: BTreeMap<&str, BTreeSet<&str>> = BTreeMap::new();
+    for used in &dependencies.uses {
+        reported.entry(&used.file).or_default().insert(&used.option);
+    }
+    let mut comparison = SourceComparison::default();
+    let mut files_of: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    let mut not_written_out: Vec<(String, String)> = Vec::new();
+    for evaluated in dependencies.imports.keys() {
+        let Some(module) = settings.in_tree(evaluated) else {
+            continue;
+        };
+        comparison.files += 1;
+        let source = if settings.root.join(&module).is_dir() {
+            format!("{module}/default.nix")
+        } else {
+            module.clone()
+        };
+        let listing = fs::read_to_string(settings.root.join(&source))
+            .ok()
+            .and_then(|text| crate::listing::read(&text, &option_tree));
+        let Some(listing) = listing else {
+            comparison.unreadable += 1;
+            continue;
+        };
+        if listing.not_read.is_empty() {
+            comparison.read_fully += 1;
+        } else if listing.not_read.contains("") {
+            comparison.not_read_at_all += 1;
+        } else {
+            comparison.read_partly += 1;
+        }
+        for path in &listing.not_read {
+            *comparison.not_read.entry(path.clone()).or_default() += 1;
+        }
+        for (path, value_not_written_out) in &listing.settings {
+            comparison.settings += 1;
+            files_of
+                .entry(path.clone())
+                .or_default()
+                .insert(module.clone());
+            if *value_not_written_out {
+                not_written_out.push((path.clone(), module.clone()));
+            }
+        }
+        // An option that the file declares itself is not a use of
+        // another module, and the module system leaves it out as well.
+        let declares = |option: &str| {
+            dependencies
+                .declarations
+                .get(option)
+                .is_some_and(|declaration| declaration.files.iter().any(|file| file == evaluated))
+        };
+        let in_source: BTreeSet<&str> = listing
+            .sets
+            .iter()
+            .map(String::as_str)
+            .filter(|option| !declares(option))
+            .collect();
+        let empty = BTreeSet::new();
+        let by_module_system = reported.get(evaluated.as_str()).unwrap_or(&empty);
+        for option in by_module_system {
+            comparison.reported += 1;
+            if in_source.contains(option) {
+                comparison.reported_and_in_source += 1;
+            } else if listing
+                .not_read
+                .iter()
+                .any(|path| path.is_empty() || option.starts_with(path.as_str()))
+            {
+                comparison.reported_in_a_part_not_read += 1;
+            } else {
+                comparison
+                    .reported_but_missed
+                    .push((module.clone(), option.to_string()));
+            }
+        }
+        for option in in_source.difference(by_module_system) {
+            comparison
+                .only_in_source
+                .push((module.clone(), option.to_string()));
+        }
+    }
+    comparison.setting_paths = files_of.len();
+    comparison.not_written_out = not_written_out.len();
+    for (path, module) in not_written_out {
+        let below = format!("{path}.");
+        let shared = files_of
+            .range(below.clone()..)
+            .take_while(|(other, _)| other.starts_with(&below))
+            .any(|(_, files)| files.iter().any(|file| *file != module));
+        if shared {
+            comparison.not_written_out_and_shared.push((path, module));
+        }
+    }
+    comparison.shared = files_of
+        .into_iter()
+        .filter(|(_, files)| files.len() > 1)
+        .map(|(path, files)| (path, files.into_iter().collect()))
+        .collect();
+    comparison
+}
+
 pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
     let importable: BTreeSet<&str> = dependencies.importable.iter().map(String::as_str).collect();
     let option_tree = OptionTree::new(dependencies.declarations.keys());

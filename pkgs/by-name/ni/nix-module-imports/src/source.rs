@@ -104,7 +104,7 @@ fn module_body(expr: ast::Expr) -> Result<ast::AttrSet, Unsupported> {
 
 /// The name of an attribute when it is written as a plain name or as a
 /// string without `${}`.
-fn attr_name(attr: &ast::Attr) -> Option<String> {
+pub(crate) fn attr_name(attr: &ast::Attr) -> Option<String> {
     match attr {
         ast::Attr::Ident(ident) => Some(ident.syntax().text().to_string()),
         ast::Attr::Str(string) => {
@@ -234,6 +234,16 @@ impl OptionTree {
             node.option = Some(option.clone());
         }
         tree
+    }
+
+    /// The part of the tree below one name.
+    pub(crate) fn child(&self, name: &str) -> Option<&OptionTree> {
+        self.children.get(name)
+    }
+
+    /// The option at this place of the tree, when one is declared here.
+    pub(crate) fn option(&self) -> Option<&str> {
+        self.option.as_deref()
     }
 
     /// The option that a read of `path` reads: the first option on the
