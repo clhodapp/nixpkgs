@@ -175,9 +175,46 @@ struct Suspended {
     /// Working the value out continues from these, and not from the
     /// calls of whoever asks for it.
     chain: Chain,
-    /// For an expression of a file that waits to be worked out: the
-    /// file, and the names that the expression can see.
-    written: Option<(Rc<PathBuf>, Env)>,
+    /// Everything that working the value out can use.
+    sees: Sees,
+    /// Whether the value was written down by code of the library.
+    library: bool,
+}
+
+/// What the work of a delayed value can use: the names of a scope, and
+/// values that it holds itself. It has to be all of it. A delayed value
+/// of the library is escaped by escaping what it sees, without doing
+/// the work, and anything that is left out here is then lost.
+#[derive(Clone, Default)]
+struct Sees {
+    env: Option<Env>,
+    thunks: Vec<Thunk>,
+    values: Vec<Value>,
+}
+
+impl Sees {
+    fn env(env: &Env) -> Sees {
+        Sees {
+            env: Some(env.clone()),
+            ..Sees::default()
+        }
+    }
+
+    fn thunk(mut self, thunk: &Thunk) -> Sees {
+        self.thunks.push(thunk.clone());
+        self
+    }
+
+    fn value(mut self, value: &Value) -> Sees {
+        self.values.push(value.clone());
+        self
+    }
+
+    fn reaches(&self) -> bool {
+        self.env.as_ref().is_some_and(Env::reaches)
+            || self.thunks.iter().any(|thunk| thunk.0.reaches)
+            || self.values.iter().any(reaches)
+    }
 }
 
 #[derive(Clone)]
@@ -189,7 +226,8 @@ impl Thunk {
             reaches: reaches(&value),
             state: RefCell::new(State::Done(value)),
             chain: Chain::default(),
-            written: None,
+            sees: Sees::default(),
+            library: false,
         }))
     }
 }
@@ -229,14 +267,23 @@ fn is_everything(value: &Value) -> bool {
 /// Whether a name that a function can see is known to be all of the
 /// configuration, all of the options or all of the arguments of a
 /// module.
-fn sees_everything(env: &Env) -> bool {
+///
+/// An argument of a call is worked out for this. A module that asks for
+/// `options` and has not used it yet is then seen as what it is. A name
+/// of a `let` is looked at only when it was worked out already.
+fn sees_everything(interpreter: &mut Interpreter, env: &Env) -> bool {
     let mut scope = env.0.clone();
     while let Some(current) = scope {
         if !current.reaches {
             return false;
         }
-        for name in current.names.borrow().values() {
-            if let State::Done(value) = &*name.0.state.borrow()
+        let names: Vec<Thunk> = current.names.borrow().values().cloned().collect();
+        for name in names {
+            if current.call && name.0.reaches {
+                if is_everything(&interpreter.force(&name)) {
+                    return true;
+                }
+            } else if let State::Done(value) = &*name.0.state.borrow()
                 && is_everything(value)
             {
                 return true;
@@ -249,6 +296,8 @@ fn sees_everything(env: &Env) -> bool {
 
 struct Scope {
     names: RefCell<BTreeMap<String, Thunk>>,
+    /// Whether the names are the argument of a call and its parts.
+    call: bool,
     /// The value of a `with`, when this scope is one.
     with: Option<Thunk>,
     parent: Env,
@@ -273,6 +322,18 @@ impl Env {
             with: None,
             parent: self.clone(),
             reaches: reaches || self.reaches(),
+            call: false,
+        })))
+    }
+
+    /// The scope of a call, for the argument and its parts.
+    fn call(&self, reaches: bool) -> Env {
+        Env(Some(Rc::new(Scope {
+            names: RefCell::new(BTreeMap::new()),
+            with: None,
+            parent: self.clone(),
+            reaches: reaches || self.reaches(),
+            call: true,
         })))
     }
 
@@ -282,6 +343,7 @@ impl Env {
             reaches: value.0.reaches || self.reaches(),
             with: Some(value),
             parent: self.clone(),
+            call: false,
         })))
     }
 
@@ -405,6 +467,8 @@ pub struct Interpreter {
     pending: Vec<(Pending, Option<Rc<str>>)>,
     /// Whether `settle` is at work.
     escaping: bool,
+    /// Whether the code that is interpreted now is code of the library.
+    in_library: bool,
     /// With `trace`: what made the escaping that is under way.
     origin: Option<Rc<str>>,
     /// Whether to count where calls are cut, for whoever works on this
@@ -532,6 +596,7 @@ impl Interpreter {
             kept_closures: Vec::new(),
             pending: Vec::new(),
             escaping: false,
+            in_library: false,
             origin: None,
             trace: std::env::var_os("TOUCHES_TRACE").is_some(),
             cuts: BTreeMap::new(),
@@ -568,39 +633,42 @@ impl Interpreter {
             }
             State::Delayed(work) => {
                 let outside = std::mem::replace(&mut self.chain, thunk.0.chain.clone());
+                let outside_library = std::mem::replace(&mut self.in_library, thunk.0.library);
                 let value = work(self);
                 let value = self.bounded(value);
                 self.chain = outside;
+                self.in_library = outside_library;
                 *thunk.0.state.borrow_mut() = State::Done(value.clone());
                 value
             }
         }
     }
 
-    /// A value that is worked out when it is needed. `reaches` says
-    /// whether it can reach the configuration: `true` unless nothing
-    /// that the work uses does.
-    fn delayed(&self, reaches: bool, work: impl Fn(&mut Interpreter) -> Value + 'static) -> Thunk {
+    /// A value that is worked out when it is needed. `sees` is all that
+    /// the work can use.
+    fn delayed(&self, sees: Sees, work: impl Fn(&mut Interpreter) -> Value + 'static) -> Thunk {
         Thunk(Rc::new(Suspended {
             state: RefCell::new(State::Delayed(Rc::new(work))),
-            reaches,
+            reaches: sees.reaches(),
             chain: self.chain.clone(),
-            written: None,
+            sees,
+            library: self.in_library,
         }))
     }
 
     fn delay(&self, expr: Option<ast::Expr>, env: &Env, file: &Rc<PathBuf>) -> Thunk {
-        let written = Some((file.clone(), env.clone()));
-        let reaches = env.reaches();
+        let library = self.of_library(file);
+        let sees = Sees::env(env);
         let (env, file) = (env.clone(), file.clone());
         match expr {
             Some(expr) => Thunk(Rc::new(Suspended {
                 state: RefCell::new(State::Delayed(Rc::new(move |interpreter| {
                     interpreter.eval(&expr, &env, &file)
                 }))),
-                reaches,
+                reaches: sees.reaches(),
                 chain: self.chain.clone(),
-                written,
+                sees,
+                library,
             })),
             None => Thunk::done(Value::Unknown),
         }
@@ -611,6 +679,18 @@ impl Interpreter {
         self.library
             .as_ref()
             .is_some_and(|library| file.starts_with(library))
+    }
+
+    /// Whether something that a delayed value can use is all of the
+    /// configuration. See `sees_everything`.
+    fn sees_everything_of(&mut self, sees: &Sees) -> bool {
+        let known = |thunk: &Thunk| matches!(&*thunk.0.state.borrow(), State::Done(value) if is_everything(value));
+        sees.values.iter().any(is_everything)
+            || sees.thunks.iter().any(known)
+            || sees
+                .env
+                .as_ref()
+                .is_some_and(|env| sees_everything(self, env))
     }
 
     /// Record everything that can still be done with a value that the
@@ -667,25 +747,31 @@ impl Interpreter {
                     usize::from(closure.body.syntax().text_range().start())
                 ),
                 Pending::Value(_) => "value".to_string(),
-                Pending::Thunk(thunk) => match &thunk.0.written {
-                    Some((file, _)) => format!("expression in {}", file.display()),
-                    None => "value that a builtin makes".to_string(),
-                },
+                Pending::Thunk(thunk) if thunk.0.library => "value of the library".to_string(),
+                Pending::Thunk(_) => "value of a module".to_string(),
             };
             match pending {
                 Pending::Value(value) => self.escape_now(&value),
                 Pending::Thunk(thunk) => {
-                    // An expression of the library that was not worked
-                    // out is not worked out for this. It does what it
-                    // does with the names it can see, and those are
-                    // escaped. See the same step for a function.
+                    // A value of the library that was not worked out is
+                    // not worked out for this. Whatever the work does,
+                    // it does with what it sees, and that is escaped.
+                    // See the same step for a function.
                     let waiting = matches!(&*thunk.0.state.borrow(), State::Delayed(_));
-                    if waiting
-                        && let Some((file, env)) = &thunk.0.written
-                        && self.of_library(file)
-                        && !sees_everything(env)
-                    {
-                        self.escape_scopes(env);
+                    if waiting && thunk.0.library && !self.sees_everything_of(&thunk.0.sees) {
+                        if self.trace {
+                            self.origin = Some("a value of the library".into());
+                        }
+                        let sees = thunk.0.sees.clone();
+                        if let Some(env) = &sees.env {
+                            self.escape_scopes(env);
+                        }
+                        for seen in &sees.thunks {
+                            self.escape_thunk(seen);
+                        }
+                        for seen in &sees.values {
+                            self.escape(seen);
+                        }
                         self.kept.push(thunk);
                         continue;
                     }
@@ -752,7 +838,7 @@ impl Interpreter {
                     // and it is called instead.
                     // A module that the library writes, as for an option
                     // that was renamed, is called like any module.
-                    if self.of_library(&closure.file) && !sees_everything(&closure.env) {
+                    if self.of_library(&closure.file) && !sees_everything(self, &closure.env) {
                         if self.trace {
                             let start = usize::from(closure.body.syntax().text_range().start());
                             self.origin =
@@ -1035,7 +1121,8 @@ impl Interpreter {
                 // `a = { ... }; a.b = y;` merges. Both are kept.
                 Some(existing) => {
                     let below = below.clone();
-                    self.delayed(existing.0.reaches || reaches(&below), move |interpreter| {
+                    let sees = Sees::default().thunk(&existing).value(&below);
+                    self.delayed(sees, move |interpreter| {
                         let existing = interpreter.force(&existing);
                         interpreter.update(existing, below.clone())
                     })
@@ -1048,7 +1135,10 @@ impl Interpreter {
             0 => None,
             1 => any.pop(),
             _ => Some(self.delayed(
-                any.iter().any(|thunk| thunk.0.reaches),
+                Sees {
+                    thunks: any.clone(),
+                    ..Sees::default()
+                },
                 move |interpreter| {
                     let values = any.iter().map(|thunk| interpreter.force(thunk)).collect();
                     either(values)
@@ -1076,7 +1166,7 @@ impl Interpreter {
                     (Some(first), Some(second)) => {
                         let (first, second) = (first.clone(), second.clone());
                         Some(self.delayed(
-                            first.0.reaches || second.0.reaches,
+                            Sees::default().thunk(&first).thunk(&second),
                             move |interpreter| {
                                 either(vec![interpreter.force(&first), interpreter.force(&second)])
                             },
@@ -1107,7 +1197,6 @@ impl Interpreter {
             // One side is not known. What the other side has is there,
             // and more can be: the entries of the unknown side.
             (Value::Attrs(known), other) | (other, Value::Attrs(known)) => {
-                let other_reaches = reaches(other);
                 let fields = if matches!(right, Value::Attrs(_)) {
                     known.fields.clone()
                 } else {
@@ -1120,7 +1209,7 @@ impl Interpreter {
                             let (value, other, field) =
                                 (value.clone(), other.clone(), name.clone());
                             let both = self.delayed(
-                                value.0.reaches || other_reaches,
+                                Sees::default().thunk(&value).value(&other),
                                 move |interpreter| {
                                     let mut values = vec![interpreter.force(&value)];
                                     values.extend(interpreter.select_one(&other, &field));
@@ -1132,14 +1221,13 @@ impl Interpreter {
                         .collect()
                 };
                 let (any, other) = (known.any.clone(), other.clone());
-                let any = self.delayed(
-                    other_reaches || any.as_ref().is_some_and(|any| any.0.reaches),
-                    move |interpreter| {
-                        let mut values = vec![interpreter.any_entry(&other)];
-                        values.extend(any.as_ref().map(|any| interpreter.force(any)));
-                        either(values)
-                    },
-                );
+                let mut sees = Sees::default().value(&other);
+                sees.thunks.extend(any.clone());
+                let any = self.delayed(sees, move |interpreter| {
+                    let mut values = vec![interpreter.any_entry(&other)];
+                    values.extend(any.as_ref().map(|any| interpreter.force(any)));
+                    either(values)
+                });
                 Value::Attrs(Rc::new(Attrs {
                     fields,
                     any: Some(any),
@@ -1171,14 +1259,14 @@ impl Interpreter {
                 let value = match &from {
                     Some(from) => {
                         let (from, name) = (from.clone(), name.clone());
-                        self.delayed(env.reaches(), move |interpreter| {
+                        self.delayed(Sees::env(env).thunk(&from), move |interpreter| {
                             let from = interpreter.force(&from);
                             interpreter.select_one(&from, &name).unwrap_or_else(nothing)
                         })
                     }
                     None => {
                         let (env, name) = (env.clone(), name.clone());
-                        self.delayed(env.reaches(), move |interpreter| {
+                        self.delayed(Sees::env(&env), move |interpreter| {
                             interpreter.lookup(&name, &env)
                         })
                     }
@@ -1658,20 +1746,20 @@ impl Interpreter {
                 if self.depth >= DEPTH || under_way > self.reentries {
                     return self.cut(&closure, &argument);
                 }
-                // While values are escaped, the result of a call is
-                // only looked at for what it reads. A function of the
-                // library reads what it is given and what it sees, so
-                // escaping those says as much as the call, for far less
-                // work. See `escape_now`.
-                // A call that is given all of the configuration is
-                // made, because escaping all of the configuration says
-                // that everything is read. So is a call that only gives
-                // the function for the next argument.
+                // While values are escaped, a function of the library
+                // that is given an argument that is not known is not
+                // called. It reads what it sees, so escaping that says
+                // as much as the call. The call would take every branch
+                // of the library function, which for a function such as
+                // `evalModules` is more work than everything else
+                // together. A function that sees all of the
+                // configuration is called all the same, because
+                // escaping all of the configuration says that
+                // everything is read.
                 if self.escaping
-                    && !matches!(closure.body, ast::Expr::Lambda(_))
                     && self.of_library(&closure.file)
-                    && !sees_everything(&closure.env)
-                    && !is_everything(&self.force(&argument))
+                    && matches!(self.force(&argument), Value::Unknown)
+                    && !sees_everything(self, &closure.env)
                 {
                     return self.cut(&closure, &argument);
                 }
@@ -1682,7 +1770,9 @@ impl Interpreter {
                     return self.cut(&closure, &argument);
                 }
                 let mut names = BTreeMap::new();
-                let inner = closure.env.child(argument.0.reaches);
+                let library = self.of_library(&closure.file);
+                let outside_library = std::mem::replace(&mut self.in_library, library);
+                let inner = closure.env.call(argument.0.reaches);
                 match &closure.param {
                     ast::Param::IdentParam(param) => {
                         if let Some(ident) = param.ident() {
@@ -1707,34 +1797,39 @@ impl Interpreter {
                             );
                             names.insert(
                                 name,
-                                self.delayed(inner.reaches(), move |interpreter| {
-                                    let given = interpreter.force(&argument);
-                                    let found = match &given {
-                                        Value::Attrs(_) | Value::Either(_) | Value::Config(_) => {
-                                            interpreter.select_one(&given, &field)
-                                        }
-                                        _ => Some(Value::Unknown),
-                                    };
-                                    match (found, &default) {
-                                        (Some(found), None) => found,
-                                        (Some(found), Some(default)) => match given {
-                                            // The set is known and has the name.
-                                            Value::Attrs(ref attrs)
-                                                if attrs.fields.contains_key(&field) =>
-                                            {
-                                                found
+                                self.delayed(
+                                    Sees::env(&inner).thunk(&argument),
+                                    move |interpreter| {
+                                        let given = interpreter.force(&argument);
+                                        let found = match &given {
+                                            Value::Attrs(_)
+                                            | Value::Either(_)
+                                            | Value::Config(_) => {
+                                                interpreter.select_one(&given, &field)
                                             }
-                                            _ => either(vec![
-                                                found,
-                                                interpreter.eval(default, &inner, &file),
-                                            ]),
-                                        },
-                                        (None, Some(default)) => {
-                                            interpreter.eval(default, &inner, &file)
+                                            _ => Some(Value::Unknown),
+                                        };
+                                        match (found, &default) {
+                                            (Some(found), None) => found,
+                                            (Some(found), Some(default)) => match given {
+                                                // The set is known and has the name.
+                                                Value::Attrs(ref attrs)
+                                                    if attrs.fields.contains_key(&field) =>
+                                                {
+                                                    found
+                                                }
+                                                _ => either(vec![
+                                                    found,
+                                                    interpreter.eval(default, &inner, &file),
+                                                ]),
+                                            },
+                                            (None, Some(default)) => {
+                                                interpreter.eval(default, &inner, &file)
+                                            }
+                                            (None, None) => Value::Unknown,
                                         }
-                                        (None, None) => Value::Unknown,
-                                    }
-                                }),
+                                    },
+                                ),
                             );
                         }
                     }
@@ -1748,6 +1843,7 @@ impl Interpreter {
                 let result = self.eval(&closure.body, &inner, &closure.file);
                 self.depth -= 1;
                 self.chain = outside;
+                self.in_library = outside_library;
                 self.bounded(result)
             }
             Value::Builtin(name, given) => {
@@ -1777,6 +1873,9 @@ impl Interpreter {
             other => {
                 // The function is not known, so it can do anything with
                 // its argument.
+                if self.trace && self.origin.is_none() {
+                    self.origin = Some("a function that is not known".into());
+                }
                 self.escape(&other);
                 self.escape_thunk(&argument);
                 Value::Unknown
@@ -1893,7 +1992,7 @@ impl Interpreter {
                 let items = (0..count)
                     .map(|index| {
                         let function = first.clone();
-                        self.delayed(reaches(&first), move |interpreter| {
+                        self.delayed(Sees::default().value(&first), move |interpreter| {
                             interpreter.apply(function.clone(), Thunk::done(Value::Int(index)))
                         })
                     })
@@ -1907,7 +2006,8 @@ impl Interpreter {
                     .iter()
                     .map(|item| {
                         let (function, item) = (first.clone(), item.clone());
-                        self.delayed(reaches(&first) || item.0.reaches, move |interpreter| {
+                        let sees = Sees::default().value(&first).thunk(&item);
+                        self.delayed(sees, move |interpreter| {
                             interpreter.apply(function.clone(), item.clone())
                         })
                     })
@@ -1967,7 +2067,7 @@ impl Interpreter {
                 for item in items.iter() {
                     let (function, before, item) = (first.clone(), so_far.clone(), item.clone());
                     so_far = self.delayed(
-                        reaches(&first) || before.0.reaches || item.0.reaches,
+                        Sees::default().value(&first).thunk(&before).thunk(&item),
                         move |interpreter| {
                             let partly = interpreter.apply(function.clone(), before.clone());
                             interpreter.apply(partly, item.clone())
@@ -2141,7 +2241,8 @@ impl Interpreter {
                     .into_iter()
                     .map(|item| {
                         let function = function.clone();
-                        self.delayed(reaches(&function) || item.0.reaches, move |interpreter| {
+                        let sees = Sees::default().value(&function).thunk(&item);
+                        self.delayed(sees, move |interpreter| {
                             interpreter.apply(function.clone(), item.clone())
                         })
                     })
@@ -2152,7 +2253,7 @@ impl Interpreter {
                 let function = self.force(&first);
                 self.force(&arguments[1]);
                 Value::List(Rc::new(vec![self.delayed(
-                    reaches(&function),
+                    Sees::default().value(&function),
                     move |interpreter| {
                         interpreter.apply(function.clone(), Thunk::done(Value::Unknown))
                     },
@@ -2269,7 +2370,7 @@ impl Interpreter {
                     Value::Attrs(attrs) => {
                         let call = |name: Value, value: Thunk, function: Value| {
                             self.delayed(
-                                reaches(&function) || value.0.reaches,
+                                Sees::default().value(&function).thunk(&value),
                                 move |interpreter| {
                                     let partly = interpreter
                                         .apply(function.clone(), Thunk::done(name.clone()));
@@ -2302,7 +2403,7 @@ impl Interpreter {
                         Value::Attrs(Rc::new(Attrs {
                             fields: BTreeMap::new(),
                             any: Some(self.delayed(
-                                reaches(&function) || entry.0.reaches,
+                                Sees::default().value(&function).thunk(&entry),
                                 move |interpreter| {
                                     let partly = interpreter
                                         .apply(function.clone(), Thunk::done(Value::Unknown));
@@ -2326,7 +2427,7 @@ impl Interpreter {
                         }
                         None => None,
                     };
-                    let value = self.delayed(reaches(&item), move |interpreter| {
+                    let value = self.delayed(Sees::default().value(&item), move |interpreter| {
                         interpreter
                             .select_one(&item, "value")
                             .unwrap_or(Value::Unknown)
@@ -2416,18 +2517,22 @@ impl Interpreter {
                     let zip = name == "zipAttrsWith";
                     entries.push((
                         vec![field],
-                        self.delayed(reaches(&function) || list.0.reaches, move |interpreter| {
-                            if zip {
-                                let key = match &given {
-                                    Some(given) => Value::Str(given.as_str().into()),
-                                    None => Value::Unknown,
-                                };
-                                let partly = interpreter.apply(function.clone(), Thunk::done(key));
-                                interpreter.apply(partly, list.clone())
-                            } else {
-                                interpreter.force(&list)
-                            }
-                        }),
+                        self.delayed(
+                            Sees::default().value(&function).thunk(&list),
+                            move |interpreter| {
+                                if zip {
+                                    let key = match &given {
+                                        Some(given) => Value::Str(given.as_str().into()),
+                                        None => Value::Unknown,
+                                    };
+                                    let partly =
+                                        interpreter.apply(function.clone(), Thunk::done(key));
+                                    interpreter.apply(partly, list.clone())
+                                } else {
+                                    interpreter.force(&list)
+                                }
+                            },
+                        ),
                     ));
                 }
                 Value::Attrs(Rc::new(self.build(entries)))
