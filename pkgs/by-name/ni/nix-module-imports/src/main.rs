@@ -69,6 +69,12 @@ enum Command {
         /// The directory of the library that the modules get as `lib`
         #[arg(long, value_name = "DIRECTORY")]
         library: PathBuf,
+        /// An argument that the caller of the modules gives by name, as
+        /// NixOS gives `modulesPath`. May be given more than once. An
+        /// argument that is not given is read from the configuration at
+        /// `_module.args`
+        #[arg(long, value_name = "NAME=TEXT")]
+        special_arg: Vec<String>,
         /// The module files
         #[arg(required = true, value_name = "FILE")]
         files: Vec<PathBuf>,
@@ -305,20 +311,30 @@ fn report(plan: &Plan) {
 
 fn run(cli: Cli) -> Result<ExitCode, String> {
     match cli.command {
-        Command::Touches { library, files } => {
+        Command::Touches {
+            library,
+            special_arg,
+            files,
+        } => {
             let library = fs::canonicalize(&library)
                 .map_err(|error| format!("{}: {error}", library.display()))?;
+            let mut special = BTreeMap::new();
+            for argument in &special_arg {
+                let (name, text) = argument
+                    .split_once('=')
+                    .ok_or_else(|| format!("`{argument}` is not of the form NAME=TEXT"))?;
+                special.insert(name.to_string(), text.to_string());
+            }
             let mut interpreter = algebra::Interpreter::new();
             let mut result = BTreeMap::new();
             for file in &files {
                 let path = fs::canonicalize(file)
                     .map_err(|error| format!("{}: {error}", file.display()))?;
-                let touches = touches::of_file(&mut interpreter, &path, &library);
-                // What stops one file stops the run: it is a construct
-                // or a builtin that this interpretation has no meaning
-                // for, and that has to be given one.
+                let touches = touches::of_file(&mut interpreter, &path, &library, &special);
+                // A file whose interpretation stopped is listed as one
+                // that can touch anything, with the reason.
                 if let Some(why) = &touches.stopped {
-                    return Err(format!("{}: {why}", file.display()));
+                    eprintln!("nix-module-imports: {}: {why}", file.display());
                 }
                 result.insert(file.display().to_string(), touches);
             }

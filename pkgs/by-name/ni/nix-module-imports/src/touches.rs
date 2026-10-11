@@ -9,12 +9,13 @@
 //! `mkOrder` made is read as what it holds, so `mkIf` is nothing but its
 //! content.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
+use std::rc::Rc;
 
 use serde::Serialize;
 
-use crate::algebra::{Attrs, Interpreter, Thunk, Value, attrs, string, tracked};
+use crate::algebra::{ARGUMENTS, Attrs, Interpreter, Thunk, Value, string, tracked};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -77,11 +78,28 @@ impl Reader<'_> {
 
     /// The kind of property of the module system that a set is, when it
     /// is one: the value of its `_type`.
-    fn property(&mut self, attrs: &Attrs) -> Option<String> {
-        match self.field(attrs, "_type")? {
-            Value::Str(kind) => Some(kind.to_string()),
-            _ => None,
+    ///
+    /// The `_type` can be one of several values, as in
+    /// `mkIf c { ... } // other`, where `other` may bring its own. Then
+    /// the set is read as each kind. `None` among the kinds is a set
+    /// that is no property.
+    fn properties(&mut self, attrs: &Attrs) -> Vec<Option<String>> {
+        let kinds = match self.field(attrs, "_type") {
+            Some(Value::Either(values)) => values.as_ref().clone(),
+            Some(value) => vec![value],
+            None => return vec![None],
+        };
+        let mut found: Vec<Option<String>> = Vec::new();
+        for kind in kinds {
+            let kind = match kind {
+                Value::Str(kind) => Some(kind.to_string()),
+                _ => None,
+            };
+            if !found.contains(&kind) {
+                found.push(kind);
+            }
         }
+        found
     }
 
     /// Read settings or declarations in a value at a path.
@@ -96,30 +114,36 @@ impl Reader<'_> {
                 }
             }
             Value::Attrs(attrs) => {
-                match self.property(&attrs).as_deref() {
-                    Some("if" | "override" | "order") => {
-                        // The condition decides nothing, and what it
-                        // reads of the configuration is still a read.
-                        self.field(&attrs, "condition");
-                        let content = self.field(&attrs, "content").unwrap_or(Value::Unknown);
-                        return self.read(kind, content, path, depth + 1);
-                    }
-                    Some("merge") => {
-                        let contents = self.field(&attrs, "contents").unwrap_or(Value::Unknown);
-                        return match contents {
-                            Value::List(items) | Value::Seq(items) => {
-                                for item in items.iter() {
-                                    let item = self.interpreter.force(item);
-                                    self.read(kind, item, path, depth + 1);
+                let mut plain = false;
+                for property in self.properties(&attrs) {
+                    match property.as_deref() {
+                        Some("if" | "override" | "order") => {
+                            // The condition decides nothing, and what it
+                            // reads of the configuration is still a read.
+                            self.field(&attrs, "condition");
+                            let content = self.field(&attrs, "content").unwrap_or(Value::Unknown);
+                            self.read(kind, content, path, depth + 1);
+                        }
+                        Some("merge") => {
+                            let contents = self.field(&attrs, "contents").unwrap_or(Value::Unknown);
+                            match contents {
+                                Value::List(items) | Value::Seq(items) => {
+                                    for item in items.iter() {
+                                        let item = self.interpreter.force(item);
+                                        self.read(kind, item, path, depth + 1);
+                                    }
                                 }
+                                other => self.read(kind, other, path, depth + 1),
                             }
-                            other => self.read(kind, other, path, depth + 1),
-                        };
+                        }
+                        // Any other kind is a value of its own, such as
+                        // the declaration of an option.
+                        Some(_) => self.touch(kind, path, false),
+                        None => plain = true,
                     }
-                    // Any other kind is a value of its own, such as the
-                    // declaration of an option.
-                    Some(_) => return self.touch(kind, path, false),
-                    None => {}
+                }
+                if !plain {
+                    return;
                 }
                 if attrs.fields.is_empty() && attrs.any.is_none() {
                     return self.touch(kind, path, false);
@@ -167,10 +191,20 @@ impl Reader<'_> {
                 }
             }
             Value::Attrs(attrs) => {
+                // The module system works out every part of a module,
+                // whatever the reading below makes of it. So all that
+                // the module holds is escaped: an element of a list
+                // that is a setting, a function that is the default of
+                // an option, the condition of a `mkIf`.
+                self.interpreter.escape(&Value::Attrs(attrs.clone()));
                 // A property around the whole module, as in
                 // `lib.mkIf condition { ... }`, holds settings.
-                if self.property(&attrs).is_some() {
-                    return self.read(Kind::Set, Value::Attrs(attrs), &mut Vec::new(), 0);
+                let properties = self.properties(&attrs);
+                if properties.iter().any(Option::is_some) {
+                    self.read(Kind::Set, Value::Attrs(attrs.clone()), &mut Vec::new(), 0);
+                }
+                if !properties.contains(&None) {
+                    return;
                 }
                 let explicit =
                     attrs.fields.contains_key("config") || attrs.fields.contains_key("options");
@@ -200,8 +234,13 @@ impl Reader<'_> {
                     self.read(Kind::Set, any, &mut vec!["*".to_string()], 0);
                 }
             }
-            // The module is not known: it can set anything.
-            Value::Unknown | Value::Config(_) => self.touch(Kind::Set, &[], true),
+            // The module is not known: it can set and declare anything.
+            Value::Unknown | Value::Config(_) => {
+                self.interpreter.escape(&value);
+                self.touch(Kind::Set, &[], true);
+                self.touch(Kind::Declare, &[], true);
+                self.touch(Kind::Import, &["*".to_string()], true);
+            }
             Value::Path(path) => {
                 self.touch(Kind::Import, &[path.to_string_lossy().to_string()], false)
             }
@@ -234,32 +273,31 @@ impl Reader<'_> {
 
 /// What the module in `file` touches. `library` is the directory of the
 /// library that modules get as `lib`.
-pub fn of_file(interpreter: &mut Interpreter, file: &Path, library: &Path) -> Touches {
-    interpreter.reads.clear();
-    interpreter.too_deep = 0;
-    interpreter.cycles = 0;
+///
+/// `special` holds the arguments that the caller of the modules gives
+/// by name, as NixOS gives `modulesPath`. An argument that is not in it
+/// is read from the configuration at `_module.args`, which is where the
+/// module system takes `pkgs` and `utils` from.
+pub fn of_file(
+    interpreter: &mut Interpreter,
+    file: &Path,
+    library: &Path,
+    special: &BTreeMap<String, String>,
+) -> Touches {
+    interpreter.begin();
+    interpreter.library = Some(library.to_path_buf());
     let lib = interpreter.import_file(library);
-    // The inputs of a module. The configuration and the options are
-    // tracked. Every other input is one that only the caller of the
-    // modules has, such as `pkgs`, and is not known.
-    let inputs = Thunk::done(attrs(
-        vec![
-            ("config", tracked("config")),
-            ("options", tracked("options")),
-            ("lib", lib.clone()),
-            ("pkgs", attrs(vec![("lib", lib)], true)),
-            (
-                "modulesPath",
-                string(
-                    &file
-                        .parent()
-                        .map(|parent| parent.to_string_lossy().to_string())
-                        .unwrap_or_default(),
-                ),
-            ),
-        ],
-        true,
-    ));
+    interpreter.arguments = BTreeMap::from([
+        ("config".to_string(), tracked("config")),
+        ("options".to_string(), tracked("options")),
+        ("lib".to_string(), lib),
+    ]);
+    for (name, text) in special {
+        interpreter.arguments.insert(name.clone(), string(text));
+    }
+    let inputs = Thunk::done(Value::Config(Rc::new(
+        ARGUMENTS.iter().map(|part| part.to_string()).collect(),
+    )));
     let module = interpreter.import_file(file);
     let mut reader = Reader {
         interpreter,
@@ -267,11 +305,45 @@ pub fn of_file(interpreter: &mut Interpreter, file: &Path, library: &Path) -> To
     };
     reader.module(module, &inputs, 0);
     let mut touches = reader.touches;
+    interpreter.settle();
+    let mut cuts: Vec<(&String, &usize)> = interpreter.cuts.iter().collect();
+    cuts.sort_by_key(|(_, count)| std::cmp::Reverse(**count));
+    for (place, count) in cuts.iter().take(25) {
+        eprintln!("{count} {place}");
+    }
+    if interpreter.fatal.is_some() {
+        // The interpretation stopped, so what it found is not all there
+        // is. The file counts as one that can touch anything.
+        touches.clear();
+        interpreter.reads.clear();
+        interpreter.deep_reads = BTreeSet::from([Vec::new()]);
+        for kind in [Kind::Set, Kind::Declare] {
+            touches.insert(Touch {
+                kind,
+                path: Vec::new(),
+                open: true,
+            });
+        }
+        touches.insert(Touch {
+            kind: Kind::Import,
+            path: vec!["*".to_string()],
+            open: true,
+        });
+    }
     for path in &interpreter.reads {
+        if !interpreter.deep_reads.contains(path) {
+            touches.insert(Touch {
+                kind: Kind::Read,
+                path: path.clone(),
+                open: false,
+            });
+        }
+    }
+    for path in &interpreter.deep_reads {
         touches.insert(Touch {
             kind: Kind::Read,
             path: path.clone(),
-            open: false,
+            open: true,
         });
     }
     Touches {
@@ -309,6 +381,11 @@ mod tests {
   mapAttrs' = f: set: builtins.listToAttrs (map (name: f name set.${name}) (builtins.attrNames set));
   nameValuePair = name: value: { inherit name value; };
   genAttrs = names: f: builtins.listToAttrs (map (name: nameValuePair name (f name)) names);
+  setAttrByPath = path: value:
+    let
+      go = n: if n == builtins.length path then value else { ${builtins.elemAt path n} = go (n + 1); };
+    in
+    go 0;
 }
 "#,
         )
@@ -316,7 +393,7 @@ mod tests {
         let file = root.join("module.nix");
         fs::write(&file, module).unwrap();
         let mut interpreter = Interpreter::new();
-        let result = of_file(&mut interpreter, &file, &root.join("lib"));
+        let result = of_file(&mut interpreter, &file, &root.join("lib"), &BTreeMap::new());
         fs::remove_dir_all(&root).unwrap();
         assert_eq!(result.stopped, None);
         result
@@ -358,10 +435,13 @@ in
                 "Set systemd.services.web.wantedBy",
                 "Set users.users.web.group",
                 "Declare services.web.enable",
+                "Read config._module.args.pkgs",
+                "Read config._module.args.pkgs.stdenv",
+                "Read config._module.args.pkgs.stdenv.isLinux ...",
                 "Read config.services",
                 "Read config.services.web",
-                "Read config.services.web.enable",
-                "Read config.services.web.port",
+                "Read config.services.web.enable ...",
+                "Read config.services.web.port ...",
             ]
         );
     }
@@ -392,7 +472,71 @@ in
                 "Read config.services.web",
                 "Read config.services.web.instances",
                 "Read config.services.web.instances.*",
-                "Read config.services.web.instances.*.description",
+                "Read config.services.web.instances.*.description ...",
+            ]
+        );
+    }
+
+    #[test]
+    fn a_recursion_that_is_cut_stops_at_a_parent() {
+        // The helper calls itself once for each name of the path. The
+        // calls are followed as far as allowed, and then the setting is
+        // one that can have anything below it. What the call that is
+        // cut would have done with the value is not lost: the value is
+        // read with everything below it.
+        assert_eq!(
+            touches(
+                "recursion",
+                r#"{ config, lib, ... }:
+{
+  config = lib.setAttrByPath [ "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" ] config.x.y;
+}
+"#
+            ),
+            [
+                "Set a.b.c.d.e.f.g.h.i ...",
+                "Read config.x",
+                "Read config.x.y ..."
+            ]
+        );
+    }
+
+    #[test]
+    fn what_leaves_the_interpretation_is_read_in_full() {
+        // A value that goes to a function that is not known, into a
+        // text or a comparison, or into a list that is a setting, is
+        // read with everything below it. An argument of the module that
+        // the caller does not give by name is read from `_module.args`.
+        assert_eq!(
+            touches(
+                "leaves",
+                r#"{ config, pkgs, utils, ... }:
+assert config.a.ok;
+{
+  environment.systemPackages = [ config.b.package ];
+  systemd.services.x.script = pkgs.writeText "x" (builtins.toJSON config.c);
+  boot.kernelModules = builtins.filter (name: name != config.d.skip) [ "kvm" ];
+  users.groups = utils.groups config.e;
+}
+"#
+            ),
+            [
+                "Set boot.kernelModules",
+                "Set environment.systemPackages",
+                "Set systemd.services.x.script ...",
+                "Set users.groups ...",
+                "Read config._module.args.pkgs",
+                "Read config._module.args.pkgs.writeText ...",
+                "Read config._module.args.utils",
+                "Read config._module.args.utils.groups ...",
+                "Read config.a",
+                "Read config.a.ok ...",
+                "Read config.b",
+                "Read config.b.package ...",
+                "Read config.c ...",
+                "Read config.d",
+                "Read config.d.skip ...",
+                "Read config.e ...",
             ]
         );
     }
@@ -407,7 +551,12 @@ in
             .into_iter()
             .filter(|touch| !touch.starts_with("Import"))
             .collect::<Vec<_>>(),
-            ["Set meta.maintainers", "Set warnings", "Read config.old", "Read config.old.enable"]
+            [
+                "Set meta.maintainers",
+                "Set warnings",
+                "Read config.old",
+                "Read config.old.enable ..."
+            ]
         );
     }
 }

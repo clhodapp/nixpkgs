@@ -22,20 +22,49 @@
 //! input, and never a construct it has no case for.
 //!
 //! The interpretation cannot always end where the standard one does,
-//! because it takes both branches of the `if` that ends a recursion. A
-//! call that goes deeper than `DEPTH` gives `Unknown`, and the run counts
-//! how often that happened.
+//! because it takes both branches of the `if` that ends a recursion. So
+//! a call is cut when it is a recursion that has gone on for long
+//! enough, and the run stops after a number of steps.
+//!
+//! Nothing of this may lose a touch. What the interpretation stops
+//! following is escaped instead, see `Interpreter::escape`: a part of
+//! the configuration counts as read with everything below it, and a
+//! function is called with an argument that is not known. The result of
+//! a call that is cut is not known, and a setting that is not known is
+//! one that can have anything below it. So where the interpretation
+//! stops, the answer gets wider, up to a path further up, and never
+//! narrower. A run that stops altogether says that the file can touch
+//! anything.
 
 use std::cell::RefCell;
-use std::collections::{BTreeMap, BTreeSet, HashMap};
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
 
 use rnix::ast::{self, AstToken, HasEntry, InterpolPart};
 use rowan::ast::AstNode;
 
-/// How deep calls may go before the result is `Unknown`.
+/// How deep calls may go before a call is cut.
 const DEPTH: usize = 400;
+
+/// How many calls of one function may be under way inside each other
+/// before a further call is cut. A helper that walks a path of names
+/// calls itself once for each name, so this is also how long a path of
+/// a setting can be before the setting is cut off at a parent.
+const REENTRIES: usize = 8;
+
+/// How many values a value may be one of before it is not followed as
+/// each of them.
+const ALTERNATIVES: usize = 32;
+
+enum Pending {
+    Value(Value),
+    Thunk(Thunk),
+}
+
+/// How many expressions are interpreted before the run stops, and the
+/// file counts as one that can touch anything.
+const STEPS: u64 = 50_000_000;
 
 #[derive(Clone)]
 pub enum Value {
@@ -76,6 +105,52 @@ pub struct Closure {
     body: ast::Expr,
     env: Env,
     file: Rc<PathBuf>,
+    /// The calls that were under way where the function was written
+    /// down.
+    chain: Chain,
+}
+
+impl Closure {
+    /// What tells one function of the source from another: its file and
+    /// where its body starts.
+    fn identity(&self) -> Identity {
+        (
+            Rc::as_ptr(&self.file) as usize,
+            u32::from(self.body.syntax().text_range().start()),
+        )
+    }
+}
+
+type Identity = (usize, u32);
+
+/// The functions whose calls are under way, the innermost first.
+#[derive(Clone, Default)]
+struct Chain(Option<Rc<Link>>);
+
+struct Link {
+    identity: Identity,
+    outer: Chain,
+}
+
+impl Chain {
+    fn count(&self, identity: Identity) -> usize {
+        let mut count = 0;
+        let mut link = &self.0;
+        while let Some(current) = link {
+            if current.identity == identity {
+                count += 1;
+            }
+            link = &current.outer.0;
+        }
+        count
+    }
+
+    fn with(&self, identity: Identity) -> Chain {
+        Chain(Some(Rc::new(Link {
+            identity,
+            outer: self.clone(),
+        })))
+    }
 }
 
 type Delayed = Rc<dyn Fn(&mut Interpreter) -> Value>;
@@ -90,17 +165,86 @@ enum State {
     Done(Value),
 }
 
+struct Suspended {
+    state: RefCell<State>,
+    /// Whether the value can hold a part of the configuration, or a
+    /// function that can reach one. `false` is a promise: nothing that
+    /// is ever done with the value reads the configuration.
+    reaches: bool,
+    /// The calls that were under way where the value was written down.
+    /// Working the value out continues from these, and not from the
+    /// calls of whoever asks for it.
+    chain: Chain,
+    /// For an expression of a file that waits to be worked out: the
+    /// file, and the names that the expression can see.
+    written: Option<(Rc<PathBuf>, Env)>,
+}
+
 #[derive(Clone)]
-pub struct Thunk(Rc<RefCell<State>>);
+pub struct Thunk(Rc<Suspended>);
 
 impl Thunk {
     pub fn done(value: Value) -> Thunk {
-        Thunk(Rc::new(RefCell::new(State::Done(value))))
+        Thunk(Rc::new(Suspended {
+            reaches: reaches(&value),
+            state: RefCell::new(State::Done(value)),
+            chain: Chain::default(),
+            written: None,
+        }))
     }
+}
 
-    fn delayed(work: impl Fn(&mut Interpreter) -> Value + 'static) -> Thunk {
-        Thunk(Rc::new(RefCell::new(State::Delayed(Rc::new(work)))))
+/// Whether a value can hold a part of the configuration, or a function
+/// that can reach one.
+fn reaches(value: &Value) -> bool {
+    match value {
+        Value::Config(_) => true,
+        Value::Unknown
+        | Value::Str(_)
+        | Value::Path(_)
+        | Value::Int(_)
+        | Value::Bool(_)
+        | Value::Null => false,
+        Value::Attrs(attrs) => {
+            attrs.fields.values().any(|field| field.0.reaches)
+                || attrs.any.as_ref().is_some_and(|any| any.0.reaches)
+        }
+        Value::List(items) | Value::Seq(items) => items.iter().any(|item| item.0.reaches),
+        Value::Lambda(closure) => closure.env.reaches(),
+        Value::Builtin(_, given) => given.iter().any(|argument| argument.0.reaches),
+        Value::Either(values) => values.iter().any(reaches),
     }
+}
+
+/// Whether a value is all of the configuration, all of the options or
+/// all of the arguments of a module.
+fn is_everything(value: &Value) -> bool {
+    match value {
+        Value::Config(path) => path.len() <= 1 || path.iter().map(String::as_str).eq(ARGUMENTS),
+        Value::Either(values) => values.iter().any(is_everything),
+        _ => false,
+    }
+}
+
+/// Whether a name that a function can see is known to be all of the
+/// configuration, all of the options or all of the arguments of a
+/// module.
+fn sees_everything(env: &Env) -> bool {
+    let mut scope = env.0.clone();
+    while let Some(current) = scope {
+        if !current.reaches {
+            return false;
+        }
+        for name in current.names.borrow().values() {
+            if let State::Done(value) = &*name.0.state.borrow()
+                && is_everything(value)
+            {
+                return true;
+            }
+        }
+        scope = current.parent.0.clone();
+    }
+    false
 }
 
 struct Scope {
@@ -108,23 +252,34 @@ struct Scope {
     /// The value of a `with`, when this scope is one.
     with: Option<Thunk>,
     parent: Env,
+    /// Whether a name of this scope or of one around it can reach the
+    /// configuration.
+    reaches: bool,
 }
 
 #[derive(Clone)]
 struct Env(Option<Rc<Scope>>);
 
 impl Env {
-    fn child(&self, names: BTreeMap<String, Thunk>) -> Env {
+    fn reaches(&self) -> bool {
+        self.0.as_ref().is_some_and(|scope| scope.reaches)
+    }
+
+    /// A scope whose names are defined afterwards. `reaches` says
+    /// whether one of them will reach the configuration.
+    fn child(&self, reaches: bool) -> Env {
         Env(Some(Rc::new(Scope {
-            names: RefCell::new(names),
+            names: RefCell::new(BTreeMap::new()),
             with: None,
             parent: self.clone(),
+            reaches: reaches || self.reaches(),
         })))
     }
 
     fn with(&self, value: Thunk) -> Env {
         Env(Some(Rc::new(Scope {
             names: RefCell::new(BTreeMap::new()),
+            reaches: value.0.reaches || self.reaches(),
             with: Some(value),
             parent: self.clone(),
         })))
@@ -132,6 +287,7 @@ impl Env {
 
     fn define(&self, name: String, value: Thunk) {
         if let Some(scope) = &self.0 {
+            debug_assert!(scope.reaches || !value.0.reaches);
             scope.names.borrow_mut().insert(name, value);
         }
     }
@@ -165,6 +321,20 @@ fn same_scalar(first: &Value, second: &Value) -> bool {
     }
 }
 
+/// Whether two values are one value: the same scalar, the same part of
+/// the configuration, or the very same set, list or function.
+fn same(first: &Value, second: &Value) -> bool {
+    match (first, second) {
+        (Value::Config(first), Value::Config(second)) => first == second,
+        (Value::Attrs(first), Value::Attrs(second)) => Rc::ptr_eq(first, second),
+        (Value::List(first), Value::List(second)) | (Value::Seq(first), Value::Seq(second)) => {
+            Rc::ptr_eq(first, second)
+        }
+        (Value::Lambda(first), Value::Lambda(second)) => Rc::ptr_eq(first, second),
+        _ => same_scalar(first, second),
+    }
+}
+
 pub fn either(values: Vec<Value>) -> Value {
     let mut flat: Vec<Value> = Vec::new();
     for value in values {
@@ -173,7 +343,7 @@ pub fn either(values: Vec<Value>) -> Value {
             other => vec![other],
         };
         for part in parts {
-            if !flat.iter().any(|known| same_scalar(known, &part)) {
+            if !flat.iter().any(|known| same(known, &part)) {
                 flat.push(part);
             }
         }
@@ -205,7 +375,46 @@ pub struct Interpreter {
     /// Errors in the code that was read, which the standard interpreter
     /// reports only when it reaches them.
     pub problems: BTreeSet<String>,
+    /// The paths of the configuration that were read with everything
+    /// below them. The empty path is all of the configuration and all of
+    /// the options.
+    pub deep_reads: BTreeSet<Vec<String>>,
+    /// The arguments of a module that are known: `config`, `options`
+    /// and `lib`. Every other argument is what the configuration has at
+    /// `_module.args`, which is where the module system takes it from.
+    pub arguments: BTreeMap<String, Value>,
+    /// The directory of the library that the modules get as `lib`.
+    pub library: Option<PathBuf>,
+    /// Take both sides of every `if`, whatever the condition is.
+    both_sides: bool,
+    /// How many calls of one function may be under way inside each other
+    /// before a further call is cut.
+    reentries: usize,
+    /// The functions whose calls are under way where the interpretation
+    /// is now.
+    chain: Chain,
+    /// How many expressions were interpreted, and how many may be.
+    steps: u64,
+    step_limit: u64,
+    /// The addresses of the values that were escaped already. The
+    /// values are kept, so that no other value gets one of the addresses.
+    escaped: HashSet<usize>,
+    kept: Vec<Thunk>,
+    kept_closures: Vec<Rc<Closure>>,
+    /// The values that are still to be escaped.
+    pending: Vec<(Pending, Option<Rc<str>>)>,
+    /// Whether `settle` is at work.
+    escaping: bool,
+    /// With `trace`: what made the escaping that is under way.
+    origin: Option<Rc<str>>,
+    /// Whether to count where calls are cut, for whoever works on this
+    /// interpretation, and the counts.
+    trace: bool,
+    pub cuts: BTreeMap<String, usize>,
 }
+
+/// Where the arguments of a module are in the configuration.
+pub const ARGUMENTS: [&str; 3] = ["config", "_module", "args"];
 
 fn arity(name: &str) -> Option<usize> {
     Some(match name {
@@ -304,7 +513,39 @@ impl Interpreter {
             cycles: 0,
             fatal: None,
             problems: BTreeSet::new(),
+            deep_reads: BTreeSet::new(),
+            arguments: BTreeMap::new(),
+            library: None,
+            both_sides: std::env::var_os("TOUCHES_BOTH_SIDES").is_some(),
+            reentries: std::env::var("TOUCHES_REENTRIES")
+                .ok()
+                .and_then(|text| text.parse().ok())
+                .unwrap_or(REENTRIES),
+            chain: Chain::default(),
+            steps: 0,
+            step_limit: std::env::var("TOUCHES_STEPS")
+                .ok()
+                .and_then(|text| text.parse().ok())
+                .unwrap_or(STEPS),
+            escaped: HashSet::new(),
+            kept: Vec::new(),
+            kept_closures: Vec::new(),
+            pending: Vec::new(),
+            escaping: false,
+            origin: None,
+            trace: std::env::var_os("TOUCHES_TRACE").is_some(),
+            cuts: BTreeMap::new(),
         }
+    }
+
+    /// Forget what the interpretation of the file before recorded.
+    pub fn begin(&mut self) {
+        self.reads.clear();
+        self.deep_reads.clear();
+        self.too_deep = 0;
+        self.cycles = 0;
+        self.fatal = None;
+        self.steps = 0;
     }
 
     fn stop(&mut self, why: String) -> Value {
@@ -315,10 +556,10 @@ impl Interpreter {
     }
 
     pub fn force(&mut self, thunk: &Thunk) -> Value {
-        let state = thunk.0.replace(State::Forcing);
+        let state = thunk.0.state.replace(State::Forcing);
         match state {
             State::Done(value) => {
-                *thunk.0.borrow_mut() = State::Done(value.clone());
+                *thunk.0.state.borrow_mut() = State::Done(value.clone());
                 value
             }
             State::Forcing => {
@@ -326,18 +567,288 @@ impl Interpreter {
                 Value::Unknown
             }
             State::Delayed(work) => {
+                let outside = std::mem::replace(&mut self.chain, thunk.0.chain.clone());
                 let value = work(self);
-                *thunk.0.borrow_mut() = State::Done(value.clone());
+                let value = self.bounded(value);
+                self.chain = outside;
+                *thunk.0.state.borrow_mut() = State::Done(value.clone());
                 value
             }
         }
     }
 
+    /// A value that is worked out when it is needed. `reaches` says
+    /// whether it can reach the configuration: `true` unless nothing
+    /// that the work uses does.
+    fn delayed(&self, reaches: bool, work: impl Fn(&mut Interpreter) -> Value + 'static) -> Thunk {
+        Thunk(Rc::new(Suspended {
+            state: RefCell::new(State::Delayed(Rc::new(work))),
+            reaches,
+            chain: self.chain.clone(),
+            written: None,
+        }))
+    }
+
     fn delay(&self, expr: Option<ast::Expr>, env: &Env, file: &Rc<PathBuf>) -> Thunk {
+        let written = Some((file.clone(), env.clone()));
+        let reaches = env.reaches();
         let (env, file) = (env.clone(), file.clone());
         match expr {
-            Some(expr) => Thunk::delayed(move |interpreter| interpreter.eval(&expr, &env, &file)),
+            Some(expr) => Thunk(Rc::new(Suspended {
+                state: RefCell::new(State::Delayed(Rc::new(move |interpreter| {
+                    interpreter.eval(&expr, &env, &file)
+                }))),
+                reaches,
+                chain: self.chain.clone(),
+                written,
+            })),
             None => Thunk::done(Value::Unknown),
+        }
+    }
+
+    /// Whether a file is one of the library.
+    fn of_library(&self, file: &Path) -> bool {
+        self.library
+            .as_ref()
+            .is_some_and(|library| file.starts_with(library))
+    }
+
+    /// Record everything that can still be done with a value that the
+    /// interpretation stops following: a value that goes to a function
+    /// that is not known, into a result that is not tracked, or into a
+    /// call that is cut. A part of the configuration is read with
+    /// everything below it. A function is called with an argument that
+    /// is not known, and its result is escaped. A set or a list is
+    /// escaped entry by entry.
+    ///
+    /// A value that does not reach the configuration is left alone,
+    /// because nothing that is done with it reads the configuration.
+    ///
+    /// The work is put aside here and done by `settle`, so that a value
+    /// that holds values that hold values does not go deeper and deeper
+    /// into this function.
+    pub fn escape(&mut self, value: &Value) {
+        if reaches(value) {
+            self.pending
+                .push((Pending::Value(value.clone()), self.origin.clone()));
+        }
+    }
+
+    pub fn escape_thunk(&mut self, thunk: &Thunk) {
+        if thunk.0.reaches && self.escaped.insert(Rc::as_ptr(&thunk.0) as usize) {
+            self.pending
+                .push((Pending::Thunk(thunk.clone()), self.origin.clone()));
+        }
+    }
+
+    /// Do the escaping that was put aside, and what it puts aside in
+    /// turn, until nothing is left.
+    pub fn settle(&mut self) {
+        if self.trace {
+            eprintln!(
+                "{} steps before the escaping, {} cuts, {} to escape",
+                self.steps,
+                self.too_deep,
+                self.pending.len()
+            );
+        }
+        self.escaping = true;
+        while let Some((pending, origin)) = self.pending.pop() {
+            if self.fatal.is_some() {
+                break;
+            }
+            self.origin = origin;
+            let before = self.steps;
+            let label = match &pending {
+                _ if !self.trace => String::new(),
+                Pending::Value(Value::Lambda(closure)) => format!(
+                    "function {}:{}",
+                    closure.file.display(),
+                    usize::from(closure.body.syntax().text_range().start())
+                ),
+                Pending::Value(_) => "value".to_string(),
+                Pending::Thunk(thunk) => match &thunk.0.written {
+                    Some((file, _)) => format!("expression in {}", file.display()),
+                    None => "value that a builtin makes".to_string(),
+                },
+            };
+            match pending {
+                Pending::Value(value) => self.escape_now(&value),
+                Pending::Thunk(thunk) => {
+                    // An expression of the library that was not worked
+                    // out is not worked out for this. It does what it
+                    // does with the names it can see, and those are
+                    // escaped. See the same step for a function.
+                    let waiting = matches!(&*thunk.0.state.borrow(), State::Delayed(_));
+                    if waiting
+                        && let Some((file, env)) = &thunk.0.written
+                        && self.of_library(file)
+                        && !sees_everything(env)
+                    {
+                        self.escape_scopes(env);
+                        self.kept.push(thunk);
+                        continue;
+                    }
+                    let value = self.force(&thunk);
+                    self.kept.push(thunk);
+                    self.escape_now(&value);
+                }
+            }
+            if self.trace && self.steps - before > 10_000 {
+                *self.cuts.entry(format!("steps for {label}")).or_default() +=
+                    (self.steps - before) as usize;
+            }
+        }
+        self.escaping = false;
+        self.origin = None;
+    }
+
+    fn escape_now(&mut self, value: &Value) {
+        match value {
+            Value::Config(path) => {
+                if self.trace && path.len() <= 1 {
+                    let origin = self.origin.as_deref().unwrap_or("the module");
+                    *self
+                        .cuts
+                        .entry(format!("all of {} by {origin}", path.join(".")))
+                        .or_default() += 1;
+                }
+                self.deep_reads.insert(path.as_ref().clone());
+            }
+            Value::Attrs(attrs) => {
+                for field in attrs.fields.values() {
+                    self.escape_thunk(field);
+                }
+                if let Some(any) = &attrs.any {
+                    self.escape_thunk(any);
+                }
+            }
+            Value::List(items) | Value::Seq(items) => {
+                for item in items.iter() {
+                    self.escape_thunk(item);
+                }
+            }
+            Value::Either(values) => {
+                for value in values.iter() {
+                    self.escape(value);
+                }
+            }
+            Value::Builtin(_, given) => {
+                for argument in given.iter() {
+                    self.escape_thunk(argument);
+                }
+            }
+            Value::Lambda(closure) => {
+                if closure.env.reaches() && self.escaped.insert(Rc::as_ptr(closure) as usize) {
+                    self.kept_closures.push(closure.clone());
+                    // A function of the library sees only what it was
+                    // given. Whatever a call of it does, it does with
+                    // that, so escaping what it sees records the call.
+                    // That is far less work than a call with an
+                    // argument that is not known, which takes every
+                    // branch of the library function. A function of a
+                    // module sees all of the configuration, so for it
+                    // the same step would say that it reads everything,
+                    // and it is called instead.
+                    // A module that the library writes, as for an option
+                    // that was renamed, is called like any module.
+                    if self.of_library(&closure.file) && !sees_everything(&closure.env) {
+                        if self.trace {
+                            let start = usize::from(closure.body.syntax().text_range().start());
+                            self.origin =
+                                Some(format!("function {}:{start}", closure.file.display()).into());
+                        }
+                        self.escape_scopes(&closure.env);
+                        return;
+                    }
+                    // Whoever calls the function is not known. The call
+                    // goes on from the calls that were under way where
+                    // the function was written down, so that a function
+                    // that gives a function that gives the first one
+                    // anew is a recursion and is cut.
+                    let outside = std::mem::replace(&mut self.chain, closure.chain.clone());
+                    let result = self.apply(value.clone(), Thunk::done(Value::Unknown));
+                    self.chain = outside;
+                    self.escape(&result);
+                }
+            }
+            Value::Unknown
+            | Value::Str(_)
+            | Value::Path(_)
+            | Value::Int(_)
+            | Value::Bool(_)
+            | Value::Null => {}
+        }
+    }
+
+    /// A value that is one of more values than `ALTERNATIVES` is not
+    /// followed as each of them. It becomes a value that is not known,
+    /// and the values are escaped.
+    fn bounded(&mut self, value: Value) -> Value {
+        match &value {
+            Value::Either(values) if values.len() > ALTERNATIVES => {
+                if self.trace {
+                    *self.cuts.entry("alternatives".to_string()).or_default() += 1;
+                }
+                self.too_deep += 1;
+                self.forget(&[&value])
+            }
+            _ => value,
+        }
+    }
+
+    /// A value that is not tracked, made from values that are escaped
+    /// because of it.
+    fn forget(&mut self, values: &[&Value]) -> Value {
+        for value in values {
+            self.escape(value);
+        }
+        Value::Unknown
+    }
+
+    /// End a call without making it. Whatever the call could have done
+    /// with its argument, or with a name that the function can see, is
+    /// recorded by escaping them, and the result is not known.
+    fn cut(&mut self, closure: &Closure, argument: &Thunk) -> Value {
+        self.too_deep += 1;
+        if self.trace {
+            let start = usize::from(closure.body.syntax().text_range().start());
+            let why = if self.depth >= DEPTH {
+                "deep"
+            } else {
+                "recursion"
+            };
+            *self
+                .cuts
+                .entry(format!("{why} {}:{start}", closure.file.display()))
+                .or_default() += 1;
+        }
+        let outside = self.origin.clone();
+        if self.trace {
+            let start = usize::from(closure.body.syntax().text_range().start());
+            self.origin = Some(format!("cut of {}:{start}", closure.file.display()).into());
+        }
+        self.escape_thunk(argument);
+        self.escape_scopes(&closure.env);
+        self.origin = outside;
+        Value::Unknown
+    }
+
+    /// Escape every name that a function can see.
+    fn escape_scopes(&mut self, env: &Env) {
+        let mut scope = env.0.clone();
+        while let Some(current) = scope {
+            if !current.reaches {
+                break;
+            }
+            let names: Vec<Thunk> = current.names.borrow().values().cloned().collect();
+            for name in &names {
+                self.escape_thunk(name);
+            }
+            if let Some(with) = &current.with {
+                self.escape_thunk(with);
+            }
+            scope = current.parent.0.clone();
         }
     }
 
@@ -404,6 +915,11 @@ impl Interpreter {
                 None => attrs.any.clone().map(|any| self.force(&any)),
             },
             Value::Config(path) => {
+                if path.iter().map(String::as_str).eq(ARGUMENTS)
+                    && let Some(known) = self.arguments.get(name)
+                {
+                    return Some(known.clone());
+                }
                 let mut path = path.as_ref().clone();
                 path.push(name.to_string());
                 self.reads.insert(path.clone());
@@ -446,7 +962,10 @@ impl Interpreter {
             ast::Attr::Dynamic(dynamic) => match dynamic.expr() {
                 Some(expr) => match self.eval(&expr, env, file) {
                     Value::Str(text) => Some(text.to_string()),
-                    _ => None,
+                    other => {
+                        self.escape(&other);
+                        None
+                    }
                 },
                 None => None,
             },
@@ -463,7 +982,13 @@ impl Interpreter {
                     match interpolation.expr().map(|expr| self.eval(&expr, env, file)) {
                         Some(Value::Str(inner)) => text.push_str(&inner),
                         Some(Value::Path(path)) => text.push_str(&path.to_string_lossy()),
-                        _ => known = false,
+                        // The text of the part is not known. Making the
+                        // text reads all of the part.
+                        Some(other) => {
+                            self.escape(&other);
+                            known = false;
+                        }
+                        None => known = false,
                     }
                 }
             }
@@ -510,7 +1035,7 @@ impl Interpreter {
                 // `a = { ... }; a.b = y;` merges. Both are kept.
                 Some(existing) => {
                     let below = below.clone();
-                    Thunk::delayed(move |interpreter| {
+                    self.delayed(existing.0.reaches || reaches(&below), move |interpreter| {
                         let existing = interpreter.force(&existing);
                         interpreter.update(existing, below.clone())
                     })
@@ -522,10 +1047,13 @@ impl Interpreter {
         let any = match any.len() {
             0 => None,
             1 => any.pop(),
-            _ => Some(Thunk::delayed(move |interpreter| {
-                let values = any.iter().map(|thunk| interpreter.force(thunk)).collect();
-                either(values)
-            })),
+            _ => Some(self.delayed(
+                any.iter().any(|thunk| thunk.0.reaches),
+                move |interpreter| {
+                    let values = any.iter().map(|thunk| interpreter.force(thunk)).collect();
+                    either(values)
+                },
+            )),
         };
         Attrs {
             fields: direct,
@@ -547,9 +1075,12 @@ impl Interpreter {
                 let any = match (&left.any, &right.any) {
                     (Some(first), Some(second)) => {
                         let (first, second) = (first.clone(), second.clone());
-                        Some(Thunk::delayed(move |interpreter| {
-                            either(vec![interpreter.force(&first), interpreter.force(&second)])
-                        }))
+                        Some(self.delayed(
+                            first.0.reaches || second.0.reaches,
+                            move |interpreter| {
+                                either(vec![interpreter.force(&first), interpreter.force(&second)])
+                            },
+                        ))
                     }
                     (first, second) => first.clone().or_else(|| second.clone()),
                 };
@@ -575,11 +1106,46 @@ impl Interpreter {
             }
             // One side is not known. What the other side has is there,
             // and more can be: the entries of the unknown side.
-            (Value::Attrs(known), _) | (_, Value::Attrs(known)) => Value::Attrs(Rc::new(Attrs {
-                fields: known.fields.clone(),
-                any: Some(Thunk::done(Value::Unknown)),
-            })),
-            _ => Value::Unknown,
+            (Value::Attrs(known), other) | (other, Value::Attrs(known)) => {
+                let other_reaches = reaches(other);
+                let fields = if matches!(right, Value::Attrs(_)) {
+                    known.fields.clone()
+                } else {
+                    // The unknown side is on the right, so an entry of
+                    // it replaces the entry of the same name.
+                    known
+                        .fields
+                        .iter()
+                        .map(|(name, value)| {
+                            let (value, other, field) =
+                                (value.clone(), other.clone(), name.clone());
+                            let both = self.delayed(
+                                value.0.reaches || other_reaches,
+                                move |interpreter| {
+                                    let mut values = vec![interpreter.force(&value)];
+                                    values.extend(interpreter.select_one(&other, &field));
+                                    either(values)
+                                },
+                            );
+                            (name.clone(), both)
+                        })
+                        .collect()
+                };
+                let (any, other) = (known.any.clone(), other.clone());
+                let any = self.delayed(
+                    other_reaches || any.as_ref().is_some_and(|any| any.0.reaches),
+                    move |interpreter| {
+                        let mut values = vec![interpreter.any_entry(&other)];
+                        values.extend(any.as_ref().map(|any| interpreter.force(any)));
+                        either(values)
+                    },
+                );
+                Value::Attrs(Rc::new(Attrs {
+                    fields,
+                    any: Some(any),
+                }))
+            }
+            _ => self.forget(&[&left, &right]),
         }
     }
 
@@ -605,16 +1171,16 @@ impl Interpreter {
                 let value = match &from {
                     Some(from) => {
                         let (from, name) = (from.clone(), name.clone());
-                        Thunk::delayed(move |interpreter| {
+                        self.delayed(env.reaches(), move |interpreter| {
                             let from = interpreter.force(&from);
-                            interpreter
-                                .select_one(&from, &name)
-                                .unwrap_or(Value::Unknown)
+                            interpreter.select_one(&from, &name).unwrap_or_else(nothing)
                         })
                     }
                     None => {
                         let (env, name) = (env.clone(), name.clone());
-                        Thunk::delayed(move |interpreter| interpreter.lookup(&name, &env))
+                        self.delayed(env.reaches(), move |interpreter| {
+                            interpreter.lookup(&name, &env)
+                        })
                     }
                 };
                 entries.push((vec![Some(name)], value));
@@ -626,6 +1192,13 @@ impl Interpreter {
     fn eval(&mut self, expr: &ast::Expr, env: &Env, file: &Rc<PathBuf>) -> Value {
         if self.fatal.is_some() {
             return Value::Unknown;
+        }
+        self.steps += 1;
+        if self.steps > self.step_limit {
+            return self.stop(format!(
+                "the interpretation did not end within {} steps",
+                self.step_limit
+            ));
         }
         match expr {
             ast::Expr::Paren(paren) => match paren.expr() {
@@ -667,7 +1240,7 @@ impl Interpreter {
             )),
             ast::Expr::AttrSet(set) => {
                 if set.rec_token().is_some() {
-                    let inner = env.child(BTreeMap::new());
+                    let inner = env.child(false);
                     let attrs = self.set(set, &inner, file);
                     for (name, value) in &attrs.fields {
                         inner.define(name.clone(), value.clone());
@@ -678,7 +1251,7 @@ impl Interpreter {
                 }
             }
             ast::Expr::LetIn(let_in) => {
-                let inner = env.child(BTreeMap::new());
+                let inner = env.child(false);
                 let attrs = self.set(let_in, &inner, file);
                 for (name, value) in &attrs.fields {
                     inner.define(name.clone(), value.clone());
@@ -689,7 +1262,7 @@ impl Interpreter {
                 }
             }
             ast::Expr::LegacyLet(legacy) => {
-                let inner = env.child(BTreeMap::new());
+                let inner = env.child(false);
                 let attrs = self.set(legacy, &inner, file);
                 for (name, value) in &attrs.fields {
                     inner.define(name.clone(), value.clone());
@@ -706,11 +1279,18 @@ impl Interpreter {
                     None => Value::Unknown,
                 }
             }
-            // The condition of an assertion decides nothing here.
-            ast::Expr::Assert(assert) => match assert.body() {
-                Some(body) => self.eval(&body, env, file),
-                None => Value::Unknown,
-            },
+            // The condition of an assertion decides nothing here. It is
+            // still read.
+            ast::Expr::Assert(assert) => {
+                if let Some(condition) = assert.condition() {
+                    let condition = self.eval(&condition, env, file);
+                    self.escape(&condition);
+                }
+                match assert.body() {
+                    Some(body) => self.eval(&body, env, file),
+                    None => Value::Unknown,
+                }
+            }
             // A condition that depends on an input decides nothing: the
             // result is both branches. The condition is still read,
             // because reading the configuration in it is a touch. A
@@ -722,9 +1302,10 @@ impl Interpreter {
                     Some(condition) => self.eval(&condition, env, file),
                     None => Value::Unknown,
                 };
+                self.escape(&condition);
                 let branches = match condition {
-                    Value::Bool(true) => vec![if_else.body()],
-                    Value::Bool(false) => vec![if_else.else_body()],
+                    Value::Bool(true) if !self.both_sides => vec![if_else.body()],
+                    Value::Bool(false) if !self.both_sides => vec![if_else.else_body()],
                     _ => vec![if_else.body(), if_else.else_body()],
                 };
                 let mut values = Vec::new();
@@ -739,6 +1320,7 @@ impl Interpreter {
                     body,
                     env: env.clone(),
                     file: file.clone(),
+                    chain: self.chain.clone(),
                 })),
                 _ => Value::Unknown,
             },
@@ -795,6 +1377,9 @@ impl Interpreter {
                 let mut value = self.eval(&base, env, file);
                 for attr in attrpath.attrs() {
                     let Some(name) = self.name_of(&attr, env, file) else {
+                        // Asking for a name that is not known asks for
+                        // any of the names.
+                        self.any_entry(&value);
                         return Value::Unknown;
                     };
                     match self.has(&value, &name) {
@@ -819,8 +1404,8 @@ impl Interpreter {
                 match (op.operator(), inner) {
                     (Some(ast::UnaryOpKind::Invert), Value::Bool(known)) => Value::Bool(!known),
                     (Some(ast::UnaryOpKind::Negate), Value::Int(known)) => Value::Int(-known),
-                    (Some(ast::UnaryOpKind::Invert | ast::UnaryOpKind::Negate) | None, _) => {
-                        Value::Unknown
+                    (Some(ast::UnaryOpKind::Invert | ast::UnaryOpKind::Negate) | None, inner) => {
+                        self.forget(&[&inner])
                     }
                 }
             }
@@ -860,6 +1445,16 @@ impl Interpreter {
                     .unwrap_or(Value::Unknown);
                 let number = |known: Option<i64>| known.map_or(Value::Unknown, Value::Int);
                 let truth = |known: Option<bool>| known.map_or(Value::Unknown, Value::Bool);
+                // Every operator but `//` and `++` works its sides out
+                // in full: a comparison looks at all of a value, and
+                // the text of a string is all of it.
+                if !matches!(
+                    op.operator(),
+                    Some(ast::BinOpKind::Update | ast::BinOpKind::Concat)
+                ) {
+                    self.escape(&left);
+                    self.escape(&right);
+                }
                 match op.operator() {
                     Some(ast::BinOpKind::Update) => self.update(left, right),
                     Some(ast::BinOpKind::Concat) => self.concat(left, right),
@@ -1049,12 +1644,45 @@ impl Interpreter {
     pub fn apply(&mut self, function: Value, argument: Thunk) -> Value {
         match function {
             Value::Lambda(closure) => {
-                if self.depth >= DEPTH {
-                    self.too_deep += 1;
-                    return Value::Unknown;
+                // A call is cut when it goes too deep, and when it is a
+                // recursion: the function is already under way where
+                // the call is made, or was under way where this
+                // function was written down, more often than allowed.
+                // The second is a function that makes itself anew, as
+                // in a list that is made as it is walked.
+                let identity = closure.identity();
+                let under_way = self
+                    .chain
+                    .count(identity)
+                    .max(closure.chain.count(identity));
+                if self.depth >= DEPTH || under_way > self.reentries {
+                    return self.cut(&closure, &argument);
+                }
+                // While values are escaped, the result of a call is
+                // only looked at for what it reads. A function of the
+                // library reads what it is given and what it sees, so
+                // escaping those says as much as the call, for far less
+                // work. See `escape_now`.
+                // A call that is given all of the configuration is
+                // made, because escaping all of the configuration says
+                // that everything is read. So is a call that only gives
+                // the function for the next argument.
+                if self.escaping
+                    && !matches!(closure.body, ast::Expr::Lambda(_))
+                    && self.of_library(&closure.file)
+                    && !sees_everything(&closure.env)
+                    && !is_everything(&self.force(&argument))
+                {
+                    return self.cut(&closure, &argument);
+                }
+                // A recursion with an argument that is not known finds
+                // nothing that the call around it does not find, and
+                // takes every branch again at each level.
+                if under_way > 0 && matches!(self.force(&argument), Value::Unknown) {
+                    return self.cut(&closure, &argument);
                 }
                 let mut names = BTreeMap::new();
-                let inner = closure.env.child(BTreeMap::new());
+                let inner = closure.env.child(argument.0.reaches);
                 match &closure.param {
                     ast::Param::IdentParam(param) => {
                         if let Some(ident) = param.ident() {
@@ -1079,7 +1707,7 @@ impl Interpreter {
                             );
                             names.insert(
                                 name,
-                                Thunk::delayed(move |interpreter| {
+                                self.delayed(inner.reaches(), move |interpreter| {
                                     let given = interpreter.force(&argument);
                                     let found = match &given {
                                         Value::Attrs(_) | Value::Either(_) | Value::Config(_) => {
@@ -1114,10 +1742,13 @@ impl Interpreter {
                 for (name, value) in names {
                     inner.define(name, value);
                 }
+                let inside = self.chain.with(identity);
+                let outside = std::mem::replace(&mut self.chain, inside);
                 self.depth += 1;
                 let result = self.eval(&closure.body, &inner, &closure.file);
                 self.depth -= 1;
-                result
+                self.chain = outside;
+                self.bounded(result)
             }
             Value::Builtin(name, given) => {
                 let mut given = given.as_ref().clone();
@@ -1143,10 +1774,11 @@ impl Interpreter {
                 let partly = self.apply(functor, Thunk::done(function.clone()));
                 self.apply(partly, argument)
             }
-            _ => {
-                // The function is not known. Its argument is still read,
-                // so that what it reads of the configuration is recorded.
-                self.force(&argument);
+            other => {
+                // The function is not known, so it can do anything with
+                // its argument.
+                self.escape(&other);
+                self.escape_thunk(&argument);
                 Value::Unknown
             }
         }
@@ -1261,7 +1893,7 @@ impl Interpreter {
                 let items = (0..count)
                     .map(|index| {
                         let function = first.clone();
-                        Thunk::delayed(move |interpreter| {
+                        self.delayed(reaches(&first), move |interpreter| {
                             interpreter.apply(function.clone(), Thunk::done(Value::Int(index)))
                         })
                     })
@@ -1275,7 +1907,7 @@ impl Interpreter {
                     .iter()
                     .map(|item| {
                         let (function, item) = (first.clone(), item.clone());
-                        Thunk::delayed(move |interpreter| {
+                        self.delayed(reaches(&first) || item.0.reaches, move |interpreter| {
                             interpreter.apply(function.clone(), item.clone())
                         })
                     })
@@ -1334,10 +1966,13 @@ impl Interpreter {
                 let mut so_far = arguments[1].clone();
                 for item in items.iter() {
                     let (function, before, item) = (first.clone(), so_far.clone(), item.clone());
-                    so_far = Thunk::delayed(move |interpreter| {
-                        let partly = interpreter.apply(function.clone(), before.clone());
-                        interpreter.apply(partly, item.clone())
-                    });
+                    so_far = self.delayed(
+                        reaches(&first) || before.0.reaches || item.0.reaches,
+                        move |interpreter| {
+                            let partly = interpreter.apply(function.clone(), before.clone());
+                            interpreter.apply(partly, item.clone())
+                        },
+                    );
                 }
                 Some(self.force(&so_far))
             }
@@ -1468,11 +2103,19 @@ impl Interpreter {
             "import" => match self.force(&first) {
                 Value::Path(path) => self.import(&path),
                 Value::Str(text) if text.starts_with('/') => self.import(Path::new(&*text)),
-                _ => Value::Unknown,
+                other => self.forget(&[&other]),
             },
-            "scopedImport" => Value::Unknown,
-            "throw" | "abort" => nothing(),
-            "seq" | "deepSeq" | "trace" | "traceVerbose" | "warn" | "addErrorContext" => {
+            "throw" | "abort" => {
+                self.escape_thunk(&first);
+                nothing()
+            }
+            "seq" => {
+                self.force(&first);
+                self.force(&arguments[1])
+            }
+            // The first argument is worked out in full, or printed.
+            "deepSeq" | "trace" | "traceVerbose" | "warn" | "addErrorContext" => {
+                self.escape_thunk(&first);
                 self.force(&arguments[1])
             }
             "break"
@@ -1482,7 +2125,7 @@ impl Interpreter {
             "toString" | "toPath" => match self.force(&first) {
                 Value::Str(text) => Value::Str(text),
                 Value::Path(path) => Value::Str(path.to_string_lossy().into()),
-                _ => Value::Unknown,
+                other => self.forget(&[&other]),
             },
             "tryEval" => {
                 let mut fields = BTreeMap::new();
@@ -1498,7 +2141,7 @@ impl Interpreter {
                     .into_iter()
                     .map(|item| {
                         let function = function.clone();
-                        Thunk::delayed(move |interpreter| {
+                        self.delayed(reaches(&function) || item.0.reaches, move |interpreter| {
                             interpreter.apply(function.clone(), item.clone())
                         })
                     })
@@ -1507,16 +2150,47 @@ impl Interpreter {
             }
             "genList" => {
                 let function = self.force(&first);
-                Value::List(Rc::new(vec![Thunk::delayed(move |interpreter| {
-                    interpreter.apply(function.clone(), Thunk::done(Value::Unknown))
-                })]))
+                self.force(&arguments[1]);
+                Value::List(Rc::new(vec![self.delayed(
+                    reaches(&function),
+                    move |interpreter| {
+                        interpreter.apply(function.clone(), Thunk::done(Value::Unknown))
+                    },
+                )]))
             }
-            "filter" | "sort" => {
+            // The function is called with the elements, and what it
+            // gives decides something that is not tracked here.
+            "filter" | "all" | "any" => {
+                let function = self.force(&first);
                 let list = self.force(&arguments[1]);
-                Value::List(Rc::new(self.elements(&list)))
+                let items = self.elements(&list);
+                for item in &items {
+                    let result = self.apply(function.clone(), item.clone());
+                    self.escape(&result);
+                }
+                if name == "filter" {
+                    Value::List(Rc::new(items))
+                } else {
+                    Value::Unknown
+                }
+            }
+            "sort" => {
+                let function = self.force(&first);
+                let list = self.force(&arguments[1]);
+                let items = self.elements(&list);
+                let any = Thunk::done(self.any_entry(&list));
+                let partly = self.apply(function, any.clone());
+                let result = self.apply(partly, any);
+                self.escape(&result);
+                Value::List(Rc::new(items))
             }
             "partition" => {
+                let function = self.force(&first);
                 let list = self.force(&arguments[1]);
+                for item in self.elements(&list) {
+                    let result = self.apply(function.clone(), item);
+                    self.escape(&result);
+                }
                 let items = Thunk::done(Value::List(Rc::new(self.elements(&list))));
                 let mut fields = BTreeMap::new();
                 fields.insert("right".to_string(), items.clone());
@@ -1561,6 +2235,11 @@ impl Interpreter {
                     let partly = self.apply(function.clone(), so_far);
                     results.push(self.apply(partly, item));
                 }
+                // An element here can stand for many elements of the
+                // real list, so the real fold can go on from any of the
+                // results. What it gives then is not followed.
+                let so_far = either(results.clone());
+                results.push(self.forget(&[&function, &so_far, &list]));
                 either(results)
             }
             "attrNames" => match self.force(&first) {
@@ -1589,11 +2268,14 @@ impl Interpreter {
                 match self.force(&arguments[1]) {
                     Value::Attrs(attrs) => {
                         let call = |name: Value, value: Thunk, function: Value| {
-                            Thunk::delayed(move |interpreter| {
-                                let partly =
-                                    interpreter.apply(function.clone(), Thunk::done(name.clone()));
-                                interpreter.apply(partly, value.clone())
-                            })
+                            self.delayed(
+                                reaches(&function) || value.0.reaches,
+                                move |interpreter| {
+                                    let partly = interpreter
+                                        .apply(function.clone(), Thunk::done(name.clone()));
+                                    interpreter.apply(partly, value.clone())
+                                },
+                            )
                         };
                         let fields = attrs
                             .fields
@@ -1619,11 +2301,14 @@ impl Interpreter {
                         let entry = Thunk::done(self.any_entry(&other));
                         Value::Attrs(Rc::new(Attrs {
                             fields: BTreeMap::new(),
-                            any: Some(Thunk::delayed(move |interpreter| {
-                                let partly = interpreter
-                                    .apply(function.clone(), Thunk::done(Value::Unknown));
-                                interpreter.apply(partly, entry.clone())
-                            })),
+                            any: Some(self.delayed(
+                                reaches(&function) || entry.0.reaches,
+                                move |interpreter| {
+                                    let partly = interpreter
+                                        .apply(function.clone(), Thunk::done(Value::Unknown));
+                                    interpreter.apply(partly, entry.clone())
+                                },
+                            )),
                         }))
                     }
                 }
@@ -1635,9 +2320,13 @@ impl Interpreter {
                     let item = self.force(&item);
                     let name = match self.select_one(&item, "name") {
                         Some(Value::Str(name)) => Some(name.to_string()),
-                        _ => None,
+                        Some(other) => {
+                            self.escape(&other);
+                            None
+                        }
+                        None => None,
                     };
-                    let value = Thunk::delayed(move |interpreter| {
+                    let value = self.delayed(reaches(&item), move |interpreter| {
                         interpreter
                             .select_one(&item, "value")
                             .unwrap_or(Value::Unknown)
@@ -1707,7 +2396,16 @@ impl Interpreter {
                                 by_name.entry(None).or_default().push(any.clone());
                             }
                         }
-                        other => by_name.entry(None).or_default().push(Thunk::done(other)),
+                        other => {
+                            // `groupBy` calls the function with the
+                            // element to get the name, which is not
+                            // tracked.
+                            if name == "groupBy" {
+                                let key = self.apply(function.clone(), Thunk::done(other.clone()));
+                                self.escape(&key);
+                            }
+                            by_name.entry(None).or_default().push(Thunk::done(other));
+                        }
                     }
                 }
                 let mut entries = Vec::new();
@@ -1718,7 +2416,7 @@ impl Interpreter {
                     let zip = name == "zipAttrsWith";
                     entries.push((
                         vec![field],
-                        Thunk::delayed(move |interpreter| {
+                        self.delayed(reaches(&function) || list.0.reaches, move |interpreter| {
                             if zip {
                                 let key = match &given {
                                     Some(given) => Value::Str(given.as_str().into()),
@@ -1766,28 +2464,51 @@ impl Interpreter {
                     .unwrap_or(Value::Unknown);
                 let mut items = self.elements(&start);
                 let any = Thunk::done(self.any_entry(&start));
-                let more = self.apply(operator, any);
+                let more = self.apply(operator.clone(), any);
                 items.extend(self.elements(&more));
+                // The real closure goes on from what the operator gave,
+                // for as long as there is something new. That is not
+                // followed, so what it could give is one more element
+                // that is not known.
+                items.push(Thunk::done(self.forget(&[&operator, &start, &more])));
                 Value::List(Rc::new(items))
+            }
+            // The answer depends on what kind of value the argument is,
+            // or on how many elements it has, and on nothing inside it.
+            "isAttrs" | "isBool" | "isFloat" | "isFunction" | "isInt" | "isList" | "isNull"
+            | "isPath" | "isString" | "typeOf" | "length" => {
+                self.force(&first);
+                Value::Unknown
+            }
+            "hasAttr" => {
+                let set = self.force(&arguments[1]);
+                match self.force(&first) {
+                    Value::Str(name) => {
+                        self.select_one(&set, &name);
+                    }
+                    other => {
+                        self.escape(&other);
+                        self.any_entry(&set);
+                    }
+                }
+                Value::Unknown
             }
             // The builtins whose result is not tracked: numbers, tests,
             // strings that are computed, and what comes from files, the
-            // store or the network. Their arguments are read, because
-            // they can read the configuration.
-            "add" | "all" | "any" | "appendContext" | "attrsets" | "baseNameOf" | "bitAnd"
-            | "bitOr" | "bitXor" | "ceil" | "compareVersions" | "concatStringsSep"
-            | "convertHash" | "derivation" | "derivationStrict" | "dirOf" | "div" | "elem"
-            | "fetchGit" | "fetchTarball" | "fetchTree" | "fetchurl" | "filterSource"
-            | "findFile" | "flakeRefToString" | "floor" | "fromJSON" | "fromTOML"
-            | "getContext" | "getEnv" | "getFlake" | "hasAttr" | "hasContext" | "hashFile"
-            | "hashString" | "isAttrs" | "isBool" | "isFloat" | "isFunction" | "isInt"
-            | "isList" | "isNull" | "isPath" | "isString" | "length" | "lessThan" | "match"
-            | "mul" | "outputOf" | "parseDrvName" | "parseFlakeRef" | "path" | "pathExists"
+            // store or the network. They can use all of their
+            // arguments, so the arguments are escaped.
+            "add" | "appendContext" | "attrsets" | "baseNameOf" | "bitAnd" | "bitOr" | "bitXor"
+            | "ceil" | "compareVersions" | "concatStringsSep" | "convertHash" | "derivation"
+            | "derivationStrict" | "dirOf" | "div" | "elem" | "fetchGit" | "fetchTarball"
+            | "fetchTree" | "fetchurl" | "filterSource" | "findFile" | "flakeRefToString"
+            | "floor" | "fromJSON" | "fromTOML" | "getContext" | "getEnv" | "getFlake"
+            | "hasContext" | "hashFile" | "hashString" | "lessThan" | "match" | "mul"
+            | "outputOf" | "parseDrvName" | "parseFlakeRef" | "path" | "pathExists"
             | "placeholder" | "readDir" | "readFile" | "readFileType" | "replaceStrings"
-            | "split" | "splitVersion" | "storePath" | "stringLength" | "sub" | "substring"
-            | "toFile" | "toJSON" | "toXML" | "typeOf" | "unsafeGetAttrPos" => {
+            | "scopedImport" | "split" | "splitVersion" | "storePath" | "stringLength" | "sub"
+            | "substring" | "toFile" | "toJSON" | "toXML" | "unsafeGetAttrPos" => {
                 for argument in arguments {
-                    self.force(argument);
+                    self.escape_thunk(argument);
                 }
                 Value::Unknown
             }
@@ -1818,16 +2539,6 @@ fn normalize(path: &Path) -> PathBuf {
 /// every path that is read from it.
 pub fn tracked(name: &str) -> Value {
     Value::Config(Rc::new(vec![name.to_string()]))
-}
-
-pub fn attrs(fields: Vec<(&str, Value)>, open: bool) -> Value {
-    Value::Attrs(Rc::new(Attrs {
-        fields: fields
-            .into_iter()
-            .map(|(name, value)| (name.to_string(), Thunk::done(value)))
-            .collect(),
-        any: open.then(|| Thunk::done(Value::Unknown)),
-    }))
 }
 
 pub fn string(text: &str) -> Value {
