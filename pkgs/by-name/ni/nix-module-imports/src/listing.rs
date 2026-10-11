@@ -31,11 +31,13 @@ pub struct Listing {
     pub not_read: BTreeSet<String>,
 }
 
-/// The attributes of a module that are not settings.
-const NOT_SETTINGS: [&str; 8] = [
+/// The attributes of a module that are not settings. `meta` is not
+/// among them: the module system puts the `meta` of a module into its
+/// settings, so `meta.maintainers` is a setting of an option like any
+/// other.
+const NOT_SETTINGS: [&str; 7] = [
     "options",
     "imports",
-    "meta",
     "disabledModules",
     "_file",
     "key",
