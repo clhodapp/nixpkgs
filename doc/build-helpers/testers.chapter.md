@@ -283,6 +283,7 @@ Check that every module file in a tree imports the modules whose options it uses
 
 A module that sets or reads an option of another module works on its own only when it imports the module that declares the option.
 Without the import, the module works only where something else brings the declaring module into the evaluation.
+An import of an import counts: a module needs no import of a file that it reaches through another import.
 The tester runs `nix-module-imports check` over the output of `lib.modules.moduleDependencies`.
 The command `nix-module-imports fix` writes the imports that the check asks for into the module files.
 

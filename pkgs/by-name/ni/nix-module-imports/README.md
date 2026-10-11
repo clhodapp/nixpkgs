@@ -42,6 +42,15 @@ The tool does not touch the imports outside the two comments, and it does not re
 Where several files declare one option, the tool imports the file whose declaration has the description.
 The other declarations add to that one.
 
+The tool writes no import of a file that the module reaches through another import.
+When module A uses options of B and of C, and B imports C, the tool writes only the import of B into A.
+A later change that takes C out of the reach of B puts the import of C into A on the next run.
+Every import that the tool writes is of a file whose options the module uses.
+
+Modules that use each other are handled one import at a time.
+The tool leaves an import out only while the file stays in reach, so two modules that import each other cannot each leave a file to the other.
+Where several choices are possible, the tool goes through the modules and their imports in the order of their paths, so the same tree always gets the same imports.
+
 ## Usage
 
 Write the report of an evaluation to a file:
@@ -105,6 +114,8 @@ The evaluation then shows the imports, and the tool accepts the file.
   A module that is written inside another file counts as that file.
 - The tool writes no import of a file outside `--root`, and none of a file that is not imported by its path, such as a file that `lib.modules.importApply` loads.
   `report` lists those uses.
+- The imports of one file depend on the imports of other files, because a file that is in reach needs no import.
+  A change in one module can therefore change the generated imports of another module.
 - The search for the options that a module reads looks at the source and does not evaluate it.
   It follows a name that a `let` gives to a part of `config`, and `inherit (config.a) b;`.
   It finds nothing under `with config;`, and nothing where a part of the path is computed.

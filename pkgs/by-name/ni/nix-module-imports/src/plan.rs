@@ -158,6 +158,10 @@ pub struct Plan {
     pub modules_in_tree: usize,
     pub definitions: usize,
     pub reads: usize,
+    /// The number of imports of files that a module uses and does not
+    /// import in its own writing. The tool writes fewer, because it
+    /// leaves out a file that a module reaches through another import.
+    pub direct: usize,
     pub files: Vec<FilePlan>,
     /// Uses of an option that is declared outside the tree.
     pub declared_outside: Vec<Unwritten>,
@@ -187,6 +191,40 @@ impl Settings<'_> {
     }
 }
 
+/// One module of the tree, before the tool decides what to write.
+struct Candidate {
+    module: String,
+    source: String,
+    directory: String,
+    parsed: Result<Module, String>,
+    /// The files the module needs and does not import in its own
+    /// writing, with the options it uses of each.
+    needed: BTreeMap<String, BTreeMap<String, Kind>>,
+    /// The imports the module has whatever the tool writes.
+    fixed: BTreeSet<String>,
+    /// Why the tool cannot write imports into the file.
+    unwritable: Option<String>,
+}
+
+/// Whether the module `from` reaches the module `to` along the imports.
+fn reaches(edges: &[BTreeSet<usize>], from: usize, to: usize) -> bool {
+    let mut seen = vec![false; edges.len()];
+    let mut stack = vec![from];
+    seen[from] = true;
+    while let Some(node) = stack.pop() {
+        for &next in &edges[node] {
+            if next == to {
+                return true;
+            }
+            if !seen[next] {
+                seen[next] = true;
+                stack.push(next);
+            }
+        }
+    }
+    false
+}
+
 /// The directory part of a path below the root.
 fn directory_of(path: &str) -> &str {
     path.rfind('/').map_or("", |index| &path[..index])
@@ -213,6 +251,7 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
         modules_in_tree: 0,
         definitions: dependencies.uses.len(),
         reads: 0,
+        direct: 0,
         files: Vec::new(),
         declared_outside: Vec::new(),
         not_importable: Vec::new(),
@@ -222,9 +261,9 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
             largest: 0,
         },
     };
-    // The imports between the modules of the tree, with the ones the
-    // tool writes.
-    let mut graph: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    // First every module is read, to learn what it needs and which
+    // imports it has whatever the tool writes.
+    let mut candidates: Vec<Candidate> = Vec::new();
 
     for evaluated in modules {
         let Some(module) = settings.in_tree(evaluated) else {
@@ -289,21 +328,118 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
             }
         }
 
-        let edges = graph.entry(module.clone()).or_default();
-        for imported in dependencies.imports.get(evaluated).into_iter().flatten() {
-            if let Some(imported) = settings.in_tree(imported) {
-                edges.insert(imported);
-            }
-        }
-        edges.extend(needed.keys().cloned());
-
         let manual = match &parsed {
             Ok(parsed) => parsed.manual_imports(&directory).unwrap_or_default(),
             Err(_) => BTreeSet::new(),
         };
+        needed.retain(|file, _| !manual.contains(file));
+        plan.direct += needed.len();
+
+        // Whether the tool can write imports into the file is found by
+        // trying it with all of them.
+        let literals: Vec<String> = needed
+            .keys()
+            .map(|file| relative_literal(&directory, file))
+            .collect();
+        let unwritable = match &parsed {
+            Err(reason) => Some(reason.clone()),
+            Ok(parsed) => match parsed.with_generated_imports(&literals) {
+                Err(reason) if !literals.is_empty() => Some(reason.to_string()),
+                _ => None,
+            },
+        };
+        let fixed = if unwritable.is_some() {
+            // A person writes the imports of such a file by hand, in
+            // whatever way the file needs. The evaluation shows them.
+            dependencies
+                .imports
+                .get(evaluated)
+                .into_iter()
+                .flatten()
+                .filter_map(|file| settings.in_tree(file))
+                .collect()
+        } else {
+            manual
+        };
+        candidates.push(Candidate {
+            module,
+            source,
+            directory,
+            parsed,
+            needed,
+            fixed,
+            unwritable,
+        });
+    }
+
+    // The imports between the modules of the tree: the ones that stay
+    // whatever the tool writes, and at first every import that a module
+    // needs.
+    let mut names: BTreeMap<String, usize> = BTreeMap::new();
+    let mut edges: Vec<BTreeSet<usize>> = Vec::new();
+    let mut node = |name: &str, edges: &mut Vec<BTreeSet<usize>>| match names.get(name) {
+        Some(index) => *index,
+        None => {
+            names.insert(name.to_string(), edges.len());
+            edges.push(BTreeSet::new());
+            edges.len() - 1
+        }
+    };
+    for candidate in &candidates {
+        let from = node(&candidate.module, &mut edges);
+        for file in &candidate.fixed {
+            let to = node(file, &mut edges);
+            edges[from].insert(to);
+        }
+        if candidate.unwritable.is_none() {
+            for file in candidate.needed.keys() {
+                let to = node(file, &mut edges);
+                edges[from].insert(to);
+            }
+        }
+    }
+
+    // An import is left out when the module reaches the file through
+    // its other imports. The imports are taken away one at a time, and
+    // each time the file has to stay in reach, because two modules that
+    // import each other could otherwise each leave an import to the
+    // other and both lose the file.
+    for candidate in &candidates {
+        if candidate.unwritable.is_some() {
+            continue;
+        }
+        let from = names[&candidate.module];
+        for file in candidate.needed.keys() {
+            let to = names[file];
+            if candidate.fixed.contains(file) {
+                continue;
+            }
+            edges[from].remove(&to);
+            if !reaches(&edges, from, to) {
+                edges[from].insert(to);
+            }
+        }
+    }
+
+    for candidate in candidates {
+        let from = names[&candidate.module];
+        let Candidate {
+            module,
+            source,
+            directory,
+            parsed,
+            needed,
+            unwritable,
+            ..
+        } = candidate;
         let mut generated: Vec<Import> = needed
             .into_iter()
-            .filter(|(file, _)| !manual.contains(file))
+            .filter(|(file, _)| match unwritable {
+                // What the tool writes.
+                None => edges[from].contains(&names[file]),
+                // What a person still has to write.
+                Some(_) => !reaches(&edges, from, names[file]),
+            })
             .map(|(file, options)| Import {
                 literal: relative_literal(&directory, &file),
                 file,
@@ -316,45 +452,28 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
             .map(|import| import.literal.clone())
             .collect();
 
-        let rewritten = parsed.and_then(|parsed| {
-            let old = parsed.with_generated_imports(&literals);
-            match old {
+        let (status, reason, new_text) = match (unwritable, parsed) {
+            (Some(_), _) if generated.is_empty() => (Status::Current, None, None),
+            (Some(reason), _) => (Status::Unsupported, Some(reason), None),
+            (None, Err(reason)) => (Status::Unsupported, Some(reason), None),
+            (None, Ok(parsed)) => match parsed.with_generated_imports(&literals) {
                 // A file in a shape the tool does not rewrite is left
                 // alone when it needs nothing written.
                 Err(
                     Unsupported::BodyIsNotAnAttributeSet
                     | Unsupported::ImportsIsNotAList
                     | Unsupported::ImportsIsInherited,
-                ) if literals.is_empty() => Ok(None),
-                Err(reason) => Err(reason.to_string()),
-                Ok(text) => Ok(Some(text)),
-            }
-        });
-        let current = fs::read_to_string(settings.root.join(&source)).ok();
-        let (status, reason, new_text) = match rewritten {
-            Ok(None) => (Status::Current, None, None),
-            Ok(Some(text)) if Some(&text) == current.as_ref() => (Status::Current, None, None),
-            Ok(Some(text)) => (Status::Stale, None, Some(text)),
-            Err(reason) => {
-                // A person can write the imports of such a file by
-                // hand, in whatever way the file needs. The evaluation
-                // then shows them.
-                let imported: BTreeSet<String> = dependencies
-                    .imports
-                    .get(evaluated)
-                    .into_iter()
-                    .flatten()
-                    .filter_map(|file| settings.in_tree(file))
-                    .collect();
-                if generated
-                    .iter()
-                    .all(|import| imported.contains(&import.file))
-                {
-                    (Status::Current, None, None)
-                } else {
-                    (Status::Unsupported, Some(reason), None)
+                ) if literals.is_empty() => (Status::Current, None, None),
+                Err(reason) => (Status::Unsupported, Some(reason.to_string()), None),
+                Ok(text) => {
+                    let current = fs::read_to_string(settings.root.join(&source)).ok();
+                    if Some(&text) == current.as_ref() {
+                        (Status::Current, None, None)
+                    } else {
+                        (Status::Stale, None, Some(text))
+                    }
                 }
-            }
+            },
         };
         if status == Status::Current && generated.is_empty() {
             continue;
@@ -369,6 +488,18 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
         });
     }
 
+    let by_index: BTreeMap<usize, &String> =
+        names.iter().map(|(name, index)| (*index, name)).collect();
+    let graph: BTreeMap<String, BTreeSet<String>> = edges
+        .iter()
+        .enumerate()
+        .map(|(from, targets)| {
+            (
+                by_index[&from].clone(),
+                targets.iter().map(|to| by_index[to].clone()).collect(),
+            )
+        })
+        .collect();
     plan.cycles = cycles(&graph);
     plan
 }
@@ -487,6 +618,88 @@ mod tests {
         ]));
         assert_eq!(found.groups, 2);
         assert_eq!(found.largest, 3);
+    }
+
+    /// Plan for a tree of modules `a.nix`, `b.nix` and `c.nix`, each of
+    /// which declares the option of its name. `uses` says which module
+    /// sets the option of which other module.
+    fn plan_for(name: &str, uses: &[(&str, &str)]) -> Vec<(String, Vec<String>)> {
+        let root = std::env::temp_dir().join(format!(
+            "nix-module-imports-test-{}-{name}",
+            std::process::id()
+        ));
+        fs::create_dir_all(&root).unwrap();
+        let evaluated_root = root.to_str().unwrap().to_string();
+        let mut dependencies = Dependencies::default();
+        for module in ["a", "b", "c"] {
+            fs::write(root.join(format!("{module}.nix")), "{\n  x = 1;\n}\n").unwrap();
+            let file = format!("{evaluated_root}/{module}.nix");
+            dependencies.imports.insert(file.clone(), Vec::new());
+            dependencies.importable.push(file.clone());
+            dependencies.declarations.insert(
+                module.to_string(),
+                Declaration {
+                    files: vec![file.clone()],
+                    with_description: vec![file],
+                },
+            );
+        }
+        for (module, option) in uses {
+            dependencies.uses.push(Use {
+                option: option.to_string(),
+                file: format!("{evaluated_root}/{module}.nix"),
+            });
+        }
+        let plan = plan(
+            &dependencies,
+            &Settings {
+                root: &root,
+                evaluated_root: &evaluated_root,
+                definitions_only: true,
+            },
+        );
+        fs::remove_dir_all(&root).unwrap();
+        plan.files
+            .into_iter()
+            .map(|file| {
+                (
+                    file.module,
+                    file.generated
+                        .into_iter()
+                        .map(|import| import.literal)
+                        .collect(),
+                )
+            })
+            .collect()
+    }
+
+    #[test]
+    fn leaves_out_a_file_that_another_import_reaches() {
+        let files = plan_for("chain", &[("a", "b"), ("a", "c"), ("b", "c")]);
+        assert_eq!(
+            files,
+            [
+                ("a.nix".to_string(), vec!["./b.nix".to_string()]),
+                ("b.nix".to_string(), vec!["./c.nix".to_string()]),
+            ]
+        );
+    }
+
+    #[test]
+    fn keeps_a_file_in_reach_of_modules_that_import_each_other() {
+        // `a` and `b` use each other and both use `c`. Each could leave
+        // `c` to the other, and one of them has to keep it.
+        let files = plan_for("cycle", &[("a", "b"), ("a", "c"), ("b", "a"), ("b", "c")]);
+        assert_eq!(
+            files,
+            [
+                ("a.nix".to_string(), vec!["./b.nix".to_string()]),
+                (
+                    "b.nix".to_string(),
+                    vec!["./a.nix".to_string(), "./c.nix".to_string()]
+                ),
+            ]
+        );
     }
 
     #[test]

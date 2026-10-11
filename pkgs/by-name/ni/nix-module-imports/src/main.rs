@@ -159,7 +159,16 @@ fn report(plan: &Plan) {
         plan.definitions,
         plan.reads
     );
-    let generated: usize = plan.files.iter().map(|file| file.generated.len()).sum();
+    say!(
+        "imports of files that a module uses and does not import in its own writing: {}",
+        plan.direct
+    );
+    let generated: usize = plan
+        .files
+        .iter()
+        .filter(|file| file.status != Status::Unsupported)
+        .map(|file| file.generated.len())
+        .sum();
     say!(
         "imports the tool writes: {generated} in {} files",
         plan.files
