@@ -308,8 +308,10 @@ pub fn of_file(
     interpreter.settle();
     let mut cuts: Vec<(&String, &usize)> = interpreter.cuts.iter().collect();
     cuts.sort_by_key(|(_, count)| std::cmp::Reverse(**count));
-    for (place, count) in cuts.iter().take(25) {
-        eprintln!("{count} {place}");
+    for (index, (place, count)) in cuts.iter().enumerate() {
+        if index < 25 || place.starts_with("all of") {
+            eprintln!("{count} {place}");
+        }
     }
     if interpreter.fatal.is_some() {
         // The interpretation stopped, so what it found is not all there
@@ -503,6 +505,7 @@ in
             ),
             [
                 "Set a.b.c.d.e.f.g.h.i ...",
+                "Set a.b.c.d.e.f.g.h.i.* ...",
                 "Read config.x",
                 "Read config.x.y ..."
             ]
@@ -557,6 +560,28 @@ in
                 .iter()
                 .any(|touch| touch.starts_with("Read config.program.settings.store.path")),
             "{found:?}"
+        );
+    }
+
+    #[test]
+    fn a_path_that_is_split_from_a_text_is_known() {
+        // The names come from a text that is written out and is split
+        // at the dots, with the separator escaped like the library
+        // does it.
+        assert_eq!(
+            touches(
+                "split",
+                r#"{ lib, ... }:
+let
+  escaped = builtins.replaceStrings [ "." "*" ] [ "\\." "\\*" ] ".";
+  path = builtins.filter builtins.isString (builtins.split escaped "services.x.old");
+in
+{
+  config = lib.setAttrByPath path true;
+}
+"#
+            ),
+            ["Set services.x.old"]
         );
     }
 

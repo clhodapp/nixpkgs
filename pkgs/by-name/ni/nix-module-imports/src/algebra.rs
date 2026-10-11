@@ -129,10 +129,32 @@ struct Chain(Option<Rc<Link>>);
 
 struct Link {
     identity: Identity,
+    /// The address of the function, when this call is the one with an
+    /// argument that is not known, which stands for a recursion.
+    widened: Option<usize>,
+    /// Whether this call or one around it is such a call.
+    any_widened: bool,
     outer: Chain,
 }
 
 impl Chain {
+    /// Whether the call that stands for a recursion of this very
+    /// function, or of a function of the same place in the source, is
+    /// among the calls.
+    fn widened(&self, instance: Option<usize>, identity: Identity) -> bool {
+        let mut link = &self.0;
+        while let Some(current) = link {
+            if current.widened.is_some()
+                && current.identity == identity
+                && (instance.is_none() || current.widened == instance)
+            {
+                return true;
+            }
+            link = &current.outer.0;
+        }
+        false
+    }
+
     fn count(&self, identity: Identity) -> usize {
         let mut count = 0;
         let mut link = &self.0;
@@ -145,11 +167,46 @@ impl Chain {
         count
     }
 
-    fn with(&self, identity: Identity) -> Chain {
+    fn with(&self, identity: Identity, widened: Option<usize>) -> Chain {
         Chain(Some(Rc::new(Link {
             identity,
+            widened,
+            any_widened: widened.is_some() || self.any_widened(),
             outer: self.clone(),
         })))
+    }
+
+    fn any_widened(&self) -> bool {
+        self.0.as_ref().is_some_and(|link| link.any_widened)
+    }
+
+    /// These calls, and with them the calls of `other` that stand for
+    /// a recursion and are not among these. A function that was written
+    /// down inside such a call is called with it among its calls
+    /// wherever the call is made, so that what comes out of the
+    /// function is known to come out of that call.
+    fn with_widened_of(&self, other: &Chain) -> Chain {
+        if !other.any_widened() {
+            return self.clone();
+        }
+        let mut found = Vec::new();
+        let mut link = &other.0;
+        while let Some(current) = link {
+            if !current.any_widened {
+                break;
+            }
+            if let Some(instance) = current.widened
+                && !self.widened(Some(instance), current.identity)
+            {
+                found.push((current.identity, instance));
+            }
+            link = &current.outer.0;
+        }
+        let mut chain = self.clone();
+        for (identity, instance) in found.into_iter().rev() {
+            chain = chain.with(identity, Some(instance));
+        }
+        chain
     }
 }
 
@@ -1683,6 +1740,20 @@ impl Interpreter {
         }
     }
 
+    /// The strings of a list that is known element for element and
+    /// holds only strings that are known.
+    fn strings(&mut self, value: &Value) -> Option<Vec<String>> {
+        let items = self.exact(value)?;
+        let mut strings = Vec::new();
+        for item in items.iter() {
+            match self.force(item) {
+                Value::Str(text) => strings.push(text.to_string()),
+                _ => return None,
+            }
+        }
+        Some(strings)
+    }
+
     /// Any entry of a set or any element of a list.
     fn any_entry(&mut self, value: &Value) -> Value {
         match value {
@@ -1735,21 +1806,20 @@ impl Interpreter {
         Value::List(Rc::new(items))
     }
 
-    pub fn apply(&mut self, function: Value, argument: Thunk) -> Value {
+    pub fn apply(&mut self, function: Value, mut argument: Thunk) -> Value {
         match function {
             Value::Lambda(closure) => {
-                // A call is cut when it goes too deep, and when it is a
-                // recursion: the function is already under way where
-                // the call is made, or was under way where this
-                // function was written down, more often than allowed.
-                // The second is a function that makes itself anew, as
-                // in a list that is made as it is walked.
+                // A call is a recursion when the function is already
+                // under way where the call is made, or was under way
+                // where this function was written down. The second is a
+                // function that makes itself anew, as in a list that is
+                // made as it is walked.
                 let identity = closure.identity();
                 let under_way = self
                     .chain
                     .count(identity)
                     .max(closure.chain.count(identity));
-                if self.depth >= DEPTH || under_way > self.reentries {
+                if self.depth >= DEPTH {
                     return self.cut(&closure, &argument);
                 }
                 // While values are escaped, a function of the library
@@ -1769,11 +1839,42 @@ impl Interpreter {
                 {
                     return self.cut(&closure, &argument);
                 }
-                // A recursion with an argument that is not known finds
-                // nothing that the call around it does not find, and
-                // takes every branch again at each level.
-                if under_way > 0 && matches!(self.force(&argument), Value::Unknown) {
-                    return self.cut(&closure, &argument);
+                // A recursion that has gone on for long enough, or that
+                // has an argument that is not known, is not followed
+                // level by level. The function is called once with an
+                // argument that is not known, which stands for every
+                // further level: a call with any argument does no more
+                // than that call does. A call of the same function that
+                // comes out of that call, at once or from a value that
+                // it leaves to be worked out later, is not made, and
+                // its argument is escaped. What the call gives is
+                // escaped too, because it stands for the results of all
+                // the levels, and any of them can be used in full.
+                let instance = Rc::as_ptr(&closure) as usize;
+                if self.chain.widened(Some(instance), identity) {
+                    self.too_deep += 1;
+                    self.escape_thunk(&argument);
+                    return Value::Unknown;
+                }
+                let widened = under_way > self.reentries
+                    || (under_way > 0 && matches!(self.force(&argument), Value::Unknown));
+                if widened {
+                    // The function is another one of the same text, as
+                    // when each level makes its function anew. Then
+                    // what it sees is escaped.
+                    if self.chain.widened(None, identity) || closure.chain.widened(None, identity) {
+                        return self.cut(&closure, &argument);
+                    }
+                    self.too_deep += 1;
+                    if self.trace {
+                        let start = usize::from(closure.body.syntax().text_range().start());
+                        *self
+                            .cuts
+                            .entry(format!("widened {}:{start}", closure.file.display()))
+                            .or_default() += 1;
+                    }
+                    self.escape_thunk(&argument);
+                    argument = Thunk::done(Value::Unknown);
                 }
                 let mut names = BTreeMap::new();
                 let library = self.of_library(&closure.file);
@@ -1843,13 +1944,19 @@ impl Interpreter {
                 for (name, value) in names {
                     inner.define(name, value);
                 }
-                let inside = self.chain.with(identity);
+                let inside = self
+                    .chain
+                    .with_widened_of(&closure.chain)
+                    .with(identity, widened.then_some(instance));
                 let outside = std::mem::replace(&mut self.chain, inside);
                 self.depth += 1;
                 let result = self.eval(&closure.body, &inner, &closure.file);
                 self.depth -= 1;
                 self.chain = outside;
                 self.in_library = outside_library;
+                if widened {
+                    self.escape(&result);
+                }
                 self.bounded(result)
             }
             Value::Builtin(name, given) => {
@@ -2193,6 +2300,75 @@ impl Interpreter {
                     }
                 }
                 Some(Value::Str(parts.join(separator).into()))
+            }
+            // With strings that are known, as when the library escapes
+            // a separator and splits `"services.x.y"` at the dots.
+            "replaceStrings" => {
+                let from = self.strings(&first)?;
+                let to = self.force(&arguments[1]);
+                let to = self.strings(&to)?;
+                let Value::Str(text) = self.force(&arguments[2]) else {
+                    return None;
+                };
+                if from.len() != to.len() {
+                    return None;
+                }
+                let text = text.as_bytes();
+                let mut result: Vec<u8> = Vec::new();
+                let mut at = 0;
+                while at <= text.len() {
+                    let found = from
+                        .iter()
+                        .position(|from| text[at..].starts_with(from.as_bytes()));
+                    match found {
+                        Some(index) if !from[index].is_empty() => {
+                            result.extend(to[index].as_bytes());
+                            at += from[index].len();
+                        }
+                        // An empty string matches between all bytes.
+                        found => {
+                            if let Some(index) = found {
+                                result.extend(to[index].as_bytes());
+                            }
+                            result.extend(text.get(at));
+                            at += 1;
+                        }
+                    }
+                }
+                String::from_utf8(result)
+                    .ok()
+                    .map(|text| Value::Str(text.into()))
+            }
+            // A pattern that matches one text and nothing else: every
+            // character that has a meaning in a pattern is escaped. The
+            // result has the texts between the matches, and for each
+            // match the list of its groups, which is empty.
+            "split" => {
+                let (Value::Str(pattern), Value::Str(text)) = (&first, self.force(&arguments[1]))
+                else {
+                    return None;
+                };
+                let mut separator = String::new();
+                let mut characters = pattern.chars();
+                while let Some(character) = characters.next() {
+                    match character {
+                        '\\' => separator.push(characters.next()?),
+                        '[' | ']' | '{' | '}' | '(' | ')' | '^' | '$' | '?' | '*' | '+' | '|'
+                        | '.' => return None,
+                        other => separator.push(other),
+                    }
+                }
+                if separator.is_empty() {
+                    return None;
+                }
+                let mut items = Vec::new();
+                for (index, part) in text.split(separator.as_str()).enumerate() {
+                    if index > 0 {
+                        items.push(Thunk::done(Value::Seq(Rc::new(Vec::new()))));
+                    }
+                    items.push(Thunk::done(Value::Str(part.into())));
+                }
+                Some(Value::Seq(Rc::new(items)))
             }
             "stringLength" => match &first {
                 Value::Str(text) => Some(Value::Int(text.len() as i64)),
