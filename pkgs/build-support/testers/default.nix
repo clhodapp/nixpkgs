@@ -261,5 +261,7 @@
 
   shfmt = callPackage ./shfmt { };
 
+  moduleImports = callPackage ./moduleImports/tester.nix { };
+
   modularServiceCompliance = callPackage ./modular-service-compliance.nix { };
 }

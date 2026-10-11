@@ -277,6 +277,62 @@ testers.shfmt {
 A derivation that runs `shfmt` on the given script(s), producing an empty output upon success.
 The build will fail if `shfmt` reformats anything.
 
+## `moduleImports` {#tester-moduleImports}
+
+Check that every module file in a tree imports the modules whose options it uses, failing if a file lacks an import.
+
+A module that sets or reads an option of another module works on its own only when it imports the module that declares the option.
+Without the import, the module works only where something else brings the declaring module into the evaluation.
+The tester runs `nix-module-imports check` over the output of `lib.modules.moduleDependencies`.
+The command `nix-module-imports fix` writes the imports that the check asks for into the module files.
+
+:::{.example #ex-moduleImports}
+# Run `testers.moduleImports`
+
+```nix
+testers.moduleImports {
+  name = "my-modules";
+  root = ./.;
+  evaluations = [
+    (lib.evalModules {
+      modules = [ ./modules/all-modules.nix ];
+    })
+  ];
+}
+```
+
+:::
+
+### Inputs {#tester-moduleImports-inputs}
+
+`name` (string)
+: The name of the test.
+  The name of the derivation produced by the tester is `module-imports-${name}`.
+
+`root` (path)
+: The directory with the module files to check.
+  A module file outside this directory is not checked.
+  An option that is declared outside this directory needs no import.
+
+`evaluations` (list of results of `lib.evalModules`)
+: The evaluations that show which options each module uses.
+  One evaluation shows only the modules that are in it.
+  A tree whose modules are spread over several evaluations needs all of them here.
+  Each evaluation must read the modules from `root`.
+
+`definitionsOnly` (boolean, optional)
+: Whether to check only the options that a module sets.
+  By default the options that a module reads through `config` or `options` are checked as well.
+  The tool finds those by looking at the source of the module.
+  Defaults to `false`.
+
+### Return value {#tester-moduleImports-return}
+
+A derivation that runs `nix-module-imports check`, producing an empty output upon success.
+The build will fail if a module file lacks an import that it needs.
+The log names each such file.
+For a file that the tool cannot rewrite, the log also gives the reason and the imports to write by hand.
+
 ## `testVersion` {#tester-testVersion}
 
 Checks that the output from running a command contains the specified version string in it as a whole word.

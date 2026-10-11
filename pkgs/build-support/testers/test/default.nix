@@ -61,6 +61,8 @@ lib.recurseIntoAttrs {
 
   shfmt = pkgs.callPackages ../shfmt/tests.nix { };
 
+  moduleImports = pkgs.callPackage ../moduleImports/tests.nix { };
+
   runCommand = lib.recurseIntoAttrs {
     bork = pkgs.python3Packages.bork.tests.pytest-network;
 
