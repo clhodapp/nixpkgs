@@ -4,6 +4,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::Path;
+use std::time::{Duration, Instant};
 
 use serde::{Deserialize, Serialize};
 
@@ -151,6 +152,9 @@ pub struct Cycles {
     pub groups: usize,
     /// The number of modules in the largest group.
     pub largest: usize,
+    /// The number of groups for which the search for the smallest set
+    /// of imports did not finish in the time it was given.
+    pub not_searched: usize,
     /// The imports inside the groups that the tool writes.
     pub imports: usize,
     /// No set of imports inside the groups is smaller than this. When
@@ -186,6 +190,8 @@ pub struct Settings<'a> {
     pub evaluated_root: &'a str,
     /// Leave out the options that a module only reads.
     pub definitions_only: bool,
+    /// How long the search for the smallest set of imports may take.
+    pub search: Duration,
 }
 
 impl Settings<'_> {
@@ -246,6 +252,7 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
         cycles: Cycles {
             groups: 0,
             largest: 0,
+            not_searched: 0,
             imports: 0,
             lower_bound: 0,
         },
@@ -403,9 +410,10 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
                 .collect::<Vec<_>>()
         })
         .collect();
-    let groups = reduce(&mut edges, &removable);
+    let groups = reduce(&mut edges, &removable, Instant::now() + settings.search);
     plan.cycles = Cycles {
         groups: groups.len(),
+        not_searched: groups.iter().filter(|group| !group.searched).count(),
         largest: groups.iter().map(|group| group.modules).max().unwrap_or(0),
         imports: groups.iter().map(|group| group.kept).sum(),
         lower_bound: groups.iter().map(|group| group.lower_bound).sum(),
@@ -521,6 +529,7 @@ mod tests {
                 root: &root,
                 evaluated_root: &evaluated_root,
                 definitions_only: true,
+                search: Duration::from_secs(60),
             },
         );
         fs::remove_dir_all(&root).unwrap();

@@ -62,10 +62,19 @@ The tool first keeps every import that is the only one to enter or to leave a mo
 It solves the rest as an integer program: one import has to leave and one has to enter each set of modules, and the tool adds that condition for a set whenever an answer leaves the set cut off.
 The first answer in which all modules reach each other is a smallest set.
 
+The search has a time limit, 300 seconds for all groups together unless `--search-seconds` gives another one.
+The small groups are searched first.
+When the time is up, the tool takes the imports of each group that is left out one at a time and keeps one when its file would go out of reach.
+That result has no import that could be left out, and it may have more imports than the smallest set.
+With `--search-seconds 0` the tool searches no group and every group gets such a result.
+
 `report` prints the number of imports inside the groups next to the number that no set is smaller than.
 The two are equal when the search finished.
-When the search for a group does not finish, the tool takes the imports of that group out one at a time and keeps one when its file would go out of reach.
-That result has no import that could be left out, and it may have more imports than the smallest set.
+Every command says so when the time was up before all groups were searched.
+
+How far the search comes in a given time depends on the machine.
+`check` compares the files with what the tool writes, so a `check` that runs out of time can ask for a rewrite of files that `fix` wrote on a faster machine.
+Give `check` the time to finish, or run both with `--search-seconds 0`.
 
 A tree often has several smallest sets.
 The tool gives the same tree the same imports on every run.

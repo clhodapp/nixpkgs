@@ -16,6 +16,7 @@
 //! set, and it reports a lower bound with the result.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::time::Instant;
 
 /// The imports of each module, by the number of the module.
 pub type Edges = Vec<BTreeSet<usize>>;
@@ -26,6 +27,8 @@ pub struct Group {
     pub modules: usize,
     /// The imports inside the group that the tool keeps.
     pub kept: usize,
+    /// Whether the search for the smallest set finished in time.
+    pub searched: bool,
     /// No set of imports for the group is smaller than this.
     pub lower_bound: usize,
 }
@@ -187,11 +190,9 @@ fn smallest(
     group: &[usize],
     inside: &[(usize, usize)],
     removable: &BTreeSet<(usize, usize)>,
+    deadline: Instant,
 ) -> Option<BTreeSet<(usize, usize)>> {
     use microlp::{ComparisonOp, LinearExpr, OptimizationDirection, Problem};
-
-    const ROUNDS: usize = 200;
-    const SECONDS_FOR_ONE_ROUND: u64 = 20;
 
     let local: BTreeMap<usize, usize> = group
         .iter()
@@ -247,9 +248,13 @@ fn smallest(
         .map(|member| (0..group.len()).map(|index| index == member).collect())
         .collect();
 
-    for _ in 0..ROUNDS {
+    loop {
+        let left = deadline.saturating_duration_since(Instant::now());
+        if left.is_zero() {
+            return None;
+        }
         let mut problem = Problem::new(OptimizationDirection::Minimize);
-        problem.set_time_limit(std::time::Duration::from_secs(SECONDS_FOR_ONE_ROUND));
+        problem.set_time_limit(left);
         let variables: Vec<_> = (0..candidates.len())
             .map(|_| problem.add_binary_var(1.0))
             .collect();
@@ -303,13 +308,21 @@ fn smallest(
             sets.push(component.iter().map(|&of| of == part).collect());
         }
     }
-    None
 }
 
 /// Take out of `edges` every import in `removable` that is not needed
 /// for the modules to reach what they reached before. Returns the
 /// groups of more than one module.
-pub fn reduce(edges: &mut Edges, removable: &BTreeSet<(usize, usize)>) -> Vec<Group> {
+///
+/// The search for the smallest set inside the groups stops at
+/// `deadline`. A group whose search has not finished by then gets a set
+/// that has no import that could be left out, and that may not be the
+/// smallest.
+pub fn reduce(
+    edges: &mut Edges,
+    removable: &BTreeSet<(usize, usize)>,
+    deadline: Instant,
+) -> Vec<Group> {
     let component = components(edges);
     let groups = component.iter().max().map_or(0, |last| last + 1);
 
@@ -352,7 +365,11 @@ pub fn reduce(edges: &mut Edges, removable: &BTreeSet<(usize, usize)>) -> Vec<Gr
         members[group].push(module);
     }
     let mut result = Vec::new();
-    for group in members.iter().filter(|group| group.len() > 1) {
+    // The small groups go first, so that a large group that uses up the
+    // time does not keep them from being searched.
+    members.retain(|group| group.len() > 1);
+    members.sort_by_key(|group| (group.len(), group[0]));
+    for group in &members {
         let mut inside: Vec<(usize, usize)> = Vec::new();
         for &from in group {
             for &to in &edges[from] {
@@ -367,7 +384,7 @@ pub fn reduce(edges: &mut Edges, removable: &BTreeSet<(usize, usize)>) -> Vec<Gr
             .filter(|import| removable.contains(import))
             .collect();
 
-        let smallest = smallest(group, &inside, removable);
+        let smallest = smallest(group, &inside, removable, deadline);
         match &smallest {
             Some(keep) => {
                 for import in &candidates {
@@ -376,7 +393,7 @@ pub fn reduce(edges: &mut Edges, removable: &BTreeSet<(usize, usize)>) -> Vec<Gr
                     }
                 }
             }
-            // The search gave up. Take the imports out one at a time,
+            // The search did not finish. Take the imports out one at a time,
             // and keep one when its file would go out of reach. The
             // result has no import that could be left out, and it may
             // have more imports than the smallest set.
@@ -396,6 +413,7 @@ pub fn reduce(edges: &mut Edges, removable: &BTreeSet<(usize, usize)>) -> Vec<Gr
         result.push(Group {
             modules: group.len(),
             kept,
+            searched: smallest.is_some(),
             lower_bound: match smallest {
                 Some(_) => kept,
                 None => lower_bound(group, &inside, removable),
@@ -425,11 +443,38 @@ mod tests {
             .collect()
     }
 
+    /// A deadline that the searches of these tests do not reach.
+    fn soon() -> Instant {
+        Instant::now() + std::time::Duration::from_secs(60)
+    }
+
+    #[test]
+    fn falls_back_when_the_time_is_up() {
+        // The ring with an import across it from every module, and no
+        // time to search. The result still lets every module reach
+        // every other one, and it is marked as not searched.
+        let mut imports = Vec::new();
+        for module in 0..6 {
+            imports.push((module, (module + 1) % 6));
+            imports.push((module, (module + 3) % 6));
+        }
+        let mut edges = graph(6, &imports);
+        let removable = imports.iter().copied().collect();
+        let groups = reduce(&mut edges, &removable, Instant::now());
+        assert!(!groups[0].searched);
+        assert!(groups[0].lower_bound <= groups[0].kept);
+        for from in 0..6 {
+            for to in 0..6 {
+                assert!(from == to || reaches(&edges, from, to));
+            }
+        }
+    }
+
     /// Reduce a graph in which the tool may take out every import.
     fn reduced(count: usize, imports: &[(usize, usize)]) -> (Vec<(usize, usize)>, Vec<Group>) {
         let mut edges = graph(count, imports);
         let removable = imports.iter().copied().collect();
-        let groups = reduce(&mut edges, &removable);
+        let groups = reduce(&mut edges, &removable, soon());
         // Every module reaches what it reached before.
         let before = graph(count, imports);
         for from in 0..count {
@@ -490,7 +535,7 @@ mod tests {
         let mut edges = graph(3, &[(0, 1), (0, 2), (1, 2)]);
         // A person wrote the import of 2 into 0.
         let removable = [(0, 1), (1, 2)].into_iter().collect();
-        reduce(&mut edges, &removable);
+        reduce(&mut edges, &removable, soon());
         assert_eq!(imports_of(&edges), [(0, 1), (0, 2), (1, 2)]);
     }
 
@@ -501,7 +546,7 @@ mod tests {
         let removable = [(0, 1), (1, 0), (2, 3), (3, 2), (0, 2)]
             .into_iter()
             .collect();
-        reduce(&mut edges, &removable);
+        reduce(&mut edges, &removable, soon());
         assert_eq!(imports_of(&edges), [(0, 1), (1, 0), (1, 3), (2, 3), (3, 2)]);
     }
 }
