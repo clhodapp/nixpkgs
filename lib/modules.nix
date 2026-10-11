@@ -48,6 +48,7 @@ let
     trace
     typeOf
     types
+    unique
     unsafeGetAttrPos
     warn
     warnIf
@@ -1186,6 +1187,13 @@ let
       inherit (res.defsFinal') highestPrio;
       definitions = catAttrs "value" res.defsFinal;
       files = catAttrs "file" res.defsFinal;
+      # Every file that holds a definition of this option, whether or
+      # not the definition takes effect. `files` above leaves out a
+      # definition under an `mkIf` whose condition is false, and a
+      # definition that another one overrides. Reading `files` also
+      # evaluates the values of the definitions, and reading this does
+      # not.
+      filesWithAnyDefinition = catAttrs "file" defs;
       definitionsWithLocations = res.defsFinal;
       inherit (res) isDefined;
       inherit (res.checkedAndMerged) valueMeta;
@@ -2452,6 +2460,137 @@ let
         );
     };
 
+  /**
+    Find the modules of an evaluation that define an option without
+    importing a module that declares it.
+
+    A module that defines `services.foo.enable` needs the module that
+    declares `services.foo.enable`. If the defining module does not import
+    the declaring module, directly or through other modules, the defining
+    module works only when something else happens to bring the declaring
+    module into the evaluation.
+
+    # Inputs
+
+    `evaluation`
+
+    : The result of `evalModules`.
+
+    # Output
+
+    A list with one finding for each pair of an option and a file that
+    defines the option without importing a declaration of it. A finding has
+    these attributes:
+
+    `option`
+
+    : The option, as a string such as `"services.foo.enable"`.
+
+    `file`
+
+    : The file that defines the option.
+
+    `declaredIn`
+
+    : The files that declare the option. Importing one of them from `file`
+      resolves the finding.
+
+    # Limits
+
+    - The check sees definitions. A module that only reads an option of
+      another module, as in `config.services.foo.enable`, is not found.
+    - A module is known by its file. Modules that are written inline, with no
+      file of their own, count as the file that contains them, and all
+      modules with no known file count as one.
+    - The options that the module system itself declares, under `_module`,
+      need no import.
+
+    # Type
+
+    ```
+    missingImports :: Evaluation -> [ { option :: String; file :: String; declaredIn :: [ String ]; } ]
+    ```
+  */
+  missingImports =
+    evaluation:
+    let
+      # The module system declares the options under `_module` in a
+      # module with this file. Every evaluation has it.
+      ownFile = "lib/modules.nix";
+
+      # Every module of the graph, with the files it imports directly.
+      # A module that is imported from several modules appears once for
+      # each of them.
+      importsOfEach =
+        nodes:
+        concatMap (
+          node:
+          [
+            {
+              ${toString node.file} = map (imported: toString imported.file) node.imports;
+            }
+          ]
+          ++ importsOfEach node.imports
+        ) nodes;
+
+      # The files each file imports directly.
+      directImports = zipAttrsWith (_file: concatLists) (importsOfEach evaluation.graph);
+
+      # The files a file reaches through imports, itself included.
+      reachableFrom =
+        file:
+        map (item: item.key) (genericClosure {
+          startSet = [ { key = file; } ];
+          operator = item: map (next: { key = next; }) (directImports.${item.key} or [ ]);
+        });
+
+      reachable = mapAttrs (file: _imports: reachableFrom file) directImports;
+
+      # Every option below `tree`, with its path.
+      optionsBelow =
+        path: tree:
+        concatMap (
+          name:
+          let
+            value = tree.${name};
+            here = path ++ [ name ];
+          in
+          if isOption value then
+            [
+              {
+                path = here;
+                option = value;
+              }
+            ]
+          else if isAttrs value then
+            optionsBelow here value
+          else
+            [ ]
+        ) (attrNames tree);
+
+      findingsOf =
+        { path, option }:
+        let
+          declaredIn = map toString option.declarations;
+        in
+        if elem ownFile declaredIn then
+          [ ]
+        else
+          concatMap (
+            file:
+            if any (declaring: elem declaring (reachable.${file} or [ file ])) declaredIn then
+              [ ]
+            else
+              [
+                {
+                  option = showOption path;
+                  inherit file declaredIn;
+                }
+              ]
+          ) (unique (map toString option.filesWithAnyDefinition));
+    in
+    concatMap findingsOf (optionsBelow [ ] evaluation.options);
+
 in
 private
 // {
@@ -2476,6 +2615,7 @@ private
     mergeDefinitions
     mergeAttrDefinitionsWithPrio
     mergeOptionDecls # should be private?
+    missingImports
     mkAfter
     mkAliasAndWrapDefinitions
     mkAliasAndWrapDefsWithPriority

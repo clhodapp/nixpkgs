@@ -410,6 +410,9 @@ checkConfigError 'toInt: Could not convert .* to int' config.value ./declare-coe
 # Check `graph` attribute
 checkExpression './graph/test.nix'
 
+# Check `missingImports` and the option attribute `filesWithAnyDefinition`
+checkExpression './missing-imports/test.nix'
+
 # Check mkAliasOptionModule.
 checkConfigOutput '^true$' config.enable ./alias-with-priority.nix
 checkConfigOutput '^true$' config.enableAlias ./alias-with-priority.nix
