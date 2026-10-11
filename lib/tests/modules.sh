@@ -413,6 +413,9 @@ checkExpression './graph/test.nix'
 # Check modules that import each other, and a module that is reached along many paths
 checkExpression './import-graph/test.nix'
 
+# Check `lib.options.withoutOptionsDeclaredOnlyIn`
+checkExpression './without-options/test.nix'
+
 # Check mkAliasOptionModule.
 checkConfigOutput '^true$' config.enable ./alias-with-priority.nix
 checkConfigOutput '^true$' config.enableAlias ./alias-with-priority.nix

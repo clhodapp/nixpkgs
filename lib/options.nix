@@ -564,6 +564,58 @@ rec {
   */
   getFiles = catAttrs "file";
 
+  /**
+    Take out of a tree of options every option that is declared only in the
+    given files.
+
+    Of an option that is taken out, only the declarations and the type are
+    evaluated. Its default, its example, its description and the options of
+    its submodules are not. An evaluation that holds the modules of several
+    parts of a documentation, because the modules import each other, can so
+    document the options of one part without evaluating the rest of the
+    options of the other parts.
+
+    An option that is also declared in a file outside `files` stays.
+
+    # Inputs
+
+    `files`
+
+    : The files, as paths or strings.
+
+    `options`
+
+    : A tree of options, such as the `options` of an evaluation of modules.
+
+    # Type
+
+    ```
+    withoutOptionsDeclaredOnlyIn :: [ Path | String ] -> AttrSet -> AttrSet
+    ```
+  */
+  withoutOptionsDeclaredOnlyIn =
+    files:
+    let
+      nameOf = file: builtins.unsafeDiscardStringContext (toString file);
+      given = builtins.listToAttrs (
+        map (file: {
+          name = nameOf file;
+          value = null;
+        }) files
+      );
+      stays =
+        value:
+        !(isOption value)
+        || value.declarations == [ ]
+        || !(all (file: given ? ${nameOf file}) value.declarations);
+      prune =
+        tree:
+        mapAttrs (_: value: if isAttrs value && !(isOption value) then prune value else value) (
+          lib.filterAttrs (_: stays) tree
+        );
+    in
+    prune;
+
   # Generate documentation template from the list of option declaration like
   # the set generated with filterOptionSets.
   optionAttrSetToDocList = optionAttrSetToDocList' [ ];
