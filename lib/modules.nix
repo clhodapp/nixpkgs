@@ -29,6 +29,7 @@ let
     isString
     last
     length
+    listToAttrs
     mapAttrs
     mapAttrsToList
     min
@@ -1104,6 +1105,12 @@ let
           // res
           // {
             declarations = res.declarations ++ [ opt._file ];
+            # The files whose declaration of this option has a
+            # description. Two declarations of one option cannot both
+            # have a description, so this has one file at most. The
+            # other declarations of the option add to that one.
+            declarationsWithDescription =
+              res.declarationsWithDescription ++ optional (opt.options ? description) opt._file;
             # In the case of modules that are generated dynamically, we won't
             # have exact declaration lines; fall back to just the file being
             # evaluated.
@@ -1128,6 +1135,7 @@ let
       {
         inherit loc;
         declarations = [ ];
+        declarationsWithDescription = [ ];
         declarationPositions = [ ];
         options = [ ];
       };
@@ -2571,6 +2579,23 @@ let
 
     : For each file of a module, the files of the modules it imports directly.
 
+    `importable`
+
+    : The files that a module can import by writing the path of the file.
+      A file that is brought in another way is left out, for example a file
+      that `importApply` loads, because that file is not a module before
+      `importApply` gives it an argument.
+
+    `declarations`
+
+    : For each option, as a string, an attribute set with `files`, the files
+      that declare the option, and `withDescription`, the files whose
+      declaration has a description. Two declarations of one option cannot
+      both have a description. Where several files declare an option, the
+      file in `withDescription` is the one that a module that uses the option
+      imports. The other files add to that declaration. The options that the
+      module system declares itself are left out.
+
     The limits of `missingImports` apply here as well.
 
     # Type
@@ -2579,6 +2604,8 @@ let
     moduleDependencies :: Evaluation -> {
       uses :: [ { option :: String; file :: String; declaredIn :: [ String ]; } ];
       imports :: AttrsOf [ String ];
+      importable :: [ String ];
+      declarations :: AttrsOf { files :: [ String ]; withDescription :: [ String ]; };
     }
     ```
   */
@@ -2644,10 +2671,30 @@ let
             option = showOption path;
             inherit file declaredIn;
           }) (filter (file: !(elem file declaredIn)) (unique (map toString option.filesWithAnyDefinition)));
+      everyOption = optionsBelow [ ] evaluation.options;
     in
     {
-      uses = concatMap usesOf (optionsBelow [ ] evaluation.options);
+      uses = concatMap usesOf everyOption;
       imports = directImports;
+      # The key of a module that is imported by its path is the path.
+      importable = unique (
+        concatMap (node: optional (node.key == toString node.file) node.key) everyModule
+      );
+      declarations = listToAttrs (
+        concatMap (
+          { path, option }:
+          let
+            declaredIn = map toString option.declarations;
+          in
+          optional (!(elem ownFile declaredIn)) {
+            name = showOption path;
+            value = {
+              files = declaredIn;
+              withDescription = map toString option.declarationsWithDescription;
+            };
+          }
+        ) everyOption
+      );
     };
 
 in

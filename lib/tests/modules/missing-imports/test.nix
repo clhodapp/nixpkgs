@@ -46,5 +46,20 @@ assert
     (toString ./defines-with-import.nix)
   ];
 assert dependencies.imports.${toString ./declares.nix} == [ ];
+# The module that is written in the list of modules has no path.
+assert
+  lib.sort lib.lessThan dependencies.importable == lib.sort lib.lessThan [
+    (toString ./declares.nix)
+    (toString ./defines-with-import.nix)
+    (toString ./defines-through-another.nix)
+    (toString ./defines-without-import.nix)
+  ];
+assert
+  dependencies.declarations == {
+    greeting = {
+      files = [ (toString ./declares.nix) ];
+      withDescription = [ (toString ./declares.nix) ];
+    };
+  };
 assert definingFiles == expectedDefiningFiles;
 null
