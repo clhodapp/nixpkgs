@@ -31,7 +31,7 @@ use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
 
-use rnix::ast::{self, HasEntry, InterpolPart};
+use rnix::ast::{self, AstToken, HasEntry, InterpolPart};
 use rowan::ast::AstNode;
 
 /// How deep calls may go before the result is `Unknown`.
@@ -46,8 +46,16 @@ pub enum Value {
     /// A path that is known. Imports follow these.
     Path(Rc<PathBuf>),
     Attrs(Rc<Attrs>),
-    /// A list, as the values that can be among its elements.
+    /// A list whose elements are not all known, as the values that can
+    /// be among them. It has no order and no length.
     List(Rc<Vec<Thunk>>),
+    /// A list that is known element for element, in order.
+    Seq(Rc<Vec<Thunk>>),
+    /// A number that is known.
+    Int(i64),
+    /// A truth value that is known.
+    Bool(bool),
+    Null,
     Lambda(Rc<Closure>),
     Builtin(&'static str, Rc<Vec<Thunk>>),
     /// One of several values: what both branches of an `if` give.
@@ -129,12 +137,45 @@ impl Env {
     }
 }
 
+/// What kind of value this is, when that is known.
+fn kind(value: &Value) -> Option<&'static str> {
+    Some(match value {
+        Value::Int(_) => "int",
+        Value::Bool(_) => "bool",
+        Value::Null => "null",
+        Value::Str(_) => "string",
+        Value::Path(_) => "path",
+        Value::Attrs(_) => "set",
+        Value::List(_) | Value::Seq(_) => "list",
+        Value::Lambda(_) | Value::Builtin(..) => "lambda",
+        Value::Unknown | Value::Either(_) | Value::Config(_) => return None,
+    })
+}
+
+/// Whether two values are the same known number, truth value, string,
+/// path or null.
+fn same_scalar(first: &Value, second: &Value) -> bool {
+    match (first, second) {
+        (Value::Int(first), Value::Int(second)) => first == second,
+        (Value::Bool(first), Value::Bool(second)) => first == second,
+        (Value::Str(first), Value::Str(second)) => first == second,
+        (Value::Path(first), Value::Path(second)) => first == second,
+        (Value::Null, Value::Null) | (Value::Unknown, Value::Unknown) => true,
+        _ => false,
+    }
+}
+
 pub fn either(values: Vec<Value>) -> Value {
-    let mut flat = Vec::new();
+    let mut flat: Vec<Value> = Vec::new();
     for value in values {
-        match value {
-            Value::Either(inner) => flat.extend(inner.iter().cloned()),
-            other => flat.push(other),
+        let parts = match value {
+            Value::Either(inner) => inner.as_ref().clone(),
+            other => vec![other],
+        };
+        for part in parts {
+            if !flat.iter().any(|known| same_scalar(known, &part)) {
+                flat.push(part);
+            }
         }
     }
     if flat.len() == 1 {
@@ -161,6 +202,9 @@ pub struct Interpreter {
     /// What stops the run: a builtin without a meaning here, or a file
     /// that does not parse.
     pub fatal: Option<String>,
+    /// Errors in the code that was read, which the standard interpreter
+    /// reports only when it reaches them.
+    pub problems: BTreeSet<String>,
 }
 
 fn arity(name: &str) -> Option<usize> {
@@ -259,6 +303,7 @@ impl Interpreter {
             too_deep: 0,
             cycles: 0,
             fatal: None,
+            problems: BTreeSet::new(),
         }
     }
 
@@ -314,6 +359,15 @@ impl Interpreter {
         while let Some(current) = scope {
             if let Some(with) = &current.with {
                 let value = self.force(with);
+                // `with builtins;` gives only the names that are
+                // builtins. Any other name comes from further out.
+                if matches!(value, Value::Builtin("builtins", _))
+                    && arity(name).is_none()
+                    && !CONSTANTS.contains(&name)
+                {
+                    scope = current.parent.0.clone();
+                    continue;
+                }
                 if let Some(found) = self.select_one(&value, name) {
                     from_with.push(found);
                     // A set that is known and has the name settles it.
@@ -329,7 +383,9 @@ impl Interpreter {
         }
         match name {
             "builtins" => self.builtins(),
-            "true" | "false" | "null" => Value::Unknown,
+            "true" => Value::Bool(true),
+            "false" => Value::Bool(false),
+            "null" => Value::Null,
             _ if arity(name).is_some() => Value::Builtin(
                 // The names are the ones of `arity`, which are static.
                 Box::leak(name.to_string().into_boxed_str()),
@@ -368,9 +424,13 @@ impl Interpreter {
                     Rc::new(Vec::new()),
                 )
             } else {
-                self.stop(format!(
-                    "the builtin `{name}` has no meaning in this interpretation"
-                ))
+                // `arity` and `CONSTANTS` list the builtins of the
+                // language. A name that is in neither does not exist,
+                // which is an error in the code that asks for it. The
+                // value of an error is the one of a `throw`.
+                self.problems
+                    .insert(format!("`builtins.{name}` does not exist"));
+                nothing()
             }),
             _ => Some(Value::Unknown),
         }
@@ -580,7 +640,14 @@ impl Interpreter {
                 let name = ident.syntax().text().to_string();
                 self.lookup(&name, env)
             }
-            ast::Expr::Literal(_) => Value::Unknown,
+            ast::Expr::Literal(literal) => match literal.kind() {
+                ast::LiteralKind::Integer(integer) => match integer.value() {
+                    Ok(number) => Value::Int(number),
+                    Err(_) => Value::Unknown,
+                },
+                ast::LiteralKind::Float(_) => Value::Unknown,
+                ast::LiteralKind::Uri(uri) => Value::Str(uri.syntax().text().into()),
+            },
             ast::Expr::Str(string) => self.string(string, env, file),
             ast::Expr::Path(path) => {
                 let text = path.syntax().text().to_string();
@@ -593,7 +660,7 @@ impl Interpreter {
                     Value::Path(Rc::new(normalize(&directory.join(text))))
                 }
             }
-            ast::Expr::List(list) => Value::List(Rc::new(
+            ast::Expr::List(list) => Value::Seq(Rc::new(
                 list.items()
                     .map(|item| self.delay(Some(item), env, file))
                     .collect(),
@@ -644,14 +711,24 @@ impl Interpreter {
                 Some(body) => self.eval(&body, env, file),
                 None => Value::Unknown,
             },
-            // Both branches. The condition is read, because reading the
-            // configuration in it is a touch, and its value is dropped.
+            // A condition that depends on an input decides nothing: the
+            // result is both branches. The condition is still read,
+            // because reading the configuration in it is a touch. A
+            // condition that is known from what is written in the
+            // source, such as a counter that has reached the length of
+            // a list that is written out, has one answer.
             ast::Expr::IfElse(if_else) => {
-                if let Some(condition) = if_else.condition() {
-                    self.eval(&condition, env, file);
-                }
+                let condition = match if_else.condition() {
+                    Some(condition) => self.eval(&condition, env, file),
+                    None => Value::Unknown,
+                };
+                let branches = match condition {
+                    Value::Bool(true) => vec![if_else.body()],
+                    Value::Bool(false) => vec![if_else.else_body()],
+                    _ => vec![if_else.body(), if_else.else_body()],
+                };
                 let mut values = Vec::new();
-                for branch in [if_else.body(), if_else.else_body()].into_iter().flatten() {
+                for branch in branches.into_iter().flatten() {
                     values.push(self.eval(&branch, env, file));
                 }
                 either(values)
@@ -712,27 +789,37 @@ impl Interpreter {
                 }
             }
             ast::Expr::HasAttr(has) => {
-                if let Some(base) = has.expr() {
-                    let value = self.eval(&base, env, file);
-                    // Asking the configuration for a name reads it.
-                    if let (Value::Config(_), Some(attrpath)) = (&value, has.attrpath()) {
-                        let mut value = value.clone();
-                        for attr in attrpath.attrs() {
-                            let Some(name) = self.name_of(&attr, env, file) else {
-                                break;
-                            };
+                let (Some(base), Some(attrpath)) = (has.expr(), has.attrpath()) else {
+                    return Value::Unknown;
+                };
+                let mut value = self.eval(&base, env, file);
+                for attr in attrpath.attrs() {
+                    let Some(name) = self.name_of(&attr, env, file) else {
+                        return Value::Unknown;
+                    };
+                    match self.has(&value, &name) {
+                        Some(true) => {
                             value = self.select_one(&value, &name).unwrap_or(Value::Unknown);
+                        }
+                        Some(false) => return Value::Bool(false),
+                        None => {
+                            // Asking the configuration for a name reads it.
+                            self.select_one(&value, &name);
+                            return Value::Unknown;
                         }
                     }
                 }
-                Value::Unknown
+                Value::Bool(true)
             }
             ast::Expr::UnaryOp(op) => {
-                if let Some(inner) = op.expr() {
-                    self.eval(&inner, env, file);
-                }
-                match op.operator() {
-                    Some(ast::UnaryOpKind::Invert) | Some(ast::UnaryOpKind::Negate) | None => {
+                let inner = match op.expr() {
+                    Some(inner) => self.eval(&inner, env, file),
+                    None => Value::Unknown,
+                };
+                match (op.operator(), inner) {
+                    (Some(ast::UnaryOpKind::Invert), Value::Bool(known)) => Value::Bool(!known),
+                    (Some(ast::UnaryOpKind::Negate), Value::Int(known)) => Value::Int(-known),
+                    (Some(ast::UnaryOpKind::Invert | ast::UnaryOpKind::Negate) | None, _) => {
                         Value::Unknown
                     }
                 }
@@ -754,16 +841,72 @@ impl Interpreter {
                         let argument = self.delay(op.rhs(), env, file);
                         return self.apply(left, argument);
                     }
+                    // The second side of these is not looked at when the
+                    // first side settles the result.
+                    Some(ast::BinOpKind::And) if matches!(left, Value::Bool(false)) => {
+                        return Value::Bool(false);
+                    }
+                    Some(ast::BinOpKind::Or) if matches!(left, Value::Bool(true)) => {
+                        return Value::Bool(true);
+                    }
+                    Some(ast::BinOpKind::Implication) if matches!(left, Value::Bool(false)) => {
+                        return Value::Bool(true);
+                    }
                     _ => {}
                 }
                 let right = op
                     .rhs()
                     .map(|rhs| self.eval(&rhs, env, file))
                     .unwrap_or(Value::Unknown);
+                let number = |known: Option<i64>| known.map_or(Value::Unknown, Value::Int);
+                let truth = |known: Option<bool>| known.map_or(Value::Unknown, Value::Bool);
                 match op.operator() {
                     Some(ast::BinOpKind::Update) => self.update(left, right),
                     Some(ast::BinOpKind::Concat) => self.concat(left, right),
+                    Some(ast::BinOpKind::And) => match (&left, &right) {
+                        // The first side is true or not known here.
+                        (Value::Bool(true), Value::Bool(known)) => Value::Bool(*known),
+                        (_, Value::Bool(false)) => Value::Bool(false),
+                        _ => Value::Unknown,
+                    },
+                    Some(ast::BinOpKind::Or) => match (&left, &right) {
+                        (Value::Bool(false), Value::Bool(known)) => Value::Bool(*known),
+                        (_, Value::Bool(true)) => Value::Bool(true),
+                        _ => Value::Unknown,
+                    },
+                    Some(ast::BinOpKind::Implication) => match (&left, &right) {
+                        (Value::Bool(true), Value::Bool(known)) => Value::Bool(*known),
+                        (_, Value::Bool(true)) => Value::Bool(true),
+                        _ => Value::Unknown,
+                    },
+                    Some(ast::BinOpKind::Equal) => truth(self.equal(&left, &right)),
+                    Some(ast::BinOpKind::NotEqual) => {
+                        truth(self.equal(&left, &right).map(|same| !same))
+                    }
+                    Some(
+                        operator @ (ast::BinOpKind::Sub
+                        | ast::BinOpKind::Mul
+                        | ast::BinOpKind::Div
+                        | ast::BinOpKind::Less
+                        | ast::BinOpKind::LessOrEq
+                        | ast::BinOpKind::More
+                        | ast::BinOpKind::MoreOrEq),
+                    ) => match (&left, &right) {
+                        (Value::Int(first), Value::Int(second)) => match operator {
+                            ast::BinOpKind::Sub => number(first.checked_sub(*second)),
+                            ast::BinOpKind::Mul => number(first.checked_mul(*second)),
+                            ast::BinOpKind::Div => number(first.checked_div(*second)),
+                            ast::BinOpKind::Less => Value::Bool(first < second),
+                            ast::BinOpKind::LessOrEq => Value::Bool(first <= second),
+                            ast::BinOpKind::More => Value::Bool(first > second),
+                            _ => Value::Bool(first >= second),
+                        },
+                        _ => Value::Unknown,
+                    },
                     Some(ast::BinOpKind::Add) => match (&left, &right) {
+                        (Value::Int(first), Value::Int(second)) => {
+                            number(first.checked_add(*second))
+                        }
                         (Value::Str(first), Value::Str(second)) => {
                             Value::Str(format!("{first}{second}").into())
                         }
@@ -775,20 +918,6 @@ impl Interpreter {
                         }
                         _ => Value::Unknown,
                     },
-                    Some(
-                        ast::BinOpKind::Sub
-                        | ast::BinOpKind::Mul
-                        | ast::BinOpKind::Div
-                        | ast::BinOpKind::And
-                        | ast::BinOpKind::Equal
-                        | ast::BinOpKind::Implication
-                        | ast::BinOpKind::Less
-                        | ast::BinOpKind::LessOrEq
-                        | ast::BinOpKind::More
-                        | ast::BinOpKind::MoreOrEq
-                        | ast::BinOpKind::NotEqual
-                        | ast::BinOpKind::Or,
-                    ) => Value::Unknown,
                     Some(ast::BinOpKind::PipeRight | ast::BinOpKind::PipeLeft) | None => {
                         Value::Unknown
                     }
@@ -797,6 +926,71 @@ impl Interpreter {
             ast::Expr::Error(_) => {
                 self.stop(format!("{} has a part that does not parse", file.display()))
             }
+        }
+    }
+
+    /// Whether a value has an attribute, when that is known.
+    fn has(&mut self, value: &Value, name: &str) -> Option<bool> {
+        match value {
+            Value::Attrs(attrs) => {
+                if attrs.fields.contains_key(name) {
+                    Some(true)
+                } else if attrs.any.is_none() {
+                    Some(false)
+                } else {
+                    None
+                }
+            }
+            Value::Unknown | Value::Either(_) | Value::Config(_) => None,
+            // A value of another kind has no attributes.
+            _ => Some(false),
+        }
+    }
+
+    /// Whether two values are equal, when that is known.
+    fn equal(&mut self, first: &Value, second: &Value) -> Option<bool> {
+        let (first_kind, second_kind) = (kind(first)?, kind(second)?);
+        if first_kind != second_kind {
+            return Some(false);
+        }
+        match (first, second) {
+            (Value::Seq(first), Value::Seq(second)) => {
+                if first.len() != second.len() {
+                    return Some(false);
+                }
+                let mut all = Some(true);
+                for (left, right) in first.iter().zip(second.iter()) {
+                    let (left, right) = (self.force(left), self.force(right));
+                    match self.equal(&left, &right) {
+                        Some(false) => return Some(false),
+                        Some(true) => {}
+                        None => all = None,
+                    }
+                }
+                all
+            }
+            (Value::Attrs(first), Value::Attrs(second)) => {
+                let closed = first.any.is_none() && second.any.is_none();
+                let same_names = first.fields.keys().eq(second.fields.keys());
+                if closed && !same_names {
+                    Some(false)
+                } else if closed && first.fields.is_empty() {
+                    Some(true)
+                } else {
+                    None
+                }
+            }
+            (Value::List(_), _) | (_, Value::List(_)) => None,
+            (Value::Lambda(_) | Value::Builtin(..), _) => None,
+            _ => Some(same_scalar(first, second)),
+        }
+    }
+
+    /// The elements of a list that is known element for element.
+    fn exact(&mut self, value: &Value) -> Option<Rc<Vec<Thunk>>> {
+        match value {
+            Value::Seq(items) => Some(items.clone()),
+            _ => None,
         }
     }
 
@@ -813,7 +1007,7 @@ impl Interpreter {
                 }
                 either(values)
             }
-            Value::List(items) => {
+            Value::List(items) | Value::Seq(items) => {
                 let values = items.iter().map(|item| self.force(item)).collect();
                 either(values)
             }
@@ -832,10 +1026,15 @@ impl Interpreter {
     }
 
     fn concat(&mut self, left: Value, right: Value) -> Value {
+        if let (Value::Seq(first), Value::Seq(second)) = (&left, &right) {
+            return Value::Seq(Rc::new(
+                first.iter().chain(second.iter()).cloned().collect(),
+            ));
+        }
         let mut items = Vec::new();
         for side in [left, right] {
             match side {
-                Value::List(list) => items.extend(list.iter().cloned()),
+                Value::List(list) | Value::Seq(list) => items.extend(list.iter().cloned()),
                 // A list that is not known: one element that stands for
                 // all of them.
                 other => {
@@ -955,7 +1154,7 @@ impl Interpreter {
 
     fn elements(&mut self, value: &Value) -> Vec<Thunk> {
         match value {
-            Value::List(items) => items.as_ref().clone(),
+            Value::List(items) | Value::Seq(items) => items.as_ref().clone(),
             other => vec![Thunk::done(self.any_entry(other))],
         }
     }
@@ -990,11 +1189,280 @@ impl Interpreter {
         self.import(path)
     }
 
+    /// What a builtin gives when its arguments are known well enough for
+    /// the standard meaning: the length of a list that is written out,
+    /// whether a value is a set, the sum of two numbers. `None` when
+    /// they are not, and then `builtin` gives the meaning for values
+    /// that are not known.
+    fn builtin_exact(&mut self, name: &str, arguments: &[Thunk]) -> Option<Value> {
+        let first = self.force(&arguments[0]);
+        let is = |wanted: &str| kind(&first).map(|known| Value::Bool(known == wanted));
+        match name {
+            "isAttrs" => is("set"),
+            "isList" => is("list"),
+            "isString" => is("string"),
+            "isInt" => is("int"),
+            "isBool" => is("bool"),
+            "isNull" => is("null"),
+            "isPath" => is("path"),
+            "isFunction" => is("lambda"),
+            "isFloat" => kind(&first).map(|_| Value::Bool(false)),
+            "typeOf" => kind(&first).map(|known| Value::Str(known.into())),
+            "length" => self
+                .exact(&first)
+                .map(|items| Value::Int(items.len() as i64)),
+            "head" => {
+                let items = self.exact(&first)?;
+                Some(match items.first() {
+                    Some(item) => self.force(item),
+                    None => nothing(),
+                })
+            }
+            "tail" => {
+                let items = self.exact(&first)?;
+                Some(Value::Seq(Rc::new(items.iter().skip(1).cloned().collect())))
+            }
+            "elemAt" => {
+                let items = self.exact(&first)?;
+                let Value::Int(index) = self.force(&arguments[1]) else {
+                    return None;
+                };
+                Some(
+                    match usize::try_from(index)
+                        .ok()
+                        .and_then(|index| items.get(index))
+                    {
+                        Some(item) => self.force(item),
+                        None => nothing(),
+                    },
+                )
+            }
+            "elem" => {
+                let list = self.force(&arguments[1]);
+                let items = self.exact(&list)?;
+                let mut known = true;
+                for item in items.iter() {
+                    let item = self.force(item);
+                    match self.equal(&first, &item) {
+                        Some(true) => return Some(Value::Bool(true)),
+                        Some(false) => {}
+                        None => known = false,
+                    }
+                }
+                known.then_some(Value::Bool(false))
+            }
+            "genList" => {
+                let Value::Int(count) = self.force(&arguments[1]) else {
+                    return None;
+                };
+                if !(0..=10_000).contains(&count) {
+                    return None;
+                }
+                let items = (0..count)
+                    .map(|index| {
+                        let function = first.clone();
+                        Thunk::delayed(move |interpreter| {
+                            interpreter.apply(function.clone(), Thunk::done(Value::Int(index)))
+                        })
+                    })
+                    .collect();
+                Some(Value::Seq(Rc::new(items)))
+            }
+            "map" => {
+                let list = self.force(&arguments[1]);
+                let items = self.exact(&list)?;
+                let items = items
+                    .iter()
+                    .map(|item| {
+                        let (function, item) = (first.clone(), item.clone());
+                        Thunk::delayed(move |interpreter| {
+                            interpreter.apply(function.clone(), item.clone())
+                        })
+                    })
+                    .collect();
+                Some(Value::Seq(Rc::new(items)))
+            }
+            "filter" => {
+                let list = self.force(&arguments[1]);
+                let items = self.exact(&list)?;
+                let mut kept = Vec::new();
+                for item in items.iter() {
+                    match self.apply(first.clone(), item.clone()) {
+                        Value::Bool(true) => kept.push(item.clone()),
+                        Value::Bool(false) => {}
+                        _ => return None,
+                    }
+                }
+                Some(Value::Seq(Rc::new(kept)))
+            }
+            "all" | "any" => {
+                let list = self.force(&arguments[1]);
+                let items = self.exact(&list)?;
+                let wanted = name == "any";
+                let mut known = true;
+                for item in items.iter() {
+                    match self.apply(first.clone(), item.clone()) {
+                        Value::Bool(found) if found == wanted => return Some(Value::Bool(wanted)),
+                        Value::Bool(_) => {}
+                        _ => known = false,
+                    }
+                }
+                known.then_some(Value::Bool(!wanted))
+            }
+            "concatLists" => {
+                let lists = self.exact(&first)?;
+                let mut items = Vec::new();
+                for list in lists.iter() {
+                    let list = self.force(list);
+                    items.extend(self.exact(&list)?.iter().cloned());
+                }
+                Some(Value::Seq(Rc::new(items)))
+            }
+            "concatMap" => {
+                let list = self.force(&arguments[1]);
+                let given = self.exact(&list)?;
+                let mut items = Vec::new();
+                for item in given.iter() {
+                    let produced = self.apply(first.clone(), item.clone());
+                    items.extend(self.exact(&produced)?.iter().cloned());
+                }
+                Some(Value::Seq(Rc::new(items)))
+            }
+            "foldl'" => {
+                let list = self.force(&arguments[2]);
+                let items = self.exact(&list)?;
+                let mut so_far = arguments[1].clone();
+                for item in items.iter() {
+                    let (function, before, item) = (first.clone(), so_far.clone(), item.clone());
+                    so_far = Thunk::delayed(move |interpreter| {
+                        let partly = interpreter.apply(function.clone(), before.clone());
+                        interpreter.apply(partly, item.clone())
+                    });
+                }
+                Some(self.force(&so_far))
+            }
+            "attrNames" | "attrValues" => match &first {
+                Value::Attrs(attrs) if attrs.any.is_none() => {
+                    let items = attrs
+                        .fields
+                        .iter()
+                        .map(|(field, value)| {
+                            if name == "attrNames" {
+                                Thunk::done(Value::Str(field.as_str().into()))
+                            } else {
+                                value.clone()
+                            }
+                        })
+                        .collect();
+                    Some(Value::Seq(Rc::new(items)))
+                }
+                _ => None,
+            },
+            "hasAttr" => {
+                let Value::Str(field) = &first else {
+                    return None;
+                };
+                let set = self.force(&arguments[1]);
+                self.has(&set, field).map(Value::Bool)
+            }
+            "intersectAttrs" => {
+                let second = self.force(&arguments[1]);
+                match (&first, &second) {
+                    (Value::Attrs(names), Value::Attrs(values))
+                        if names.any.is_none() && values.any.is_none() =>
+                    {
+                        let fields = values
+                            .fields
+                            .iter()
+                            .filter(|(field, _)| names.fields.contains_key(*field))
+                            .map(|(field, value)| (field.clone(), value.clone()))
+                            .collect();
+                        Some(Value::Attrs(Rc::new(Attrs { fields, any: None })))
+                    }
+                    _ => None,
+                }
+            }
+            "functionArgs" => match &first {
+                Value::Lambda(closure) => {
+                    let fields = match &closure.param {
+                        ast::Param::Pattern(pattern) => pattern
+                            .pat_entries()
+                            .filter_map(|entry| {
+                                let name = entry.ident()?.syntax().text().to_string();
+                                Some((name, Thunk::done(Value::Bool(entry.default().is_some()))))
+                            })
+                            .collect(),
+                        ast::Param::IdentParam(_) => BTreeMap::new(),
+                    };
+                    Some(Value::Attrs(Rc::new(Attrs { fields, any: None })))
+                }
+                _ => None,
+            },
+            "concatStringsSep" => {
+                let Value::Str(separator) = &first else {
+                    return None;
+                };
+                let list = self.force(&arguments[1]);
+                let items = self.exact(&list)?;
+                let mut parts = Vec::new();
+                for item in items.iter() {
+                    match self.force(item) {
+                        Value::Str(part) => parts.push(part.to_string()),
+                        Value::Path(part) => parts.push(part.to_string_lossy().to_string()),
+                        _ => return None,
+                    }
+                }
+                Some(Value::Str(parts.join(separator).into()))
+            }
+            "stringLength" => match &first {
+                Value::Str(text) => Some(Value::Int(text.len() as i64)),
+                _ => None,
+            },
+            "substring" => {
+                let (Value::Int(start), Value::Int(length), Value::Str(text)) =
+                    (&first, self.force(&arguments[1]), self.force(&arguments[2]))
+                else {
+                    return None;
+                };
+                let start = usize::try_from(*start).ok()?.min(text.len());
+                let end = match usize::try_from(length) {
+                    Ok(length) => start.saturating_add(length).min(text.len()),
+                    // A negative length is the rest of the string.
+                    Err(_) => text.len(),
+                };
+                text.get(start..end).map(|part| Value::Str(part.into()))
+            }
+            "toString" => match &first {
+                Value::Int(number) => Some(Value::Str(number.to_string().into())),
+                Value::Bool(true) => Some(Value::Str("1".into())),
+                Value::Bool(false) | Value::Null => Some(Value::Str("".into())),
+                _ => None,
+            },
+            "add" | "sub" | "mul" | "div" | "lessThan" => {
+                let (Value::Int(left), Value::Int(right)) = (&first, self.force(&arguments[1]))
+                else {
+                    return None;
+                };
+                match name {
+                    "add" => left.checked_add(right).map(Value::Int),
+                    "sub" => left.checked_sub(right).map(Value::Int),
+                    "mul" => left.checked_mul(right).map(Value::Int),
+                    "div" => left.checked_div(right).map(Value::Int),
+                    _ => Some(Value::Bool(*left < right)),
+                }
+            }
+            _ => None,
+        }
+    }
+
     /// The meaning of each builtin. One that gives a value that is not
     /// tracked, such as a number or the content of a file, gives
     /// `Unknown`. Its arguments are read first where they can read the
     /// configuration.
     fn builtin(&mut self, name: &'static str, arguments: &[Thunk]) -> Value {
+        if let Some(exact) = self.builtin_exact(name, arguments) {
+            return exact;
+        }
         let first = arguments[0].clone();
         match name {
             "import" => match self.force(&first) {

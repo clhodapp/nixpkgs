@@ -48,6 +48,9 @@ pub struct Touches {
     pub cycles: usize,
     /// What stopped the interpretation, when something did.
     pub stopped: Option<String>,
+    /// Errors in the module that this reading came across, such as a
+    /// builtin that does not exist.
+    pub problems: BTreeSet<String>,
 }
 
 /// How deep the settings of a module are followed.
@@ -104,7 +107,7 @@ impl Reader<'_> {
                     Some("merge") => {
                         let contents = self.field(&attrs, "contents").unwrap_or(Value::Unknown);
                         return match contents {
-                            Value::List(items) => {
+                            Value::List(items) | Value::Seq(items) => {
                                 for item in items.iter() {
                                     let item = self.interpreter.force(item);
                                     self.read(kind, item, path, depth + 1);
@@ -139,6 +142,10 @@ impl Reader<'_> {
             Value::Str(_)
             | Value::Path(_)
             | Value::List(_)
+            | Value::Seq(_)
+            | Value::Int(_)
+            | Value::Bool(_)
+            | Value::Null
             | Value::Lambda(_)
             | Value::Builtin(..) => self.touch(kind, path, false),
         }
@@ -199,7 +206,8 @@ impl Reader<'_> {
                 self.touch(Kind::Import, &[path.to_string_lossy().to_string()], false)
             }
             Value::Str(text) => self.touch(Kind::Import, &[text.to_string()], false),
-            Value::List(_) => {}
+            // Not a module.
+            Value::List(_) | Value::Seq(_) | Value::Int(_) | Value::Bool(_) | Value::Null => {}
         }
     }
 
@@ -207,7 +215,7 @@ impl Reader<'_> {
     /// is a module that is written in this file.
     fn imports(&mut self, value: Value, inputs: &Thunk, depth: usize) {
         match value {
-            Value::List(items) => {
+            Value::List(items) | Value::Seq(items) => {
                 for item in items.iter() {
                     let item = self.interpreter.force(item);
                     self.module(item, inputs, depth + 1);
@@ -271,6 +279,7 @@ pub fn of_file(interpreter: &mut Interpreter, file: &Path, library: &Path) -> To
         too_deep: interpreter.too_deep,
         cycles: interpreter.cycles,
         stopped: interpreter.fatal.clone(),
+        problems: std::mem::take(&mut interpreter.problems),
     }
 }
 
@@ -377,8 +386,8 @@ in
             ),
             [
                 "Set systemd.services.*.description ...",
-                "Set users.users.alice.isNormalUser ...",
-                "Set users.users.bob.isNormalUser ...",
+                "Set users.users.alice.isNormalUser",
+                "Set users.users.bob.isNormalUser",
                 "Read config.services",
                 "Read config.services.web",
                 "Read config.services.web.instances",
