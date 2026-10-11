@@ -47,9 +47,29 @@ When module A uses options of B and of C, and B imports C, the tool writes only 
 A later change that takes C out of the reach of B puts the import of C into A on the next run.
 Every import that the tool writes is of a file whose options the module uses.
 
-Modules that use each other are handled one import at a time.
-The tool leaves an import out only while the file stays in reach, so two modules that import each other cannot each leave a file to the other.
-Where several choices are possible, the tool goes through the modules and their imports in the order of their paths, so the same tree always gets the same imports.
+## The smallest set of imports
+
+The imports that the tool writes are the smallest set with which every module still reaches every file it needs.
+In terms of graphs this is the transitive reduction of the import graph, where the imports that a person wrote cost nothing.
+
+The tool first puts the modules into groups that reach each other, the strongly connected components of the graph.
+Between the groups the graph has no cycle.
+There the smallest set is unique: one import from a group to another, and only where no way leads through a third group.
+
+Inside a group the task is the minimum strongly connected spanning subgraph, which is NP-hard in general.
+The groups of a module tree are small enough to solve.
+The tool first keeps every import that is the only one to enter or to leave a module, and drops every import of a file that those reach.
+It solves the rest as an integer program: one import has to leave and one has to enter each set of modules, and the tool adds that condition for a set whenever an answer leaves the set cut off.
+The first answer in which all modules reach each other is a smallest set.
+
+`report` prints the number of imports inside the groups next to the number that no set is smaller than.
+The two are equal when the search finished.
+When the search for a group does not finish, the tool takes the imports of that group out one at a time and keeps one when its file would go out of reach.
+That result has no import that could be left out, and it may have more imports than the smallest set.
+
+A tree often has several smallest sets.
+The tool gives the same tree the same imports on every run.
+Another version of the tool can choose another smallest set.
 
 ## Usage
 

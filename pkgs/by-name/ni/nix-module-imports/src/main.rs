@@ -5,6 +5,7 @@
 //! the project the modules belong to.
 
 mod plan;
+mod reduce;
 mod source;
 
 use std::collections::BTreeMap;
@@ -181,6 +182,11 @@ fn report(plan: &Plan) {
         "groups of modules that import each other, with those imports: {} (the largest has {} modules)",
         plan.cycles.groups,
         plan.cycles.largest
+    );
+    say!(
+        "imports the tool writes inside those groups: {} (no set is smaller than {})",
+        plan.cycles.imports,
+        plan.cycles.lower_bound
     );
 
     let mut imported: BTreeMap<&str, usize> = BTreeMap::new();

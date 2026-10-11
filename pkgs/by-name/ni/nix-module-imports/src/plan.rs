@@ -7,6 +7,7 @@ use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
+use crate::reduce::{reaches, reduce};
 use crate::source::{Module, OptionTree, Unsupported, relative_literal};
 
 /// The output of `lib.modules.moduleDependencies`. File names are the
@@ -150,6 +151,11 @@ pub struct Cycles {
     pub groups: usize,
     /// The number of modules in the largest group.
     pub largest: usize,
+    /// The imports inside the groups that the tool writes.
+    pub imports: usize,
+    /// No set of imports inside the groups is smaller than this. When
+    /// it equals `imports`, the tool writes the smallest set there is.
+    pub lower_bound: usize,
 }
 
 #[derive(Serialize)]
@@ -206,25 +212,6 @@ struct Candidate {
     unwritable: Option<String>,
 }
 
-/// Whether the module `from` reaches the module `to` along the imports.
-fn reaches(edges: &[BTreeSet<usize>], from: usize, to: usize) -> bool {
-    let mut seen = vec![false; edges.len()];
-    let mut stack = vec![from];
-    seen[from] = true;
-    while let Some(node) = stack.pop() {
-        for &next in &edges[node] {
-            if next == to {
-                return true;
-            }
-            if !seen[next] {
-                seen[next] = true;
-                stack.push(next);
-            }
-        }
-    }
-    false
-}
-
 /// The directory part of a path below the root.
 fn directory_of(path: &str) -> &str {
     path.rfind('/').map_or("", |index| &path[..index])
@@ -259,6 +246,8 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
         cycles: Cycles {
             groups: 0,
             largest: 0,
+            imports: 0,
+            lower_bound: 0,
         },
     };
     // First every module is read, to learn what it needs and which
@@ -400,26 +389,27 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
     }
 
     // An import is left out when the module reaches the file through
-    // its other imports. The imports are taken away one at a time, and
-    // each time the file has to stay in reach, because two modules that
-    // import each other could otherwise each leave an import to the
-    // other and both lose the file.
-    for candidate in &candidates {
-        if candidate.unwritable.is_some() {
-            continue;
-        }
-        let from = names[&candidate.module];
-        for file in candidate.needed.keys() {
-            let to = names[file];
-            if candidate.fixed.contains(file) {
-                continue;
-            }
-            edges[from].remove(&to);
-            if !reaches(&edges, from, to) {
-                edges[from].insert(to);
-            }
-        }
-    }
+    // its other imports.
+    let removable: BTreeSet<(usize, usize)> = candidates
+        .iter()
+        .filter(|candidate| candidate.unwritable.is_none())
+        .flat_map(|candidate| {
+            let from = names[&candidate.module];
+            candidate
+                .needed
+                .keys()
+                .filter(|file| !candidate.fixed.contains(*file))
+                .map(|file| (from, names[file]))
+                .collect::<Vec<_>>()
+        })
+        .collect();
+    let groups = reduce(&mut edges, &removable);
+    plan.cycles = Cycles {
+        groups: groups.len(),
+        largest: groups.iter().map(|group| group.modules).max().unwrap_or(0),
+        imports: groups.iter().map(|group| group.kept).sum(),
+        lower_bound: groups.iter().map(|group| group.lower_bound).sum(),
+    };
 
     for candidate in candidates {
         let from = names[&candidate.module];
@@ -488,137 +478,12 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
         });
     }
 
-    let by_index: BTreeMap<usize, &String> =
-        names.iter().map(|(name, index)| (*index, name)).collect();
-    let graph: BTreeMap<String, BTreeSet<String>> = edges
-        .iter()
-        .enumerate()
-        .map(|(from, targets)| {
-            (
-                by_index[&from].clone(),
-                targets.iter().map(|to| by_index[to].clone()).collect(),
-            )
-        })
-        .collect();
-    plan.cycles = cycles(&graph);
     plan
-}
-
-/// Count the groups of modules that reach each other, with the
-/// algorithm of Tarjan for strongly connected components.
-fn cycles(graph: &BTreeMap<String, BTreeSet<String>>) -> Cycles {
-    struct State<'a> {
-        graph: &'a BTreeMap<String, BTreeSet<String>>,
-        index: BTreeMap<&'a str, usize>,
-        low: BTreeMap<&'a str, usize>,
-        on_stack: BTreeSet<&'a str>,
-        stack: Vec<&'a str>,
-        next: usize,
-        result: Cycles,
-    }
-    // The walk keeps its own stack, because a chain of imports can be
-    // as long as the tree has modules.
-    type Work<'a> = Vec<(&'a str, Vec<&'a str>)>;
-    fn enter<'a>(state: &mut State<'a>, work: &mut Work<'a>, node: &'a str) {
-        state.index.insert(node, state.next);
-        state.low.insert(node, state.next);
-        state.next += 1;
-        state.stack.push(node);
-        state.on_stack.insert(node);
-        let graph = state.graph;
-        let successors: Vec<&'a str> = graph
-            .get(node)
-            .into_iter()
-            .flatten()
-            .map(String::as_str)
-            .filter(|successor| graph.contains_key(*successor))
-            .collect();
-        work.push((node, successors));
-    }
-    fn visit<'a>(state: &mut State<'a>, root: &'a str) {
-        let mut work: Work<'a> = Vec::new();
-        enter(state, &mut work, root);
-        while let Some((node, successors)) = work.last_mut() {
-            let node = *node;
-            if let Some(successor) = successors.pop() {
-                if !state.index.contains_key(successor) {
-                    enter(state, &mut work, successor);
-                } else if state.on_stack.contains(successor) {
-                    let low = state.low[node].min(state.index[successor]);
-                    state.low.insert(node, low);
-                }
-                continue;
-            }
-            work.pop();
-            if let Some((parent, _)) = work.last() {
-                let low = state.low[*parent].min(state.low[node]);
-                state.low.insert(*parent, low);
-            }
-            if state.low[node] == state.index[node] {
-                let mut size = 0;
-                while let Some(member) = state.stack.pop() {
-                    state.on_stack.remove(member);
-                    size += 1;
-                    if member == node {
-                        break;
-                    }
-                }
-                if size > 1 {
-                    state.result.groups += 1;
-                    state.result.largest = state.result.largest.max(size);
-                }
-            }
-        }
-    }
-    let mut state = State {
-        graph,
-        index: BTreeMap::new(),
-        low: BTreeMap::new(),
-        on_stack: BTreeSet::new(),
-        stack: Vec::new(),
-        next: 0,
-        result: Cycles {
-            groups: 0,
-            largest: 0,
-        },
-    };
-    for node in graph.keys() {
-        if !state.index.contains_key(node.as_str()) {
-            visit(&mut state, node);
-        }
-    }
-    state.result
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    fn graph(edges: &[(&str, &[&str])]) -> BTreeMap<String, BTreeSet<String>> {
-        edges
-            .iter()
-            .map(|(from, to)| {
-                (
-                    from.to_string(),
-                    to.iter().map(|to| to.to_string()).collect(),
-                )
-            })
-            .collect()
-    }
-
-    #[test]
-    fn counts_the_groups_of_modules_that_reach_each_other() {
-        let found = cycles(&graph(&[
-            ("a", &["b"]),
-            ("b", &["c"]),
-            ("c", &["a", "d"]),
-            ("d", &["e"]),
-            ("e", &["d"]),
-            ("f", &["a"]),
-        ]));
-        assert_eq!(found.groups, 2);
-        assert_eq!(found.largest, 3);
-    }
 
     /// Plan for a tree of modules `a.nix`, `b.nix` and `c.nix`, each of
     /// which declares the option of its name. `uses` says which module
@@ -693,11 +558,11 @@ mod tests {
         assert_eq!(
             files,
             [
-                ("a.nix".to_string(), vec!["./b.nix".to_string()]),
                 (
-                    "b.nix".to_string(),
-                    vec!["./a.nix".to_string(), "./c.nix".to_string()]
+                    "a.nix".to_string(),
+                    vec!["./b.nix".to_string(), "./c.nix".to_string()]
                 ),
+                ("b.nix".to_string(), vec!["./a.nix".to_string()]),
             ]
         );
     }
