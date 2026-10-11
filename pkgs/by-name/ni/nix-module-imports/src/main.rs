@@ -4,10 +4,12 @@
 //! more evaluations of the modules, as JSON. The tool knows nothing about
 //! the project the modules belong to.
 
+mod algebra;
 mod listing;
 mod plan;
 mod reduce;
 mod source;
+mod touches;
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -57,6 +59,19 @@ enum Command {
     Check {
         #[command(flatten)]
         input: Input,
+    },
+    /// Print, as JSON, what each of the given module files can touch:
+    /// the settings it can make, the options it can declare and what it
+    /// can read of the configuration. Nothing is evaluated. The files
+    /// are read with another meaning of the language, in which a
+    /// condition decides nothing
+    Touches {
+        /// The directory of the library that the modules get as `lib`
+        #[arg(long, value_name = "DIRECTORY")]
+        library: PathBuf,
+        /// The module files
+        #[arg(required = true, value_name = "FILE")]
+        files: Vec<PathBuf>,
     },
     /// Print, as JSON, what the source of the modules shows about the
     /// settings each file can make, next to what the module system
@@ -290,6 +305,27 @@ fn report(plan: &Plan) {
 
 fn run(cli: Cli) -> Result<ExitCode, String> {
     match cli.command {
+        Command::Touches { library, files } => {
+            let library = fs::canonicalize(&library)
+                .map_err(|error| format!("{}: {error}", library.display()))?;
+            let mut interpreter = algebra::Interpreter::new();
+            let mut result = BTreeMap::new();
+            for file in &files {
+                let path = fs::canonicalize(file)
+                    .map_err(|error| format!("{}: {error}", file.display()))?;
+                let touches = touches::of_file(&mut interpreter, &path, &library);
+                // What stops one file stops the run: it is a construct
+                // or a builtin that this interpretation has no meaning
+                // for, and that has to be given one.
+                if let Some(why) = &touches.stopped {
+                    return Err(format!("{}: {why}", file.display()));
+                }
+                result.insert(file.display().to_string(), touches);
+            }
+            let text = serde_json::to_string_pretty(&result).map_err(|error| error.to_string())?;
+            say!("{text}");
+            Ok(ExitCode::SUCCESS)
+        }
         Command::Source { input } => {
             let comparison = with_input(&input, plan::compare_with_source)?;
             let text =
