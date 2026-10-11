@@ -62,8 +62,9 @@ The tool first keeps every import that is the only one to enter or to leave a mo
 It solves the rest as an integer program: one import has to leave and one has to enter each set of modules, and the tool adds that condition for a set whenever an answer leaves the set cut off.
 The first answer in which all modules reach each other is a smallest set.
 
-`--smallest-set-timeout` gives about the most seconds that the tool spends on finding the smallest sets, for all groups together.
-The default is 300.
+`--search-approximate-after` gives about the most time that the tool spends on finding the smallest sets, for all groups together.
+The value is a number with `s`, `m` or `h` for seconds, minutes or hours, such as `10s` or `10m`.
+The default is `5m`.
 The tool looks at the clock between the steps of its work, so a run can go a little over the time.
 The small groups come first.
 The timeout does not end the run: when the time is up, the tool builds a set for each group that is left from what the search has found out.
@@ -71,7 +72,7 @@ The imports that the search has decided on stay decided.
 The last answer of the integer program is as small as any valid set, and it leaves some modules cut off.
 The tool takes the imports outside that answer out one at a time first, and keeps one only when its file would go out of reach.
 The result has no import that could be left out, and it is close to the smallest set: for the largest group of NixOS, 5 seconds give 445 imports where the smallest set has 443.
-With `--smallest-set-timeout 0` no program is solved, and the tool takes the imports of every group out one at a time in the order of their paths.
+With `--search-approximate-after 0` no program is solved, and the tool takes the imports of every group out one at a time in the order of their paths.
 
 `report` prints the number of imports inside the groups next to the number that no set is smaller than.
 The two are equal when every group has its smallest set.
@@ -79,7 +80,7 @@ Every command says so when the time was up before that.
 
 How far the tool comes in a given time depends on the machine.
 `check` compares the files with what the tool writes, so a `check` that reaches the timeout can ask for a rewrite of files that `fix` wrote on a faster machine.
-Give `check` the time to finish, or run both with `--smallest-set-timeout 0`.
+Give `check` the time to finish, or run both with `--search-approximate-after 0`.
 
 A tree often has several smallest sets.
 The tool gives the same tree the same imports on every run.

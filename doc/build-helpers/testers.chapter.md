@@ -327,11 +327,12 @@ testers.moduleImports {
   The tool finds those by looking at the source of the module.
   Defaults to `false`.
 
-`smallestSetTimeout` (integer, optional)
-: About the most seconds that `nix-module-imports` spends on finding the smallest set of imports among modules that import each other.
+`searchApproximateAfter` (string, optional)
+: About the most time that `nix-module-imports` spends on finding the smallest set of imports among modules that import each other.
+  The value is a number with `s`, `m` or `h` for seconds, minutes or hours, such as `"10s"` or `"10m"`.
   When the time is up, the tool goes on from what it has found and writes a set for the remaining modules that may not be the smallest, and the log says so.
   The check compares the files with what the tool writes, so use the value that `nix-module-imports fix` ran with, and one that leaves the tool time to finish on the machine that builds the check.
-  Defaults to the default of the tool, which is 300 seconds.
+  Defaults to the default of the tool, which is `"5m"`.
 
 ### Return value {#tester-moduleImports-return}
 

@@ -76,13 +76,40 @@ struct Input {
     /// options it reads
     #[arg(long)]
     definitions_only: bool,
-    /// About the most seconds to spend on finding the smallest set of
-    /// imports among modules that import each other. When the time is
-    /// up, the tool goes on from what it has found and writes a set
-    /// that has no import that could be left out, and that may not be
-    /// the smallest. With 0 it does that for every group at once.
-    #[arg(long, value_name = "SECONDS", default_value_t = 300)]
-    smallest_set_timeout: u64,
+    /// About the most time to spend on finding the smallest set of
+    /// imports among modules that import each other, as a number with
+    /// `s`, `m` or `h` for seconds, minutes or hours, such as `10s` or
+    /// `10m`. When the time is up, the tool goes on from what it has
+    /// found and writes a set that has no import that could be left
+    /// out, and that may not be the smallest. With `0` it does that for
+    /// every group at once.
+    #[arg(long, value_name = "TIME", default_value = "5m", value_parser = time)]
+    search_approximate_after: Duration,
+}
+
+/// Read a time such as `10s`, `10m` or `2h`. A number without a unit is
+/// refused, apart from `0`, so that nobody has to guess the unit.
+fn time(text: &str) -> Result<Duration, String> {
+    if text == "0" {
+        return Ok(Duration::ZERO);
+    }
+    let seconds_in_unit = match text.chars().last() {
+        Some('s') => 1,
+        Some('m') => 60,
+        Some('h') => 60 * 60,
+        _ => {
+            return Err(format!(
+                "`{text}` has no unit: write `s`, `m` or `h` after the number, as in `10s` or `10m`"
+            ));
+        }
+    };
+    let number: u64 = text[..text.len() - 1]
+        .parse()
+        .map_err(|_| format!("`{text}` is not a whole number with `s`, `m` or `h` after it"))?;
+    number
+        .checked_mul(seconds_in_unit)
+        .map(Duration::from_secs)
+        .ok_or_else(|| format!("`{text}` is too long a time"))
 }
 
 fn load(input: &Input) -> Result<Plan, String> {
@@ -109,7 +136,7 @@ fn load(input: &Input) -> Result<Plan, String> {
             root: &root,
             evaluated_root: &evaluated_root,
             definitions_only: input.definitions_only,
-            smallest_set_timeout: Duration::from_secs(input.smallest_set_timeout),
+            search_approximate_after: input.search_approximate_after,
         },
     ))
 }
@@ -164,7 +191,7 @@ fn print_unsupported(plan: &Plan) {
 fn say_approximated(plan: &Plan) {
     if plan.cycles.approximated > 0 {
         say!(
-            "the time for finding the smallest set was up: {} of {} groups of modules that import each other got a set that may not be the smallest (see --smallest-set-timeout)",
+            "the time for finding the smallest set was up: {} of {} groups of modules that import each other got a set that may not be the smallest (see --search-approximate-after)",
             plan.cycles.approximated,
             plan.cycles.groups
         );
@@ -314,5 +341,28 @@ fn main() -> ExitCode {
             eprintln!("nix-module-imports: {message}");
             ExitCode::from(2)
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn reads_a_time_with_its_unit() {
+        assert_eq!(time("10s"), Ok(Duration::from_secs(10)));
+        assert_eq!(time("10m"), Ok(Duration::from_secs(600)));
+        assert_eq!(time("2h"), Ok(Duration::from_secs(7200)));
+        assert_eq!(time("0"), Ok(Duration::ZERO));
+        assert_eq!(time("0s"), Ok(Duration::ZERO));
+    }
+
+    #[test]
+    fn refuses_a_time_without_a_unit() {
+        assert!(time("10").is_err());
+        assert!(time("").is_err());
+        assert!(time("s").is_err());
+        assert!(time("1.5m").is_err());
+        assert!(time("10 m").is_err());
     }
 }

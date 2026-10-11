@@ -192,7 +192,7 @@ pub struct Settings<'a> {
     pub definitions_only: bool,
     /// About the most time to spend on finding the smallest set of
     /// imports, before going on with what was found.
-    pub smallest_set_timeout: Duration,
+    pub search_approximate_after: Duration,
 }
 
 impl Settings<'_> {
@@ -414,7 +414,7 @@ pub fn plan(dependencies: &Dependencies, settings: &Settings) -> Plan {
     let groups = reduce(
         &mut edges,
         &removable,
-        Instant::now() + settings.smallest_set_timeout,
+        Instant::now() + settings.search_approximate_after,
     );
     plan.cycles = Cycles {
         groups: groups.len(),
@@ -534,7 +534,7 @@ mod tests {
                 root: &root,
                 evaluated_root: &evaluated_root,
                 definitions_only: true,
-                smallest_set_timeout: Duration::from_secs(60),
+                search_approximate_after: Duration::from_secs(60),
             },
         );
         fs::remove_dir_all(&root).unwrap();
