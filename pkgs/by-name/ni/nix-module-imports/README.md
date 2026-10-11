@@ -64,9 +64,12 @@ The first answer in which all modules reach each other is a smallest set.
 
 The search has a time limit, 300 seconds for all groups together unless `--search-seconds` gives another one.
 The small groups are searched first.
-When the time is up, the tool takes the imports of each group that is left out one at a time and keeps one when its file would go out of reach.
-That result has no import that could be left out, and it may have more imports than the smallest set.
-With `--search-seconds 0` the tool searches no group and every group gets such a result.
+When the time is up, the tool builds a set for each group that is left from what the search has found out.
+The imports that the search has decided on stay decided.
+The last answer of the integer program is as small as any valid set, and it leaves some modules cut off.
+The tool takes the imports outside that answer out one at a time first, and keeps one only when its file would go out of reach.
+The result has no import that could be left out, and it is close to the smallest set: for the largest group of NixOS, 5 seconds give 445 imports where the smallest set has 443.
+With `--search-seconds 0` no program is solved, and the tool takes the imports of every group out one at a time in the order of their paths.
 
 `report` prints the number of imports inside the groups next to the number that no set is smaller than.
 The two are equal when the search finished.

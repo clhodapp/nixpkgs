@@ -172,9 +172,18 @@ fn lower_bound(
     counted_by(&leaving).max(counted_by(&entering))
 }
 
+/// The imports that the tool keeps inside one group.
+struct Chosen {
+    keep: BTreeSet<(usize, usize)>,
+    /// Whether `keep` is a smallest set. It is not when the time for
+    /// the search was up.
+    smallest: bool,
+    /// No set is smaller than this, as far as the search found out.
+    bound: usize,
+}
+
 /// The smallest set of removable imports that lets every module of a
 /// group reach every other one, together with the fixed imports.
-/// `None` when the search did not finish.
 ///
 /// This is an integer program with one variable for each removable
 /// import, which is 1 when the import stays. For a set of modules that
@@ -186,12 +195,21 @@ fn lower_bound(
 /// first answer in which all modules reach each other is a smallest
 /// set, because it is the best answer under conditions that every
 /// valid set meets.
+///
+/// When the time is up at `deadline`, the work so far is not thrown
+/// away. The imports that the search has decided on stay decided. The
+/// last answer of the program is a set that is as small as any valid
+/// one and that leaves some modules cut off. The result is built from
+/// it: the imports outside that answer are taken out one at a time
+/// first, and one stays only when its file would go out of reach. The
+/// imports of the answer are tried after them. The result has no
+/// import that could be left out, and it is close to the answer.
 fn smallest(
     group: &[usize],
     inside: &[(usize, usize)],
     removable: &BTreeSet<(usize, usize)>,
     deadline: Instant,
-) -> Option<BTreeSet<(usize, usize)>> {
+) -> Chosen {
     use microlp::{ComparisonOp, LinearExpr, OptimizationDirection, Problem};
 
     let local: BTreeMap<usize, usize> = group
@@ -248,10 +266,12 @@ fn smallest(
         .map(|member| (0..group.len()).map(|index| index == member).collect())
         .collect();
 
-    loop {
+    // The last answer of the program that left modules cut off.
+    let mut last: Option<BTreeSet<(usize, usize)>> = None;
+    'search: loop {
         let left = deadline.saturating_duration_since(Instant::now());
         if left.is_zero() {
-            return None;
+            break;
         }
         let mut problem = Problem::new(OptimizationDirection::Minimize);
         problem.set_time_limit(left);
@@ -277,16 +297,20 @@ fn smallest(
                     }
                 }
                 if !any {
-                    return None;
+                    break 'search;
                 }
                 problem.add_constraint(expression, ComparisonOp::Ge, 1.0);
             }
         }
-        let outcome = problem.solve().ok()?;
+        let Ok(outcome) = problem.solve() else {
+            break;
+        };
         if !outcome.is_optimal() {
-            return None;
+            break;
         }
-        let solution = outcome.into_solution().ok()?;
+        let Ok(solution) = outcome.into_solution() else {
+            break;
+        };
         let mut keep: BTreeSet<(usize, usize)> = candidates
             .iter()
             .enumerate()
@@ -302,11 +326,44 @@ fn smallest(
         let parts = component.iter().max().map_or(0, |last| last + 1);
         if parts == 1 {
             keep.extend(in_every_set);
-            return Some(keep);
+            return Chosen {
+                bound: keep.len(),
+                keep,
+                smallest: true,
+            };
         }
         for part in 0..parts {
             sets.push(component.iter().map(|&of| of == part).collect());
         }
+        last = Some(keep);
+    }
+
+    // The time is up. Build a set from what the search has.
+    let preferred = last.unwrap_or_default();
+    let bound = in_every_set.len() + preferred.len();
+    let mut graph: Edges = vec![BTreeSet::new(); group.len()];
+    for import in fixed.iter().chain(candidates.iter()) {
+        graph[local[&import.0]].insert(local[&import.1]);
+    }
+    let outside_the_answer = candidates
+        .iter()
+        .filter(|import| !preferred.contains(import));
+    let in_the_answer = candidates
+        .iter()
+        .filter(|import| preferred.contains(import));
+    let mut keep = in_every_set;
+    for import in outside_the_answer.chain(in_the_answer) {
+        let (from, to) = (local[&import.0], local[&import.1]);
+        graph[from].remove(&to);
+        if !reaches(&graph, from, to) {
+            graph[from].insert(to);
+            keep.insert(*import);
+        }
+    }
+    Chosen {
+        keep,
+        smallest: false,
+        bound,
     }
 }
 
@@ -384,40 +441,20 @@ pub fn reduce(
             .filter(|import| removable.contains(import))
             .collect();
 
-        let smallest = smallest(group, &inside, removable, deadline);
-        match &smallest {
-            Some(keep) => {
-                for import in &candidates {
-                    if !keep.contains(import) {
-                        edges[import.0].remove(&import.1);
-                    }
-                }
-            }
-            // The search did not finish. Take the imports out one at a time,
-            // and keep one when its file would go out of reach. The
-            // result has no import that could be left out, and it may
-            // have more imports than the smallest set.
-            None => {
-                for &(from, to) in &candidates {
-                    edges[from].remove(&to);
-                    if !reaches(edges, from, to) {
-                        edges[from].insert(to);
-                    }
-                }
+        let chosen = smallest(group, &inside, removable, deadline);
+        for import in &candidates {
+            if !chosen.keep.contains(import) {
+                edges[import.0].remove(&import.1);
             }
         }
-        let kept = candidates
-            .iter()
-            .filter(|(from, to)| edges[*from].contains(to))
-            .count();
         result.push(Group {
             modules: group.len(),
-            kept,
-            searched: smallest.is_some(),
-            lower_bound: match smallest {
-                Some(_) => kept,
-                None => lower_bound(group, &inside, removable),
-            },
+            kept: chosen.keep.len(),
+            searched: chosen.smallest,
+            lower_bound: chosen
+                .bound
+                .max(lower_bound(group, &inside, removable))
+                .min(chosen.keep.len()),
         });
     }
     result
