@@ -616,6 +616,33 @@ in
     }
 
     #[test]
+    fn a_helper_that_carries_a_path_along_reads_what_it_is_given() {
+        // Like the helper above, but what it carries from level to
+        // level is the list of the names so far, which is one name
+        // longer each time and never the same twice.
+        let found = touches(
+            "path",
+            r#"{ config, lib, ... }:
+let
+  walk = path: value:
+    if builtins.isAttrs value
+    then builtins.concatLists (lib.mapAttrsToList (name: walk (path ++ [ name ])) value)
+    else [ { inherit path value; } ];
+in
+{
+  environment.etc.x.text = builtins.toJSON (walk [ ] config.program.settings);
+}
+"#,
+        );
+        assert!(
+            found.contains(&"Read config.program.settings ...".to_string())
+                || found.contains(&"Read config.program.settings.* ...".to_string()),
+            "{found:?}"
+        );
+        assert!(!found.contains(&"Read config ...".to_string()), "{found:?}");
+    }
+
+    #[test]
     fn what_leaves_the_interpretation_is_read_in_full() {
         // A value that goes to a function that is not known, into a
         // text or a comparison, or into a list that is a setting, is

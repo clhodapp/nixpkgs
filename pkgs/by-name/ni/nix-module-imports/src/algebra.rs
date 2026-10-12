@@ -1237,6 +1237,64 @@ impl Interpreter {
         }
     }
 
+    /// The same function with every name not known that it sees and a
+    /// function with the names of `other` does not: the names of its
+    /// scopes outwards, up to the first scope that both have. The
+    /// values that those names had are escaped. `None` when the scopes
+    /// cannot be told apart like this.
+    fn without_what_differs(&mut self, closure: &Rc<Closure>, other: &Env) -> Option<Rc<Closure>> {
+        let mut others = HashSet::new();
+        let mut scope = other.0.clone();
+        while let Some(current) = scope {
+            others.insert(Rc::as_ptr(&current) as usize);
+            scope = current.parent.0.clone();
+        }
+        let mut differing = Vec::new();
+        let mut scope = closure.env.0.clone();
+        let shared = loop {
+            match scope {
+                None => break Env(None),
+                Some(current) => {
+                    if others.contains(&(Rc::as_ptr(&current) as usize)) {
+                        break Env(Some(current));
+                    }
+                    if current.with.is_some() {
+                        return None;
+                    }
+                    scope = current.parent.0.clone();
+                    differing.push(current);
+                }
+            }
+        };
+        let mut env = shared;
+        for scope in differing.iter().rev() {
+            let names: Vec<(String, Thunk)> = scope
+                .names
+                .borrow()
+                .iter()
+                .map(|(name, value)| (name.clone(), value.clone()))
+                .collect();
+            let inner = if scope.call {
+                env.call(false)
+            } else {
+                env.child(false)
+            };
+            for (name, value) in names {
+                self.escape_thunk(&value);
+                inner.define(name, Thunk::done(Value::Unknown));
+            }
+            inner.seal();
+            env = inner;
+        }
+        Some(Rc::new(Closure {
+            param: closure.param.clone(),
+            body: closure.body.clone(),
+            env,
+            file: closure.file.clone(),
+            chain: closure.chain.clone(),
+        }))
+    }
+
     /// End a call without making it. Whatever the call could have done
     /// with its argument, or with a name that the function can see, is
     /// recorded by escaping them, and the result is not known.
@@ -2102,7 +2160,7 @@ impl Interpreter {
 
     pub fn apply(&mut self, function: Value, mut argument: Thunk) -> Value {
         match function {
-            Value::Lambda(closure) => {
+            Value::Lambda(mut closure) => {
                 // A call is a recursion when the function is already
                 // under way where the call is made, or was under way
                 // where this function was written down. The second is a
@@ -2177,6 +2235,20 @@ impl Interpreter {
                     // levels, what the function sees is escaped.
                     if alike.len() >= WIDENINGS {
                         return self.cut(&closure, &argument);
+                    }
+                    // A function of the same text already has the call
+                    // that stands for its recursion, and this function
+                    // sees something that one does not, such as a path
+                    // that is one name longer at each level. The call
+                    // is made with a function that sees nothing of
+                    // what differs: those names are not known in it,
+                    // and their values are escaped. Every further level
+                    // then sees no more than this one.
+                    if let Some(other) = alike.first() {
+                        match self.without_what_differs(&closure, &other.env) {
+                            Some(general) => closure = general,
+                            None => return self.cut(&closure, &argument),
+                        }
                     }
                     self.too_deep += 1;
                     if self.trace {
