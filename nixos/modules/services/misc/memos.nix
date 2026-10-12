@@ -117,7 +117,7 @@ in
     };
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
-      cfg.port
+      (lib.toInt (toString cfg.settings.MEMOS_PORT))
     ];
 
     systemd.tmpfiles.settings."10-memos" = {
