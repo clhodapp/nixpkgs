@@ -383,6 +383,7 @@ mod tests {
   mapAttrs' = f: set: builtins.listToAttrs (map (name: f name set.${name}) (builtins.attrNames set));
   nameValuePair = name: value: { inherit name value; };
   genAttrs = names: f: builtins.listToAttrs (map (name: nameValuePair name (f name)) names);
+  mapAttrsToList = f: set: map (name: f name set.${name}) (builtins.attrNames set);
   recursiveUpdate = lhs: rhs:
     let
       f = builtins.zipAttrsWith (name: values:
@@ -583,6 +584,34 @@ in
             ),
             ["Set services.x.old"]
         );
+    }
+
+    #[test]
+    fn a_helper_of_the_module_that_calls_itself_reads_what_it_is_given() {
+        // The helper walks a part of the configuration and calls itself
+        // for each set inside it. It is written in the module, so it
+        // can see `config`. Its recursion ends with what it was given
+        // read in full, and not with all of the configuration. It takes
+        // its arguments one at a time, so each level makes the function
+        // for the second argument anew.
+        let found = touches(
+            "walk",
+            r#"{ config, lib, ... }:
+let
+  walk = prefix: set: builtins.concatLists (lib.mapAttrsToList (name: value:
+    if builtins.isAttrs value then walk (prefix + name + ".") value
+    else [ { name = prefix + name; inherit value; } ]) set);
+in
+{
+  environment.etc.x.text = builtins.toJSON (walk "" config.program.settings);
+}
+"#,
+        );
+        assert!(
+            found.contains(&"Read config.program.settings.* ...".to_string()),
+            "{found:?}"
+        );
+        assert!(!found.contains(&"Read config ...".to_string()), "{found:?}");
     }
 
     #[test]

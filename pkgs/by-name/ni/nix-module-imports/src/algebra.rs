@@ -53,6 +53,11 @@ const DEPTH: usize = 400;
 /// a setting can be before the setting is cut off at a parent.
 const REENTRIES: usize = 8;
 
+/// How many functions of one text may each get a call that stands for a
+/// recursion, inside each other, before what the next one sees is
+/// escaped.
+const WIDENINGS: usize = 3;
+
 /// How many values a value may be one of before it is not followed as
 /// each of them.
 const ALTERNATIVES: usize = 32;
@@ -129,9 +134,9 @@ struct Chain(Option<Rc<Link>>);
 
 struct Link {
     identity: Identity,
-    /// The address of the function, when this call is the one with an
-    /// argument that is not known, which stands for a recursion.
-    widened: Option<usize>,
+    /// The function, when this call is the one with an argument that is
+    /// not known, which stands for a recursion.
+    widened: Option<Rc<Closure>>,
     /// Whether this call or one around it is such a call.
     any_widened: bool,
     outer: Chain,
@@ -144,15 +149,35 @@ impl Chain {
     fn widened(&self, instance: Option<usize>, identity: Identity) -> bool {
         let mut link = &self.0;
         while let Some(current) = link {
-            if current.widened.is_some()
+            if !current.any_widened {
+                break;
+            }
+            if let Some(function) = &current.widened
                 && current.identity == identity
-                && (instance.is_none() || current.widened == instance)
+                && instance.is_none_or(|instance| Rc::as_ptr(function) as usize == instance)
             {
                 return true;
             }
             link = &current.outer.0;
         }
         false
+    }
+
+    /// The functions of one place in the source whose call that stands
+    /// for a recursion is among the calls.
+    fn widened_like(&self, identity: Identity, found: &mut Vec<Rc<Closure>>) {
+        let mut link = &self.0;
+        while let Some(current) = link {
+            if !current.any_widened {
+                break;
+            }
+            if let Some(function) = &current.widened
+                && current.identity == identity
+            {
+                found.push(function.clone());
+            }
+            link = &current.outer.0;
+        }
     }
 
     fn count(&self, identity: Identity) -> usize {
@@ -167,11 +192,11 @@ impl Chain {
         count
     }
 
-    fn with(&self, identity: Identity, widened: Option<usize>) -> Chain {
+    fn with(&self, identity: Identity, widened: Option<Rc<Closure>>) -> Chain {
         Chain(Some(Rc::new(Link {
             identity,
-            widened,
             any_widened: widened.is_some() || self.any_widened(),
+            widened,
             outer: self.clone(),
         })))
     }
@@ -195,10 +220,10 @@ impl Chain {
             if !current.any_widened {
                 break;
             }
-            if let Some(instance) = current.widened
-                && !self.widened(Some(instance), current.identity)
+            if let Some(function) = &current.widened
+                && !self.widened(Some(Rc::as_ptr(function) as usize), current.identity)
             {
-                found.push((current.identity, instance));
+                found.push((current.identity, function.clone()));
             }
             link = &current.outer.0;
         }
@@ -947,6 +972,56 @@ impl Interpreter {
             self.escape(value);
         }
         Value::Unknown
+    }
+
+    /// Whether the names that one function sees are covered by the
+    /// names that another function of the same text sees: scope by
+    /// scope outwards, until the scope that both have. A name is
+    /// covered when it is the same value in both, or when it is not
+    /// known in `wide`.
+    fn sees_no_more(&mut self, narrow: &Env, wide: &Env) -> bool {
+        let (mut narrow, mut wide) = (narrow.0.clone(), wide.0.clone());
+        loop {
+            match (narrow, wide) {
+                (None, None) => return true,
+                (Some(here), Some(there)) => {
+                    if Rc::ptr_eq(&here, &there) {
+                        return true;
+                    }
+                    if here.with.is_some() || there.with.is_some() {
+                        return false;
+                    }
+                    let names: Vec<(String, Thunk)> = here
+                        .names
+                        .borrow()
+                        .iter()
+                        .map(|(name, value)| (name.clone(), value.clone()))
+                        .collect();
+                    if names.len() != there.names.borrow().len() {
+                        return false;
+                    }
+                    for (name, value) in names {
+                        let Some(other) = there.names.borrow().get(&name).cloned() else {
+                            return false;
+                        };
+                        if Rc::ptr_eq(&value.0, &other.0) {
+                            continue;
+                        }
+                        let other = self.force(&other);
+                        if matches!(other, Value::Unknown) {
+                            continue;
+                        }
+                        let value = self.force(&value);
+                        if !same(&value, &other) {
+                            return false;
+                        }
+                    }
+                    narrow = here.parent.0.clone();
+                    wide = there.parent.0.clone();
+                }
+                _ => return false,
+            }
+        }
     }
 
     /// End a call without making it. Whatever the call could have done
@@ -1856,13 +1931,31 @@ impl Interpreter {
                     self.escape_thunk(&argument);
                     return Value::Unknown;
                 }
+                // A helper that takes its arguments one at a time, as
+                // `prefix: set: ...`, makes the function for `set` anew
+                // at each level. The call that stands for the recursion
+                // was then made with another function of the same
+                // text. It stands for this call as well when what this
+                // function sees is no more than what that one sees:
+                // every name that differs between the two is not known
+                // there, or has the same value in both.
+                let mut alike = Vec::new();
+                self.chain.widened_like(identity, &mut alike);
+                closure.chain.widened_like(identity, &mut alike);
+                for other in &alike {
+                    if self.sees_no_more(&closure.env, &other.env) {
+                        self.too_deep += 1;
+                        self.escape_thunk(&argument);
+                        return Value::Unknown;
+                    }
+                }
                 let widened = under_way > self.reentries
                     || (under_way > 0 && matches!(self.force(&argument), Value::Unknown));
                 if widened {
-                    // The function is another one of the same text, as
-                    // when each level makes its function anew. Then
-                    // what it sees is escaped.
-                    if self.chain.widened(None, identity) || closure.chain.widened(None, identity) {
+                    // Functions of the same text that see more and more
+                    // could go on like this without end. After a few
+                    // levels, what the function sees is escaped.
+                    if alike.len() >= WIDENINGS {
                         return self.cut(&closure, &argument);
                     }
                     self.too_deep += 1;
@@ -1947,7 +2040,7 @@ impl Interpreter {
                 let inside = self
                     .chain
                     .with_widened_of(&closure.chain)
-                    .with(identity, widened.then_some(instance));
+                    .with(identity, widened.then(|| closure.clone()));
                 let outside = std::mem::replace(&mut self.chain, inside);
                 self.depth += 1;
                 let result = self.eval(&closure.body, &inner, &closure.file);
