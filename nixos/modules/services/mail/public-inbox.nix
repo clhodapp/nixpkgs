@@ -50,9 +50,14 @@ let
 
   serviceConfig =
     srv:
+    {
+      # The options of the daemon, for a service that listens on the network.
+      daemon ? null,
+      # Whether the daemon has the `cert` and `key` options.
+      tls ? false,
+    }:
     let
-      proto = removeSuffix "d" srv;
-      needNetwork = builtins.hasAttr proto cfg && cfg.${proto}.port == null;
+      needNetwork = daemon != null && daemon.port == null;
     in
     {
       serviceConfig = {
@@ -82,10 +87,12 @@ let
           "${config.i18n.glibcLocales}"
         ]
         ++ mapAttrsToList (name: inbox: inbox.description) cfg.inboxes
-        ++ filter (x: x != null) [
-          cfg.${proto}.cert or null
-          cfg.${proto}.key or null
-        ];
+        ++ optionals tls (
+          filter (x: x != null) [
+            daemon.cert
+            daemon.key
+          ]
+        );
         # The following options are only for optimizing:
         # systemd-analyze security public-inbox-'*'
         AmbientCapabilities = "";
@@ -484,7 +491,10 @@ in
     systemd.services = mkMerge [
       (mkIf cfg.imap.enable {
         public-inbox-imapd = mkMerge [
-          (serviceConfig "imapd")
+          (serviceConfig "imapd" {
+            daemon = cfg.imap;
+            tls = true;
+          })
           {
             after = [
               "public-inbox-init.service"
@@ -510,7 +520,7 @@ in
       })
       (mkIf cfg.http.enable {
         public-inbox-httpd = mkMerge [
-          (serviceConfig "httpd")
+          (serviceConfig "httpd" { daemon = cfg.http; })
           {
             after = [
               "public-inbox-init.service"
@@ -559,7 +569,10 @@ in
       })
       (mkIf cfg.nntp.enable {
         public-inbox-nntpd = mkMerge [
-          (serviceConfig "nntpd")
+          (serviceConfig "nntpd" {
+            daemon = cfg.nntp;
+            tls = true;
+          })
           {
             after = [
               "public-inbox-init.service"
@@ -590,7 +603,7 @@ in
         )
         {
           public-inbox-watch = mkMerge [
-            (serviceConfig "watch")
+            (serviceConfig "watch" { })
             {
               inherit (cfg) path;
               wants = [ "public-inbox-init.service" ];
@@ -615,7 +628,7 @@ in
             );
           in
           mkMerge [
-            (serviceConfig "init")
+            (serviceConfig "init" { })
             {
               wantedBy = [ "multi-user.target" ];
               restartIfChanged = true;
