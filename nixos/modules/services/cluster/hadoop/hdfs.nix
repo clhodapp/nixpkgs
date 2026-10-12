@@ -61,6 +61,7 @@ let
       description ? "Hadoop HDFS ${name}",
       User ? "hdfs",
       allowedTCPPorts ? [ ],
+      openFirewall ? serviceOptions.openFirewall,
       preStart ? "",
       environment ? { },
       extraConfig ? { },
@@ -85,9 +86,7 @@ let
 
             services.hadoop.gatewayRole.enable = true;
 
-            networking.firewall.allowedTCPPorts = lib.mkIf (
-              (builtins.hasAttr "openFirewall" serviceOptions) && serviceOptions.openFirewall
-            ) allowedTCPPorts;
+            networking.firewall.allowedTCPPorts = lib.mkIf openFirewall allowedTCPPorts;
           }
           extraConfig
         ]
@@ -206,6 +205,7 @@ in
     (hadoopServiceConfig {
       name = "zkfc";
       description = "Hadoop HDFS ZooKeeper failover controller";
+      openFirewall = false;
     })
 
     (hadoopServiceConfig {
