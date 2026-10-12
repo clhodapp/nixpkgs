@@ -108,6 +108,9 @@ impl Reader<'_> {
 
     /// Read settings or declarations in a value at a path.
     fn read(&mut self, kind: Kind, value: Value, path: &mut Vec<String>, depth: usize) {
+        if self.interpreter.stopped() {
+            return;
+        }
         if depth > DEPTH {
             return self.touch(kind, path, true);
         }
@@ -181,6 +184,9 @@ impl Reader<'_> {
 
     /// Read a module: a set, or a function that is applied to the inputs.
     fn module(&mut self, value: Value, inputs: &Thunk, depth: usize) {
+        if self.interpreter.stopped() {
+            return;
+        }
         if depth > 8 {
             return self.touch(Kind::Set, &[], true);
         }
@@ -432,6 +438,34 @@ mod tests {
         fs::write(&file, module).unwrap();
         let mut interpreter = Interpreter::new();
         let result = of_file(&mut interpreter, &file, &root.join("lib"), &BTreeMap::new());
+        // Read it again and again, and see that the memory in use does
+        // not grow. The first readings are let go by, because they also
+        // make what the thread keeps for itself.
+        let again = |interpreter: Interpreter| {
+            drop(interpreter);
+            crate::algebra::release();
+            let mut interpreter = Interpreter::new();
+            of_file(&mut interpreter, &file, &root.join("lib"), &BTreeMap::new());
+            interpreter
+        };
+        let mut interpreter = interpreter;
+        for _ in 0..5 {
+            interpreter = again(interpreter);
+        }
+        drop(interpreter);
+        crate::algebra::release();
+        let before = crate::memory::in_use();
+        let mut interpreter = Interpreter::new();
+        for _ in 0..50 {
+            interpreter = again(interpreter);
+        }
+        drop(interpreter);
+        crate::algebra::release();
+        let grown = crate::memory::in_use() - before;
+        assert!(
+            grown.abs() < 4096,
+            "reading the module fifty times left {grown} bytes in use"
+        );
         fs::remove_dir_all(&root).unwrap();
         assert_eq!(result.stopped, None);
         result
@@ -666,6 +700,37 @@ in
             "{found:?}"
         );
         assert!(!found.contains(&"Read config ...".to_string()), "{found:?}");
+    }
+
+    #[test]
+    fn inherit_in_a_rec_set_takes_the_name_from_around_the_set() {
+        // `inherit config;` in a `rec` set is the `config` of the scope
+        // around the set, and not the entry that it makes.
+        assert_eq!(
+            touches(
+                "inherit",
+                r#"{ config, ... }:
+let
+  inner = rec {
+    inherit config;
+    value = config.one.two;
+  };
+in
+{
+  config.first = inner.value;
+  config.second = inner.config.three.four;
+}
+"#
+            ),
+            [
+                "Set first ...",
+                "Set second ...",
+                "Read config.one",
+                "Read config.one.two ...",
+                "Read config.three",
+                "Read config.three.four ...",
+            ]
+        );
     }
 
     #[test]
