@@ -103,7 +103,6 @@ in
             description = "Override the endpoint it checks. Takes priority over the on-disk state file.";
           };
         };
-        config = mkIf config.enabled { };
       };
       default = { };
       description = "The app periodically checks for new releases and shows a notice";
@@ -129,7 +128,6 @@ in
             description = "Directory for telemetry state: instance id, consent, login HMACs.";
           };
         };
-        config = mkIf config.enabled { };
       };
       default = { };
       description = "Anonymous Telemetry";
@@ -245,7 +243,6 @@ in
                   '';
                 };
               };
-              config = mkIf config.enabled { };
             };
             default = { };
             description = "OAuth / OpenID Connect. Options are prefixed with `oauth` and the `oauth` submodule is flattened, so `oauth.clientId` turns to `oauthClientId`.";
