@@ -39,7 +39,7 @@
 use std::cell::{Cell, RefCell};
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::path::{Path, PathBuf};
-use std::rc::Rc;
+use std::rc::{Rc, Weak};
 
 use rnix::ast::{self, AstToken, HasEntry, InterpolPart};
 use rowan::ast::AstNode;
@@ -59,6 +59,129 @@ const REENTRIES: usize = 8;
 /// names of settings when a module is written in two files. After
 /// these steps it is not followed any more.
 const ELSEWHERE_STEPS: u64 = 200_000;
+
+/// The names of the builtins that have a meaning here: the ones that
+/// `arity` knows.
+const BUILTINS: [&str; 108] = [
+    "abort",
+    "add",
+    "addDrvOutputDependencies",
+    "addErrorContext",
+    "all",
+    "any",
+    "appendContext",
+    "attrNames",
+    "attrValues",
+    "baseNameOf",
+    "bitAnd",
+    "bitOr",
+    "bitXor",
+    "break",
+    "catAttrs",
+    "ceil",
+    "compareVersions",
+    "concatLists",
+    "concatMap",
+    "concatStringsSep",
+    "convertHash",
+    "deepSeq",
+    "derivation",
+    "derivationStrict",
+    "dirOf",
+    "div",
+    "elem",
+    "elemAt",
+    "fetchGit",
+    "fetchTarball",
+    "fetchTree",
+    "fetchurl",
+    "filter",
+    "filterSource",
+    "findFile",
+    "flakeRefToString",
+    "floor",
+    "foldl'",
+    "fromJSON",
+    "fromTOML",
+    "functionArgs",
+    "genericClosure",
+    "genList",
+    "getAttr",
+    "getContext",
+    "getEnv",
+    "getFlake",
+    "groupBy",
+    "hasAttr",
+    "hasContext",
+    "hashFile",
+    "hashString",
+    "head",
+    "import",
+    "intersectAttrs",
+    "isAttrs",
+    "isBool",
+    "isFloat",
+    "isFunction",
+    "isInt",
+    "isList",
+    "isNull",
+    "isPath",
+    "isString",
+    "length",
+    "lessThan",
+    "listToAttrs",
+    "map",
+    "mapAttrs",
+    "match",
+    "mul",
+    "outputOf",
+    "parseDrvName",
+    "parseFlakeRef",
+    "partition",
+    "path",
+    "pathExists",
+    "placeholder",
+    "readDir",
+    "readFile",
+    "readFileType",
+    "removeAttrs",
+    "replaceStrings",
+    "scopedImport",
+    "seq",
+    "sort",
+    "split",
+    "splitVersion",
+    "storePath",
+    "stringLength",
+    "sub",
+    "substring",
+    "tail",
+    "throw",
+    "toFile",
+    "toJSON",
+    "toPath",
+    "toString",
+    "toXML",
+    "trace",
+    "traceVerbose",
+    "tryEval",
+    "typeOf",
+    "unsafeDiscardOutputDependency",
+    "unsafeDiscardStringContext",
+    "unsafeGetAttrPos",
+    "warn",
+    "zipAttrsWith",
+];
+
+/// The builtin of a name, as a value that is not yet given an argument.
+/// The name of the value is the one of `BUILTINS`, which lives as long
+/// as the program, so nothing is made for it.
+fn builtin_named(name: &str) -> Option<Value> {
+    BUILTINS
+        .iter()
+        .find(|known| **known == name)
+        .map(|known| Value::Builtin(known, Rc::new(Vec::new())))
+}
 
 /// The names that the language binds in every file without `builtins.`
 /// in front.
@@ -103,7 +226,12 @@ enum Pending {
 
 /// How many expressions are interpreted before the run stops, and the
 /// file counts as one that can touch anything.
-const STEPS: u64 = 50_000_000;
+///
+/// The steps also limit the memory that one file can take, because the
+/// values that a file makes are kept until the file is done. Several
+/// files are read at a time, so the limit of all of them together is
+/// this number times the number of files that are read at a time.
+const STEPS: u64 = 5_000_000;
 
 #[derive(Clone)]
 pub enum Value {
@@ -147,6 +275,8 @@ pub struct Closure {
     /// The calls that were under way where the function was written
     /// down.
     chain: Chain,
+    /// Whether the function was escaped already.
+    escaped: Cell<bool>,
 }
 
 impl Closure {
@@ -297,6 +427,8 @@ struct Suspended {
     chain: Chain,
     /// Everything that working the value out can use.
     sees: Sees,
+    /// Whether the value was escaped already.
+    escaped: Cell<bool>,
     /// Whether the value was written down by code of another file than
     /// the module that is read.
     library: bool,
@@ -462,15 +594,71 @@ impl Thunk {
     }
 
     pub fn done(value: Value) -> Thunk {
-        Thunk(Rc::new(Suspended {
+        // A value that holds no other value cannot be part of a loop.
+        let holds = matches!(
+            value,
+            Value::Attrs(_)
+                | Value::List(_)
+                | Value::Seq(_)
+                | Value::Lambda(_)
+                | Value::Builtin(..)
+                | Value::Either(_)
+        );
+        let suspended = Suspended {
             reach: Cell::new(reaches(&value).into()),
             written: None,
             state: RefCell::new(State::Done(value)),
             chain: Chain::default(),
             sees: Sees::default(),
+            escaped: Cell::new(false),
             library: false,
             elsewhere: false,
-        }))
+        };
+        if holds {
+            Thunk::recorded(suspended)
+        } else {
+            Thunk(Rc::new(suspended))
+        }
+    }
+
+    /// A delayed value that `release` will empty.
+    fn recorded(suspended: Suspended) -> Thunk {
+        let thunk = Thunk(Rc::new(suspended));
+        THUNKS.with_borrow_mut(|thunks| thunks.push(Rc::downgrade(&thunk.0)));
+        thunk
+    }
+}
+
+thread_local! {
+    /// The delayed values and the scopes that this thread has made and
+    /// not released. See `release`.
+    static THUNKS: RefCell<Vec<Weak<Suspended>>> = const { RefCell::new(Vec::new()) };
+    static SCOPES: RefCell<Vec<Weak<Scope>>> = const { RefCell::new(Vec::new()) };
+}
+
+/// Give back the memory of everything that this thread has interpreted.
+///
+/// The values of an interpretation point at each other in loops: a
+/// scope holds its delayed values, and a delayed value holds the scope
+/// it was written in. A count of references never frees a loop, so
+/// dropping the interpreter frees next to nothing. This empties every
+/// delayed value and every scope that is still there, which opens all
+/// the loops, and the counts free the rest.
+///
+/// Call it when a file is done and nothing of its interpretation is
+/// used any more. A value that is used afterwards is not known.
+pub fn release() {
+    for thunk in THUNKS.take() {
+        if let Some(thunk) = thunk.upgrade() {
+            let before = thunk.state.replace(State::Done(Value::Unknown));
+            drop(before);
+        }
+    }
+    for scope in SCOPES.take() {
+        if let Some(scope) = scope.upgrade() {
+            let before = std::mem::take(&mut *scope.names.borrow_mut());
+            drop(before);
+        }
     }
 }
 
@@ -562,28 +750,30 @@ impl Env {
     /// A scope whose names are defined afterwards. `reaches` says
     /// whether one of them will reach the configuration.
     fn child(&self, reaches: bool) -> Env {
-        Env(Some(Rc::new(Scope {
+        Env::recorded(Scope {
             names: RefCell::new(BTreeMap::new()),
             with: None,
             parent: self.clone(),
             reaches: reaches || self.reaches(),
             call: false,
             sealed: Cell::new(false),
-        })))
+        })
     }
 
     /// The scope of a call, for the argument and its parts.
     fn call(&self, reaches: bool) -> Env {
-        Env(Some(Rc::new(Scope {
+        Env::recorded(Scope {
             names: RefCell::new(BTreeMap::new()),
             with: None,
             parent: self.clone(),
             reaches: reaches || self.reaches(),
             call: true,
             sealed: Cell::new(false),
-        })))
+        })
     }
 
+    /// A scope that has no names of its own cannot hold a value that
+    /// holds it, so it is not recorded.
     fn with(&self, value: Thunk) -> Env {
         Env(Some(Rc::new(Scope {
             names: RefCell::new(BTreeMap::new()),
@@ -593,6 +783,13 @@ impl Env {
             call: false,
             sealed: Cell::new(true),
         })))
+    }
+
+    /// A scope that `release` will empty.
+    fn recorded(scope: Scope) -> Env {
+        let scope = Rc::new(scope);
+        SCOPES.with_borrow_mut(|scopes| scopes.push(Rc::downgrade(&scope)));
+        Env(Some(scope))
     }
 
     fn define(&self, name: String, value: Thunk) {
@@ -718,11 +915,9 @@ pub struct Interpreter {
     /// How many expressions were interpreted, and how many may be.
     steps: u64,
     step_limit: u64,
-    /// The addresses of the values that were escaped already. The
-    /// values are kept, so that no other value gets one of the addresses.
-    escaped: HashSet<usize>,
-    kept: Vec<Thunk>,
-    kept_closures: Vec<Rc<Closure>>,
+    /// How many bytes the reading of the file may take. Zero is no
+    /// limit. See `limit_memory`.
+    memory_limit: usize,
     /// The values that are still to be escaped.
     pending: Vec<(Pending, Option<Rc<str>>)>,
     /// Whether `settle` is at work.
@@ -863,9 +1058,7 @@ impl Interpreter {
                 .ok()
                 .and_then(|text| text.parse().ok())
                 .unwrap_or(STEPS),
-            escaped: HashSet::new(),
-            kept: Vec::new(),
-            kept_closures: Vec::new(),
+            memory_limit: 0,
             pending: Vec::new(),
             escaping: false,
             in_library: false,
@@ -916,6 +1109,26 @@ impl Interpreter {
         self.elsewhere_steps = 0;
     }
 
+    /// Let the reading take `bytes` of memory more than the thread has
+    /// in use now, and no more. The thread reads one file at a time.
+    pub fn limit_memory(&mut self, bytes: usize) {
+        self.memory_limit = bytes;
+        crate::memory::limit(bytes);
+    }
+
+    /// Whether the reading of the file has taken more memory than it
+    /// may. The reading stops then, like for anything else that stops
+    /// it, and the file counts as one that can touch anything.
+    fn out_of_memory(&mut self) -> bool {
+        if crate::memory::over() && self.fatal.is_none() {
+            self.fatal = Some(format!(
+                "reading the file takes more than {} MB of memory",
+                self.memory_limit / (1024 * 1024)
+            ));
+        }
+        self.fatal.is_some()
+    }
+
     fn stop(&mut self, why: String) -> Value {
         if self.fatal.is_none() {
             self.fatal = Some(why);
@@ -923,7 +1136,17 @@ impl Interpreter {
         Value::Unknown
     }
 
+    /// Whether the reading has stopped, for whoever walks its results.
+    pub fn stopped(&mut self) -> bool {
+        self.out_of_memory()
+    }
+
     pub fn force(&mut self, thunk: &Thunk) -> Value {
+        // A reading that has stopped works nothing out any more. The
+        // file is then listed as one that can touch anything.
+        if self.out_of_memory() {
+            return Value::Unknown;
+        }
         let state = thunk.0.state.replace(State::Forcing);
         match state {
             State::Done(value) => {
@@ -964,15 +1187,16 @@ impl Interpreter {
     /// A value that is worked out when it is needed. `sees` is all that
     /// the work can use.
     fn delayed(&self, sees: Sees, work: impl Fn(&mut Interpreter) -> Value + 'static) -> Thunk {
-        Thunk(Rc::new(Suspended {
+        Thunk::recorded(Suspended {
             state: RefCell::new(State::Delayed(Rc::new(work))),
             reach: Cell::new(sees.reaches().into()),
             written: None,
             chain: self.chain.clone(),
             sees,
+            escaped: Cell::new(false),
             library: self.in_library,
             elsewhere: self.in_elsewhere,
-        }))
+        })
     }
 
     fn delay(&self, expr: Option<ast::Expr>, env: &Env, file: &Rc<PathBuf>) -> Thunk {
@@ -981,7 +1205,7 @@ impl Interpreter {
         let sees = Sees::env(env);
         let (env, file) = (env.clone(), file.clone());
         match expr {
-            Some(expr) => Thunk(Rc::new(Suspended {
+            Some(expr) => Thunk::recorded(Suspended {
                 written: Some(expr.clone()),
                 state: RefCell::new(State::Delayed(Rc::new(move |interpreter| {
                     interpreter.eval(&expr, &env, &file)
@@ -989,9 +1213,10 @@ impl Interpreter {
                 reach: Cell::new(Reach::Open),
                 chain: self.chain.clone(),
                 sees,
+                escaped: Cell::new(false),
                 library,
                 elsewhere,
-            })),
+            }),
             None => Thunk::done(Value::Unknown),
         }
     }
@@ -1071,6 +1296,9 @@ impl Interpreter {
     /// that holds values that hold values does not go deeper and deeper
     /// into this function.
     pub fn escape(&mut self, value: &Value) {
+        if self.out_of_memory() {
+            return;
+        }
         if reaches(value) {
             self.pending
                 .push((Pending::Value(value.clone()), self.origin.clone()));
@@ -1078,7 +1306,10 @@ impl Interpreter {
     }
 
     pub fn escape_thunk(&mut self, thunk: &Thunk) {
-        if thunk.reaches() && self.escaped.insert(Rc::as_ptr(&thunk.0) as usize) {
+        if self.out_of_memory() {
+            return;
+        }
+        if thunk.reaches() && !thunk.0.escaped.replace(true) {
             self.pending
                 .push((Pending::Thunk(thunk.clone()), self.origin.clone()));
         }
@@ -1097,7 +1328,8 @@ impl Interpreter {
         }
         self.escaping = true;
         while let Some((pending, origin)) = self.pending.pop() {
-            if self.fatal.is_some() {
+            if self.out_of_memory() {
+                self.pending.clear();
                 break;
             }
             self.origin = origin;
@@ -1116,10 +1348,10 @@ impl Interpreter {
             match pending {
                 Pending::Value(value) => self.escape_now(&value),
                 Pending::Thunk(thunk) => {
-                    // A value of the library that was not worked out is
-                    // not worked out for this. Whatever the work does,
-                    // it does with what it sees, and that is escaped.
-                    // See the same step for a function.
+                    // A value that code of another file left to be
+                    // worked out is not worked out for this. Whatever
+                    // the work does, it does with what it sees, and
+                    // that is escaped. See the same step for a function.
                     let waiting = matches!(&*thunk.0.state.borrow(), State::Delayed(_));
                     if waiting && thunk.0.library && !self.sees_everything_of(&thunk.0.sees) {
                         if self.trace {
@@ -1127,11 +1359,9 @@ impl Interpreter {
                         }
                         let sees = thunk.0.sees.clone();
                         self.escape_sees(&sees);
-                        self.kept.push(thunk);
                         continue;
                     }
                     let value = self.force(&thunk);
-                    self.kept.push(thunk);
                     self.escape_now(&value);
                 }
             }
@@ -1180,8 +1410,7 @@ impl Interpreter {
                 }
             }
             Value::Lambda(closure) => {
-                if closure.env.reaches() && self.escaped.insert(Rc::as_ptr(closure) as usize) {
-                    self.kept_closures.push(closure.clone());
+                if closure.env.reaches() && !closure.escaped.replace(true) {
                     // A function of the library sees only what it was
                     // given. Whatever a call of it does, it does with
                     // that, so escaping what it sees records the call.
@@ -1352,6 +1581,7 @@ impl Interpreter {
             env,
             file: closure.file.clone(),
             chain: closure.chain.clone(),
+            escaped: Cell::new(false),
         }))
     }
 
@@ -1422,11 +1652,7 @@ impl Interpreter {
                 "true" => Value::Bool(true),
                 "false" => Value::Bool(false),
                 "null" => Value::Null,
-                _ => Value::Builtin(
-                    // The names are the ones of `GLOBALS`, which are static.
-                    Box::leak(name.to_string().into_boxed_str()),
-                    Rc::new(Vec::new()),
-                ),
+                _ => builtin_named(name).unwrap_or(Value::Unknown),
             };
         }
         // A name that is not bound comes from a `with`, the nearest first.
@@ -1462,12 +1688,7 @@ impl Interpreter {
             "true" => Value::Bool(true),
             "false" => Value::Bool(false),
             "null" => Value::Null,
-            _ if arity(name).is_some() => Value::Builtin(
-                // The names are the ones of `arity`, which are static.
-                Box::leak(name.to_string().into_boxed_str()),
-                Rc::new(Vec::new()),
-            ),
-            _ => Value::Unknown,
+            _ => builtin_named(name).unwrap_or(Value::Unknown),
         }
     }
 
@@ -1499,11 +1720,8 @@ impl Interpreter {
             }
             Value::Builtin("builtins", _) => Some(if CONSTANTS.contains(&name) {
                 Value::Unknown
-            } else if arity(name).is_some() {
-                Value::Builtin(
-                    Box::leak(name.to_string().into_boxed_str()),
-                    Rc::new(Vec::new()),
-                )
+            } else if let Some(builtin) = builtin_named(name) {
+                builtin
             } else {
                 // `arity` and `CONSTANTS` list the builtins of the
                 // language. A name that is in neither does not exist,
@@ -1716,7 +1934,11 @@ impl Interpreter {
         }
     }
 
-    fn set(&mut self, set: &impl HasEntry, env: &Env, file: &Rc<PathBuf>) -> Attrs {
+    /// The entries of a set or of a `let`. `env` is the scope for the
+    /// values. `outer` is the scope around the set: `inherit name;`
+    /// takes the name from there, also in a `rec` set and in a `let`,
+    /// where the values see the names of the set itself.
+    fn set(&mut self, set: &impl HasEntry, env: &Env, outer: &Env, file: &Rc<PathBuf>) -> Attrs {
         let mut entries = Vec::new();
         for entry in set.attrpath_values() {
             let Some(attrpath) = entry.attrpath() else {
@@ -1744,9 +1966,9 @@ impl Interpreter {
                         })
                     }
                     None => {
-                        let (env, name) = (env.clone(), name.clone());
-                        self.delayed(Sees::env(&env), move |interpreter| {
-                            interpreter.lookup(&name, &env)
+                        let (outer, name) = (outer.clone(), name.clone());
+                        self.delayed(Sees::env(&outer), move |interpreter| {
+                            interpreter.lookup(&name, &outer)
                         })
                     }
                 };
@@ -1763,6 +1985,9 @@ impl Interpreter {
         self.steps += 1;
         if self.in_elsewhere {
             self.elsewhere_steps += 1;
+        }
+        if self.out_of_memory() {
+            return Value::Unknown;
         }
         if self.steps > self.step_limit {
             return self.stop(format!(
@@ -1811,19 +2036,19 @@ impl Interpreter {
             ast::Expr::AttrSet(set) => {
                 if set.rec_token().is_some() {
                     let inner = env.child(false);
-                    let attrs = self.set(set, &inner, file);
+                    let attrs = self.set(set, &inner, env, file);
                     for (name, value) in &attrs.fields {
                         inner.define(name.clone(), value.clone());
                     }
                     inner.seal();
                     Value::Attrs(Rc::new(attrs))
                 } else {
-                    Value::Attrs(Rc::new(self.set(set, env, file)))
+                    Value::Attrs(Rc::new(self.set(set, env, env, file)))
                 }
             }
             ast::Expr::LetIn(let_in) => {
                 let inner = env.child(false);
-                let attrs = self.set(let_in, &inner, file);
+                let attrs = self.set(let_in, &inner, env, file);
                 for (name, value) in &attrs.fields {
                     inner.define(name.clone(), value.clone());
                 }
@@ -1835,7 +2060,7 @@ impl Interpreter {
             }
             ast::Expr::LegacyLet(legacy) => {
                 let inner = env.child(false);
-                let attrs = self.set(legacy, &inner, file);
+                let attrs = self.set(legacy, &inner, env, file);
                 for (name, value) in &attrs.fields {
                     inner.define(name.clone(), value.clone());
                 }
@@ -1894,6 +2119,7 @@ impl Interpreter {
                     env: env.clone(),
                     file: file.clone(),
                     chain: self.chain.clone(),
+                    escaped: Cell::new(false),
                 })),
                 _ => Value::Unknown,
             },
