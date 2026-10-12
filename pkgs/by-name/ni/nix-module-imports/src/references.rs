@@ -149,7 +149,10 @@ pub fn imports(touches: &Touches) -> (Vec<PathBuf>, bool) {
 /// For each file, the references that its imports do not cover.
 /// `files` holds what each file touches, for every file that is loaded
 /// always.
-pub fn check(files: &BTreeMap<PathBuf, Touches>) -> BTreeMap<PathBuf, Report> {
+///
+/// The check stops with an error when the thread passes its limit of
+/// memory. See `memory::limit`.
+pub fn check(files: &BTreeMap<PathBuf, Touches>) -> Result<BTreeMap<PathBuf, Report>, String> {
     let mut declared = Declared::default();
     // The module system declares the options below `_module` itself,
     // for every module.
@@ -192,6 +195,12 @@ pub fn check(files: &BTreeMap<PathBuf, Touches>) -> BTreeMap<PathBuf, Report> {
 
     let mut reports = BTreeMap::new();
     for (file, touches) in files {
+        if crate::memory::over() {
+            return Err(format!(
+                "checking the references takes more memory than it may, at {}",
+                file.display()
+            ));
+        }
         let (reached, imports_unknown) = reach(file);
         let mut report = Report {
             imports_unknown,
@@ -257,7 +266,7 @@ pub fn check(files: &BTreeMap<PathBuf, Touches>) -> BTreeMap<PathBuf, Report> {
         report.not_imported = not_imported.into_iter().collect();
         reports.insert(file.clone(), report);
     }
-    reports
+    Ok(reports)
 }
 
 #[cfg(test)]
@@ -297,6 +306,7 @@ mod tests {
             })
             .collect();
         check(&files)
+            .unwrap()
             .into_iter()
             .map(|(file, report)| {
                 let mut lines: Vec<String> = report
