@@ -306,9 +306,10 @@ in
         config.services.openafsServer.cellServDB should normally only contain servers for one cell. It currently contains servers for ${toString (builtins.attrNames cfg.cellServDB)}.
       ''
       ++
-        lib.optional (useBuCellServDB && (builtins.attrNames cfg.backup.cellServDB) != [ cfg.cellName ])
+        lib.optional
+          (useBuCellServDB && (builtins.attrNames cfg.roles.backup.cellServDB) != [ cfg.cellName ])
           ''
-            config.services.openafsServer.backup.cellServDB should normally only contain servers for one cell. It currently contains servers for ${toString (builtins.attrNames cfg.cellServDB)}.
+            config.services.openafsServer.roles.backup.cellServDB should normally only contain servers for one cell. It currently contains servers for ${toString (builtins.attrNames cfg.roles.backup.cellServDB)}.
           '';
 
     assertions = [
