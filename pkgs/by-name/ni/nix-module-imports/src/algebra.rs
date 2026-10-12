@@ -529,6 +529,8 @@ pub struct Interpreter {
     pub arguments: BTreeMap<String, Value>,
     /// The directory of the library that the modules get as `lib`.
     pub library: Option<PathBuf>,
+    /// Directories whose files are not read when they are imported.
+    pub unread: Vec<PathBuf>,
     /// Take both sides of every `if`, whatever the condition is.
     both_sides: bool,
     /// How many calls of one function may be under way inside each other
@@ -662,6 +664,7 @@ impl Interpreter {
             deep_reads: BTreeSet::new(),
             arguments: BTreeMap::new(),
             library: None,
+            unread: Vec::new(),
             both_sides: std::env::var_os("TOUCHES_BOTH_SIDES").is_some(),
             reentries: std::env::var("TOUCHES_REENTRIES")
                 .ok()
@@ -2104,6 +2107,12 @@ impl Interpreter {
         };
         if let Some(known) = self.imported.get(&path) {
             return known.clone();
+        }
+        // A file that is not to be read is a value that is not known.
+        // Whoever calls it passes values to a function that is not
+        // known, and those are escaped at the call.
+        if self.unread.iter().any(|unread| path.starts_with(unread)) {
+            return Value::Unknown;
         }
         let Ok(text) = std::fs::read_to_string(&path) else {
             return Value::Unknown;

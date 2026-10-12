@@ -75,6 +75,12 @@ enum Command {
         /// `_module.args`
         #[arg(long, value_name = "NAME=TEXT")]
         special_arg: Vec<String>,
+        /// A directory whose files are not read when a module imports
+        /// one of them, such as the directory of the packages. What the
+        /// file gives is then not known, and what a module passes to it
+        /// counts as read in full. May be given more than once
+        #[arg(long, value_name = "DIRECTORY")]
+        unread: Vec<PathBuf>,
         /// The module files
         #[arg(required = true, value_name = "FILE")]
         files: Vec<PathBuf>,
@@ -314,6 +320,7 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
         Command::Touches {
             library,
             special_arg,
+            unread,
             files,
         } => {
             let library = fs::canonicalize(&library)
@@ -326,6 +333,12 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
                 special.insert(name.to_string(), text.to_string());
             }
             let mut interpreter = algebra::Interpreter::new();
+            for directory in &unread {
+                interpreter.unread.push(
+                    fs::canonicalize(directory)
+                        .map_err(|error| format!("{}: {error}", directory.display()))?,
+                );
+            }
             let mut result = BTreeMap::new();
             for file in &files {
                 let path = fs::canonicalize(file)
