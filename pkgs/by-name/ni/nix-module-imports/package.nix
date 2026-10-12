@@ -1,0 +1,59 @@
+{
+  lib,
+  rustPlatform,
+  clippy,
+  rustfmt,
+}:
+
+let
+  cargoToml = fromTOML (builtins.readFile ./Cargo.toml);
+in
+rustPlatform.buildRustPackage (finalAttrs: {
+  pname = cargoToml.package.name;
+  inherit (cargoToml.package) version;
+
+  __structuredAttrs = true;
+
+  src = lib.sourceFilesBySuffices ./. [
+    ".rs"
+    ".toml"
+    ".lock"
+  ];
+
+  cargoLock = {
+    lockFile = ./Cargo.lock;
+  };
+
+  passthru.tests = {
+    lint-format = finalAttrs.finalPackage.overrideAttrs (
+      _: previousAttrs: {
+        pname = previousAttrs.pname + "-lint-format";
+        nativeCheckInputs = (previousAttrs.nativeCheckInputs or [ ]) ++ [
+          clippy
+          rustfmt
+        ];
+        checkPhase = ''
+          cargo clippy --all-targets -- -D warnings
+          cargo fmt --check
+        '';
+      }
+    );
+  };
+
+  meta = {
+    description = "Find the references of module files that their imports do not cover";
+    longDescription = ''
+      A module of the module system in `lib.modules` sets and reads
+      options. It works on its own only when it imports the modules that
+      declare those options. This tool reads the source of the modules
+      and reports, for each module, the options it refers to whose
+      declaration it does not reach through its imports, and the paths
+      it refers to that no module declares. It evaluates nothing, so
+      what it reports does not depend on a configuration.
+    '';
+    license = lib.licenses.mit;
+    maintainers = [ ];
+    mainProgram = "nix-module-imports";
+    platforms = lib.platforms.unix;
+  };
+})
