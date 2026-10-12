@@ -625,7 +625,12 @@ in
               }
               .${cfg.database.type};
             DB_HOST = "localhost";
-            DB_PORT = config.services.${cfg.database.type}.settings.port;
+            DB_PORT =
+              {
+                "postgresql" = config.services.postgresql.settings.port;
+                "mariadb" = config.services.mysql.settings.mysqld.port;
+              }
+              .${cfg.database.type};
             DB_DATABASE = cfg.database.name;
             DB_USERNAME = cfg.database.user;
             DB_PASSWORD = "";
