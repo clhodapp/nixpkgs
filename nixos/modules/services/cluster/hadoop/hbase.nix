@@ -47,7 +47,12 @@ let
     // extraOpts;
   # generic hbase role configs
   hbaseRoleConfig =
-    name: ports:
+    name:
+    {
+      ports,
+      # Whether the command of the role takes its ports as flags.
+      portFlags ? false,
+    }:
     (lib.mkIf cfg.hbase."${name}".enable {
       services.hadoop.gatewayRole = {
         enable = true;
@@ -77,12 +82,10 @@ let
             "${lib.toLower name} start"
           ]
           ++ cfg.hbase."${name}".extraFlags
-          ++ map (x: "--${lib.toLower x} ${toString cfg.hbase.${name}.${x}}") (
-            lib.filter (x: lib.hasAttr x cfg.hbase.${name}) [
-              "port"
-              "infoPort"
-            ]
-          )
+          ++ lib.optionals portFlags [
+            "--port ${toString cfg.hbase.${name}.port}"
+            "--infoport ${toString cfg.hbase.${name}.infoPort}"
+          ]
         );
 
         serviceConfig = {
@@ -225,22 +228,28 @@ in
       })
     ]
     ++ (lib.mapAttrsToList hbaseRoleConfig {
-      master = [
+      master.ports = [
         16000
         16010
       ];
-      regionServer = [
+      regionServer.ports = [
         16020
         16030
       ];
-      thrift = with cfg.hbase.thrift; [
-        port
-        infoPort
-      ];
-      rest = with cfg.hbase.rest; [
-        port
-        infoPort
-      ];
+      thrift = {
+        ports = with cfg.hbase.thrift; [
+          port
+          infoPort
+        ];
+        portFlags = true;
+      };
+      rest = {
+        ports = with cfg.hbase.rest; [
+          port
+          infoPort
+        ];
+        portFlags = true;
+      };
     })
   );
 }
