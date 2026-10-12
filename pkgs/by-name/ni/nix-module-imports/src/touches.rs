@@ -56,6 +56,10 @@ pub struct Touches {
     /// Errors in the module that this reading came across, such as a
     /// builtin that does not exist.
     pub problems: BTreeSet<String>,
+    /// The options whose value this reading took to be one of the
+    /// values of the `enum` that the file declares them with. That holds
+    /// as long as no other file declares the same option.
+    pub enums: BTreeSet<Vec<String>>,
 }
 
 /// How deep the settings of a module are followed.
@@ -201,6 +205,9 @@ impl Reader<'_> {
                 }
             }
             Value::Attrs(attrs) => {
+                if let Some(options) = attrs.fields.get("options") {
+                    self.interpreter.declarations.push(options.clone());
+                }
                 // The module system works out every part of a module,
                 // whatever the reading below makes of it. So all that
                 // the module holds is escaped: an element of a list
@@ -387,6 +394,7 @@ pub fn of_file(
         cycles: interpreter.cycles,
         stopped: interpreter.fatal.clone(),
         problems: std::mem::take(&mut interpreter.problems),
+        enums: std::mem::take(&mut interpreter.enums),
     }
 }
 
@@ -769,6 +777,58 @@ assert config.a.ok;
                 "Read config.d",
                 "Read config.d.skip ...",
                 "Read config.e ...",
+            ]
+        );
+    }
+
+    #[test]
+    fn a_name_from_an_option_of_an_enum_is_one_of_its_values() {
+        assert_eq!(
+            touches(
+                "enum",
+                r#"{ config, lib, ... }:
+let
+  cfg = config.services.wiki;
+  enum = values: { name = "enum"; functor.payload = { inherit values; }; };
+  webserver = config.services.${cfg.webserver};
+in
+{
+  options.services.wiki.webserver = lib.mkOption {
+    type = enum [ "nginx" "caddy" ];
+  };
+  options.services.wiki.other = lib.mkOption { };
+  config.users.users.wiki.group = webserver.group;
+  config.users.users.wiki.home = config.services.${cfg.other}.home;
+  config.users.users.wiki.shell =
+    if cfg.webserver == "caddy" then null else config.programs.${cfg.webserver}.shell;
+  config.users.users.wiki.createHome =
+    let
+      byName = name: config.security.${name}.enable;
+    in
+    if cfg.webserver != "nginx" then byName cfg.webserver else false;
+}
+"#
+            )
+            .into_iter()
+            .filter(|touch| touch.starts_with("Read"))
+            .collect::<Vec<_>>(),
+            [
+                "Read config.programs",
+                "Read config.programs.nginx",
+                "Read config.programs.nginx.shell ...",
+                "Read config.security",
+                "Read config.security.caddy",
+                "Read config.security.caddy.enable ...",
+                "Read config.services",
+                "Read config.services.*",
+                "Read config.services.*.home ...",
+                "Read config.services.caddy",
+                "Read config.services.caddy.group ...",
+                "Read config.services.nginx",
+                "Read config.services.nginx.group ...",
+                "Read config.services.wiki",
+                "Read config.services.wiki.other ...",
+                "Read config.services.wiki.webserver ...",
             ]
         );
     }
