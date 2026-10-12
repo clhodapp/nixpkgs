@@ -36,7 +36,7 @@
 //! narrower. A run that stops altogether says that the file can touch
 //! anything.
 
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
@@ -250,9 +250,13 @@ enum State {
 struct Suspended {
     state: RefCell<State>,
     /// Whether the value can hold a part of the configuration, or a
-    /// function that can reach one. `false` is a promise: nothing that
-    /// is ever done with the value reads the configuration.
-    reaches: bool,
+    /// function that can reach one. "No" is a promise: nothing that is
+    /// ever done with the value reads the configuration. For an
+    /// expression of a file it is worked out when it is asked for, from
+    /// the names that the expression uses. See `Thunk::reaches`.
+    reach: Cell<Reach>,
+    /// The expression, when the value is one of a file.
+    written: Option<ast::Expr>,
     /// The calls that were under way where the value was written down.
     /// Working the value out continues from these, and not from the
     /// calls of whoever asks for it.
@@ -294,7 +298,7 @@ impl Sees {
 
     fn reaches(&self) -> bool {
         self.env.as_ref().is_some_and(Env::reaches)
-            || self.thunks.iter().any(|thunk| thunk.0.reaches)
+            || self.thunks.iter().any(Thunk::reaches)
             || self.values.iter().any(reaches)
     }
 }
@@ -302,10 +306,128 @@ impl Sees {
 #[derive(Clone)]
 pub struct Thunk(Rc<Suspended>);
 
+#[derive(Clone, Copy, PartialEq)]
+enum Reach {
+    Yes,
+    No,
+    /// Not worked out yet.
+    Open,
+    /// Being worked out.
+    Asked,
+}
+
+impl From<bool> for Reach {
+    fn from(reaches: bool) -> Reach {
+        if reaches { Reach::Yes } else { Reach::No }
+    }
+}
+
+thread_local! {
+    /// How many answers about what a value reaches are being worked
+    /// out inside each other, and whether one of them met a value whose
+    /// answer is being worked out. Such a value counts as one that
+    /// does not reach the configuration, which is right when the
+    /// outermost answer comes out so, and is not to be kept otherwise.
+    static ASKING: Cell<(usize, bool)> = const { Cell::new((0, false)) };
+}
+
+/// Whether one of the names that an expression uses is bound to
+/// something that reaches the configuration. The second part says
+/// whether that is certain: it is not while a `let` that the expression
+/// is in is still being put together, because a name that it uses may
+/// not be there yet.
+///
+/// Every identifier in the text of the expression counts as a name it
+/// uses, also one that is the name of an attribute. That is more than
+/// it uses, which errs towards "reaches".
+fn uses_reaching(expr: &ast::Expr, env: &Env) -> (bool, bool) {
+    let names: BTreeSet<String> = expr
+        .syntax()
+        .descendants_with_tokens()
+        .filter_map(|element| element.into_token())
+        .filter(|token| token.kind() == rnix::SyntaxKind::TOKEN_IDENT)
+        .map(|token| token.text().to_string())
+        .collect();
+    let mut withs = Vec::new();
+    let mut scope = env.0.clone();
+    while let Some(current) = scope {
+        if !current.reaches {
+            break;
+        }
+        withs.extend(current.with.clone());
+        scope = current.parent.0.clone();
+    }
+    let mut unbound = false;
+    for name in &names {
+        let mut scope = env.0.clone();
+        let mut bound = false;
+        while let Some(current) = scope {
+            if !current.reaches {
+                // Nothing from here outwards reaches.
+                bound = true;
+                break;
+            }
+            let found = current.names.borrow().get(name).cloned();
+            if let Some(found) = found {
+                if found.reaches() {
+                    return (true, true);
+                }
+                bound = true;
+                break;
+            }
+            if !current.sealed.get() {
+                return (true, false);
+            }
+            scope = current.parent.0.clone();
+        }
+        unbound |= !bound;
+    }
+    // A name that no scope binds comes from a `with`.
+    if unbound && withs.iter().any(Thunk::reaches) {
+        return (true, true);
+    }
+    (false, true)
+}
+
 impl Thunk {
+    /// Whether the value can reach the configuration.
+    fn reaches(&self) -> bool {
+        match self.0.reach.get() {
+            Reach::Yes => return true,
+            Reach::No => return false,
+            Reach::Asked => {
+                ASKING.set((ASKING.get().0, true));
+                return false;
+            }
+            Reach::Open => {}
+        }
+        let (Some(expr), Some(env)) = (&self.0.written, &self.0.sees.env) else {
+            return true;
+        };
+        if !env.reaches() {
+            self.0.reach.set(Reach::No);
+            return false;
+        }
+        self.0.reach.set(Reach::Asked);
+        let (depth, _) = ASKING.get();
+        ASKING.set((depth + 1, if depth == 0 { false } else { ASKING.get().1 }));
+        let (reaches, certain) = uses_reaching(expr, env);
+        let (_, assumed) = ASKING.get();
+        ASKING.set((depth, assumed));
+        // "Yes" holds whatever was assumed. "No" holds when nothing was
+        // assumed, or when this is the outermost answer, for which the
+        // assumption has then come out right.
+        let keep = certain && (reaches || !assumed || depth == 0);
+        self.0
+            .reach
+            .set(if keep { reaches.into() } else { Reach::Open });
+        reaches
+    }
+
     pub fn done(value: Value) -> Thunk {
         Thunk(Rc::new(Suspended {
-            reaches: reaches(&value),
+            reach: Cell::new(reaches(&value).into()),
+            written: None,
             state: RefCell::new(State::Done(value)),
             chain: Chain::default(),
             sees: Sees::default(),
@@ -326,12 +448,12 @@ fn reaches(value: &Value) -> bool {
         | Value::Bool(_)
         | Value::Null => false,
         Value::Attrs(attrs) => {
-            attrs.fields.values().any(|field| field.0.reaches)
-                || attrs.any.as_ref().is_some_and(|any| any.0.reaches)
+            attrs.fields.values().any(Thunk::reaches)
+                || attrs.any.as_ref().is_some_and(Thunk::reaches)
         }
-        Value::List(items) | Value::Seq(items) => items.iter().any(|item| item.0.reaches),
+        Value::List(items) | Value::Seq(items) => items.iter().any(Thunk::reaches),
         Value::Lambda(closure) => closure.env.reaches(),
-        Value::Builtin(_, given) => given.iter().any(|argument| argument.0.reaches),
+        Value::Builtin(_, given) => given.iter().any(Thunk::reaches),
         Value::Either(values) => values.iter().any(reaches),
     }
 }
@@ -361,7 +483,7 @@ fn sees_everything(interpreter: &mut Interpreter, env: &Env) -> bool {
         }
         let names: Vec<Thunk> = current.names.borrow().values().cloned().collect();
         for name in names {
-            if current.call && name.0.reaches {
+            if current.call && name.reaches() {
                 if is_everything(&interpreter.force(&name)) {
                     return true;
                 }
@@ -386,6 +508,9 @@ struct Scope {
     /// Whether a name of this scope or of one around it can reach the
     /// configuration.
     reaches: bool,
+    /// Whether all the names of the scope are there. A `let` is made
+    /// first and gets its names afterwards.
+    sealed: Cell<bool>,
 }
 
 #[derive(Clone)]
@@ -405,6 +530,7 @@ impl Env {
             parent: self.clone(),
             reaches: reaches || self.reaches(),
             call: false,
+            sealed: Cell::new(false),
         })))
     }
 
@@ -416,23 +542,31 @@ impl Env {
             parent: self.clone(),
             reaches: reaches || self.reaches(),
             call: true,
+            sealed: Cell::new(false),
         })))
     }
 
     fn with(&self, value: Thunk) -> Env {
         Env(Some(Rc::new(Scope {
             names: RefCell::new(BTreeMap::new()),
-            reaches: value.0.reaches || self.reaches(),
+            reaches: value.reaches() || self.reaches(),
             with: Some(value),
             parent: self.clone(),
             call: false,
+            sealed: Cell::new(true),
         })))
     }
 
     fn define(&self, name: String, value: Thunk) {
         if let Some(scope) = &self.0 {
-            debug_assert!(scope.reaches || !value.0.reaches);
             scope.names.borrow_mut().insert(name, value);
+        }
+    }
+
+    /// All the names of the scope are there now.
+    fn seal(&self) {
+        if let Some(scope) = &self.0 {
+            scope.sealed.set(true);
         }
     }
 }
@@ -734,7 +868,8 @@ impl Interpreter {
     fn delayed(&self, sees: Sees, work: impl Fn(&mut Interpreter) -> Value + 'static) -> Thunk {
         Thunk(Rc::new(Suspended {
             state: RefCell::new(State::Delayed(Rc::new(work))),
-            reaches: sees.reaches(),
+            reach: Cell::new(sees.reaches().into()),
+            written: None,
             chain: self.chain.clone(),
             sees,
             library: self.in_library,
@@ -747,10 +882,11 @@ impl Interpreter {
         let (env, file) = (env.clone(), file.clone());
         match expr {
             Some(expr) => Thunk(Rc::new(Suspended {
+                written: Some(expr.clone()),
                 state: RefCell::new(State::Delayed(Rc::new(move |interpreter| {
                     interpreter.eval(&expr, &env, &file)
                 }))),
-                reaches: sees.reaches(),
+                reach: Cell::new(Reach::Open),
                 chain: self.chain.clone(),
                 sees,
                 library,
@@ -800,7 +936,7 @@ impl Interpreter {
     }
 
     pub fn escape_thunk(&mut self, thunk: &Thunk) {
-        if thunk.0.reaches && self.escaped.insert(Rc::as_ptr(&thunk.0) as usize) {
+        if thunk.reaches() && self.escaped.insert(Rc::as_ptr(&thunk.0) as usize) {
             self.pending
                 .push((Pending::Thunk(thunk.clone()), self.origin.clone()));
         }
@@ -1468,6 +1604,7 @@ impl Interpreter {
                     for (name, value) in &attrs.fields {
                         inner.define(name.clone(), value.clone());
                     }
+                    inner.seal();
                     Value::Attrs(Rc::new(attrs))
                 } else {
                     Value::Attrs(Rc::new(self.set(set, env, file)))
@@ -1479,6 +1616,7 @@ impl Interpreter {
                 for (name, value) in &attrs.fields {
                     inner.define(name.clone(), value.clone());
                 }
+                inner.seal();
                 match let_in.body() {
                     Some(body) => self.eval(&body, &inner, file),
                     None => Value::Unknown,
@@ -1490,6 +1628,7 @@ impl Interpreter {
                 for (name, value) in &attrs.fields {
                     inner.define(name.clone(), value.clone());
                 }
+                inner.seal();
                 match attrs.fields.get("body") {
                     Some(body) => self.force(body),
                     None => Value::Unknown,
@@ -1975,7 +2114,7 @@ impl Interpreter {
                 let mut names = BTreeMap::new();
                 let library = self.of_library(&closure.file);
                 let outside_library = std::mem::replace(&mut self.in_library, library);
-                let inner = closure.env.call(argument.0.reaches);
+                let inner = closure.env.call(argument.reaches());
                 match &closure.param {
                     ast::Param::IdentParam(param) => {
                         if let Some(ident) = param.ident() {
@@ -2040,6 +2179,7 @@ impl Interpreter {
                 for (name, value) in names {
                     inner.define(name, value);
                 }
+                inner.seal();
                 let inside = self
                     .chain
                     .with_widened_of(&closure.chain)
