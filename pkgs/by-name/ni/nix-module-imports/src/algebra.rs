@@ -730,6 +730,10 @@ struct Scope {
     call: bool,
     /// The value of a `with`, when this scope is one.
     with: Option<Thunk>,
+    /// What is known inside this scope about a string of the
+    /// configuration, when this scope is a branch of an `if` that
+    /// compares one. See `Env::knowing`.
+    known: Option<Comparison>,
     parent: Env,
     /// Whether a name of this scope or of one around it can reach the
     /// configuration.
@@ -739,10 +743,48 @@ struct Scope {
     sealed: Cell<bool>,
 }
 
+/// The configuration at the path is the string, or is not the string.
+#[derive(Clone)]
+struct Comparison {
+    path: Rc<Vec<String>>,
+    text: Rc<str>,
+    equal: bool,
+}
+
 #[derive(Clone)]
 struct Env(Option<Rc<Scope>>);
 
 impl Env {
+    /// The scope of a branch of an `if` whose condition compares a path
+    /// of the configuration with a string. It has no names. What is
+    /// delayed in the branch is worked out later and still belongs to
+    /// the branch, which is why the comparison is kept in the scope.
+    fn knowing(&self, known: Comparison) -> Env {
+        Env(Some(Rc::new(Scope {
+            names: RefCell::new(BTreeMap::new()),
+            reaches: self.reaches(),
+            with: None,
+            known: Some(known),
+            parent: self.clone(),
+            call: false,
+            sealed: Cell::new(true),
+        })))
+    }
+
+    /// Take from the values that the configuration can have at a path
+    /// those that the branches around this scope rule out.
+    fn narrow(&self, path: &[String], values: &mut Vec<String>) {
+        let mut scope = self.0.as_ref();
+        while let Some(inner) = scope {
+            if let Some(known) = &inner.known
+                && known.path.as_slice() == path
+            {
+                values.retain(|value| (**value == *known.text) == known.equal);
+            }
+            scope = inner.parent.0.as_ref();
+        }
+    }
+
     fn reaches(&self) -> bool {
         self.0.as_ref().is_some_and(|scope| scope.reaches)
     }
@@ -753,6 +795,7 @@ impl Env {
         Env::recorded(Scope {
             names: RefCell::new(BTreeMap::new()),
             with: None,
+            known: None,
             parent: self.clone(),
             reaches: reaches || self.reaches(),
             call: false,
@@ -765,6 +808,7 @@ impl Env {
         Env::recorded(Scope {
             names: RefCell::new(BTreeMap::new()),
             with: None,
+            known: None,
             parent: self.clone(),
             reaches: reaches || self.reaches(),
             call: true,
@@ -779,6 +823,7 @@ impl Env {
             names: RefCell::new(BTreeMap::new()),
             reaches: value.reaches() || self.reaches(),
             with: Some(value),
+            known: None,
             parent: self.clone(),
             call: false,
             sealed: Cell::new(true),
@@ -943,6 +988,21 @@ pub struct Interpreter {
     /// argument. The function is kept with the result, so that no other
     /// function gets its address.
     results: HashMap<(usize, Known), (Rc<Closure>, Value)>,
+    /// The `options` of the module that is read: of the module itself
+    /// and of every module that it holds in its `imports`.
+    pub declarations: Vec<Thunk>,
+    /// The options of the module whose value was taken to be one of the
+    /// values of the `enum` that the module declares them with. See
+    /// `enum_of`.
+    pub enums: BTreeSet<Vec<String>>,
+}
+
+/// What the name of an attribute is, when the name is computed.
+enum Names {
+    One(String),
+    /// One of these, and no other.
+    Several(Vec<String>),
+    Unknown,
 }
 
 /// An argument of a call that can be told from any other: a part of the
@@ -1103,6 +1163,8 @@ impl Interpreter {
             trace: std::env::var_os("TOUCHES_TRACE").is_some(),
             cuts: BTreeMap::new(),
             results: HashMap::new(),
+            declarations: Vec::new(),
+            enums: BTreeSet::new(),
         }
     }
 
@@ -1138,6 +1200,8 @@ impl Interpreter {
         self.fatal = None;
         self.steps = 0;
         self.elsewhere_steps = 0;
+        self.declarations.clear();
+        self.enums.clear();
     }
 
     /// Let the reading take `bytes` of memory more than the thread has
@@ -1786,6 +1850,206 @@ impl Interpreter {
         }
     }
 
+    /// The names that an attribute of a selection can be. As `name_of`,
+    /// and with one more case: a name that is the value of an option
+    /// which the module declares with an `enum` is one of the values of
+    /// that `enum`.
+    fn names_of(&mut self, attr: &ast::Attr, env: &Env, file: &Rc<PathBuf>) -> Names {
+        let ast::Attr::Dynamic(dynamic) = attr else {
+            return match self.name_of(attr, env, file) {
+                Some(name) => Names::One(name),
+                None => Names::Unknown,
+            };
+        };
+        let Some(expr) = dynamic.expr() else {
+            return Names::Unknown;
+        };
+        match self.eval(&expr, env, file) {
+            Value::Str(text) => Names::One(text.to_string()),
+            Value::Config(path) => match self.enum_of(&path) {
+                Some(mut values) => {
+                    env.narrow(&path, &mut values);
+                    Names::Several(values)
+                }
+                None => {
+                    self.escape(&Value::Config(path));
+                    Names::Unknown
+                }
+            },
+            Value::Either(values)
+                if !values.is_empty()
+                    && values.iter().all(|value| matches!(value, Value::Str(_))) =>
+            {
+                Names::Several(
+                    values
+                        .iter()
+                        .filter_map(|value| match value {
+                            Value::Str(text) => Some(text.to_string()),
+                            _ => None,
+                        })
+                        .collect(),
+                )
+            }
+            other => {
+                self.escape(&other);
+                Names::Unknown
+            }
+        }
+    }
+
+    /// What a condition says when it is `a == b` or `a != b` and compares
+    /// a path of the configuration with a string that is known.
+    fn comparison(
+        &mut self,
+        condition: &ast::Expr,
+        env: &Env,
+        file: &Rc<PathBuf>,
+    ) -> Option<Comparison> {
+        let mut condition = condition.clone();
+        while let ast::Expr::Paren(paren) = &condition {
+            condition = paren.expr()?;
+        }
+        let ast::Expr::BinOp(op) = condition else {
+            return None;
+        };
+        let equal = match op.operator()? {
+            ast::BinOpKind::Equal => true,
+            ast::BinOpKind::NotEqual => false,
+            _ => return None,
+        };
+        let left = self.eval(&op.lhs()?, env, file);
+        let right = self.eval(&op.rhs()?, env, file);
+        match (left, right) {
+            (Value::Config(path), Value::Str(text)) | (Value::Str(text), Value::Config(path)) => {
+                Some(Comparison { path, text, equal })
+            }
+            _ => None,
+        }
+    }
+
+    /// The field of a set that is known, when the set has it by name.
+    fn field_of(&mut self, value: &Value, name: &str) -> Option<Value> {
+        let Value::Attrs(attrs) = value else {
+            return None;
+        };
+        let field = attrs.fields.get(name).cloned()?;
+        Some(self.force(&field))
+    }
+
+    /// The option that declarations have at a path, when they have one.
+    /// The path goes into the options of a `submodule` that is written
+    /// as a set. `Err` when what is declared at the path is not known.
+    fn option_at(&mut self, declared: Value, names: &[String]) -> Result<Option<Value>, ()> {
+        let Value::Attrs(attrs) = &declared else {
+            return Err(());
+        };
+        let is_option = matches!(
+            self.field_of(&declared, "_type"),
+            Some(Value::Str(kind)) if &*kind == "option"
+        );
+        if !is_option {
+            let Some((name, rest)) = names.split_first() else {
+                return Ok(None);
+            };
+            return match attrs.fields.get(name).cloned() {
+                Some(field) => {
+                    let field = self.force(&field);
+                    self.option_at(field, rest)
+                }
+                None if attrs.any.is_some() => Err(()),
+                None => Ok(None),
+            };
+        }
+        if names.is_empty() {
+            return Ok(Some(declared));
+        }
+        let of_type = self.field_of(&declared, "type").ok_or(())?;
+        if !matches!(self.field_of(&of_type, "name"), Some(Value::Str(name)) if &*name == "submodule")
+        {
+            return Err(());
+        }
+        let functor = self.field_of(&of_type, "functor").ok_or(())?;
+        let payload = self.field_of(&functor, "payload").ok_or(())?;
+        let modules = self.field_of(&payload, "modules").ok_or(())?;
+        let modules = self.exact(&modules).ok_or(())?;
+        let mut found = None;
+        for module in modules.iter() {
+            let module = self.force(module);
+            let options = self.field_of(&module, "options").ok_or(())?;
+            if let Some(option) = self.option_at(options, names)? {
+                if found.is_some() {
+                    return Err(());
+                }
+                found = Some(option);
+            }
+        }
+        Ok(found)
+    }
+
+    /// A value of the configuration that an `if` around the scope
+    /// compares, as the strings it can still be. Every other value is
+    /// given back as it is.
+    fn narrowed(&mut self, value: Value, env: &Env) -> Value {
+        let Value::Config(path) = &value else {
+            return value;
+        };
+        let mut compared = false;
+        let mut scope = env.0.as_ref();
+        while let Some(inner) = scope {
+            compared |= inner
+                .known
+                .as_ref()
+                .is_some_and(|known| known.path == *path);
+            scope = inner.parent.0.as_ref();
+        }
+        if !compared {
+            return value;
+        }
+        let Some(mut values) = self.enum_of(path) else {
+            return value;
+        };
+        env.narrow(path, &mut values);
+        either(values.iter().map(|text| string(text)).collect())
+    }
+
+    /// The values that the option at a path of the configuration can
+    /// have, when the module that is read declares the option with the
+    /// type `enum` of strings that are known.
+    ///
+    /// The module system refuses every other value for the option. A
+    /// second declaration of the option can add values, so there must be
+    /// one declaration in the module, and `enums` records the option for
+    /// whoever knows the declarations of the other files.
+    fn enum_of(&mut self, path: &[String]) -> Option<Vec<String>> {
+        let (first, names) = path.split_first()?;
+        if first != "config" {
+            return None;
+        }
+        let mut found: Option<Vec<String>> = None;
+        for declared in self.declarations.clone() {
+            let declared = self.force(&declared);
+            let Some(value) = self.option_at(declared, names).ok()? else {
+                continue;
+            };
+            let of_type = self.field_of(&value, "type")?;
+            if !matches!(self.field_of(&of_type, "name"), Some(Value::Str(name)) if &*name == "enum")
+            {
+                return None;
+            }
+            let functor = self.field_of(&of_type, "functor")?;
+            let payload = self.field_of(&functor, "payload")?;
+            let values = self.field_of(&payload, "values")?;
+            let values = self.strings(&values)?;
+            if found.is_some() {
+                return None;
+            }
+            found = Some(values);
+        }
+        let found = found?;
+        self.enums.insert(names.to_vec());
+        Some(found)
+    }
+
     fn string(&mut self, string: &ast::Str, env: &Env, file: &Rc<PathBuf>) -> Value {
         let mut text = String::new();
         let mut known = true;
@@ -2037,7 +2301,8 @@ impl Interpreter {
             },
             ast::Expr::Ident(ident) => {
                 let name = ident.syntax().text().to_string();
-                self.lookup(&name, env)
+                let value = self.lookup(&name, env);
+                self.narrowed(value, env)
             }
             ast::Expr::Literal(literal) => match literal.kind() {
                 ast::LiteralKind::Integer(integer) => match integer.value() {
@@ -2132,14 +2397,26 @@ impl Interpreter {
                     None => Value::Unknown,
                 };
                 self.escape(&condition);
+                let compared = if_else
+                    .condition()
+                    .and_then(|condition| self.comparison(&condition, env, file));
+                let knowing = |equal: bool| match &compared {
+                    Some(known) => env.knowing(Comparison {
+                        equal: known.equal == equal,
+                        ..known.clone()
+                    }),
+                    None => env.clone(),
+                };
                 let branches = match condition {
-                    Value::Bool(true) if !self.both_sides => vec![if_else.body()],
-                    Value::Bool(false) if !self.both_sides => vec![if_else.else_body()],
-                    _ => vec![if_else.body(), if_else.else_body()],
+                    Value::Bool(true) if !self.both_sides => vec![(if_else.body(), true)],
+                    Value::Bool(false) if !self.both_sides => vec![(if_else.else_body(), false)],
+                    _ => vec![(if_else.body(), true), (if_else.else_body(), false)],
                 };
                 let mut values = Vec::new();
-                for branch in branches.into_iter().flatten() {
-                    values.push(self.eval(&branch, env, file));
+                for (branch, holds) in branches {
+                    if let Some(branch) = branch {
+                        values.push(self.eval(&branch, &knowing(holds), file));
+                    }
                 }
                 either(values)
             }
@@ -2175,28 +2452,33 @@ impl Interpreter {
                 let with_default = select.default_expr().is_some();
                 if let Some(attrpath) = select.attrpath() {
                     for attr in attrpath.attrs() {
-                        value = match self.name_of(&attr, env, file) {
-                            Some(name) => {
-                                there &= self.has(&value, &name) == Some(true)
-                                    || matches!(value, Value::Builtin("builtins", _));
-                                let found = if with_default {
-                                    self.ask(&value, &name)
-                                } else {
-                                    self.select_one(&value, &name)
-                                };
-                                match found {
-                                    Some(found) => found,
-                                    None => {
-                                        missing = true;
-                                        break;
-                                    }
-                                }
-                            }
+                        let names = match self.names_of(&attr, env, file) {
+                            Names::One(name) => vec![name],
+                            Names::Several(names) => names,
                             // A name that is not known: any entry.
-                            None => {
+                            Names::Unknown => {
                                 there = false;
-                                self.any_entry(&value)
+                                value = self.any_entry(&value);
+                                continue;
                             }
+                        };
+                        let mut found = Vec::new();
+                        for name in &names {
+                            there &= self.has(&value, name) == Some(true)
+                                || matches!(value, Value::Builtin("builtins", _));
+                            found.extend(if with_default {
+                                self.ask(&value, name)
+                            } else {
+                                self.select_one(&value, name)
+                            });
+                        }
+                        value = match found.len() {
+                            0 => {
+                                missing = true;
+                                break;
+                            }
+                            1 => found.remove(0),
+                            _ => either(found),
                         };
                     }
                 }
@@ -2210,7 +2492,7 @@ impl Interpreter {
                         either(vec![value, default])
                     }
                     (None, true) => nothing(),
-                    (None, false) => value,
+                    (None, false) => self.narrowed(value, env),
                 }
             }
             ast::Expr::HasAttr(has) => {
@@ -2219,11 +2501,22 @@ impl Interpreter {
                 };
                 let mut value = self.eval(&base, env, file);
                 for attr in attrpath.attrs() {
-                    let Some(name) = self.name_of(&attr, env, file) else {
+                    let name = match self.names_of(&attr, env, file) {
+                        Names::One(name) => name,
+                        // Which of the names is asked for is not known,
+                        // so neither is the answer.
+                        Names::Several(names) => {
+                            for name in &names {
+                                self.ask(&value, name);
+                            }
+                            return Value::Unknown;
+                        }
                         // Asking for a name that is not known asks for
                         // any of the names.
-                        self.any_entry(&value);
-                        return Value::Unknown;
+                        Names::Unknown => {
+                            self.any_entry(&value);
+                            return Value::Unknown;
+                        }
                     };
                     match self.has(&value, &name) {
                         Some(true) => {
