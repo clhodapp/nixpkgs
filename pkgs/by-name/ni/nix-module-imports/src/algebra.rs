@@ -53,6 +53,13 @@ const DEPTH: usize = 400;
 /// a setting can be before the setting is cut off at a parent.
 const REENTRIES: usize = 8;
 
+/// How many steps code may take that is neither of the module that is
+/// read nor of the library, such as the code that puts the packages
+/// together. It is followed for the value it gives, which can hold
+/// names of settings when a module is written in two files. After
+/// these steps it is not followed any more.
+const ELSEWHERE_STEPS: u64 = 200_000;
+
 /// How many functions of one text may each get a call that stands for a
 /// recursion, inside each other, before what the next one sees is
 /// escaped.
@@ -263,8 +270,11 @@ struct Suspended {
     chain: Chain,
     /// Everything that working the value out can use.
     sees: Sees,
-    /// Whether the value was written down by code of the library.
+    /// Whether the value was written down by code of another file than
+    /// the module that is read.
     library: bool,
+    /// Whether that file is not one of the library either.
+    elsewhere: bool,
 }
 
 /// What the work of a delayed value can use: the names of a scope, and
@@ -432,6 +442,7 @@ impl Thunk {
             chain: Chain::default(),
             sees: Sees::default(),
             library: false,
+            elsewhere: false,
         }))
     }
 }
@@ -685,8 +696,17 @@ pub struct Interpreter {
     pending: Vec<(Pending, Option<Rc<str>>)>,
     /// Whether `settle` is at work.
     escaping: bool,
-    /// Whether the code that is interpreted now is code of the library.
+    /// Whether the code that is interpreted now is code of another file
+    /// than the module that is read.
     in_library: bool,
+    /// The module file that is read.
+    pub module: Option<PathBuf>,
+    /// Whether the code that is interpreted now is of a file that is
+    /// neither the module nor one of the library, and how many steps
+    /// such code has taken and may take.
+    in_elsewhere: bool,
+    elsewhere_steps: u64,
+    elsewhere_limit: u64,
     /// With `trace`: what made the escaping that is under way.
     origin: Option<Rc<str>>,
     /// Whether to count where calls are cut, for whoever works on this
@@ -816,6 +836,13 @@ impl Interpreter {
             pending: Vec::new(),
             escaping: false,
             in_library: false,
+            module: None,
+            in_elsewhere: false,
+            elsewhere_steps: 0,
+            elsewhere_limit: std::env::var("TOUCHES_ELSEWHERE_STEPS")
+                .ok()
+                .and_then(|text| text.parse().ok())
+                .unwrap_or(ELSEWHERE_STEPS),
             origin: None,
             trace: std::env::var_os("TOUCHES_TRACE").is_some(),
             cuts: BTreeMap::new(),
@@ -830,6 +857,7 @@ impl Interpreter {
         self.cycles = 0;
         self.fatal = None;
         self.steps = 0;
+        self.elsewhere_steps = 0;
     }
 
     fn stop(&mut self, why: String) -> Value {
@@ -851,12 +879,22 @@ impl Interpreter {
                 Value::Unknown
             }
             State::Delayed(work) => {
+                if thunk.0.elsewhere && self.elsewhere_spent() {
+                    self.too_deep += 1;
+                    let sees = thunk.0.sees.clone();
+                    self.escape_sees(&sees);
+                    *thunk.0.state.borrow_mut() = State::Done(Value::Unknown);
+                    return Value::Unknown;
+                }
                 let outside = std::mem::replace(&mut self.chain, thunk.0.chain.clone());
                 let outside_library = std::mem::replace(&mut self.in_library, thunk.0.library);
+                let outside_elsewhere =
+                    std::mem::replace(&mut self.in_elsewhere, thunk.0.elsewhere);
                 let value = work(self);
                 let value = self.bounded(value);
                 self.chain = outside;
                 self.in_library = outside_library;
+                self.in_elsewhere = outside_elsewhere;
                 *thunk.0.state.borrow_mut() = State::Done(value.clone());
                 value
             }
@@ -873,11 +911,13 @@ impl Interpreter {
             chain: self.chain.clone(),
             sees,
             library: self.in_library,
+            elsewhere: self.in_elsewhere,
         }))
     }
 
     fn delay(&self, expr: Option<ast::Expr>, env: &Env, file: &Rc<PathBuf>) -> Thunk {
-        let library = self.of_library(file);
+        let library = self.of_another_file(file);
+        let elsewhere = self.elsewhere(file);
         let sees = Sees::env(env);
         let (env, file) = (env.clone(), file.clone());
         match expr {
@@ -890,6 +930,7 @@ impl Interpreter {
                 chain: self.chain.clone(),
                 sees,
                 library,
+                elsewhere,
             })),
             None => Thunk::done(Value::Unknown),
         }
@@ -900,6 +941,47 @@ impl Interpreter {
         self.library
             .as_ref()
             .is_some_and(|library| file.starts_with(library))
+    }
+
+    /// Whether a file is another one than the module that is read: one
+    /// of the library, or any file that the module imports. Code of
+    /// such a file can read of the configuration only what it is given.
+    fn of_another_file(&self, file: &Path) -> bool {
+        self.module.as_deref().is_none_or(|module| file != module)
+    }
+
+    /// Whether code of a file runs for a file that is neither the
+    /// module that is read nor one of the library, as a file of the
+    /// packages is: the file is such a file itself, or it is one of the
+    /// library and is used by such a file.
+    fn elsewhere(&self, file: &Path) -> bool {
+        if self.of_library(file) {
+            self.in_elsewhere
+        } else {
+            self.module.as_deref().is_some_and(|module| file != module)
+        }
+    }
+
+    /// Whether code of files that are neither the module nor the
+    /// library has had the steps that it gets. From then on it is not
+    /// followed: a call of it is cut, and a value of it that waits to
+    /// be worked out is escaped by what it sees. Both rest on the same
+    /// fact, that such code reads only what it is given.
+    fn elsewhere_spent(&self) -> bool {
+        self.elsewhere_steps > self.elsewhere_limit
+    }
+
+    /// Escape all that the work of a delayed value can use.
+    fn escape_sees(&mut self, sees: &Sees) {
+        if let Some(env) = &sees.env {
+            self.escape_scopes(env);
+        }
+        for seen in &sees.thunks {
+            self.escape_thunk(seen);
+        }
+        for seen in &sees.values {
+            self.escape(seen);
+        }
     }
 
     /// Whether something that a delayed value can use is all of the
@@ -984,15 +1066,7 @@ impl Interpreter {
                             self.origin = Some("a value of the library".into());
                         }
                         let sees = thunk.0.sees.clone();
-                        if let Some(env) = &sees.env {
-                            self.escape_scopes(env);
-                        }
-                        for seen in &sees.thunks {
-                            self.escape_thunk(seen);
-                        }
-                        for seen in &sees.values {
-                            self.escape(seen);
-                        }
+                        self.escape_sees(&sees);
                         self.kept.push(thunk);
                         continue;
                     }
@@ -1059,7 +1133,7 @@ impl Interpreter {
                     // and it is called instead.
                     // A module that the library writes, as for an option
                     // that was renamed, is called like any module.
-                    if self.of_library(&closure.file) && !sees_everything(self, &closure.env) {
+                    if self.of_another_file(&closure.file) && !sees_everything(self, &closure.env) {
                         if self.trace {
                             let start = usize::from(closure.body.syntax().text_range().start());
                             self.origin =
@@ -1553,6 +1627,9 @@ impl Interpreter {
             return Value::Unknown;
         }
         self.steps += 1;
+        if self.in_elsewhere {
+            self.elsewhere_steps += 1;
+        }
         if self.steps > self.step_limit {
             return self.stop(format!(
                 "the interpretation did not end within {} steps",
@@ -2036,7 +2113,8 @@ impl Interpreter {
                     .chain
                     .count(identity)
                     .max(closure.chain.count(identity));
-                if self.depth >= DEPTH {
+                let elsewhere = self.elsewhere(&closure.file);
+                if self.depth >= DEPTH || (elsewhere && self.elsewhere_spent()) {
                     return self.cut(&closure, &argument);
                 }
                 // While values are escaped, a function of the library
@@ -2050,7 +2128,7 @@ impl Interpreter {
                 // escaping all of the configuration says that
                 // everything is read.
                 if self.escaping
-                    && self.of_library(&closure.file)
+                    && self.of_another_file(&closure.file)
                     && matches!(self.force(&argument), Value::Unknown)
                     && !sees_everything(self, &closure.env)
                 {
@@ -2112,8 +2190,9 @@ impl Interpreter {
                     argument = Thunk::done(Value::Unknown);
                 }
                 let mut names = BTreeMap::new();
-                let library = self.of_library(&closure.file);
+                let library = self.of_another_file(&closure.file);
                 let outside_library = std::mem::replace(&mut self.in_library, library);
+                let outside_elsewhere = std::mem::replace(&mut self.in_elsewhere, elsewhere);
                 let inner = closure.env.call(argument.reaches());
                 match &closure.param {
                     ast::Param::IdentParam(param) => {
@@ -2190,6 +2269,7 @@ impl Interpreter {
                 self.depth -= 1;
                 self.chain = outside;
                 self.in_library = outside_library;
+                self.in_elsewhere = outside_elsewhere;
                 if widened {
                     self.escape(&result);
                 }

@@ -286,6 +286,7 @@ pub fn of_file(
 ) -> Touches {
     interpreter.begin();
     interpreter.library = Some(library.to_path_buf());
+    interpreter.module = Some(file.to_path_buf());
     let lib = interpreter.import_file(library);
     interpreter.arguments = BTreeMap::from([
         ("config".to_string(), tracked("config")),
