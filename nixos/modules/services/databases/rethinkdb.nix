@@ -19,10 +19,7 @@ in
 
       enable = lib.mkEnableOption "RethinkDB server";
 
-      #package = lib.mkOption {
-      #  default = pkgs.rethinkdb;
-      #  description = "Which RethinkDB derivation to use.";
-      #};
+      package = lib.mkPackageOption pkgs "rethinkdb" { };
 
       user = lib.mkOption {
         default = "rethinkdb";
@@ -101,11 +98,7 @@ in
       isSystemUser = true;
     };
 
-    users.groups = lib.optionalAttrs (cfg.group == "rethinkdb") (
-      lib.singleton {
-        name = "rethinkdb";
-      }
-    );
+    users.groups.rethinkdb = lib.mkIf (cfg.group == "rethinkdb") { };
 
   };
 
