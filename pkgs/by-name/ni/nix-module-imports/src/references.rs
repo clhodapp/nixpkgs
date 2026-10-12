@@ -207,6 +207,23 @@ pub fn check(files: &BTreeMap<PathBuf, Touches>) -> Result<BTreeMap<PathBuf, Rep
             ..Report::default()
         };
         let mut not_imported: BTreeSet<Reference> = BTreeSet::new();
+        for option in &touches.enums {
+            // The reading of the file took the value of this option to
+            // be one of the values that the file declares for it. A
+            // declaration in another file can add values, and what the
+            // file selects by such a value is then not known.
+            let mut found = Vec::new();
+            declared.meet(option, false, &mut Vec::new(), &mut found);
+            if found
+                .iter()
+                .any(|(_, node)| node.files.iter().any(|declaring| declaring != file))
+            {
+                report.not_known.insert(format!(
+                    "read by the value of {}, which another file declares too",
+                    option.join(".")
+                ));
+            }
+        }
         for touch in &touches.touches {
             // A read has `config` or `options` in front of the path.
             let (label, path) = match touch.kind {
