@@ -223,6 +223,18 @@ in
     };
 
     boot = {
+      loaders = mkOption {
+        type = listOf str;
+        default = [ ];
+        example = [ "lanzaboote" ];
+        description = ''
+          The names of the enabled boot loaders that can boot Xen.
+
+          This module adds `systemd-boot` and `limine` when they are enabled.
+          The module of a boot loader that is not part of NixOS adds its
+          own name here when it is enabled and can boot Xen.
+        '';
+      };
       params = mkOption {
         default = [ ];
         example = literalExpression ''
@@ -676,11 +688,11 @@ in
         message = "Xen is currently not supported on ${pkgs.stdenv.hostPlatform.system}.";
       }
       {
-        assertion =
-          config.boot.loader.systemd-boot.enable
-          || (config.boot ? lanzaboote) && config.boot.lanzaboote.enable
-          || config.boot.loader.limine.enable;
-        message = "Xen only supports booting on systemd-boot, Lanzaboote or Limine.";
+        assertion = cfg.boot.loaders != [ ];
+        message = ''
+          Xen only supports booting on systemd-boot or Limine, or on a boot loader
+          that adds its name to 'virtualisation.xen.boot.loaders', such as Lanzaboote.
+        '';
       }
       {
         assertion = config.boot.initrd.systemd.enable;
@@ -710,11 +722,9 @@ in
       }
     ];
 
-    warnings = lib.optional ((config.boot ? lanzaboote) && config.boot.lanzaboote.enable) ''
-      Xen support has not yet been merged into Lanzaboote.
-      Ensure that your Lanzaboote configuration includes PR #387:
-      https://github.com/nix-community/lanzaboote/pull/387
-    '';
+    virtualisation.xen.boot.loaders =
+      optional config.boot.loader.systemd-boot.enable "systemd-boot"
+      ++ optional config.boot.loader.limine.enable "limine";
 
     virtualisation.xen.boot.params =
       optionals cfg.trace [
