@@ -8,8 +8,12 @@
 //! for every configuration.
 
 mod algebra;
+mod memory;
 mod references;
 mod touches;
+
+#[global_allocator]
+static ALLOCATOR: memory::Counting = memory::Counting;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
@@ -51,9 +55,17 @@ struct Reading {
     /// than once
     #[arg(long, value_name = "DIRECTORY")]
     unread: Vec<PathBuf>,
-    /// How many files are read at a time
+    /// How many files are read at a time. The default is the number of
+    /// processors, and at most eight. The run takes at most this number
+    /// times `--memory-per-file`
     #[arg(long, value_name = "NUMBER")]
     jobs: Option<usize>,
+    /// How much memory the reading of one file may take, in megabytes.
+    /// A file that needs more is not read to the end: it is reported
+    /// with that as the reason and listed as one that can touch
+    /// anything. Read it again with a larger number, and fewer `--jobs`
+    #[arg(long, value_name = "MEGABYTES", default_value_t = 2048)]
+    memory_per_file: usize,
 }
 
 #[derive(Subcommand)]
@@ -110,7 +122,11 @@ fn read(
     }
     let jobs = reading
         .jobs
-        .or_else(|| std::thread::available_parallelism().ok().map(usize::from))
+        .or_else(|| {
+            std::thread::available_parallelism()
+                .ok()
+                .map(|processors| usize::from(processors).min(8))
+        })
         .unwrap_or(1)
         .max(1);
 
@@ -144,8 +160,13 @@ fn read(
                             // for one file is taken over for another.
                             let mut interpreter = algebra::Interpreter::new();
                             interpreter.unread = unread.clone();
+                            interpreter.limit_memory(reading.memory_per_file * 1024 * 1024);
                             let touches =
                                 touches::of_file(&mut interpreter, file, &library, &special);
+                            // What the file made is given back before
+                            // the next file is read.
+                            drop(interpreter);
+                            algebra::release();
                             found.lock().unwrap().push((file.clone(), touches));
                         }
                     });
@@ -192,7 +213,11 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
                 return Err("no module is given: name files or a `--module-list`".to_string());
             }
             let touches = read(&reading, files, true)?;
-            let reports = references::check(&touches);
+            eprintln!("{} files read", touches.len());
+            // The check runs on this thread, with the same limit as the
+            // reading of one file.
+            memory::limit(reading.memory_per_file * 1024 * 1024);
+            let reports = references::check(&touches)?;
             let with_findings: BTreeMap<&Path, &references::Report> = reports
                 .iter()
                 .filter(|(_, report)| {
