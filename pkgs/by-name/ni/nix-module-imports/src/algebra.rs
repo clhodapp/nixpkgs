@@ -939,6 +939,36 @@ pub struct Interpreter {
     /// interpretation, and the counts.
     trace: bool,
     pub cuts: BTreeMap<String, usize>,
+    /// What calls have given, by the address of the function and the
+    /// argument. The function is kept with the result, so that no other
+    /// function gets its address.
+    results: HashMap<(usize, Known), (Rc<Closure>, Value)>,
+}
+
+/// An argument of a call that can be told from any other: a part of the
+/// configuration or a constant.
+#[derive(Clone, PartialEq, Eq, Hash)]
+enum Known {
+    Config(Rc<Vec<String>>),
+    Str(Rc<str>),
+    Path(Rc<PathBuf>),
+    Int(i64),
+    Bool(bool),
+    Null,
+}
+
+impl Known {
+    fn of(value: &Value) -> Option<Known> {
+        Some(match value {
+            Value::Config(path) => Known::Config(path.clone()),
+            Value::Str(text) => Known::Str(text.clone()),
+            Value::Path(path) => Known::Path(path.clone()),
+            Value::Int(number) => Known::Int(*number),
+            Value::Bool(truth) => Known::Bool(*truth),
+            Value::Null => Known::Null,
+            _ => return None,
+        })
+    }
 }
 
 /// Where the arguments of a module are in the configuration.
@@ -1072,6 +1102,7 @@ impl Interpreter {
             origin: None,
             trace: std::env::var_os("TOUCHES_TRACE").is_some(),
             cuts: BTreeMap::new(),
+            results: HashMap::new(),
         }
     }
 
@@ -2571,6 +2602,26 @@ impl Interpreter {
                     self.escape_thunk(&argument);
                     argument = Thunk::done(Value::Unknown);
                 }
+                // The same function with the same argument gives the
+                // same value and records the same reads, so the call is
+                // made once. A helper that walks a part of the
+                // configuration and takes every branch calls itself
+                // with one argument from several branches, and that
+                // doubles the calls at each level.
+                let known = if widened {
+                    None
+                } else {
+                    match &*argument.0.state.borrow() {
+                        State::Done(value) => Known::of(value),
+                        _ => None,
+                    }
+                }
+                .map(|argument| (instance, argument));
+                if let Some(key) = &known
+                    && let Some((_, result)) = self.results.get(key)
+                {
+                    return result.clone();
+                }
                 let mut names = BTreeMap::new();
                 let library = self.of_another_file(&closure.file);
                 let outside_library = std::mem::replace(&mut self.in_library, library);
@@ -2655,7 +2706,15 @@ impl Interpreter {
                 if widened {
                     self.escape(&result);
                 }
-                self.bounded(result)
+                let result = self.bounded(result);
+                // A reading that has stopped gives values that are not
+                // known in place of the real ones, which are not kept.
+                if let Some(key) = known
+                    && self.fatal.is_none()
+                {
+                    self.results.insert(key, (closure.clone(), result.clone()));
+                }
+                result
             }
             Value::Builtin(name, given) => {
                 let mut given = given.as_ref().clone();
