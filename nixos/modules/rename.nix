@@ -59,6 +59,11 @@ in
       the project and users are urged to switch to xone.
     '')
     (mkRemovedOptionModule [ "networking" "vpnc" ] "Use environment.etc.\"vpnc/service.conf\" instead.")
+    (mkRemovedOptionModule [ "nixops" "enableDeprecatedAutoLuks" ] ''
+      The assertion about `deployment.autoLuks` was removed from NixOS.
+      NixOS does not declare that option. The module that declares it is
+      part of nixos-modules-contrib, where a check on it belongs.
+    '')
     (mkRemovedOptionModule [
       "networking"
       "wicd"
