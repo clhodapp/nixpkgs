@@ -5,7 +5,6 @@ edition = "2024"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
-microlp = "0.6.0"
 rnix = "0.12"
 rowan = "0.15"
 serde = { version = "1", features = ["derive"] }

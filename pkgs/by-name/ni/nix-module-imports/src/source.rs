@@ -14,7 +14,7 @@ use rowan::ast::AstNode;
 /// The comment that starts the imports this tool writes.
 pub const BEGIN: &str = "# BEGIN generated imports";
 /// The rest of the first comment, for the reader of the module.
-const BEGIN_REST: &str = ": nix-module-imports writes the lines up to END";
+const BEGIN_REST: &str = ", written by `nix-module-imports fix`";
 /// The comment that ends the imports this tool writes.
 pub const END: &str = "# END generated imports";
 
@@ -571,13 +571,13 @@ mod tests {
     fn adds_imports_to_a_module_without_them() {
         round_trip(
             "{ lib, ... }:\n{\n  options.a = lib.mkOption { };\n}\n",
-            "{ lib, ... }:\n{\n  imports = [\n    # BEGIN generated imports: nix-module-imports writes the lines up to END\n    ./a.nix\n    ./b.nix\n    # END generated imports\n  ];\n\n  options.a = lib.mkOption { };\n}\n",
+            "{ lib, ... }:\n{\n  imports = [\n    # BEGIN generated imports, written by `nix-module-imports fix`\n    ./a.nix\n    ./b.nix\n    # END generated imports\n  ];\n\n  options.a = lib.mkOption { };\n}\n",
         );
     }
 
     #[test]
     fn adds_imports_behind_let_and_with() {
-        let expected = "{ lib, config, ... }:\nwith lib;\nlet\n  cfg = config.a;\nin\n{\n  imports = [\n    # BEGIN generated imports: nix-module-imports writes the lines up to END\n    ./a.nix\n    ./b.nix\n    # END generated imports\n  ];\n\n  config.b = cfg;\n}\n";
+        let expected = "{ lib, config, ... }:\nwith lib;\nlet\n  cfg = config.a;\nin\n{\n  imports = [\n    # BEGIN generated imports, written by `nix-module-imports fix`\n    ./a.nix\n    ./b.nix\n    # END generated imports\n  ];\n\n  config.b = cfg;\n}\n";
         round_trip(
             "{ lib, config, ... }:\nwith lib;\nlet\n  cfg = config.a;\nin\n{\n  config.b = cfg;\n}\n",
             expected,
@@ -597,7 +597,7 @@ mod tests {
     fn adds_to_a_list_on_several_lines() {
         round_trip(
             "{\n  imports = [\n    ./manual.nix\n  ];\n}\n",
-            "{\n  imports = [\n    ./manual.nix\n    # BEGIN generated imports: nix-module-imports writes the lines up to END\n    ./a.nix\n    ./b.nix\n    # END generated imports\n  ];\n}\n",
+            "{\n  imports = [\n    ./manual.nix\n    # BEGIN generated imports, written by `nix-module-imports fix`\n    ./a.nix\n    ./b.nix\n    # END generated imports\n  ];\n}\n",
         );
     }
 
@@ -606,7 +606,7 @@ mod tests {
         let written = rewrite("{\n  imports = [ ./manual.nix ];\n}\n", &["./a.nix"]).unwrap();
         assert_eq!(
             written,
-            "{\n  imports = [\n    ./manual.nix\n    # BEGIN generated imports: nix-module-imports writes the lines up to END\n    ./a.nix\n    # END generated imports\n  ];\n}\n"
+            "{\n  imports = [\n    ./manual.nix\n    # BEGIN generated imports, written by `nix-module-imports fix`\n    ./a.nix\n    # END generated imports\n  ];\n}\n"
         );
         assert_eq!(
             rewrite(&written, &[]).unwrap(),
@@ -643,7 +643,7 @@ mod tests {
         .unwrap();
         assert_eq!(
             written,
-            "{ lib, ... }:\n{\n  imports = lib.optional true ./x.nix\n    ++ [\n      # BEGIN generated imports: nix-module-imports writes the lines up to END\n      ./a.nix\n      # END generated imports\n    ];\n}\n"
+            "{ lib, ... }:\n{\n  imports = lib.optional true ./x.nix\n    ++ [\n      # BEGIN generated imports, written by `nix-module-imports fix`\n      ./a.nix\n      # END generated imports\n    ];\n}\n"
         );
         // The next run finds the list it appended.
         assert_eq!(rewrite(&written, &["./a.nix"]).unwrap(), written);
@@ -672,7 +672,7 @@ mod tests {
     fn fills_an_empty_module() {
         assert_eq!(
             rewrite("{ }\n", &["./a.nix"]).unwrap(),
-            "{\n  imports = [\n    # BEGIN generated imports: nix-module-imports writes the lines up to END\n    ./a.nix\n    # END generated imports\n  ];\n}\n"
+            "{\n  imports = [\n    # BEGIN generated imports, written by `nix-module-imports fix`\n    ./a.nix\n    # END generated imports\n  ];\n}\n"
         );
     }
 

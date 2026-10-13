@@ -10,7 +10,6 @@
 
 mod algebra;
 mod memory;
-mod reduce;
 mod references;
 mod source;
 mod touches;
@@ -25,7 +24,6 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::time::{Duration, Instant};
 
 use clap::{Args, Parser, Subcommand};
 
@@ -92,43 +90,9 @@ struct Which {
     /// that sets it. May be given more than once
     #[arg(long, value_name = "NAME")]
     caller_arg: Vec<String>,
-    /// About the most time to spend on finding the smallest set of
-    /// imports among modules that import each other, as a number with
-    /// `s`, `m` or `h` for seconds, minutes or hours, such as `10s` or
-    /// `10m`. When the time is up, the tool goes on from what it has
-    /// found and writes a set that has no import that could be left
-    /// out, and that may not be the smallest. With `0` it does that for
-    /// every group at once.
-    #[arg(long, value_name = "TIME", default_value = "5m", value_parser = time)]
-    search_approximate_after: Duration,
     /// More module files
     #[arg(value_name = "FILE")]
     files: Vec<PathBuf>,
-}
-
-/// Read a time such as `10s`, `10m` or `2h`. A number without a unit is
-/// refused, apart from `0`, so that nobody has to guess the unit.
-fn time(text: &str) -> Result<Duration, String> {
-    if text == "0" {
-        return Ok(Duration::ZERO);
-    }
-    let seconds_in_unit = match text.chars().last() {
-        Some('s') => 1,
-        Some('m') => 60,
-        Some('h') => 60 * 60,
-        _ => {
-            return Err(format!(
-                "`{text}` has no unit: write `s`, `m` or `h` after the number, as in `10s` or `10m`"
-            ));
-        }
-    };
-    let number: u64 = text[..text.len() - 1]
-        .parse()
-        .map_err(|_| format!("`{text}` is not a whole number with `s`, `m` or `h` after it"))?;
-    number
-        .checked_mul(seconds_in_unit)
-        .map(Duration::from_secs)
-        .ok_or_else(|| format!("`{text}` is too long a time"))
 }
 
 #[derive(Subcommand)]
@@ -366,84 +330,13 @@ fn find(reading: &Reading, which: &Which) -> Result<Found, String> {
         .flat_map(|found| &found.disables)
         .map(|path| references::module_file(path))
         .collect();
-    let mut reports = references::check(&references::Modules {
+    let reports = references::check(&references::Modules {
         files: &touches,
         roots: &roots,
         generated: &generated,
         caller_arguments: &which.caller_arg.iter().cloned().collect(),
         can_be_disabled: &can_be_disabled,
     })?;
-
-    // An import is left out when the module reaches the file through
-    // another import. The imports that a person wrote stay as they are.
-    // An import of a module that can be disabled, and an import that
-    // such a module has, is no way to reach anything, so those are
-    // kept out of this and stay.
-    let number: BTreeMap<&PathBuf, usize> = touches
-        .keys()
-        .enumerate()
-        .map(|(index, file)| (file, index))
-        .collect();
-    let mut edges: reduce::Edges = vec![BTreeSet::new(); touches.len()];
-    let mut removable = BTreeSet::new();
-    let mut stays: BTreeMap<&PathBuf, BTreeSet<PathBuf>> = BTreeMap::new();
-    for (file, found) in &touches {
-        let from = number[file];
-        let (imported, _) = references::imports(found);
-        let written = generated.get(file);
-        let one_way =
-            |target: &PathBuf| can_be_disabled.contains(file) || can_be_disabled.contains(target);
-        for target in &imported {
-            if let Some(&to) = number.get(target)
-                && !written.is_some_and(|written| written.contains(target))
-                && !one_way(target)
-            {
-                edges[from].insert(to);
-            }
-        }
-        for target in &reports[file].needed {
-            if one_way(target) {
-                stays.entry(file).or_default().insert(target.clone());
-            } else if let Some(&to) = number.get(target)
-                && edges[from].insert(to)
-            {
-                removable.insert((from, to));
-            }
-        }
-    }
-    let groups = reduce::reduce(
-        &mut edges,
-        &removable,
-        Instant::now() + which.search_approximate_after,
-    );
-    if let Some(largest) = groups.iter().max_by_key(|group| group.modules) {
-        eprintln!(
-            "{} groups of modules import each other. The largest has {} modules and keeps {} \
-             generated imports inside it; no set of fewer than {} would do.",
-            groups.len(),
-            largest.modules,
-            largest.kept,
-            largest.lower_bound
-        );
-    }
-    let approximated = groups.iter().filter(|group| !group.smallest).count();
-    if approximated > 0 {
-        eprintln!(
-            "the time for finding the smallest set was up: {approximated} of {} groups of \
-             modules that import each other got a set that may not be the smallest",
-            groups.len()
-        );
-    }
-    let files: Vec<&PathBuf> = touches.keys().collect();
-    for (file, report) in &mut reports {
-        let from = number[file];
-        report.needed = edges[from]
-            .iter()
-            .filter(|to| removable.contains(&(from, **to)))
-            .map(|to| files[*to].clone())
-            .chain(stays.get(file).into_iter().flatten().cloned())
-            .collect();
-    }
     // The modules that some module imports by the name of their
     // directory.
     let mut by_directory = BTreeMap::new();
