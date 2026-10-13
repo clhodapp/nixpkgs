@@ -3089,6 +3089,11 @@ impl Interpreter {
         self.import(path)
     }
 
+    /// The files that were loaded as values, with `import`.
+    pub fn loaded(&self) -> impl Iterator<Item = &PathBuf> {
+        self.imported.keys()
+    }
+
     /// What a builtin gives when its arguments are known well enough for
     /// the standard meaning: the length of a list that is written out,
     /// whether a value is a set, the sum of two numbers. `None` when
