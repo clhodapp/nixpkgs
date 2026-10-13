@@ -100,6 +100,12 @@ in
 {
   imports = [
     (mkRemovedOptionModule [ "services" "openvpn" "enable" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   ###### interface

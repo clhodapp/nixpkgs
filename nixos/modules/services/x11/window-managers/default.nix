@@ -45,6 +45,9 @@ in
     ./xmonad.nix
     ./qtile.nix
     ./none.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../display-managers/default.nix
+    # END generated imports
   ];
 
   options = {

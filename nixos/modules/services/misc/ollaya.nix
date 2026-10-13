@@ -13,6 +13,16 @@ let
   staticUser = cfg.user != null && cfg.group != null;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.ollaya = {
     enable = lib.mkEnableOption "ollaya server for local decision models";
 

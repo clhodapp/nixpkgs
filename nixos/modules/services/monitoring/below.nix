@@ -38,6 +38,15 @@ let
   optionalInt = optionalType lib.types.int;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     services.below = {
       enable = lib.mkEnableOption "'below' resource monitor";

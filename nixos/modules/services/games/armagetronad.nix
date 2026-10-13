@@ -51,6 +51,15 @@ let
   getServerRoot = serverName: "/var/lib/${getStateDirectory serverName}";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.armagetronad = {
       servers = mkOption {

@@ -147,6 +147,15 @@ in
       [ "hardware" "openrazer" "mouseBatteryNotifier" ]
       [ "hardware" "openrazer" "batteryNotifier" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    ../services/system/dbus.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

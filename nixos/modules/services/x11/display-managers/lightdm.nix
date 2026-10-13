@@ -109,6 +109,26 @@ in
     (lib.mkRemovedOptionModule [ "services" "xserver" "displayManager" "lightdm" "greeters" "enso" ]
       "services.xserver.displayManager.lightdm.greeters.enso has been removed following removal of the corresponding package."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/extra-arguments.nix
+    ../../../misc/ids.nix
+    ../../../security/pam.nix
+    ../../../security/polkit.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../../desktop-managers/pantheon.nix
+    ../../desktops/accountsservice.nix
+    ../../display-managers/default.nix
+    ../../display-managers/generic.nix
+    ../../system/dbus.nix
+    ../xserver.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options = {

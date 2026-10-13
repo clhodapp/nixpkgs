@@ -130,6 +130,15 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../misc/extra-arguments.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     boot.kernel.sysfs = lib.mkOption {
       type = lib.types.submodule {

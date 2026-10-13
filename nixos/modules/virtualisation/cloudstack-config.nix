@@ -3,6 +3,17 @@
 {
   imports = [
     ../profiles/qemu-guest.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/system/cloud-init.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/loader.nix
+    ../system/etc/etc.nix
+    ../tasks/filesystems.nix
+    # END generated imports
   ];
 
   config = {

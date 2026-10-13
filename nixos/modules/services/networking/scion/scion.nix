@@ -11,6 +11,18 @@ let
   cfg = config.services.scion;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ./scion-control.nix
+    ./scion-daemon.nix
+    ./scion-dispatcher.nix
+    ./scion-ip-gateway.nix
+    ./scion-router.nix
+    # END generated imports
+  ];
+
   options.services.scion = {
     enable = mkEnableOption "all of the scion components and services";
     package = mkPackageOption pkgs "scion" { };

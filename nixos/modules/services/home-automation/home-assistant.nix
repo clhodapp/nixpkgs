@@ -309,6 +309,17 @@ in
       ]
       "The frontend port is not configured in YAML any more and therefore cannot be determined at eval time any longer."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   meta = {

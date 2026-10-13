@@ -644,6 +644,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/nixos-containers.nix
+    ./wireguard-networkd.nix
+    # END generated imports
+  ];
 
   ###### interface
 

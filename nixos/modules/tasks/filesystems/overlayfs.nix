@@ -141,6 +141,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
 
   options = {
 

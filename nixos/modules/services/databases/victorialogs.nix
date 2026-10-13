@@ -33,6 +33,14 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.victorialogs = {
     enable = mkEnableOption "VictoriaLogs is an open source user-friendly database for logs from VictoriaMetrics";
     package = mkPackageOption pkgs "victorialogs" { };

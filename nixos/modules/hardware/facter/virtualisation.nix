@@ -9,6 +9,17 @@ let
   cfg = config.hardware.facter.detected.virtualisation;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/nixpkgs.nix
+    ../../system/boot/kernel.nix
+    ../../virtualisation/hyperv-guest.nix
+    ../../virtualisation/parallels-guest.nix
+    ../../virtualisation/virtualbox-guest.nix
+    ./.
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.virtualisation = {
     virtio_scsi.enable = lib.mkEnableOption "Enable the Facter Virtualisation Virtio SCSI module" // {
       default = lib.any (

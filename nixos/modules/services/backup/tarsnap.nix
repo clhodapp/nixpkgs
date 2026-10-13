@@ -34,6 +34,13 @@ in
       "tarsnap"
       "cachedir"
     ] "Use services.tarsnap.archives.<name>.cachedir")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options = {

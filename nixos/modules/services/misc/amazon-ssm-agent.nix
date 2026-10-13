@@ -39,6 +39,15 @@ in
       [ "services" "ssm-agent" "package" ]
       [ "services" "amazon-ssm-agent" "package" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/version.nix
+    ../../security/sudo-rs.nix
+    ../../security/sudo.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options.services.amazon-ssm-agent = {

@@ -64,6 +64,19 @@ in
         "openPeerPorts"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/sysctl.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../misc/version.nix
+    ../../security/apparmor.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
   options = {
     services.transmission = {

@@ -16,6 +16,12 @@ in
       [ "services" "homepage-dashboard" "environmentFiles" ]
       (config: [ config.services.homepage-dashboard.environmentFile ])
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

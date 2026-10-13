@@ -68,6 +68,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/modprobe.nix
+    ./firewalld
+    ./nftables.nix
+    # END generated imports
+  ];
+
   options = {
     networking.firewall = {
       enable = lib.mkOption {

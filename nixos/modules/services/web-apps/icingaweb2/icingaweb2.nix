@@ -17,6 +17,17 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../web-servers/nginx/default.nix
+    ../../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     das_j
     helsinki-Jo

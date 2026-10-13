@@ -8,6 +8,15 @@ let
   cfg = config.services.hardware.dell-bios-fan-control;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ rickyelopez ];
 
   options.services.hardware.dell-bios-fan-control = {

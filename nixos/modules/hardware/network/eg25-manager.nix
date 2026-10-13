@@ -10,6 +10,14 @@ let
   cfg = config.services.eg25-manager;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../services/hardware/udev.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.eg25-manager = {
     enable = mkEnableOption "Quectel EG25 modem manager service";
 

@@ -9,6 +9,14 @@ let
   fiderCmd = lib.getExe cfg.package;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.fider = {

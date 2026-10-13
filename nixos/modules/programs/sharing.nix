@@ -5,6 +5,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options.programs.sharing = {
     enable = lib.mkEnableOption ''
       sharing, a CLI tool for sharing files.

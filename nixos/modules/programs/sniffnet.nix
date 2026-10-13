@@ -10,6 +10,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     programs.sniffnet = {
       enable = lib.mkEnableOption "sniffnet, a network traffic monitor application";

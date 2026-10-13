@@ -25,6 +25,12 @@ in
 {
   imports = [
     (lib.mkRemovedOptionModule [ "networking" "hostConf" ] "Use environment.etc.\"host.conf\" instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../system/etc/etc.nix
+    ../tasks/network-interfaces.nix
+    ./system-environment.nix
+    # END generated imports
   ];
 
   options = {

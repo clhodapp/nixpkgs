@@ -40,6 +40,12 @@ in
       "mtr-exporter"
       "mtrFlags"
     ] "Use services.mtr-exporter.jobs.<job>.flags instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options = {

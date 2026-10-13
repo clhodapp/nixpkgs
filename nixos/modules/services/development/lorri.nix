@@ -10,6 +10,14 @@ let
   socketPath = "lorri/daemon.socket";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     services.lorri = {
       enable = lib.mkOption {

@@ -27,6 +27,16 @@ let
     );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options = {
     services.synapse-auto-compressor = {
       enable = lib.mkEnableOption "synapse-auto-compressor";

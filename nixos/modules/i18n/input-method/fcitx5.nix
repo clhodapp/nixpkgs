@@ -109,6 +109,13 @@ in
     (lib.mkRemovedOptionModule [ "i18n" "inputMethod" "fcitx5" "plasma6Support" ] ''
       qt6 is the only one used for fcitx5-configtool now.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/shells-environment.nix
+    ../../config/system-environment.nix
+    ../../system/etc/etc.nix
+    ./default.nix
+    # END generated imports
   ];
 
   config = lib.mkIf (imcfg.enable && imcfg.type == "fcitx5") {

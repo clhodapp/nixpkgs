@@ -27,6 +27,16 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.kiwix-serve = {
       enable = lib.mkEnableOption "the kiwix-serve server";

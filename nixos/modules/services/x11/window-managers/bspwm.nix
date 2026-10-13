@@ -74,5 +74,10 @@ in
       "bspwm"
       "sessionScript"
     ] "bspwm package does not provide bspwm-session anymore.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ./default.nix
+    # END generated imports
   ];
 }

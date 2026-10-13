@@ -45,6 +45,16 @@ let
   ) enabledNodes;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../tasks/network-interfaces.nix
+    ./.
+    ./server.nix
+    # END generated imports
+  ];
+
   options.services.tdarr.nodes = lib.mkOption {
     default = { };
     description = "Attribute set of Tdarr processing nodes to run on this machine.";

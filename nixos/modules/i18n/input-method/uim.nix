@@ -9,6 +9,14 @@ let
   cfg = imcfg.uim;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/shells-environment.nix
+    ../../services/x11/display-managers/default.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options = {
 
     i18n.inputMethod.uim = {

@@ -14,6 +14,14 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "jellyseerr" ] [ "services" "seerr" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   meta.maintainers = with lib.maintainers; [

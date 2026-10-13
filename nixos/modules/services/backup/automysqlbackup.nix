@@ -58,6 +58,15 @@ in
       [ "services" "automysqlbackup" "config" ]
       [ "services" "automysqlbackup" "settings" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/mysql.nix
+    ./mysql-backup.nix
+    # END generated imports
   ];
 
   # interface

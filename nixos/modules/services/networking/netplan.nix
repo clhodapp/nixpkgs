@@ -11,6 +11,18 @@ let
   networkmanagerEnabled = config.networking.networkmanager.enable;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ./networkmanager.nix
+    # END generated imports
+  ];
+
   options = {
     networking.netplan = {
       enable = lib.mkEnableOption "Whether to enable the netplan-configure service at boot";

@@ -9,6 +9,15 @@ let
   cfg = config.hardware.uni-sync;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with maintainers; [ yunfachi ];
 
   options.hardware.uni-sync = {

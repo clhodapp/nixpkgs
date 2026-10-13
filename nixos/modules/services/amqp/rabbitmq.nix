@@ -21,6 +21,14 @@ in
       Please remove it from your NixOS configuration and deploy a cookie securely instead.
       The renamed `unsafeCookie` must ONLY be used in isolated non-production environments such as NixOS VM tests.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../networking/epmd.nix
+    # END generated imports
   ];
 
   ###### interface

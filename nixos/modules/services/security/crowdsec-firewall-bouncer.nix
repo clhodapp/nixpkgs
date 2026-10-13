@@ -9,6 +9,16 @@ let
   format = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../networking/nftables.nix
+    ./crowdsec.nix
+    # END generated imports
+  ];
+
   options.services.crowdsec-firewall-bouncer =
     let
       inherit (lib)

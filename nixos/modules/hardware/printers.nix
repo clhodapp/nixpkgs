@@ -28,6 +28,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/printing/cupsd.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.printers = {
       ensureDefaultPrinter = lib.mkOption {

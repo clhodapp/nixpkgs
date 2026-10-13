@@ -10,6 +10,14 @@ let
   configFile = json.generate "config.json" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../hardware/cpu/x86-msr.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.xmrig = {
       enable = lib.mkEnableOption "XMRig Mining Software";

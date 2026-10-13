@@ -18,6 +18,13 @@ in
       "hypervGuest"
       "videoMode"
     ] "The video mode can now be configured via standard tools, or in Hyper-V VM settings.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

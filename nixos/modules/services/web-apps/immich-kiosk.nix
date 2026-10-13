@@ -13,6 +13,16 @@ let
   } cfg.settings "/run/immich-kiosk/config.yaml";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    ./immich.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ tlvince ];
 
   options.services.immich-kiosk = {

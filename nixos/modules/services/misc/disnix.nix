@@ -12,6 +12,25 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../databases/influxdb.nix
+    ../databases/mongodb.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../system/dbus.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/tomcat.nix
+    ./dysnomia.nix
+    ./svnserve.nix
+    # END generated imports
+  ];
 
   ###### interface
 

@@ -21,6 +21,18 @@ in
     (lib.mkRemovedOptionModule [ "services" "patroni" "raftPort" ] ''
       Raft has been deprecated by upstream.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/kernel.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../databases/postgresql.nix
+    ../../hardware/udev.nix
+    # END generated imports
   ];
 
   options.services.patroni = {

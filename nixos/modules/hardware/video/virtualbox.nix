@@ -4,6 +4,15 @@ let
   inherit (config.services.xserver) videoDrivers;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../services/x11/xserver.nix
+    ../../system/boot/kernel.nix
+    ../../virtualisation/virtualbox-guest.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (lib.elem "virtualbox" videoDrivers) {
     assertions = [
       {

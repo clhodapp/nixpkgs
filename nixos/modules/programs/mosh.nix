@@ -11,6 +11,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options.programs.mosh = {
     enable = lib.mkEnableOption "mosh";
     package = lib.mkPackageOption pkgs "mosh" { };

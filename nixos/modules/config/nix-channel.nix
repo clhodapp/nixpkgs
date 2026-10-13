@@ -23,6 +23,17 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/activation/pre-switch-check.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ./nix.nix
+    ./shells-environment.nix
+    ./system-environment.nix
+    ./system-path.nix
+    # END generated imports
+  ];
+
   options = {
     nix = {
       channel = {

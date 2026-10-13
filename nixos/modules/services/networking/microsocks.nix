@@ -31,6 +31,14 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.microsocks = {
     enable = lib.mkEnableOption "Tiny, portable SOCKS5 server with very moderate resource usage";
     user = lib.mkOption {

@@ -34,6 +34,16 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "opendkim" "keyFile" ] [ "services" "opendkim" "keyPath" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   options = {

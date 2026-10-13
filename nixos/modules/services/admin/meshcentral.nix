@@ -11,6 +11,13 @@ let
 in
 with lib;
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.meshcentral = with types; {
     enable = mkEnableOption "MeshCentral computer management server";
     package = mkPackageOption pkgs "meshcentral" { };

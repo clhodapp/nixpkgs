@@ -10,6 +10,14 @@ let
   settingsFormat = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.openbao = {
       enable = lib.mkEnableOption "OpenBao daemon";

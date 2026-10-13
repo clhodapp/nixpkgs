@@ -8,6 +8,12 @@ let
   cfg = config.services.sysstat;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.sysstat = {
       enable = lib.mkEnableOption "sar system activity collection";

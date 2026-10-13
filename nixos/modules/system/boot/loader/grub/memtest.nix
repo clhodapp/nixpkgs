@@ -14,6 +14,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ./grub.nix
+    # END generated imports
+  ];
+
   options = {
 
     boot.loader.grub.memtest86 = {

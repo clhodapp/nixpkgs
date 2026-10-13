@@ -8,6 +8,20 @@ let
   cfg = config.services.portunus;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/networking.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/acme
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../web-apps/dex.nix
+    # END generated imports
+  ];
+
   options.services.portunus = {
     enable = lib.mkEnableOption "Portunus, a self-contained user/group management and authentication service for LDAP";
 

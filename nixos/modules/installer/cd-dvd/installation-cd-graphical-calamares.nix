@@ -9,7 +9,15 @@ let
   };
 in
 {
-  imports = [ ./installation-cd-graphical-base.nix ];
+  imports = [
+    ./installation-cd-graphical-base.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/i18n.nix
+    ../../config/system-path.nix
+    ../../programs/partition-manager.nix
+    ../../security/polkit.nix
+    # END generated imports
+  ];
 
   # required for calamares
   security.polkit.enablePkexecWrapper = true;

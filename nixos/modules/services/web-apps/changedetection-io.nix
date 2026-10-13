@@ -11,6 +11,17 @@ let
   cfg = config.services.changedetection-io;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../virtualisation/oci-containers.nix
+    ../../virtualisation/podman/default.nix
+    # END generated imports
+  ];
+
   options.services.changedetection-io = {
     enable = mkEnableOption "changedetection-io";
 

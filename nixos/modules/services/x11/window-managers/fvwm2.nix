@@ -19,6 +19,11 @@ in
       [ "services" "xserver" "windowManager" "fvwm" ]
       [ "services" "xserver" "windowManager" "fvwm2" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ./default.nix
+    # END generated imports
   ];
 
   ###### interface

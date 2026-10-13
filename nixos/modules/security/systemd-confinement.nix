@@ -12,6 +12,15 @@ let
   inherit (utils.systemdUtils.lib) mkPathSafeName;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/shells-environment.nix
+    ../misc/extra-arguments.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.systemd.services = lib.mkOption {
     type = types.attrsOf (
       types.submodule (

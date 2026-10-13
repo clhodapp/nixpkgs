@@ -293,6 +293,24 @@ in
       "gitlab"
       "pagesExtraArgs"
     ] "Use services.gitlab.pages.settings instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/extra-arguments.nix
+    ../../../misc/ids.nix
+    ../../../misc/meta.nix
+    ../../../security/ca.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../tasks/network-interfaces.nix
+    ../../databases/postgresql.nix
+    ../../databases/redis.nix
+    ../../logging/logrotate.nix
+    ../../mail/postfix.nix
+    ./container-registry.nix
+    # END generated imports
   ];
 
   options = {

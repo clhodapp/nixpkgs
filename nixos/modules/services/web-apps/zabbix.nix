@@ -83,6 +83,19 @@ in
         "virtualHost"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/locale.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
   # interface
 

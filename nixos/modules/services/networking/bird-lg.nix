@@ -67,6 +67,13 @@ in
       [ "services" "bird-lg" "proxy" "listenAddress" ]
       [ "services" "bird-lg" "proxy" "listenAddresses" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ./bird.nix
+    # END generated imports
   ];
 
   options = {

@@ -12,6 +12,13 @@
       [ "boot" "initrd" "systemd" "enableTpm2" ]
       [ "boot" "initrd" "systemd" "tpm2" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../kernel.nix
+    ../systemd.nix
+    ./initrd.nix
+    # END generated imports
   ];
 
   options = {

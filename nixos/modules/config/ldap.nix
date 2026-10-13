@@ -326,5 +326,13 @@ in
       [ "users" "ldap" "bind" "password" ]
       [ "users" "ldap" "bind" "passwordFile" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../misc/ids.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ./nsswitch.nix
+    ./users-groups.nix
+    # END generated imports
   ];
 }

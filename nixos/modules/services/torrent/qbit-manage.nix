@@ -41,6 +41,17 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    ./qbittorrent.nix
+    # END generated imports
+  ];
+
   options.services.qbit-manage = {
     enable = mkEnableOption "qbit-manage";
 

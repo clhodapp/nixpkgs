@@ -6,6 +6,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../system/dbus.nix
+    ./accountsservice.nix
+    # END generated imports
+  ];
 
   ###### interface
 

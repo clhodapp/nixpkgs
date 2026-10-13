@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/label.nix
+    # END generated imports
+  ];
+
   options.image = {
     baseName = lib.mkOption {
       type = lib.types.str;

@@ -19,6 +19,15 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/docker.nix
+    # END generated imports
+  ];
+
   options.services.docuum = {
     enable = mkEnableOption "docuum daemon";
 

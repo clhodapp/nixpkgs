@@ -110,6 +110,23 @@ let
       });
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/fonts/packages.nix
+    ../config/system-path.nix
+    ../hardware/graphics.nix
+    ../hardware/steam-hardware.nix
+    ../security/wrappers/default.nix
+    ../services/audio/pulseaudio.nix
+    ../services/desktops/pipewire/pipewire.nix
+    ../services/display-managers/default.nix
+    ../services/hardware/inputplumber.nix
+    ../services/hardware/powerstation.nix
+    ./gamescope.nix
+    # END generated imports
+  ];
+
   options.programs.opengamepadui = {
     enable = lib.mkEnableOption "opengamepadui";
 

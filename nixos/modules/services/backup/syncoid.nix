@@ -95,6 +95,13 @@ let
     ''}";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   # Interface
 

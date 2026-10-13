@@ -17,6 +17,22 @@ let
   bridgeNeeded = lib.versionAtLeast cfg.jackd.package.version "1.9.12";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/pam.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../hardware/udev.nix
+    ./pulseaudio.nix
+    # END generated imports
+  ];
+
   options = {
     services.jack = {
       jackd = {

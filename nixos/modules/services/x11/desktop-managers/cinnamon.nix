@@ -22,6 +22,53 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/fonts/packages.nix
+    ../../../config/power-management.nix
+    ../../../config/shells-environment.nix
+    ../../../config/system-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/vte.nix
+    ../../../config/xdg/icons.nix
+    ../../../config/xdg/mime.nix
+    ../../../config/xdg/portal.nix
+    ../../../hardware/video/switcheroo-control.nix
+    ../../../misc/extra-arguments.nix
+    ../../../programs/dconf.nix
+    ../../../programs/gnome-disks.nix
+    ../../../programs/gnome-terminal.nix
+    ../../../programs/system-config-printer.nix
+    ../../../security/pam.nix
+    ../../../security/polkit.nix
+    ../../../system/boot/systemd.nix
+    ../../accessibility/orca.nix
+    ../../desktops/accountsservice.nix
+    ../../desktops/blueman.nix
+    ../../desktops/gnome/at-spi2-core.nix
+    ../../desktops/gnome/evolution-data-server.nix
+    ../../desktops/gnome/gcr-ssh-agent.nix
+    ../../desktops/gnome/glib-networking.nix
+    ../../desktops/gnome/gnome-keyring.nix
+    ../../desktops/gnome/gnome-online-accounts.nix
+    ../../desktops/gvfs.nix
+    ../../display-managers/default.nix
+    ../../hardware/bluetooth.nix
+    ../../hardware/bolt.nix
+    ../../hardware/libinput.nix
+    ../../hardware/power-profiles-daemon.nix
+    ../../hardware/udisks2.nix
+    ../../hardware/upower.nix
+    ../../networking/networkmanager.nix
+    ../../printing/cupsd.nix
+    ../../system/dbus.nix
+    ../colord.nix
+    ../display-managers/lightdm-greeters/slick.nix
+    ../touchegg.nix
+    ../xserver.nix
+    # END generated imports
+  ];
+
   options = {
     services.cinnamon = {
       apps.enable = mkEnableOption "Cinnamon default applications";

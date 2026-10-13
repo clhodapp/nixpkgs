@@ -68,6 +68,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/shells-environment.nix
+    ../../../misc/extra-arguments.nix
+    ../../../security/krb5
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.enable && package.passthru.implementation == "krb5") {
     environment = {
       etc."krb5kdc/kdc.conf".source = kdcConfFile;

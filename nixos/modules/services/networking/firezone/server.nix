@@ -172,6 +172,14 @@ in
     (lib.mkRemovedOptionModule [ "services" "firezone" "server" "provision" ] ''
       Firezone provisioning support has been removed due to outsized maintenance efforts. See https://github.com/NixOS/nixpkgs/pull/529428.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../system/boot/systemd.nix
+    ../../databases/postgresql.nix
+    ../../web-servers/nginx/default.nix
+    ../firewall.nix
+    # END generated imports
   ];
 
   options.services.firezone.server = {

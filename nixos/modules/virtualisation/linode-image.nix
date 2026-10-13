@@ -33,6 +33,16 @@ in
         "diskSize"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../misc/label.nix
+    ../misc/version.nix
+    ../system/activation/top-level.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/build.nix
+    # END generated imports
   ];
 
   options = {

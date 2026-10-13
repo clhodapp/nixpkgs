@@ -326,6 +326,22 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/swap.nix
+    ../config/system-path.nix
+    ../misc/extra-arguments.nix
+    ../misc/ids.nix
+    ../system/boot/stage-1.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/build.nix
+    ../system/etc/etc.nix
+    ../virtualisation/nixos-containers.nix
+    # END generated imports
+  ];
 
   ###### interface
 

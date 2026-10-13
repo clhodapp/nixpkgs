@@ -9,6 +9,14 @@ let
   cfg = config.programs.soundmodem;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     programs.soundmodem = {
       enable = lib.mkOption {

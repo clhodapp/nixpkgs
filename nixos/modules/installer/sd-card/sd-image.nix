@@ -65,6 +65,16 @@ in
     })
     ../../profiles/all-hardware.nix
     ../../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/nix.nix
+    ../../hardware/all-hardware.nix
+    ../../misc/label.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/systemd.nix
+    ../../system/build.nix
+    ../../tasks/filesystems.nix
+    # END generated imports
   ];
 
   options.sdImage = {

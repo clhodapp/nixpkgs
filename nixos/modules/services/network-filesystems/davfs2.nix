@@ -52,6 +52,14 @@ in
       The option extraConfig got removed, please migrate to
       services.davfs2.settings instead.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/wrappers/default.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options.services.davfs2 = {

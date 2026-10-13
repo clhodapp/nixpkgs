@@ -950,5 +950,12 @@ in
       "storage"
       "minio"
     ] "Support for Minio storage backend has been removed, as minio is unmaintained.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 }

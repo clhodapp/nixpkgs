@@ -14,6 +14,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ./initrd-network.nix
+    ./kernel.nix
+    ./stage-1.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
 
   options = {
 

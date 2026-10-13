@@ -31,6 +31,19 @@ let
     ++ lib.optionals (lib.hasInfix "mysql" cfg.environment.DATABASE_URL) [ "mysql.service" ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/locale.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   meta.buildDocsInSandbox = false;
 
   options.services.strichliste = {

@@ -11,6 +11,19 @@ let
   cfg = config.services.grocy;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   options.services.grocy = {
     enable = mkEnableOption "grocy";
 

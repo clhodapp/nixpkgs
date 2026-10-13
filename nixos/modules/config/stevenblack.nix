@@ -30,6 +30,13 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ./networking.nix
+    # END generated imports
+  ];
+
   options.networking.stevenblack = {
     enable = mkEnableOption "the stevenblack hosts file blocklist";
 

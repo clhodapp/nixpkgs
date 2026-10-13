@@ -48,6 +48,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../system/build.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
 
   options = {
 

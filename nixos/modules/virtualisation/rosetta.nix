@@ -11,6 +11,16 @@ let
   inherit (lib) types;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/nix.nix
+    ../misc/extra-arguments.nix
+    ../system/boot/binfmt.nix
+    ../tasks/filesystems.nix
+    # END generated imports
+  ];
+
   options = {
     virtualisation.rosetta.enable = lib.mkOption {
       type = types.bool;

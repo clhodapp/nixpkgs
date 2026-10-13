@@ -980,6 +980,18 @@ in
     [
       (import ./k3s.nix args)
       (import ./rke2.nix args)
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../../lib/modules/generic/assertions.nix
+      ../../../../../lib/modules/generic/meta-maintainers.nix
+      ../../../config/sysctl.nix
+      ../../../config/system-path.nix
+      ../../../config/users-groups.nix
+      ../../../system/boot/systemd.nix
+      ../../../system/boot/systemd/tmpfiles.nix
+      ../../../system/etc/etc.nix
+      ../../../tasks/filesystems/zfs.nix
+      ../../networking/networkmanager.nix
+      # END generated imports
     ];
 
   meta.teams = [ lib.teams.k3s ];

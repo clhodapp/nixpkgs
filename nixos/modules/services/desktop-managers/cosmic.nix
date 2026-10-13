@@ -48,6 +48,47 @@ let
     ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/packages.nix
+    ../../config/qt.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/portal.nix
+    ../../config/xdg/sounds.nix
+    ../../hardware/system-76.nix
+    ../../hardware/video/switcheroo-control.nix
+    ../../misc/extra-arguments.nix
+    ../../programs/dconf.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../security/rtkit.nix
+    ../../system/boot/systemd.nix
+    ../accessibility/orca.nix
+    ../desktops/accountsservice.nix
+    ../desktops/flatpak.nix
+    ../desktops/geoclue2.nix
+    ../desktops/gnome/gnome-keyring.nix
+    ../desktops/gvfs.nix
+    ../desktops/system76-scheduler.nix
+    ../display-managers/cosmic-greeter.nix
+    ../display-managers/default.nix
+    ../hardware/acpid.nix
+    ../hardware/bluetooth.nix
+    ../hardware/libinput.nix
+    ../hardware/power-profiles-daemon.nix
+    ../hardware/tuned.nix
+    ../hardware/upower.nix
+    ../misc/graphical-desktop.nix
+    ../networking/avahi-daemon.nix
+    ../networking/networkmanager.nix
+    ../x11/xserver.nix
+    # END generated imports
+  ];
+
   meta.teams = [ lib.teams.cosmic ];
 
   options = {

@@ -33,6 +33,60 @@ in
       [ "services" "xserver" "desktopManager" "pantheon" ]
       [ "services" "desktopManager" "pantheon" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/fontconfig.nix
+    ../../config/fonts/packages.nix
+    ../../config/power-management.nix
+    ../../config/shells-environment.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../config/vte.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/mime.nix
+    ../../config/xdg/portal.nix
+    ../../hardware/video/switcheroo-control.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../programs/dconf.nix
+    ../../programs/evince.nix
+    ../../programs/nm-applet.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../accessibility/orca.nix
+    ../desktops/accountsservice.nix
+    ../desktops/flatpak.nix
+    ../desktops/geoclue2.nix
+    ../desktops/gnome/at-spi2-core.nix
+    ../desktops/gnome/evolution-data-server.nix
+    ../desktops/gnome/gcr-ssh-agent.nix
+    ../desktops/gnome/glib-networking.nix
+    ../desktops/gnome/gnome-keyring.nix
+    ../desktops/gnome/rygel.nix
+    ../desktops/gvfs.nix
+    ../desktops/malcontent.nix
+    ../desktops/system-config-printer.nix
+    ../desktops/tumbler.nix
+    ../desktops/zeitgeist.nix
+    ../display-managers/default.nix
+    ../hardware/bluetooth.nix
+    ../hardware/fwupd.nix
+    ../hardware/libinput.nix
+    ../hardware/power-profiles-daemon.nix
+    ../hardware/udev.nix
+    ../hardware/udisks2.nix
+    ../hardware/upower.nix
+    ../networking/networkmanager.nix
+    ../printing/cupsd.nix
+    ../system/dbus.nix
+    ../x11/colord.nix
+    ../x11/display-managers/lightdm-greeters/pantheon.nix
+    ../x11/display-managers/lightdm.nix
+    ../x11/touchegg.nix
+    # END generated imports
   ];
 
   options = {

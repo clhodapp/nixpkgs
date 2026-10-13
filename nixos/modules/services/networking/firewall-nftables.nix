@@ -19,6 +19,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ./firewall-iptables.nix
+    ./firewall.nix
+    ./nftables.nix
+    # END generated imports
+  ];
+
   options = {
     networking.firewall = {
       extraInputRules = lib.mkOption {

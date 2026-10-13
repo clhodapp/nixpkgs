@@ -10,6 +10,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    ./auto-cpufreq.nix
+    ./tlp.nix
+    ./udev.nix
+    # END generated imports
+  ];
 
   ###### interface
 

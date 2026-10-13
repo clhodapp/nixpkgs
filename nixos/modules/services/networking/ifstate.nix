@@ -95,6 +95,22 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/initrd-network.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/modprobe.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ./networkmanager.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ marcel ];
 
   options = {

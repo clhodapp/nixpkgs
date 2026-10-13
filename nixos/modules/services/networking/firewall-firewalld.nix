@@ -4,6 +4,16 @@ let
   cfg = config.networking.firewall;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/sysctl.nix
+    ./firewall.nix
+    ./firewalld/settings.nix
+    ./firewalld/zone.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.enable && cfg.backend == "firewalld") {
     assertions = [
       {

@@ -14,6 +14,12 @@ with lib;
 {
   imports = [
     (mkRenamedOptionModule [ "virtualisation" "growPartition" ] [ "boot" "growPartition" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../tasks/filesystems.nix
+    ./systemd.nix
+    ./systemd/repart.nix
+    # END generated imports
   ];
 
   options = {

@@ -100,6 +100,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ../mail/mail.nix
+    ../system/systembus-notify.nix
+    ../x11/xserver.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

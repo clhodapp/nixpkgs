@@ -11,6 +11,16 @@ let
   ) config.fileSystems;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../services/hardware/udev.nix
+    ../../tasks/filesystems.nix
+    ./kernel.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
+
   options = { };
   config = lib.mkIf (requiredStratisFilesystems != { }) {
     assertions = [

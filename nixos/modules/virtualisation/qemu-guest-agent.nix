@@ -11,6 +11,12 @@ let
   cfg = config.services.qemuGuest;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/hardware/udev.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   options.services.qemuGuest = {
     enable = mkOption {

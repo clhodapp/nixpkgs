@@ -44,6 +44,13 @@ let
   stub-ld = stub-ld-for pkgs message;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ./ldso.nix
+    # END generated imports
+  ];
+
   options = {
     environment.stub-ld = {
       enable = mkOption {

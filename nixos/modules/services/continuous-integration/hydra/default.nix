@@ -100,6 +100,17 @@ in
       The queue runner no longer reads Nix build machines files. Builders now
       connect to it via gRPC, see `services.hydra-builder`.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/nix.nix
+    ../../../config/shells-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../databases/postgresql.nix
+    # END generated imports
   ];
 
   ###### interface

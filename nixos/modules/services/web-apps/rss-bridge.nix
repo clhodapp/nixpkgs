@@ -52,6 +52,14 @@ in
         "enabled_bridges"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options = {

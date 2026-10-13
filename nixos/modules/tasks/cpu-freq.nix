@@ -13,6 +13,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../virtualisation/nixos-containers.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options.powerManagement = {

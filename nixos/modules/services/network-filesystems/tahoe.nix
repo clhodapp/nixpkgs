@@ -8,6 +8,16 @@ let
   cfg = config.services.tahoe;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options.services.tahoe = {
     introducers = lib.mkOption {
       default = { };

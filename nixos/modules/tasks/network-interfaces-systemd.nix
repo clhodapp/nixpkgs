@@ -223,6 +223,20 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../misc/extra-arguments.nix
+    ../services/networking/dhcpcd.nix
+    ../system/boot/initrd-network.nix
+    ../system/boot/kernel.nix
+    ../system/boot/networkd.nix
+    ../system/boot/systemd.nix
+    ../virtualisation/openvswitch.nix
+    ./network-interfaces.nix
+    # END generated imports
+  ];
+
   config = mkMerge [
 
     (mkIf config.boot.initrd.network.enable {

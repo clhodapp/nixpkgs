@@ -9,6 +9,14 @@ let
   cfg = config.programs.calls;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/system/dbus.nix
+    ./dconf.nix
+    # END generated imports
+  ];
+
   options = {
     programs.calls = {
       enable = lib.mkEnableOption ''

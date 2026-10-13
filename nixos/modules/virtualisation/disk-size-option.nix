@@ -3,6 +3,12 @@ let
   t = lib.types;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    # END generated imports
+  ];
+
   options = {
     virtualisation.diskSizeAutoSupported = lib.mkOption {
       type = t.bool;

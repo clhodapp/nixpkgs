@@ -8,6 +8,13 @@ let
   cfg = config.services.arbtt;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     services.arbtt = {
       enable = lib.mkEnableOption "Arbtt statistics capture service";

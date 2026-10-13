@@ -102,6 +102,20 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.lasuite-drive = {
     enable = mkEnableOption "SuiteNumérique Drive";
 

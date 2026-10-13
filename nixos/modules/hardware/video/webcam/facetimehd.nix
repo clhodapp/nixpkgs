@@ -13,6 +13,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/power-management.nix
+    ../../../services/hardware/udev.nix
+    ../../../system/boot/kernel.nix
+    ../../../system/boot/modprobe.nix
+    # END generated imports
+  ];
 
   options.hardware.facetimehd.enable = lib.mkEnableOption "the facetimehd kernel module";
 

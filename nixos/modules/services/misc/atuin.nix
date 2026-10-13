@@ -9,6 +9,15 @@ let
   cfg = config.services.atuin;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.atuin = {
       enable = lib.mkEnableOption "Atuin server for shell history sync";

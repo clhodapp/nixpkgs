@@ -32,6 +32,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../security/ca.nix
+    ../../security/systemd-confinement.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.cryptpad = {
     enable = lib.mkEnableOption "cryptpad";
 

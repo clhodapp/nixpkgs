@@ -8,6 +8,24 @@
 with lib;
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/console.nix
+    ../config/power-management.nix
+    ../config/shells-environment.nix
+    ../misc/documentation.nix
+    ../security/audit.nix
+    ../services/hardware/udev.nix
+    ../services/misc/nix-optimise.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/activation/activation-script.nix
+    ../system/boot/kernel.nix
+    ../system/boot/modprobe.nix
+    ../tasks/lvm.nix
+    ../tasks/network-interfaces.nix
+    ./nixos-containers.nix
+    # END generated imports
+  ];
 
   config = mkIf config.boot.isContainer {
 

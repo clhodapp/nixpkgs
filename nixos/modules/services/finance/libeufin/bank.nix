@@ -5,7 +5,19 @@
   ...
 }:
 {
-  imports = [ (import ./common.nix "bank") ];
+  imports = [
+    (import ./common.nix "bank")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../databases/postgresql.nix
+    ../../networking/firewall.nix
+    ../taler/module.nix
+    ./module.nix
+    # END generated imports
+  ];
 
   options.services.libeufin.bank = {
     initialAccounts = lib.mkOption {

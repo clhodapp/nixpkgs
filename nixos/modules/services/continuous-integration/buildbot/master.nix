@@ -311,6 +311,12 @@ in
       Since Buildbot 0.9.0, status targets are deprecated and ignored.
       Review your configuration and migrate to reporters (available at services.buildbot-master.reporters).
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   meta.teams = [ lib.teams.buildbot ];

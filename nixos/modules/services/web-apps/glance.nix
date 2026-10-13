@@ -21,6 +21,16 @@ let
   settingsFile = "/run/glance/glance.yaml";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.glance = {
     enable = mkEnableOption "glance";
     package = mkPackageOption pkgs "glance" { };

@@ -21,6 +21,11 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    # END generated imports
+  ];
 
   ###### interface
 

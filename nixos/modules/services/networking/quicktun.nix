@@ -13,6 +13,13 @@ let
   cfg = config.services.quicktun;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.quicktun = mkOption {
       default = { };

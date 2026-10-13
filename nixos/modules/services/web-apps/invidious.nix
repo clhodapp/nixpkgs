@@ -305,6 +305,17 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/version.nix
+    ../../security/systemd-confinement.nix
+    ../../testing/service-runner.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.invidious = {
     enable = lib.mkEnableOption "Invidious";
 

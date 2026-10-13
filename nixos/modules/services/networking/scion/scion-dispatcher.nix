@@ -23,6 +23,14 @@ let
   configFile = toml.generate "scion-dispatcher.toml" (recursiveUpdate defaultConfig cfg.settings);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ./scion.nix
+    # END generated imports
+  ];
+
   options.services.scion.scion-dispatcher = {
     enable = mkEnableOption "the scion-dispatcher service";
     settings = mkOption {

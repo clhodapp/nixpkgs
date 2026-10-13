@@ -33,6 +33,26 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/vte.nix
+    ./bash/bash-completion.nix
+    ./bash/bash.nix
+    ./bash/blesh.nix
+    ./bash/ls-colors.nix
+    ./bash/undistract-me.nix
+    ./fish.nix
+    ./xonsh.nix
+    ./zsh/oh-my-zsh.nix
+    ./zsh/zsh-autoenv.nix
+    ./zsh/zsh-autosuggestions.nix
+    ./zsh/zsh-syntax-highlighting.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.starship = {
     enable = lib.mkEnableOption "the Starship shell prompt";
 

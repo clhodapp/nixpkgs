@@ -8,6 +8,19 @@ let
   cfg = config.services.oo7;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../security/pam.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.oo7 = {
     enable = lib.mkEnableOption ''
       oo7, a service providing the Secret Service D-Bus API

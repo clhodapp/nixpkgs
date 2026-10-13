@@ -12,6 +12,17 @@ let
   sshOpts = options.programs.ssh;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../programs/ssh.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/user.nix
+    ./gnome-keyring.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.gnome ];
   };

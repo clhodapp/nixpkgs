@@ -9,6 +9,14 @@ let
   cfg = config.services.flaresolverr;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.flaresolverr = {
       enable = lib.mkEnableOption "FlareSolverr, a proxy server to bypass Cloudflare protection";

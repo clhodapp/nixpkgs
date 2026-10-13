@@ -11,6 +11,15 @@ let
   inInitrd = config.boot.initrd.supportedFilesystems.jfs or false;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/kernel.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd/initrd.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
+
   config = mkIf (config.boot.supportedFilesystems.jfs or false) {
 
     system.fsPackages = [ pkgs.jfsutils ];

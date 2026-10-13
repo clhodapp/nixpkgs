@@ -9,6 +9,16 @@ let
   cfg = config.programs.nautilus-open-any-terminal;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-environment.nix
+    ../config/system-path.nix
+    ../services/desktop-managers/gnome.nix
+    ./dconf.nix
+    # END generated imports
+  ];
+
   options.programs.nautilus-open-any-terminal = {
     enable = lib.mkEnableOption "nautilus-open-any-terminal";
 

@@ -118,6 +118,12 @@ in
     (lib.mkRemovedOptionModule [ "services" "memcached" "socket" ] ''
       This option was replaced by a fixed unix socket path at /run/memcached/memcached.sock enabled using services.memcached.enableUnixSocket.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
 }

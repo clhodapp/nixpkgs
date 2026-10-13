@@ -136,6 +136,18 @@ let
     requireSudo cfg.settings || lib.any requireSudo (lib.attrValues cfg.configurations);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.borgmatic = {
     enable = lib.mkEnableOption "borgmatic";
 

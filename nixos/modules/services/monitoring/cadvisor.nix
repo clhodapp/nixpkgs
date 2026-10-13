@@ -9,6 +9,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../../tasks/filesystems/zfs.nix
+    # END generated imports
+  ];
+
   options = {
     services.cadvisor = {
       enable = lib.mkEnableOption "Cadvisor service";

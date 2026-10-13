@@ -23,6 +23,12 @@ let
   cfg = config.services.ax25.axlisten;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.ax25.axlisten = {

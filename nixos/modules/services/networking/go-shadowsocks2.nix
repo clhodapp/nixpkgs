@@ -8,6 +8,12 @@ let
   cfg = config.services.go-shadowsocks2.server;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.go-shadowsocks2.server = {
     enable = lib.mkEnableOption "go-shadowsocks2 server";
 

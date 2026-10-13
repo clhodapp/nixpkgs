@@ -521,6 +521,24 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../misc/version.nix
+    ../../security/sudo-rs.nix
+    ../../security/sudo.nix
+    ../../security/systemd-confinement.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../tasks/network-interfaces.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.akkoma = {
       enable = mkEnableOption "Akkoma";

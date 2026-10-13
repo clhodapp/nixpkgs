@@ -6,6 +6,13 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/networking/logmein-hamachi.nix
+    # END generated imports
+  ];
+
   options.programs.haguichi = {
     enable = lib.mkEnableOption "Haguichi, a Linux GUI frontend to the proprietary LogMeIn Hamachi";
   };

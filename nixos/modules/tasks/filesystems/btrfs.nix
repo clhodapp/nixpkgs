@@ -34,6 +34,18 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
+
   options = {
     # One could also do regular btrfs balances, but that shouldn't be necessary
     # during normal usage and as long as the filesystems aren't filled near capacity

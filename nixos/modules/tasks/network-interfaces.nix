@@ -549,6 +549,26 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/resolvconf.nix
+    ../config/sysctl.nix
+    ../config/system-path.nix
+    ../misc/extra-arguments.nix
+    ../misc/version.nix
+    ../services/hardware/udev.nix
+    ../services/networking/mstpd.nix
+    ../system/boot/kernel.nix
+    ../system/boot/modprobe.nix
+    ../system/boot/networkd.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/etc/etc.nix
+    ../virtualisation/openvswitch.nix
+    # END generated imports
+  ];
 
   ###### interface
 

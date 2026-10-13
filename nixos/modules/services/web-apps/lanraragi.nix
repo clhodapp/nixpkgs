@@ -9,6 +9,15 @@ let
   cfg = config.services.lanraragi;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/redis.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ tomasajt ];
 
   options.services = {

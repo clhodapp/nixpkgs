@@ -8,6 +8,16 @@ let
   cfg = config.programs.amnezia-vpn;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/system/dbus.nix
+    ../system/boot/resolved.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.programs.amnezia-vpn = {
     enable = lib.mkEnableOption "The AmneziaVPN client";
     package = lib.mkPackageOption pkgs "amnezia-vpn" { };

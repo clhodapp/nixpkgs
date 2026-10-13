@@ -33,6 +33,20 @@ let
   settingsFormat = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/ca.nix
+    ../../system/boot/resolved.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.navidrome = {
 

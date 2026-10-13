@@ -12,6 +12,17 @@ in
   imports = [
     ./oci-common.nix
     ../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/label.nix
+    ../misc/version.nix
+    ../system/activation/top-level.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/systemd.nix
+    ../system/build.nix
+    ./disk-size-option.nix
+    ./oci-options.nix
+    # END generated imports
   ];
 
   config = {

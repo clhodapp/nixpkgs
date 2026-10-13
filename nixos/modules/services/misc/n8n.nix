@@ -67,6 +67,13 @@ in
       "n8n"
       "webhookUrl"
     ] "Use services.n8n.environment.WEBHOOK_URL instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/locale.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options.services.n8n = {

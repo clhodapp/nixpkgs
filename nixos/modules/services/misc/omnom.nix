@@ -11,6 +11,17 @@ let
   configFile = settingsFormat.generate "omnom-config.yml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.omnom = {
       enable = lib.mkEnableOption "Omnom, a webpage bookmarking and snapshotting service";

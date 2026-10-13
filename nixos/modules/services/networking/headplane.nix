@@ -33,6 +33,16 @@ let
   settingsFile = settingsFormat.generate "headplane-config.yaml" (filterSettings settings);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./headscale.nix
+    # END generated imports
+  ];
+
   options.services.headplane = {
     enable = mkEnableOption "Headplane";
     package = mkPackageOption pkgs "headplane" { };

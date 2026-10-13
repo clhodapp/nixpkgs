@@ -171,6 +171,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../hardware/printers.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ./cupsd.nix
+    # END generated imports
+  ];
 
   options.services.printing.cups-pdf = {
     enable = lib.mkEnableOption ''

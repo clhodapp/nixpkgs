@@ -39,6 +39,12 @@ in
       [ "services" "harmonia" "cache" "settings" ]
     )
     # Note: package stays at the top level
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/nix.nix
+    ../../system/boot/systemd.nix
+    ../misc/nix-gc.nix
+    # END generated imports
   ];
 
   options = {

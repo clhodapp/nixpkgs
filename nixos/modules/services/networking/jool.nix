@@ -139,6 +139,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     networking.jool.enable = lib.mkOption {
       type = lib.types.bool;

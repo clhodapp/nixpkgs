@@ -9,6 +9,22 @@ let
   inherit (lib) mkDefault;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/stub-ld.nix
+    ../config/system-path.nix
+    ../config/xdg/autostart.nix
+    ../config/xdg/icons.nix
+    ../config/xdg/mime.nix
+    ../config/xdg/sounds.nix
+    ../misc/documentation.nix
+    ../programs/command-not-found/command-not-found.nix
+    ../programs/fish.nix
+    ../services/hardware/udisks2.nix
+    ../services/logging/logrotate.nix
+    # END generated imports
+  ];
+
   documentation = {
     enable = mkDefault false;
     doc.enable = mkDefault false;

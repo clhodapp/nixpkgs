@@ -11,6 +11,13 @@ let
   yamlFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.fluent-bit = {
     enable = lib.mkEnableOption "Fluent Bit";
     package = lib.mkPackageOption pkgs "fluent-bit" { };

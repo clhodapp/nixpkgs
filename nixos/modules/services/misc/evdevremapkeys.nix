@@ -10,6 +10,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.evdevremapkeys = {
     enable = lib.mkEnableOption "evdevremapkeys, a daemon to remap events on linux input devices";
 

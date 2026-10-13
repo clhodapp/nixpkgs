@@ -10,6 +10,14 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ koi ];
 
   options.programs.nvrs = {

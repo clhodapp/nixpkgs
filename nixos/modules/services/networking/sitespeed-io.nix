@@ -9,6 +9,14 @@ let
   format = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.sitespeed-io = {
     enable = lib.mkEnableOption "Sitespeed.io";
 

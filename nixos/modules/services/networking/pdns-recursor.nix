@@ -307,6 +307,14 @@ in
         See <https://doc.powerdns.com/recursor/yamlsettings.html>.
       ''
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/resolvconf.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   meta.maintainers = with lib.maintainers; [ rnhmjoj ];

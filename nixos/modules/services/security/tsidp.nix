@@ -28,6 +28,15 @@ let
   cfg = config.services.tsidp;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../networking/tailscale.nix
+    # END generated imports
+  ];
+
   options.services.tsidp = {
     enable = mkEnableOption "tsidp server";
 

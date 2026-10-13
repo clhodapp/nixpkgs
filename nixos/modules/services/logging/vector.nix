@@ -8,6 +8,13 @@ let
   cfg = config.services.vector;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.vector = {
     enable = lib.mkEnableOption "Vector, a high-performance observability data pipeline";
 

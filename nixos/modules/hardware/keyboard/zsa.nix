@@ -11,6 +11,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.keyboard.zsa = {
     enable = mkEnableOption ''
       udev rules for keyboards from ZSA like the ErgoDox EZ, Planck EZ and Moonlander Mark I.

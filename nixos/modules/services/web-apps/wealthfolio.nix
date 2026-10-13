@@ -8,6 +8,15 @@ let
   cfg = config.services.wealthfolio;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.wealthfolio = {
     enable = lib.mkEnableOption "Wealthfolio personal investment tracker";
     package = lib.mkPackageOption pkgs "wealthfolio-server" { };

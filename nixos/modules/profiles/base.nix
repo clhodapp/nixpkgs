@@ -9,6 +9,15 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../tasks/filesystems.nix
+    ../tasks/filesystems/zfs.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   # Include some utilities that are useful for installing or repairing
   # the system.
   environment.systemPackages = [

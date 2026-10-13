@@ -208,6 +208,17 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../hardware/uinput.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   options.services.kmonad = {
     enable = lib.mkEnableOption "KMonad: an advanced keyboard manager";
 

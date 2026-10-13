@@ -178,6 +178,21 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../services/hardware/udev.nix
+    ../../system/boot/clevis.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
+
   options.boot.bcachefs = {
     package = lib.mkPackageOption pkgs "bcachefs-tools" {
       extraDescription = ''

@@ -9,6 +9,18 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/networking.nix
+    ../config/nix.nix
+    ../config/system-environment.nix
+    ../programs/ssh.nix
+    ../services/system/nix-daemon.nix
+    ../system/boot/systemd.nix
+    ../system/build.nix
+    # END generated imports
+  ];
 
   options = {
 

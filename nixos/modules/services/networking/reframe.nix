@@ -9,6 +9,17 @@ let
   settingsFormat = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.services.reframe = {
     enable = lib.mkEnableOption "DRM/KMS based remote desktop for Linux that supports Wayland/NVIDIA/headless/login…";
     package = lib.mkPackageOption pkgs "reframe" { };

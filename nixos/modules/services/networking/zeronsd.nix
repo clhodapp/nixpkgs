@@ -10,6 +10,16 @@ let
   settingsFormat = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ./zerotierone.nix
+    # END generated imports
+  ];
+
   options.services.zeronsd.servedNetworks = lib.mkOption {
     default = { };
     example = {

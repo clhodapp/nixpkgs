@@ -151,6 +151,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../hardware/coral.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   meta.buildDocsInSandbox = false;
 
   options.services.frigate = with types; {

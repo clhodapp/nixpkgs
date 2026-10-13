@@ -201,6 +201,14 @@ in
       "apache-kafka"
       "serverProperties"
     ] "Please see services.apache-kafka.settings and its documentation instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

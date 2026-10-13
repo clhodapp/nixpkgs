@@ -77,6 +77,17 @@ let
   createLocalPostgresqlDb = cfg.settings.CANAILLE_SQL.DATABASE_URI == postgresqlHost;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
 
   options.services.canaille = {
     enable = mkEnableOption "Canaille";

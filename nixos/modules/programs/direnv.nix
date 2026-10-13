@@ -20,6 +20,18 @@ in
     (lib.mkRemovedOptionModule [ "programs" "direnv" "finalPackage" ]
       "programs.direnv.finalPackage has been removed now, as its value is identical to programs.direnv.package."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/nix.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    ./bash/bash.nix
+    ./fish.nix
+    ./xonsh.nix
+    ./zsh/zsh.nix
+    # END generated imports
   ];
   options.programs.direnv = {
 

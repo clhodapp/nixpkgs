@@ -14,6 +14,16 @@ let
       pkgs.writeText "duplicati-parameters" cfg.parameters;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.duplicati = {
       enable = lib.mkEnableOption "Duplicati";

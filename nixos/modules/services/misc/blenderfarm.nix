@@ -16,6 +16,16 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ gador ];
 
   options.services.blendfarm = with lib.types; {

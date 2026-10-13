@@ -135,6 +135,16 @@ in
         "sandboxPaths"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../misc/ids.nix
+    ../programs/bash/bash-completion.nix
+    ../services/display-managers/default.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ./system-path.nix
+    ./users-groups.nix
+    # END generated imports
   ]
   ++ mapAttrsToList (
     oldConf: newConf:

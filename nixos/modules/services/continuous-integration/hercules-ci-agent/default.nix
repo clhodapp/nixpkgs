@@ -26,6 +26,16 @@ in
       [ "services" "hercules-ci-agent" "user" ]
       [ "systemd" "services" "hercules-ci-agent" "serviceConfig" "User" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/nix.nix
+    ../../../config/users-groups.nix
+    ../../../misc/label.nix
+    ../../../misc/version.nix
+    ../../../system/activation/top-level.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

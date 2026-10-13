@@ -12,6 +12,13 @@ let
   cfg = ldmcfg.greeters.mobile;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../lightdm.nix
+    ./gtk.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.displayManager.lightdm.greeters.mobile = {
       enable = mkEnableOption "lightdm-mobile-greeter as the lightdm greeter";

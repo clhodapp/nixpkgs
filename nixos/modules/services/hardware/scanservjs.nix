@@ -55,6 +55,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ./sane.nix
+    # END generated imports
+  ];
+
   options.services.scanservjs = {
     enable = lib.mkEnableOption "scanservjs";
     stateDir = lib.mkOption {

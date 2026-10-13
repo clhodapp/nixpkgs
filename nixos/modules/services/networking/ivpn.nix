@@ -8,6 +8,17 @@ let
   cfg = config.services.ivpn;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/iproute2.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.ivpn = {
     enable = lib.mkOption {
       type = lib.types.bool;

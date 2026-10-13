@@ -11,6 +11,14 @@
     ../installer/cd-dvd/channel.nix
     ../profiles/clone-config.nix
     ../profiles/minimal.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/users-groups.nix
+    ../misc/documentation.nix
+    ../services/logging/logrotate.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/ttys/getty.nix
+    # END generated imports
   ];
 
   # Allow the user to login as root without password.

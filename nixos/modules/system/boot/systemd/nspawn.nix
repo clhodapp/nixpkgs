@@ -173,6 +173,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../misc/extra-arguments.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    # END generated imports
+  ];
 
   options = {
 

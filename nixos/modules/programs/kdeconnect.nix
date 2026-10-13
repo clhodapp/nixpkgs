@@ -5,6 +5,14 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../hardware/uinput.nix
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options.programs.kdeconnect = {
     enable = lib.mkEnableOption ''
       kdeconnect.

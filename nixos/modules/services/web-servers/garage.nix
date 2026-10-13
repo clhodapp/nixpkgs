@@ -13,6 +13,16 @@ let
   configFile = toml.generate "garage.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta = {
     doc = ./garage.md;
     maintainers = with lib.maintainers; [

@@ -9,6 +9,14 @@ let
   cfg = config.boot.kexec;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ./systemd.nix
+    # END generated imports
+  ];
+
   meta = {
     inherit (pkgs.kexec-tools.meta) maintainers;
   };

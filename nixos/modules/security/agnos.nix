@@ -81,6 +81,16 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/users-groups.nix
+    ../services/networking/firewall.nix
+    ../services/networking/nftables.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.security.agnos =
     let
       inherit (lib) types mkEnableOption mkOption;

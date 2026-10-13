@@ -42,6 +42,16 @@ in
       "dnsmasq"
       "extraConfig"
     ] "This option has been replaced by `services.dnsmasq.settings`")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/resolvconf.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../system/dbus.nix
+    # END generated imports
   ];
 
   ###### interface

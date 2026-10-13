@@ -23,6 +23,13 @@ in
 {
   imports = [
     ../credentials-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/activation/specialisation.nix
+    ../../system/activation/top-level.nix
+    ../../system/build.nix
+    ../nixos-containers.nix
+    # END generated imports
   ];
 
   options = {

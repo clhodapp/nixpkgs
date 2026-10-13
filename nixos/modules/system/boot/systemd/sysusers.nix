@@ -74,6 +74,18 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../misc/extra-arguments.nix
+    ../../activation/activation-script.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    ./tmpfiles.nix
+    # END generated imports
+  ];
 
   options = {
 

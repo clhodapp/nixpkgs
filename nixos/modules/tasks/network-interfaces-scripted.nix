@@ -907,6 +907,20 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../misc/extra-arguments.nix
+    ../services/hardware/udev.nix
+    ../system/boot/networkd.nix
+    ../system/boot/systemd.nix
+    ../virtualisation/libvirtd.nix
+    ../virtualisation/nixos-containers.nix
+    ../virtualisation/openvswitch.nix
+    ./network-interfaces.nix
+    # END generated imports
+  ];
 
   meta.maintainers = with lib.maintainers; [ rnhmjoj ];
 

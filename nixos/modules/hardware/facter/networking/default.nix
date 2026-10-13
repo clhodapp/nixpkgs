@@ -41,6 +41,10 @@ in
   imports = [
     ./initrd.nix
     ./intel.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../.
+    ../../../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   options.hardware.facter.detected.dhcp = {

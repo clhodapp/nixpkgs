@@ -1909,6 +1909,36 @@ in
       [ "security" "pam" "u2f" "cue" ]
       [ "security" "pam" "u2f" "settings" "cue" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/console.nix
+    ../config/ldap.nix
+    ../config/mysql.nix
+    ../config/system-path.nix
+    ../misc/extra-arguments.nix
+    ../programs/i3lock.nix
+    ../services/misc/sssd.nix
+    ../services/security/fprintd.nix
+    ../services/security/howdy
+    ../services/security/intune.nix
+    ../services/security/kanidm.nix
+    ../services/x11/xscreensaver.nix
+    ../services/x11/xserver.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/homed.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ../tasks/filesystems/zfs.nix
+    ../virtualisation/nixos-containers.nix
+    ./apparmor.nix
+    ./krb5
+    ./oath.nix
+    ./pam_mount.nix
+    ./sudo-rs.nix
+    ./sudo.nix
+    ./wrappers/default.nix
+    # END generated imports
   ];
 
   ###### interface

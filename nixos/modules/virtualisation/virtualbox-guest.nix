@@ -56,6 +56,18 @@ in
         "dragAndDrop"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/ids.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    ../system/boot/stage-1.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/user.nix
+    ../tasks/filesystems.nix
+    # END generated imports
   ];
 
   options.virtualisation.virtualbox.guest = {

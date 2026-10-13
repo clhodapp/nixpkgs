@@ -130,6 +130,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix.nix
+    ../boot/systemd/tmpfiles.nix
+    ../boot/systemd/user.nix
+    ../build.nix
+    ./activatable-system.nix
+    # END generated imports
+  ];
 
   ###### interface
 

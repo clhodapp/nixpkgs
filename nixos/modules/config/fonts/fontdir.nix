@@ -80,6 +80,13 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "fonts" "enableFontDir" ] [ "fonts" "fontDir" "enable" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../programs/xwayland.nix
+    ../../services/x11/xserver.nix
+    ../system-path.nix
+    ./packages.nix
+    # END generated imports
   ];
 
 }

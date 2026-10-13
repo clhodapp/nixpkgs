@@ -10,6 +10,13 @@ let
   nextjs-ollama-llm-ui = cfg.package.override { inherit (cfg) ollamaUrl; };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.nextjs-ollama-llm-ui = {
       enable = lib.mkEnableOption ''

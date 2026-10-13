@@ -12,6 +12,17 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../databases/mysql.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/uwsgi.nix
+    # END generated imports
+  ];
+
   options.services.oncall = {
 
     enable = lib.mkEnableOption "Oncall web app";

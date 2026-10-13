@@ -32,6 +32,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.ioquake3 = {
     enable = lib.mkEnableOption "ioquake3, an enhanced, cross-platform, open source engine for id Software's Quake 3";
 

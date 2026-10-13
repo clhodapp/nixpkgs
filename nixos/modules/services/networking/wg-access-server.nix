@@ -18,6 +18,13 @@ let
   configFile = settingsFormat.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/sysctl.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   options.services.wg-access-server = {
     enable = mkEnableOption "wg-access-server";

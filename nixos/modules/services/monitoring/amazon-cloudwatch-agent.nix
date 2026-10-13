@@ -19,6 +19,12 @@ let
   configurationDirectory = pkgs.runCommand "amazon-cloudwatch-agent.d" { } "mkdir $out";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.amazon-cloudwatch-agent = {
     enable = lib.mkEnableOption "Amazon CloudWatch Agent";
     package = lib.mkPackageOption pkgs "amazon-cloudwatch-agent" { };

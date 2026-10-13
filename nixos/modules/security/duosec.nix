@@ -32,6 +32,13 @@ in
     (lib.mkRemovedOptionModule [ "security" "duosec" "skey" ]
       "The insecure security.duosec.skey option has been replaced by a new security.duosec.secretKeyFile option. Use this new option to store a secure copy of your key instead."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/systemd.nix
+    ./wrappers/default.nix
+    # END generated imports
   ];
 
   options = {

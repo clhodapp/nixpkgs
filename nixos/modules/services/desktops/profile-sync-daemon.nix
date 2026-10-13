@@ -8,6 +8,12 @@ let
   cfg = config.services.psd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.psd = with lib.types; {
     enable = lib.mkOption {
       type = bool;

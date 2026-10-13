@@ -41,6 +41,10 @@ in
     ../../desktop-managers/lomiri.nix
     ../../desktop-managers/cosmic.nix
     ../../desktop-managers/gnome.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../display-managers/default.nix
+    ../xserver.nix
+    # END generated imports
   ];
 
   options = {

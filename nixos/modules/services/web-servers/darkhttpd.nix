@@ -29,6 +29,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options.services.darkhttpd = {
     enable = lib.mkEnableOption "DarkHTTPd web server";
 

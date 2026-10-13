@@ -109,6 +109,14 @@ in
       "urlPrefix"
     ] "Please set per domain with `services.awstats.configs.<name>.webService.urlPrefix`")
     (lib.mkRenamedOptionModule [ "services" "awstats" "vardir" ] [ "services" "awstats" "dataDir" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.awstats = {

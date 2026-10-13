@@ -11,6 +11,27 @@ let
   wayland-lib = import ./lib.nix { inherit lib; };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../config/xdg/portals/wlr.nix
+    ../../hardware/video/nvidia.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../services/display-managers/default.nix
+    ../../services/misc/graphical-desktop.nix
+    ../../services/x11/desktop-managers/none.nix
+    ../../services/x11/xserver.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../dconf.nix
+    ../xwayland.nix
+    # END generated imports
+  ];
+
   options.programs.sway = {
     enable = lib.mkEnableOption ''
       Sway, the i3-compatible tiling Wayland compositor. You can manually launch

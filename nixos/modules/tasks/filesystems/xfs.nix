@@ -14,6 +14,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/kernel.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
+
   config = mkIf (config.boot.supportedFilesystems.xfs or false) {
 
     system.fsPackages = [ pkgs.xfsprogs.bin ];

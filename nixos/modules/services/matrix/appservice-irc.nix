@@ -34,6 +34,14 @@ let
   registrationFile = "/var/lib/matrix-appservice-irc/registration.yml";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.matrix-appservice-irc = with lib.types; {
     enable = lib.mkEnableOption "the Matrix/IRC bridge";
 

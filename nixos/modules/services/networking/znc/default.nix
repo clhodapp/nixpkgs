@@ -109,7 +109,15 @@ in
 
 {
 
-  imports = [ ./options.nix ];
+  imports = [
+    ./options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    ../firewall.nix
+    # END generated imports
+  ];
 
   options = {
     services.znc = {

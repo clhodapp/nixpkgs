@@ -39,6 +39,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix-flakes.nix
+    ../../config/nix.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    # END generated imports
+  ];
+
   options.system.installer.channel.enable =
     (lib.mkEnableOption "bundling NixOS/Nixpkgs channel in the installer")
     // {

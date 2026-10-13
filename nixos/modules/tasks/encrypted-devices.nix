@@ -69,6 +69,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../system/boot/luksroot.nix
+    ../system/boot/stage-1.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/build.nix
+    # END generated imports
+  ];
 
   options = {
     fileSystems = mkOption {

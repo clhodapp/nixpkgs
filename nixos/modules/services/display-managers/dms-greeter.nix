@@ -109,6 +109,29 @@ let
       [ ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/packages.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/graphics.nix
+    ../../programs/wayland/dms-shell.nix
+    ../../programs/wayland/hyprland.nix
+    ../../programs/wayland/labwc.nix
+    ../../programs/wayland/mango.nix
+    ../../programs/wayland/niri.nix
+    ../../programs/wayland/sway.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../hardware/libinput.nix
+    ./default.nix
+    ./greetd.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.dms-greeter = {
     enable = mkEnableOption "DankMaterialShell greeter";
 

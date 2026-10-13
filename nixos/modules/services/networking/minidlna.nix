@@ -18,6 +18,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.minidlna.enable = lib.mkEnableOption "MiniDLNA, a simple DLNA server. Consider adding `openFirewall = true` into your config";
   options.services.minidlna.openFirewall = lib.mkEnableOption "opening HTTP (TCP) and SSDP (UDP) ports in the firewall";
   options.services.minidlna.package = lib.mkPackageOption pkgs "minidlna" { };

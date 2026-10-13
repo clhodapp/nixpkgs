@@ -49,6 +49,12 @@ in
       If you nontheless require E2EE via Pantalaimon, you can configure `services.pantalaimon-headless.instances`
       yourself and use that with `services.draupnir.settings.pantalaimon` and `services.draupnir.secrets.pantalaimon.password`.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.draupnir = {

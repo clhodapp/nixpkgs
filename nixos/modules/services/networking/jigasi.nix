@@ -12,6 +12,16 @@ let
   sipCommunicatorPropertiesFileUnsubstituted = "${pkgs.jigasi}/etc/jitsi/jigasi/sip-communicator.properties";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./jicofo.nix
+    # END generated imports
+  ];
+
   options.services.jigasi = with lib.types; {
     enable = lib.mkEnableOption "Jitsi Gateway to SIP - component of Jitsi Meet";
 

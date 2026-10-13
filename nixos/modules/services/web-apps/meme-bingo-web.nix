@@ -17,6 +17,13 @@ let
   cfg = config.services.meme-bingo-web;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.meme-bingo-web = {
       enable = mkEnableOption ''

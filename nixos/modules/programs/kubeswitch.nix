@@ -8,6 +8,14 @@ let
   cfg = config.programs.kubeswitch;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.kubeswitch = {
       enable = lib.mkEnableOption "kubeswitch";

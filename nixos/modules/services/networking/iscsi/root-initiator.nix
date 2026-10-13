@@ -9,6 +9,20 @@ let
   cfg = config.boot.iscsi-initiator;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/boot/initrd-network.nix
+    ../../../system/boot/initrd-ssh.nix
+    ../../../system/boot/kernel.nix
+    ../../../system/boot/stage-1.nix
+    ../../../system/boot/systemd/initrd.nix
+    ../../../system/etc/etc.nix
+    ../../../tasks/network-interfaces.nix
+    ./initiator.nix
+    # END generated imports
+  ];
+
   # If you're booting entirely off another machine you may want to add
   # this snippet to always boot the latest "system" version. It is not
   # enabled by default in case you have an initrd on a local disk:

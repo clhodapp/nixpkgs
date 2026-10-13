@@ -8,6 +8,13 @@ let
   cfg = config.services.heapster;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.heapster = {
     enable = lib.mkEnableOption "Heapster monitoring";
 

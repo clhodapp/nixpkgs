@@ -26,6 +26,11 @@ in
       [ "programs" "zsh" "syntax-highlighting" "patterns" ]
       [ "programs" "zsh" "syntaxHighlighting" "patterns" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ./zsh.nix
+    # END generated imports
   ];
 
   options = {

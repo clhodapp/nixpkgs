@@ -9,6 +9,13 @@ let
   cfg = config.programs.flashrom;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.programs.flashrom = {
     enable = lib.mkOption {
       type = lib.types.bool;

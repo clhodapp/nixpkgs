@@ -31,6 +31,16 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../security/pam.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.programs.rust-motd = {
     enable = lib.mkEnableOption "rust-motd, a Message Of The Day (MOTD) generator";
     enableMotdInSSHD = lib.mkOption {

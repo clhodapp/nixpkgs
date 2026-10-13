@@ -4348,7 +4348,23 @@ let
 in
 
 {
-  imports = [ stage1Options ];
+  imports = [
+    stage1Options
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/iproute2.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../services/system/dbus.nix
+    ../../tasks/network-interfaces.nix
+    ../etc/etc.nix
+    ./initrd-network.nix
+    ./kernel.nix
+    ./resolved.nix
+    ./systemd.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
 
   options = {
     systemd.network = commonOptions true;

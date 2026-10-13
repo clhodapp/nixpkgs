@@ -31,6 +31,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.c2fmzq-server = {
     enable = mkEnableOption "c2fmzq-server";
 

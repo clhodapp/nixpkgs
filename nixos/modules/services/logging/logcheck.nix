@@ -131,6 +131,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../scheduling/cron.nix
+    # END generated imports
+  ];
+
   options = {
     services.logcheck = {
       enable = lib.mkEnableOption "logcheck cron job, to mail anomalies in the system logfiles to the administrator";

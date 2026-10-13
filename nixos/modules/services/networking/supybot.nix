@@ -14,6 +14,17 @@ let
   pyEnv = pkgs.python3.withPackages (p: [ p.limnoria ] ++ (cfg.extraPackages p));
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.supybot = {

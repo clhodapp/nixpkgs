@@ -66,6 +66,18 @@ in
       [ "services" "murmur" "sslCert" ]
       [ "services" "murmur" "tls" "certPath" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/acme
+    ../../security/apparmor.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./firewall.nix
+    # END generated imports
   ];
 
   options = {

@@ -8,6 +8,12 @@
 with lib;
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.pptpd = {
       enable = mkEnableOption "pptpd, the Point-to-Point Tunneling Protocol daemon";

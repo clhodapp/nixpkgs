@@ -87,6 +87,16 @@ in
       "nagios"
       "urlPath"
     ] "The urlPath option has been removed as it is hard coded to /nagios in the nagios package.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../web-servers/apache-httpd/default.nix
+    # END generated imports
   ];
 
   meta.maintainers = with lib.maintainers; [ symphorien ];

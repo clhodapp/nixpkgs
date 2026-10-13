@@ -17,6 +17,15 @@ in
       "coredump"
       "extraConfig"
     ] "Use systemd.coredump.settings.Coredump instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/sysctl.nix
+    ../../../config/users-groups.nix
+    ../../../misc/extra-arguments.nix
+    ../../../misc/ids.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    # END generated imports
   ];
 
   options = {

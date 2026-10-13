@@ -11,6 +11,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   # TODO turn this into a generic taler-like service thingy?
   options.services.taler = {
     enable = lib.mkEnableOption "the GNU Taler system" // lib.mkOption { internal = true; };

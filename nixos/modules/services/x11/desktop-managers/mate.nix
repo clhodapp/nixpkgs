@@ -16,6 +16,33 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/power-management.nix
+    ../../../config/shells-environment.nix
+    ../../../config/system-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/vte.nix
+    ../../../config/xdg/portal.nix
+    ../../../misc/extra-arguments.nix
+    ../../../programs/dconf.nix
+    ../../../programs/system-config-printer.nix
+    ../../../programs/wayland/wayfire.nix
+    ../../../security/pam.nix
+    ../../../security/polkit.nix
+    ../../desktops/gnome/at-spi2-core.nix
+    ../../desktops/gnome/gcr-ssh-agent.nix
+    ../../desktops/gnome/glib-networking.nix
+    ../../desktops/gnome/gnome-keyring.nix
+    ../../desktops/gvfs.nix
+    ../../display-managers/default.nix
+    ../../hardware/libinput.nix
+    ../../hardware/udev.nix
+    ../../hardware/upower.nix
+    ../../printing/cupsd.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.xserver.desktopManager.mate = {

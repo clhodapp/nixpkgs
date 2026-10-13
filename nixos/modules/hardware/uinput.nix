@@ -4,6 +4,14 @@ let
   cfg = config.hardware.uinput;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.hardware.uinput = {
     enable = lib.mkEnableOption "uinput support";
   };

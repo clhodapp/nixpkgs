@@ -12,6 +12,18 @@ let
   configFile = settingsFormat.generate "config.yml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../networking/firewall.nix
+    ../search/meilisearch.nix
+    # END generated imports
+  ];
+
   options.services.sharkey =
     let
       inherit (lib)

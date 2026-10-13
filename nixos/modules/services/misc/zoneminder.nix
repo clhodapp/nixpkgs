@@ -75,6 +75,23 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/locale.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/mysql.nix
+    ../networking/firewall.nix
+    ../web-servers/fcgiwrap.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.zoneminder = with lib; {
       enable = lib.mkEnableOption ''

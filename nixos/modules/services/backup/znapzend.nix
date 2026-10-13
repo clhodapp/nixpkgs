@@ -325,6 +325,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/filesystems/zfs.nix
+    # END generated imports
+  ];
+
   options = {
     services.znapzend = {
       enable = lib.mkEnableOption "ZnapZend ZFS backup daemon";

@@ -106,6 +106,13 @@ in
         "extraLayouts"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-environment.nix
+    ./display-managers/startx.nix
+    ./display-managers/sx.nix
+    ./xserver.nix
+    # END generated imports
   ];
 
   ###### interface

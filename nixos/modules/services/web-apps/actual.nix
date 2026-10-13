@@ -20,6 +20,15 @@ let
   formatType = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.actual = {
     enable = mkEnableOption "actual, a privacy focused app for managing your finances";
     package = mkPackageOption pkgs "actual-server" { };

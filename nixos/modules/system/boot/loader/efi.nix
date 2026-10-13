@@ -1,5 +1,11 @@
 { config, lib, ... }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../systemd.nix
+    # END generated imports
+  ];
+
   options.boot.loader.efi = {
 
     canTouchEfiVariables = lib.mkOption {

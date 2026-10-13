@@ -60,6 +60,14 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "boot" "binfmtMiscRegistrations" ] [ "boot" "binfmt" "registrations" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/nix.nix
+    ../../misc/extra-arguments.nix
+    ../etc/etc.nix
+    ./systemd.nix
+    ./systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   options = {

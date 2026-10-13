@@ -117,6 +117,19 @@ in
     (mkRemovedOptionModule [ "services" "kubernetes" "kubelet" "allowPrivileged" ] "")
     (mkRemovedOptionModule [ "services" "kubernetes" "kubelet" "networkPlugin" ] "")
     (mkRemovedOptionModule [ "services" "kubernetes" "kubelet" "containerRuntime" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/sysctl.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/kernel.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../../tasks/filesystems/zfs.nix
+    ../../../tasks/network-interfaces.nix
+    ./addons/dns.nix
+    ./default.nix
+    ./pki.nix
+    # END generated imports
   ];
 
   ###### interface

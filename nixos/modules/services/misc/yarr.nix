@@ -18,6 +18,13 @@ let
   cfg = config.services.yarr;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ christoph-heiss ];
 
   options.services.yarr = {

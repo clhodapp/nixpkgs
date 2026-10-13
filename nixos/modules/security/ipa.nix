@@ -28,6 +28,22 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/ldap.nix
+    ../config/networking.nix
+    ../config/system-path.nix
+    ../services/misc/sssd.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ../tasks/network-interfaces.nix
+    ./ca.nix
+    ./krb5
+    # END generated imports
+  ];
+
   options = {
     security.ipa = {
       enable = lib.mkEnableOption "FreeIPA domain integration";

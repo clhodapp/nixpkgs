@@ -6,6 +6,12 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ./xinetd.nix
+    # END generated imports
+  ];
+
   options = {
     services.tftpd.enable = lib.mkOption {
       type = lib.types.bool;

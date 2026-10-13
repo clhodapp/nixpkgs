@@ -18,6 +18,13 @@ in
 
   imports = [
     (lib.mkRemovedOptionModule [ "services" "gpsd" "device" ] "Use `services.gpsd.devices` instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

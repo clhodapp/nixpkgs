@@ -11,7 +11,15 @@ in
 {
   meta.maintainers = [ lib.maintainers.arianvp ];
 
-  imports = [ ./server-tpm.nix ];
+  imports = [
+    ./server-tpm.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    ../../networking/firewall.nix
+    # END generated imports
+  ];
 
   options.services.spire.server = {
     enable = lib.mkEnableOption "SPIRE Server";

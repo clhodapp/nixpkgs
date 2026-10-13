@@ -15,6 +15,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../../config/users-groups.nix
+    ../../../../system/boot/systemd/tmpfiles.nix
+    ../ci-broker.nix
+    # END generated imports
+  ];
+
   meta.teams = [ lib.teams.radicle ];
 
   options.services.radicle.ci.adapters.native = {

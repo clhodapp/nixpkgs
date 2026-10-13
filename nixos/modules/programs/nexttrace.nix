@@ -10,6 +10,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     programs.nexttrace = {
       enable = lib.mkEnableOption "Nexttrace to the global environment and configure a setcap wrapper for it";

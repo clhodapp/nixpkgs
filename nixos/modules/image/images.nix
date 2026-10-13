@@ -63,6 +63,12 @@ let
   ) config.image.modules;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/build.nix
+    # END generated imports
+  ];
+
   options = {
     system.build = {
       images = lib.mkOption {

@@ -9,6 +9,16 @@ let
   servarr = import ./settings-options.nix { inherit lib pkgs; };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.lidarr = {
       enable = lib.mkEnableOption "Lidarr, a Usenet/BitTorrent music downloader";

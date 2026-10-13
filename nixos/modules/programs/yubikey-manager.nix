@@ -9,6 +9,14 @@ let
   cfg = config.programs.yubikey-manager;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/pcscd.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     programs.yubikey-manager = {
       enable = lib.mkEnableOption "yubikey-manager";

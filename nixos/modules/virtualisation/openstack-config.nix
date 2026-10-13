@@ -30,6 +30,18 @@ in
     # The Openstack Metadata service exposes data on an EC2 API also.
     ./ec2-data.nix
     ./amazon-init.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/loader.nix
+    ../system/boot/systemd.nix
+    ../tasks/filesystems.nix
+    ../tasks/filesystems/zfs.nix
+    ../tasks/network-interfaces.nix
+    ./openstack-options.nix
+    # END generated imports
   ];
 
   config = {

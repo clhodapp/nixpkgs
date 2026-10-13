@@ -23,6 +23,11 @@ in
       "dwm-status"
       "extraConfig"
     ] "Use services.dwm-status.settings instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd/user.nix
+    ../hardware/upower.nix
+    # END generated imports
   ];
 
   options = {

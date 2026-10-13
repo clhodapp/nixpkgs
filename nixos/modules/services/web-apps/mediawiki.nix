@@ -573,6 +573,18 @@ in
       [ "services" "mediawiki" "virtualHost" ]
       [ "services" "mediawiki" "httpd" "virtualHost" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

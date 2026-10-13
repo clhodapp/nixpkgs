@@ -30,6 +30,23 @@ let
   tlsEnabled = cfg.enableACME || cfg.sslCertificate != null || cfg.sslCertificateKey != null;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../mail/postfix.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.discourse = {
       enable = lib.mkEnableOption "Discourse, an open source discussion platform";

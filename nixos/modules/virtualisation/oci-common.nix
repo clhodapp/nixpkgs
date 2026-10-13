@@ -9,7 +9,20 @@ let
   cfg = config.oci;
 in
 {
-  imports = [ ../profiles/qemu-guest.nix ];
+  imports = [
+    ../profiles/qemu-guest.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/networking.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/efi.nix
+    ../system/boot/loader/grub/grub.nix
+    ../tasks/filesystems.nix
+    ../tasks/network-interfaces.nix
+    ./oci-options.nix
+    # END generated imports
+  ];
 
   # Taken from /proc/cmdline of Ubuntu 20.04.2 LTS on OCI
   boot.kernelParams = [

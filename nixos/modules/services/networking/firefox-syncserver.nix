@@ -137,6 +137,18 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.firefox-syncserver = {
       enable = lib.mkEnableOption ''

@@ -11,6 +11,14 @@ let
   configFile = format.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.meshtasticd = {
     enable = lib.mkEnableOption "Meshtastic daemon";
     package = lib.mkPackageOption pkgs "meshtasticd" { };

@@ -9,6 +9,13 @@ let
   cfg = config.programs.extra-container;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../system/boot/stage-2.nix
+    # END generated imports
+  ];
+
   options = {
     programs.extra-container.enable = lib.mkEnableOption ''
       extra-container, a tool for running declarative NixOS containers

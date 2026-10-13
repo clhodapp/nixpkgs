@@ -33,6 +33,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/extra-arguments.nix
+    ../system/activation/activation-script.nix
+    ../system/build.nix
+    ../system/etc/etc.nix
+    ./system-environment.nix
+    # END generated imports
+  ];
 
   options = {
 

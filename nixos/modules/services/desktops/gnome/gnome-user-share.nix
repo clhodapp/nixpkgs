@@ -8,6 +8,13 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   meta = {
     teams = [ lib.teams.gnome ];

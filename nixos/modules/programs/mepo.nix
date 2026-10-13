@@ -8,6 +8,15 @@ let
   cfg = config.programs.mepo;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/desktops/geoclue2.nix
+    ../services/misc/gpsd.nix
+    # END generated imports
+  ];
+
   options.programs.mepo = {
     enable = lib.mkEnableOption "Mepo, a fast, simple and hackable OSM map viewer";
 

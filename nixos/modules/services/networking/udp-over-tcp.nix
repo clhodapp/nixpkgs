@@ -216,6 +216,14 @@ let
     );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.udp-over-tcp = {
     package = mkPackageOption pkgs "udp-over-tcp" { };
     tcp2udp = mkOption {

@@ -8,6 +8,18 @@ let
   cfg = config.networking.modemmanager;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../hardware/udev.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.freedesktop ];
   };

@@ -69,6 +69,11 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/boot/stage-2.nix
+    # END generated imports
+  ];
 
   options = {
 

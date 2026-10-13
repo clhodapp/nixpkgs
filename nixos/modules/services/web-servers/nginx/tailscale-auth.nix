@@ -30,6 +30,14 @@ in
       [ "services" "nginx" "tailscaleAuth" "socketPath" ]
       [ "services" "tailscaleAuth" "socketPath" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../networking/tailscale-auth.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options.services.nginx.tailscaleAuth = {

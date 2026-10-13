@@ -79,6 +79,17 @@ in
     (lib.mkRemovedOptionModule [ "services" "fail2ban" "extraSettings" ]
       "The extra default configuration can now be set using `services.fail2ban.jails.DEFAULT.settings`."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../networking/firewall.nix
+    ../networking/nftables.nix
+    ../networking/ssh/sshd.nix
+    # END generated imports
   ];
 
   ###### interface

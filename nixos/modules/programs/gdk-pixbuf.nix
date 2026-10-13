@@ -16,6 +16,10 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "xserver" "gdk-pixbuf" ] [ "programs" "gdk-pixbuf" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-environment.nix
+    # END generated imports
   ];
 
   options = {

@@ -26,6 +26,16 @@ let
   cfgfile = settingsFormat.generate "cloud.cfg" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/filesystems.nix
+    # END generated imports
+  ];
+
   options = {
     services.cloud-init = {
       enable = lib.mkOption {

@@ -8,6 +8,14 @@ let
   cfg = config.services.infnoise;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     services.infnoise = {
       enable = lib.mkEnableOption "the Infinite Noise TRNG driver";

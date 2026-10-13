@@ -13,6 +13,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../desktop-managers/lomiri.nix
+    ../../../display-managers/default.nix
+    ../lightdm.nix
+    ./gtk.nix
+    # END generated imports
+  ];
+
   meta.teams = [ lib.teams.lomiri ];
 
   options = {

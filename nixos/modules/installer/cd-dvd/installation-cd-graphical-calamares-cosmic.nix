@@ -6,7 +6,17 @@
 }:
 
 {
-  imports = [ ./installation-cd-graphical-calamares.nix ];
+  imports = [
+    ./installation-cd-graphical-calamares.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../services/desktop-managers/cosmic.nix
+    ../../services/display-managers/cosmic-greeter.nix
+    ../../services/display-managers/default.nix
+    ../../system/activation/specialisation.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
 
   isoImage.edition = lib.mkDefault "cosmic";
   isoImage.configurationName = "COSMIC (Linux LTS)";

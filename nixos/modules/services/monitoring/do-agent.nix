@@ -9,6 +9,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.do-agent = {
     enable = lib.mkEnableOption "do-agent, the DigitalOcean droplet metrics agent";
   };

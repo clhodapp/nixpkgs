@@ -19,6 +19,17 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../programs/gnupg.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../logging/logrotate.nix
+    ./postfix.nix
+    # END generated imports
+  ];
+
   options.services.zeyple = {
     enable = lib.mkEnableOption "Zeyple, an utility program to automatically encrypt outgoing emails with GPG";
 

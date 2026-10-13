@@ -195,6 +195,16 @@ in
       The new config settings for OIDC are explained in the documentation:
       https://peering-manager.readthedocs.io/en/v1.9.3/administration/authentication/oidc/
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/build.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

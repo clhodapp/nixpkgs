@@ -27,6 +27,12 @@
 
   imports = [
     (lib.mkRenamedOptionModule [ "hardware" "usbWwan" ] [ "hardware" "usb-modeswitch" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/hardware/udev.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    # END generated imports
   ];
 
   config = lib.mkIf config.hardware.usb-modeswitch.enable {

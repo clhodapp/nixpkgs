@@ -42,6 +42,14 @@ in
       "journald"
       "extraConfig"
     ] "Use services.journald.settings.Journal instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/users-groups.nix
+    ../../../misc/extra-arguments.nix
+    ../../../misc/ids.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    # END generated imports
   ];
 
   options = {

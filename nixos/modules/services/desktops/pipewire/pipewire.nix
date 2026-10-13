@@ -364,6 +364,24 @@ in
       `services.pipewire.extraConfig.client-rt` is no longer applicable, as `client-rt.conf` has been
       removed upstream. Please move your customizations to `services.pipewire.extraConfig.client`.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../security/pam.nix
+    ../../../security/rtkit.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/user.nix
+    ../../../system/etc/etc.nix
+    ../../audio/jack.nix
+    ../../audio/pulseaudio.nix
+    ../../hardware/udev.nix
+    ../../networking/firewall.nix
+    ./wireplumber.nix
+    # END generated imports
   ];
 
   ###### implementation

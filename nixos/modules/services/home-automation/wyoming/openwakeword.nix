@@ -36,6 +36,11 @@ in
       "openwakeword"
       "preLoadModels"
     ] "Passing a list of models to preload was removed in wyoming-openwakeword 2.0")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../misc/extra-arguments.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.wyoming.openwakeword = with types; {

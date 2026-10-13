@@ -14,6 +14,20 @@ with lib;
 {
   imports = [
     ../../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix.nix
+    ../../misc/label.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/loader/grub/grub.nix
+    ../../system/boot/loader/loader.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/stage-2.nix
+    ../../system/boot/systemd.nix
+    ../../system/build.nix
+    ../../tasks/filesystems.nix
+    ../../tasks/filesystems/overlayfs.nix
+    # END generated imports
   ];
 
   options = {

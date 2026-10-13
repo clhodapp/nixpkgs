@@ -10,6 +10,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/power-management.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.hardware.fancontrol = {
     enable = lib.mkEnableOption "software fan control (requires fancontrol.config)";
 

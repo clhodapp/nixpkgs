@@ -44,6 +44,17 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../services/display-managers/default.nix
+    ../../services/system/dbus.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.uwsm = {
     enable = lib.mkEnableOption ''
       uwsm, which wraps standalone Wayland compositors with a set

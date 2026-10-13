@@ -10,6 +10,14 @@ let
   format = pkgs.formats.yaml_1_2 { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ fpletz ];
 
   options = {

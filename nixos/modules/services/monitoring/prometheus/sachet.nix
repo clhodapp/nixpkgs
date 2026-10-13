@@ -9,6 +9,13 @@ let
   configFile = pkgs.writeText "sachet.yml" (builtins.toJSON cfg.configuration);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.prometheus.sachet = {
       enable = lib.mkEnableOption "Sachet, an SMS alerting tool for the Prometheus Alertmanager";

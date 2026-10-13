@@ -8,6 +8,14 @@ let
   cfg = config.services.passSecretService;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.passSecretService = {
     enable = lib.mkEnableOption "pass secret service";
 

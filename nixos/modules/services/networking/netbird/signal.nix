@@ -28,6 +28,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../misc/extra-arguments.nix
+    ../../../system/boot/systemd.nix
+    ../../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.netbird.server.signal = {
     enable = mkEnableOption "Netbird's Signal Service";
 

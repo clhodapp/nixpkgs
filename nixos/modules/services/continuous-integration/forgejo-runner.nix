@@ -48,6 +48,17 @@ let
     ));
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/docker.nix
+    ../../virtualisation/podman/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.forgejo-runner.meta.maintainers;
 
   options.services.forgejo-runner = {

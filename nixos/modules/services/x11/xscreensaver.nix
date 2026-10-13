@@ -9,6 +9,14 @@ let
   cfg = config.services.xscreensaver;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.xscreensaver = {
     enable = lib.mkEnableOption "xscreensaver user service";
 

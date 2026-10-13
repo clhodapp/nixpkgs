@@ -4,6 +4,16 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/desktop-managers/plasma6.nix
+    ../services/display-managers/plasma-login-manager.nix
+    ../services/hardware/libinput.nix
+    ../services/x11/xserver.nix
+    # END generated imports
+  ];
+
   services.xserver = {
     enable = true;
     desktopManager.plasma6.enable = true;

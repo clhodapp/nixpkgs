@@ -8,6 +8,14 @@ let
   cfg = config.services.spice-webdavd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    ../network-filesystems/davfs2.nix
+    # END generated imports
+  ];
+
   options = {
     services.spice-webdavd = {
       enable = lib.mkEnableOption "the spice guest webdav proxy daemon";

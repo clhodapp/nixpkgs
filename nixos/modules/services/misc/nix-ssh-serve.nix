@@ -13,6 +13,14 @@ let
       "nix-daemon --stdio";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix.nix
+    ../../config/users-groups.nix
+    ../networking/ssh/sshd.nix
+    # END generated imports
+  ];
+
   options = {
 
     nix.sshServe = {

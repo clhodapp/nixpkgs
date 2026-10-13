@@ -69,6 +69,16 @@ in
       "pdfding"
       "backup"
     ] "The automated backup functionality has been removed by upstream in 1.14.0.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options.services.pdfding = {

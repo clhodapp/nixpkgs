@@ -281,6 +281,26 @@ in
       [ "boot" "zfs" "allowHibernation" ]
       [ "boot" "zfs" "unsafeAllowHibernation" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/version.nix
+    ../../security/wrappers/default.nix
+    ../../services/hardware/udev.nix
+    ../../services/mail/mail.nix
+    ../../system/boot/clevis.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/loader/grub/grub.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../../system/boot/systemd/shutdown.nix
+    ../../system/build.nix
+    ../../system/etc/etc.nix
+    ../filesystems.nix
+    ../network-interfaces.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -17,6 +17,15 @@ let
   configFile = format.generate "neard.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.neard = {
     enable = mkEnableOption "neard, an NFC daemon";
 

@@ -21,6 +21,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../system/etc/etc.nix
+    ./pam.nix
+    # END generated imports
+  ];
+
   options = {
 
     security.pam.mount = {

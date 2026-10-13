@@ -20,6 +20,15 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/etc/etc.nix
+    ../nftables.nix
+    ./.
+    # END generated imports
+  ];
+
   options.services.firewalld.settings = mkOption {
     description = ''
       FirewallD config file.

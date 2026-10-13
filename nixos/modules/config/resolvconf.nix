@@ -61,6 +61,15 @@ in
       "resolvconf"
       "useHostResolvConf"
     ] "This option was never used for anything anyways")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/system/nscd.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ../tasks/network-interfaces.nix
+    ./system-path.nix
+    ./users-groups.nix
+    # END generated imports
   ];
 
   options = {

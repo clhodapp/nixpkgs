@@ -126,6 +126,15 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/libvirtd.nix
+    # END generated imports
+  ];
+
   options = {
     services.libvirtd.autoSnapshot = {
       enable = lib.mkEnableOption "LibVirt VM snapshots";

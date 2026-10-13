@@ -25,6 +25,26 @@ in
     # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configure-access-to-serial-console.html
     ./ec2-data.nix
     ./amazon-init.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/networking.nix
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../services/hardware/udisks2.nix
+    ../services/misc/amazon-ssm-agent.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/loader.nix
+    ../system/boot/modprobe.nix
+    ../system/boot/systemd.nix
+    ../tasks/filesystems.nix
+    ../tasks/filesystems/zfs.nix
+    ../tasks/network-interfaces.nix
+    ./amazon-options.nix
+    # END generated imports
   ];
 
   config = {

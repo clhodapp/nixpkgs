@@ -29,6 +29,17 @@ let
   settingsFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../databases/influxdb2.nix
+    ../networking/firewall.nix
+    ./smartd.nix
+    # END generated imports
+  ];
+
   options = {
     services.scrutiny = {
       enable = mkEnableOption "Scrutiny, a web application for drive monitoring";

@@ -12,6 +12,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

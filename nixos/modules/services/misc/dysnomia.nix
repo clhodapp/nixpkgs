@@ -158,6 +158,24 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "dysnomia" ] [ "services" "dysnomia" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../system/boot/stage-2.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../../virtualisation/docker.nix
+    ../databases/influxdb.nix
+    ../databases/mongodb.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../networking/ejabberd.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/tomcat.nix
+    ./svnserve.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

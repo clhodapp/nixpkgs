@@ -9,6 +9,14 @@ let
   cfg = config.programs.ccache;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/nixpkgs.nix
+    ../security/wrappers/default.nix
+    ../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.programs.ccache = {
     # host configuration
     enable = lib.mkEnableOption "CCache, a compiler cache for fast recompilation of C/C++ code";

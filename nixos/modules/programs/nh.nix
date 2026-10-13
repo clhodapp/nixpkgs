@@ -8,6 +8,18 @@ let
   cfg = config.programs.nh;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/nix.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../services/misc/nix-gc.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     NotAShelf
     mdaniels5757

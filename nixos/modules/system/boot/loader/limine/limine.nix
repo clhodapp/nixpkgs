@@ -50,6 +50,21 @@ in
       [ "boot" "loader" "limine" "forceMbr" ]
       [ "boot" "loader" "limine" "force" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/assertions.nix
+    ../../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../../config/nix.nix
+    ../../../../misc/version.nix
+    ../../../../services/hardware/fwupd.nix
+    ../../../activation/activation-script.nix
+    ../../../activation/top-level.nix
+    ../../luksroot.nix
+    ../../stage-1.nix
+    ../../systemd.nix
+    ../efi.nix
+    ../grub/grub.nix
+    ../loader.nix
+    # END generated imports
   ];
 
   options.boot.loader.limine = {

@@ -14,6 +14,13 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.networking.wireless.athUserRegulatoryDomain = lib.mkOption {
     default = false;
     type = lib.types.bool;

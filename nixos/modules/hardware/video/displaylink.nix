@@ -17,6 +17,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/power-management.nix
+    ../../services/hardware/udev.nix
+    ../../services/x11/display-managers/default.nix
+    ../../services/x11/xserver.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
 
   config = lib.mkIf enabled {
 

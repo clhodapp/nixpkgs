@@ -16,6 +16,11 @@ in
       [ "services" "displayManager" "environment" ]
       [ "services" "displayManager" "generic" "environment" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options = {

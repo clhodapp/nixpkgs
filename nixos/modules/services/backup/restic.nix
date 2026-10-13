@@ -10,6 +10,16 @@ let
   inherit (utils.systemdUtils.unitOptions) unitOption;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../programs/ssh.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.restic.backups = lib.mkOption {
     description = ''
       Periodic backups to create with Restic.

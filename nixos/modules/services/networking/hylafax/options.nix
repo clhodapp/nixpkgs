@@ -139,6 +139,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../security/wrappers/default.nix
+    ../../mail/mail.nix
+    # END generated imports
+  ];
 
   options.services.hylafax = {
 

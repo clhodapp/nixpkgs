@@ -3,7 +3,16 @@
 { lib, pkgs, ... }:
 
 {
-  imports = [ ./installation-cd-graphical-calamares.nix ];
+  imports = [
+    ./installation-cd-graphical-calamares.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../programs/kde-pim.nix
+    ../../services/desktop-managers/plasma6.nix
+    ../../services/display-managers/default.nix
+    ../../services/display-managers/plasma-login-manager.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
 
   isoImage.edition = lib.mkDefault "plasma6";
 

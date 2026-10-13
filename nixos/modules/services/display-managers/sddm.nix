@@ -218,6 +218,23 @@ in
       "sddm"
       "extraConfig"
     ] "Set the option `services.displayManager.sddm.settings' instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../hardware/libinput.nix
+    ../system/dbus.nix
+    ../x11/display-managers/default.nix
+    ../x11/xserver.nix
+    ./default.nix
+    ./generic.nix
+    # END generated imports
   ];
 
   options = {

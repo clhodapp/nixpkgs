@@ -10,6 +10,14 @@ let
   format = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.automx2 = {
       enable = lib.mkEnableOption "automx2";

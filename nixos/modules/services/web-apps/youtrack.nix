@@ -38,6 +38,14 @@ in
       "youtrack"
       "jvmOpts"
     ] "Please migrate to `services.youtrack.generalParameters`.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.youtrack = {

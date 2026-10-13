@@ -26,6 +26,13 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.networking.getaddrinfo = {
     enable = lib.mkOption {
       type = lib.types.bool;

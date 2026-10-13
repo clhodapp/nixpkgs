@@ -9,6 +9,13 @@ let
   kernelPackages = config.boot.kernelPackages;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.hardware.new-lg4ff = {
     enable = lib.mkOption {
       type = lib.types.bool;

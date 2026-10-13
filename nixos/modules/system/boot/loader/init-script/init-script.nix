@@ -26,6 +26,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../misc/version.nix
+    ../../../activation/activation-script.nix
+    # END generated imports
+  ];
 
   ###### interface
 

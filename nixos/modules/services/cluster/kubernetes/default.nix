@@ -140,6 +140,26 @@ in
       "dashboard"
     ] "Removed due to it being an outdated version")
     (lib.mkRemovedOptionModule [ "services" "kubernetes" "verbose" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../virtualisation/containerd.nix
+    ../../databases/etcd.nix
+    ../../networking/flannel.nix
+    ./addon-manager.nix
+    ./addons/dns.nix
+    ./apiserver.nix
+    ./controller-manager.nix
+    ./flannel.nix
+    ./kubelet.nix
+    ./pki.nix
+    ./proxy.nix
+    ./scheduler.nix
+    # END generated imports
   ];
 
   ###### interface

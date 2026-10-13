@@ -6,7 +6,20 @@
 }:
 with lib;
 {
-  imports = [ ../profiles/qemu-guest.nix ];
+  imports = [
+    ../profiles/qemu-guest.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/swap.nix
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/loader.nix
+    ../tasks/filesystems.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
+  ];
 
   services.openssh = {
     enable = true;

@@ -9,6 +9,14 @@ let
   cfg = config.services.rumno;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ imalison ];
 
   options.services.rumno = {

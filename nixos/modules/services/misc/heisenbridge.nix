@@ -26,6 +26,14 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.heisenbridge = {
     enable = lib.mkEnableOption "the Matrix to IRC bridge";
 

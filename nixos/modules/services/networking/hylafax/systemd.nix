@@ -272,6 +272,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    ./options.nix
+    # END generated imports
+  ];
+
   config.systemd = mkIf cfg.enable {
     inherit sockets timers paths;
     services = lib.mapAttrs (lib.const hardenService) (services // modemServices);

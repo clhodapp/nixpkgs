@@ -60,6 +60,23 @@ in
       "extraPlugins"
     ] "Netavark isn't compatible with CNI plugins.")
     ./network-socket.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/networking.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../services/networking/firewall.nix
+    ../../services/networking/nftables.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../../tasks/filesystems/zfs.nix
+    ../containers.nix
+    ../docker.nix
+    # END generated imports
   ];
 
   meta = {

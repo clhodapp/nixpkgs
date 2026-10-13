@@ -9,6 +9,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd/user.nix
+    ../hardware/udisks2.nix
+    # END generated imports
+  ];
+
   options = {
     services.devmon = {
       enable = lib.mkEnableOption "devmon, an automatic device mounting daemon";

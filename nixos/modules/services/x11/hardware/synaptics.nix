@@ -30,6 +30,15 @@ let
   etcFile = "X11/xorg.conf.d/70-synaptics.conf";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../system/etc/etc.nix
+    ../../hardware/libinput.nix
+    ../xserver.nix
+    # END generated imports
+  ];
 
   options = {
 

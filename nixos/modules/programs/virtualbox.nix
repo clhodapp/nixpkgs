@@ -5,6 +5,13 @@ let
     + "instead.";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../virtualisation/virtualbox-host.nix
+    # END generated imports
+  ];
+
   config.warnings = [ msg ];
   config.virtualisation.virtualbox.host.enable = true;
 }

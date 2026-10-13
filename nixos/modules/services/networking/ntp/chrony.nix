@@ -66,6 +66,23 @@ let
   ) { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/locale.nix
+    ../../../config/malloc.nix
+    ../../../config/networking.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/boot/timesyncd.nix
+    ../networkmanager.nix
+    # END generated imports
+  ];
+
   options = {
     services.chrony = {
       enable = lib.mkOption {

@@ -456,6 +456,35 @@ in
       "virtualisation"
       "nixStore9pCache"
     ] "The 9p cache mode for the Nix store is no longer configurable.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/nix.nix
+    ../config/swap.nix
+    ../misc/lib.nix
+    ../misc/meta.nix
+    ../misc/nixpkgs.nix
+    ../misc/version.nix
+    ../security/ca.nix
+    ../services/hardware/udev.nix
+    ../services/networking/connman.nix
+    ../services/networking/dhcpcd.nix
+    ../services/networking/wpa_supplicant.nix
+    ../services/system/nix-daemon.nix
+    ../services/x11/xserver.nix
+    ../system/activation/switchable-system.nix
+    ../system/activation/top-level.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/efi.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/luksroot.nix
+    ../system/boot/stage-1.nix
+    ../system/boot/systemd.nix
+    ../system/boot/timesyncd.nix
+    ../system/boot/tmp.nix
+    ../system/build.nix
+    ./qemu-guest-agent.nix
+    # END generated imports
   ];
 
   options = {

@@ -75,6 +75,20 @@ in
       [ "services" "kmscon" "hwRender" ]
       [ "services" "kmscon" "config" "hwaccel" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/fontconfig.nix
+    ../../config/fonts/packages.nix
+    ../../config/system-path.nix
+    ../../hardware/graphics.nix
+    ../../misc/extra-arguments.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../display-managers/default.nix
+    ../x11/xserver.nix
+    ./getty.nix
+    # END generated imports
   ];
 
   options = {

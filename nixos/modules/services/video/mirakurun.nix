@@ -27,6 +27,17 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.mirakurun = {
       enable = mkEnableOption "the Mirakurun DVR Tuner Server";

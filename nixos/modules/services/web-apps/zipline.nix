@@ -8,6 +8,14 @@ let
   cfg = config.services.zipline;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ defelo ];
 
   options.services.zipline = {

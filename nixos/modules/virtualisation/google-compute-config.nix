@@ -18,6 +18,25 @@ in
   imports = [
     ../profiles/headless.nix
     ../profiles/qemu-guest.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/networking.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/google_oslogin.nix
+    ../security/sudo-rs.nix
+    ../security/sudo.nix
+    ../services/hardware/udev.nix
+    ../services/networking/firewall.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/loader.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ../tasks/filesystems.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   fileSystems."/" = {

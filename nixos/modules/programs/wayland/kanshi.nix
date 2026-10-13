@@ -9,6 +9,14 @@ let
   cfg = config.services.kanshi;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.kanshi = {
     enable = lib.mkEnableOption "kanshi, a Wayland daemon that automatically configures outputs";
     package = lib.mkPackageOption pkgs "kanshi" { };

@@ -10,6 +10,14 @@ let
   format = pkgs.formats.systemd { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ ];
   options.services.journald.upload = {
     enable = lib.mkEnableOption "uploading the systemd journal to a remote server";

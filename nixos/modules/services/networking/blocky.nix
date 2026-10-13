@@ -11,6 +11,14 @@ let
   configFile = format.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.blocky = {
     enable = lib.mkEnableOption "blocky, a fast and lightweight DNS proxy as ad-blocker for local network with many features";
 

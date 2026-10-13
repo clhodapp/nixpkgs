@@ -16,6 +16,17 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/sudo-rs.nix
+    ../security/sudo.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 

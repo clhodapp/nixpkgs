@@ -30,6 +30,17 @@ let
     ++ (lib.optional (builtins.isString cfg.extraLocales) cfg.extraLocales);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ./system-environment.nix
+    ./system-path.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

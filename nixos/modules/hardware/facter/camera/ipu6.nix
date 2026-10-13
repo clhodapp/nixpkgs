@@ -70,6 +70,15 @@ let
     );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../.
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/boot/kernel.nix
+    ../../video/webcam/ipu6.nix
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.camera.ipu6.enable =
     let
       cameraSupported =

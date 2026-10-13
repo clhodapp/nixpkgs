@@ -9,6 +9,13 @@ let
   cfg = config.hardware.saleae-logic;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.saleae-logic = {
     enable = lib.mkEnableOption "udev rules for Saleae Logic devices";
 

@@ -391,6 +391,33 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../hardware/rtl-sdr.nix
+    ../../../hardware/video/nvidia.nix
+    ../../../misc/extra-arguments.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../tasks/filesystems/zfs.nix
+    ../../databases/mysql.nix
+    ../../hardware/udev.nix
+    ../../mail/mailman.nix
+    ../../mail/postfix.nix
+    ../../misc/apache-kafka.nix
+    ../../misc/moonraker.nix
+    ../../networking/firewall-iptables.nix
+    ../../networking/firewall-nftables.nix
+    ../../networking/nftables.nix
+    ../../networking/unbound.nix
+    ../../security/fail2ban.nix
+    ../../web-servers/nginx/default.nix
+    ../../web-servers/varnish/default.nix
+    ../unpoller.nix
+    # END generated imports
+  ];
 
   options.services.prometheus.exporters = mkOption {
     type = types.submodule {

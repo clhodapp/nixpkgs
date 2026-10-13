@@ -10,6 +10,16 @@ let
   cfg = config.services.mycelium;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.mycelium = {
     enable = lib.mkEnableOption "mycelium network";
     peers = lib.mkOption {

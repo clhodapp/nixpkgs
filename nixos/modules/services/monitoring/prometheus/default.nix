@@ -1731,6 +1731,22 @@ in
       "prometheus"
       "alertmanagerTimeout"
     ] "Deprecated upstream and no longer had any effect")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ./alertmanager-gotify-bridge.nix
+    ./alertmanager-irc-relay.nix
+    ./alertmanager-ntfy.nix
+    ./alertmanager-webhook-logger.nix
+    ./alertmanager.nix
+    ./exporters.nix
+    ./pushgateway.nix
+    ./sachet.nix
+    ./xmpp-alerts.nix
+    # END generated imports
   ];
 
   options.services.prometheus = {

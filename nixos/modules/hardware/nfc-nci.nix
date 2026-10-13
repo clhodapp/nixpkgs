@@ -132,6 +132,20 @@ let
     toKeyValueLines (defaultSettings.${cfgName} // (cfg.settings.${cfgName} or { }));
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/power-management.nix
+    ../config/system-path.nix
+    ../services/hardware/pcscd.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    ../system/boot/modprobe.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.hardware.nfc-nci = {
     enable = lib.mkEnableOption "PN5xx kernel module with udev rules, libnfc-nci userland, and optional ifdnfc-nci PC/SC driver";
 

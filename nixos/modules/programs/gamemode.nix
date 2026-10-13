@@ -11,6 +11,19 @@ let
   configFile = settingsFormat.generate "gamemode.ini" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/polkit.nix
+    ../security/wrappers/default.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/user.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     programs.gamemode = {
       enable = lib.mkEnableOption "GameMode to optimise system performance on demand";

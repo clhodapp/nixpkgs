@@ -19,6 +19,13 @@
         the sysctl "user.max_user_namespaces".
       ''
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/nix.nix
+    ../config/sysctl.nix
+    ../system/boot/kernel.nix
+    # END generated imports
   ];
 
   options = {

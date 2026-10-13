@@ -9,6 +9,13 @@ let
   cfg = config.programs.yubikey-touch-detector;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     programs.yubikey-touch-detector = {
 

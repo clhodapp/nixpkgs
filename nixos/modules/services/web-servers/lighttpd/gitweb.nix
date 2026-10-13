@@ -17,6 +17,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/gitweb.nix
+    ./default.nix
+    # END generated imports
+  ];
 
   options.services.lighttpd.gitweb = {
 

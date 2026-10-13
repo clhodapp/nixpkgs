@@ -8,6 +8,13 @@ let
   cfg = config.services.wlock;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.wlock = {
       enable = lib.mkEnableOption "wlock, a Wayland sessionlocker using the ext-session-lock-v1 protocol";

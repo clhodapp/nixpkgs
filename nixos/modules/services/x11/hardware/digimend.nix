@@ -16,6 +16,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/kernel.nix
+    ../../../system/etc/etc.nix
+    ./wacom.nix
+    # END generated imports
+  ];
 
   options = {
 

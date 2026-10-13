@@ -49,6 +49,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/etc/etc.nix
+    ../../display-managers/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.desktopManager.surf-display = {
       enable = mkEnableOption "surf-display as a kiosk browser session";

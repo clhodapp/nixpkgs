@@ -18,6 +18,15 @@ let
   need_CAP_NET_BIND_SERVICE = cfg.settings.identd_port != 0 && cfg.settings.identd_port < 1024;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.biboumi = {
       enable = lib.mkEnableOption "the Biboumi XMPP gateway to IRC";

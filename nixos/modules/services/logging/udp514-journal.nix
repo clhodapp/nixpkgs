@@ -10,6 +10,15 @@ let
   description = "Forward syslog from network (udp/514) to journal";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../security/systemd-confinement.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.udp514-journal = {
       enable = lib.mkEnableOption "the udp514-journal systemd socket/service";

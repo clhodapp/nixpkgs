@@ -9,6 +9,13 @@ let
   cfg = config.programs.ausweisapp;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options.programs.ausweisapp = {
     enable = lib.mkEnableOption "AusweisApp";
 

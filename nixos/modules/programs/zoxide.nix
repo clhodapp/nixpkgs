@@ -17,6 +17,17 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./fish.nix
+    ./xonsh.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.zoxide = {
     enable = mkEnableOption "zoxide, a smarter cd command that learns your habits";
     package = mkPackageOption pkgs "zoxide" { };

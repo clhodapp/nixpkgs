@@ -8,6 +8,13 @@ let
   cfg = config.services.prometheus.alertmanagerWebhookLogger;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.prometheus.alertmanagerWebhookLogger = {
     enable = lib.mkEnableOption "Alertmanager Webhook Logger";
 

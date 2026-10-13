@@ -78,6 +78,22 @@ let
     ++ collectorAttrs "capabilities";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../hardware/video/nvidia.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/filesystems/zfs.nix
+    ../../virtualisation/docker.nix
+    ../../virtualisation/podman/default.nix
+    ../hardware/udev.nix
+    ../networking/firewall.nix
+    ../system/dbus.nix
+    ../x11/xserver.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     BonusPlay
     arunoruto

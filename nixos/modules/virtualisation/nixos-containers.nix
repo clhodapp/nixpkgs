@@ -545,6 +545,26 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/networking.nix
+    ../config/nix.nix
+    ../config/system-path.nix
+    ../misc/extra-arguments.nix
+    ../misc/meta.nix
+    ../misc/version.nix
+    ../services/hardware/udev.nix
+    ../services/networking/dhcpcd.nix
+    ../services/networking/networkmanager.nix
+    ../services/system/nix-daemon.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ./containers.nix
+    # END generated imports
+  ];
+
   options = {
 
     boot.isContainer = mkOption {

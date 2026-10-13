@@ -11,6 +11,16 @@ let
   hooks = lib.concatMapStrings (hook: "${hook} ") cfg.commonHooks;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../programs/ssh.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.gitolite = {
       enable = lib.mkOption {

@@ -9,6 +9,14 @@ let
   cfg = config.nixpkgs.flake;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/nix-channel.nix
+    ../config/nix-flakes.nix
+    # END generated imports
+  ];
+
   options.nixpkgs.flake = {
     source = lib.mkOption {
       # In newer Nix versions, particularly with lazy trees, outPath of

@@ -32,6 +32,22 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/networking.nix
+    ../config/nix.nix
+    ../config/system-environment.nix
+    ../security/ca.nix
+    ../services/system/nix-daemon.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ./ssh.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.daemon.enable && nixPackage.pname == "lix") {
     assertions = [
       {

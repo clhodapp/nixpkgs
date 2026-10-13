@@ -9,6 +9,14 @@ let
   cfg = config.programs.mouse-actions;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.mouse-actions = {
     enable = lib.mkEnableOption "" // {
       description = ''

@@ -1,7 +1,12 @@
 { lib, ... }:
 
 {
-  imports = [ ./installation-cd-minimal.nix ];
+  imports = [
+    ./installation-cd-minimal.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/activation/specialisation.nix
+    # END generated imports
+  ];
 
   isoImage.configurationName = lib.mkDefault "(Linux LTS)";
 

@@ -182,6 +182,11 @@ in
       [ "services" "xserver" "displayManager" "sessionPackages" ]
       [ "services" "displayManager" "sessionPackages" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-environment.nix
+    ./generic.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

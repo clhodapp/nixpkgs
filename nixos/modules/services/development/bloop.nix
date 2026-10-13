@@ -10,6 +10,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../programs/java.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   options.services.bloop = {
     extraOptions = lib.mkOption {

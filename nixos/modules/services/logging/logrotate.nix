@@ -146,6 +146,12 @@ in
       "logrotate"
       "configFile"
     ] "Use services.logrotate.settings instead to specify extra configuration")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options = {

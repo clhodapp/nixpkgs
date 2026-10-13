@@ -18,6 +18,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/build.nix
+    ../x11/xserver.nix
+    # END generated imports
+  ];
 
   options.services.emacs = {
     enable = lib.mkOption {

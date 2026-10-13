@@ -10,6 +10,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options.programs.jai-jail = {
     enable = lib.mkEnableOption "jai, a sandbox for AI agents";
 

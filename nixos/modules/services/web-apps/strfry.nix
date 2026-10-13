@@ -83,6 +83,15 @@ let
   configFile = settingsFormat.generate "config.json" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.strfry = {
     enable = lib.mkEnableOption "strfry";
 

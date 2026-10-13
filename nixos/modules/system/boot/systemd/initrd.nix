@@ -189,6 +189,43 @@ in
       "systemd"
       "extraConfig"
     ] "Use boot.initrd.systemd.settings.Manager instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/shells-environment.nix
+    ../../../config/users-groups.nix
+    ../../../misc/extra-arguments.nix
+    ../../../misc/version.nix
+    ../../../services/hardware/udev.nix
+    ../../../services/networking/ifstate.nix
+    ../../../services/system/dbus.nix
+    ../../../tasks/bcache.nix
+    ../../../tasks/filesystems.nix
+    ../../../tasks/lvm.nix
+    ../../../tasks/network-interfaces.nix
+    ../../../tasks/swraid.nix
+    ../../activation/nixos-init.nix
+    ../../build.nix
+    ../../etc/etc.nix
+    ../clevis-luks-askpass.nix
+    ../clevis.nix
+    ../emergency-mode.nix
+    ../initrd-network.nix
+    ../initrd-openvpn.nix
+    ../initrd-ssh.nix
+    ../kernel.nix
+    ../luksroot.nix
+    ../networkd.nix
+    ../nix-store-veritysetup.nix
+    ../resolved.nix
+    ../stage-1.nix
+    ../systemd.nix
+    ../unl0kr.nix
+    ./dm-verity.nix
+    ./fido2.nix
+    ./repart.nix
+    ./tmpfiles.nix
+    ./tpm2.nix
+    # END generated imports
   ];
 
   options.boot.initrd.systemd = {

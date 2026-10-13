@@ -22,6 +22,17 @@ let
   zsmallocSupported = versionAtLeast kernelVersion "6.3";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/swap.nix
+    ../../config/sysfs.nix
+    ../../config/zram.nix
+    ./kernel.nix
+    # END generated imports
+  ];
+
   options.boot.zswap = {
     enable = mkEnableOption "Zswap (Compressed Cache for Swap Pages)";
 

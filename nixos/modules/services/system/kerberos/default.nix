@@ -25,6 +25,13 @@ in
 
     ./mit.nix
     ./heimdal.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../misc/meta.nix
+    ../../../security/krb5
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

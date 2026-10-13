@@ -18,6 +18,15 @@ let
   cfg = config.services.tailscaleAuth;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ./tailscale.nix
+    # END generated imports
+  ];
+
   options.services.tailscaleAuth = {
     enable = mkEnableOption "tailscale.nginx-auth, to authenticate users via tailscale";
 

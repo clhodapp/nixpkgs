@@ -35,6 +35,20 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../security/acme
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../web-servers/traefik.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services = {
     pangolin = {
       enable = lib.mkEnableOption "Pangolin reverse proxy server";

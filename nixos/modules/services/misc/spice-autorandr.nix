@@ -9,6 +9,13 @@ let
   cfg = config.services.spice-autorandr;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     services.spice-autorandr = {
       enable = lib.mkEnableOption "spice-autorandr service that will automatically resize display to match SPICE client window size";

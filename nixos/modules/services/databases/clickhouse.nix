@@ -12,6 +12,17 @@ let
   usersConfigFile = format.generate "users.yaml" cfg.usersConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/locale.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
 
   meta.maintainers = with lib.maintainers; [ thevar1able ];
 

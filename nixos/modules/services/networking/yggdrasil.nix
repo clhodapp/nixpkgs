@@ -51,6 +51,16 @@ in
       [ "services" "yggdrasil" "config" ]
       [ "services" "yggdrasil" "settings" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ./dhcpcd.nix
+    ./firewall.nix
+    # END generated imports
   ];
 
   options = {

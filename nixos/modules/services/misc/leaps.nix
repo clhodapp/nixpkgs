@@ -9,6 +9,14 @@ let
   stateDir = "/var/lib/leaps/";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.leaps = {
       enable = lib.mkEnableOption "leaps, a pair programming service";

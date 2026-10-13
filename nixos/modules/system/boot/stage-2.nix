@@ -45,6 +45,13 @@ in
       ]
       "Please use the `boot.nixStoreMountOpts' option to define mount options for the Nix store, including 'ro'"
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/resolvconf.nix
+    ../../misc/version.nix
+    ../../tasks/network-interfaces.nix
+    ../build.nix
+    # END generated imports
   ];
 
   options = {

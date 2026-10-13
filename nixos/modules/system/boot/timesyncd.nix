@@ -16,6 +16,17 @@ in
       "timesyncd"
       "extraConfig"
     ] "Use services.timesyncd.settings.Time instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/networking.nix
+    ../../config/nsswitch.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../virtualisation/nixos-containers.nix
+    ../etc/etc.nix
+    ./systemd.nix
+    # END generated imports
   ];
 
   options = {

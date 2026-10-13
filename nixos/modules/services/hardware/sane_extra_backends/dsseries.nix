@@ -5,6 +5,14 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/kernel.nix
+    ../sane.nix
+    ../udev.nix
+    # END generated imports
+  ];
+
   options = {
 
     hardware.sane.dsseries.enable = lib.mkEnableOption "Brother DSSeries scan backend" // {

@@ -410,6 +410,17 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/nixos-containers.nix
+    ./firewall.nix
+    # END generated imports
+  ];
 
   ###### interface
 

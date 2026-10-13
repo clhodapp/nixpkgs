@@ -215,6 +215,17 @@ in
       "zammad"
       "openPorts"
     ] "The openPorts option was removed in favor of the nginx.configure option.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

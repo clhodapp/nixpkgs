@@ -18,6 +18,17 @@ let
   cfg = config.services.db-rest;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../databases/redis.nix
+    # END generated imports
+  ];
+
   options = {
     services.db-rest = {
       enable = mkEnableOption "db-rest service";

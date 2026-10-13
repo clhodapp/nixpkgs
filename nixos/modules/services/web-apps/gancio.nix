@@ -23,6 +23,17 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.gancio = {
     enable = mkEnableOption "Gancio, a shared agenda for local communities";
 

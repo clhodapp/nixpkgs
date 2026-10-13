@@ -11,6 +11,13 @@ let
   cfg = config.services.xserver.windowManager.fluxbox;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
     services.xserver.windowManager.fluxbox.enable = mkEnableOption "fluxbox";

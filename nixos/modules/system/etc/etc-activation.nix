@@ -6,7 +6,21 @@
 
 {
 
-  imports = [ ./etc.nix ];
+  imports = [
+    ./etc.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/lib.nix
+    ../../services/system/userborn.nix
+    ../activation/activation-script.nix
+    ../activation/nixos-init.nix
+    ../activation/switchable-system.nix
+    ../boot/kernel.nix
+    ../boot/systemd.nix
+    ../boot/systemd/initrd.nix
+    ../boot/systemd/sysusers.nix
+    # END generated imports
+  ];
 
   config = lib.mkMerge [
 

@@ -17,6 +17,22 @@ let
     } tlpConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../hardware/cpu/x86-msr.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/cpu-freq.nix
+    ../../tasks/scsi-link-power-management.nix
+    ../networking/networkmanager.nix
+    ./power-profiles-daemon.nix
+    ./tuned.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
     services.tlp = {

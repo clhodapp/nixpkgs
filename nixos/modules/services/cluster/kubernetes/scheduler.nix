@@ -11,6 +11,15 @@ let
   cfg = top.scheduler;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ./default.nix
+    ./pki.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.kubernetes.scheduler = with lib.types; {
 

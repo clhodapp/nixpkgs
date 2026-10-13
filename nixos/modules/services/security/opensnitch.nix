@@ -16,6 +16,17 @@ let
   stateDir = lib.strings.match "/var/lib/([^/]+)/.+" cfg.settings.Rules.Path;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../security/auditd.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     services.opensnitch = {
       enable = lib.mkEnableOption "Opensnitch application firewall";

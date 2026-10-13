@@ -7,6 +7,17 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../security/sudo-rs.nix
+    ../security/sudo.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/etc/etc.nix
+    ./shells-environment.nix
+    ./system-environment.nix
+    ./system-path.nix
+    # END generated imports
+  ];
 
   options = {
     environment.enableAllTerminfo = lib.mkOption {

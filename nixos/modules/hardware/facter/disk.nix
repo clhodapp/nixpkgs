@@ -5,6 +5,13 @@ let
   inherit (config.hardware.facter) report;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/kernel.nix
+    ./.
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.boot.disk.kernelModules = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default = lib.uniqueStrings (

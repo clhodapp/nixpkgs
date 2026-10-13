@@ -532,6 +532,28 @@ in
       "networkmanager"
       "enableDefaultPlugins"
     ] "Configure the required plugins explicitly in `networking.networkmanager.plugins`.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/all-firmware.nix
+    ../../misc/ids.nix
+    ../../security/audit.nix
+    ../../security/polkit.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../hardware/udev.nix
+    ../system/dbus.nix
+    ./firewalld
+    ./iwd.nix
+    ./modemmanager.nix
+    ./wpa_supplicant.nix
+    # END generated imports
   ];
 
   ###### implementation

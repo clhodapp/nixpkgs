@@ -10,6 +10,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/pam.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     programs.screen = {
       enable = lib.mkEnableOption "screen, a basic terminal multiplexer";

@@ -58,6 +58,15 @@ in
       )
     )
     (lib.mkRemovedOptionModule [ "services" "kresd" "cacheDir" ] "Please use (bind-)mounting instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   ###### interface

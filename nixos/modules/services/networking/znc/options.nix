@@ -284,5 +284,9 @@ in
       Instead of `services.znc.zncConf = "... foo ...";`, use
       `services.znc.configFile = pkgs.writeText "znc.conf" "... foo ...";`.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ./default.nix
+    # END generated imports
   ];
 }

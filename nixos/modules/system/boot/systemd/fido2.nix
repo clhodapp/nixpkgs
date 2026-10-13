@@ -8,6 +8,13 @@ let
   cfg = config.boot.initrd.systemd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../services/hardware/udev.nix
+    ./initrd.nix
+    # END generated imports
+  ];
+
   options = {
     boot.initrd.systemd.fido2.enable = lib.mkEnableOption "systemd FIDO2 support" // {
       default = cfg.package.withFido2;

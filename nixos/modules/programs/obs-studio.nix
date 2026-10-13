@@ -9,6 +9,17 @@ let
   cfg = config.programs.obs-studio;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../security/polkit.nix
+    ../system/boot/kernel.nix
+    ../system/boot/modprobe.nix
+    # END generated imports
+  ];
+
   options.programs.obs-studio = {
     enable = lib.mkEnableOption "Free and open source software for video recording and live streaming";
 

@@ -436,6 +436,16 @@ in
       more information about the new way to pass additional configuration
       options.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../networking/firewall.nix
+    # END generated imports
   ];
 
   config = lib.mkMerge [

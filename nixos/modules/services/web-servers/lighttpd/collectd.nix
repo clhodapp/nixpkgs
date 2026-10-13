@@ -28,6 +28,12 @@ let
   });
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../monitoring/collectd.nix
+    ./default.nix
+    # END generated imports
+  ];
 
   options.services.lighttpd.collectd = {
 

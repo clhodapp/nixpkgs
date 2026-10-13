@@ -9,6 +9,15 @@ let
   settingsFormat = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.goupile = {
     enable = lib.mkEnableOption "Goupile server";
     package = lib.mkPackageOption pkgs "goupile" { };

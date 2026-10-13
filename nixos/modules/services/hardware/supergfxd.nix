@@ -10,6 +10,17 @@ let
   json = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   options = {
     services.supergfxd = {
       enable = lib.mkEnableOption "the supergfxd service";

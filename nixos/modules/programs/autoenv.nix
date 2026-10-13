@@ -9,6 +9,14 @@ let
   cfg = config.programs.autoenv;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.autoenv = {
       enable = lib.mkEnableOption "autoenv";

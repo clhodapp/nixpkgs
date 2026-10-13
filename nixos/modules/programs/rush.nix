@@ -17,6 +17,16 @@ let
     ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.rush.meta.maintainers;
 
   options.programs.rush = with lib.types; {

@@ -15,6 +15,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/assertions.nix
+    ../../../display-managers/default.nix
+    ../lightdm.nix
+    ./gtk.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.xserver.displayManager.lightdm.greeters.tiny = {

@@ -19,6 +19,18 @@ let
   runtimeManifest = "${cfg.package}/share/openxr/1/openxr_monado.json";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../hardware/graphics.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   options.services.monado = {
     enable = mkEnableOption "Monado user service";
 

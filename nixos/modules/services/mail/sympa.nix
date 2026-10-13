@@ -87,6 +87,20 @@ let
   enabledFiles = lib.filterAttrs (n: v: v.enable) cfg.settingsFile;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    ./postfix.nix
+    # END generated imports
+  ];
 
   ###### interface
   options.services.sympa = with lib.types; {

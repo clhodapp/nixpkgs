@@ -470,6 +470,19 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.services.portmaster = {
     enable = mkEnableOption "Portmaster application firewall";
 

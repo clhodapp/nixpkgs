@@ -11,6 +11,13 @@ let
   patchFile = settingsFormat.generate "dsnet-patch.json" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.dsnet = {
     enable = lib.mkEnableOption "dsnet, a centralised Wireguard VPN manager";
 

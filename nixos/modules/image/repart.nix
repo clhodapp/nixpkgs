@@ -128,6 +128,13 @@ in
         "fileName"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../misc/extra-arguments.nix
+    ../misc/version.nix
+    ../system/build.nix
+    # END generated imports
   ];
 
   options.image.repart = {

@@ -9,6 +9,14 @@ let
   cfg = config.services.labgrid.coordinator;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../system/boot/systemd.nix
+    ../../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with lib.maintainers; [
       aiyion

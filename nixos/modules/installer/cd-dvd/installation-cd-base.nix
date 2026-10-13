@@ -14,6 +14,19 @@
     # Profiles of this basic installation CD.
     ../../profiles/base.nix
     ../../profiles/installation-device.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/console.nix
+    ../../config/swap.nix
+    ../../config/system-path.nix
+    ../../hardware/all-hardware.nix
+    ../../misc/lib.nix
+    ../../misc/version.nix
+    ../../programs/git.nix
+    ../../system/boot/loader/grub/memtest.nix
+    ../../system/boot/luksroot.nix
+    ../../system/boot/stage-2.nix
+    ../../tasks/filesystems.nix
+    # END generated imports
   ];
 
   hardware.enableAllHardware = true;

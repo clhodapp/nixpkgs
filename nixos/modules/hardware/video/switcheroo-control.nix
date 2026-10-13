@@ -9,6 +9,14 @@ let
   cfg = config.services.switcherooControl;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../services/system/dbus.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.switcherooControl = {
     enable = lib.mkEnableOption "switcheroo-control, a D-Bus service to check the availability of dual-GPU";
     package = lib.mkPackageOption pkgs "switcheroo-control" { };

@@ -9,6 +9,21 @@ let
   cfg = config.programs.miriway;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/fonts/packages.nix
+    ../config/system-path.nix
+    ../config/xdg/icons.nix
+    ../hardware/graphics.nix
+    ../services/display-managers/default.nix
+    ../system/etc/etc.nix
+    ./dconf.nix
+    ./xwayland.nix
+    # END generated imports
+  ];
+
   options.programs.miriway = {
     enable = lib.mkEnableOption ''
       Miriway, a Mir based Wayland compositor. You can manually launch Miriway by

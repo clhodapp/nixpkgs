@@ -6,6 +6,10 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "hardware" "enableKSM" ] [ "hardware" "ksm" "enable" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.hardware.ksm = {

@@ -349,6 +349,27 @@ in
       "xserver"
       "tty"
     ] "'services.xserver.tty' was removed because it was ineffective.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/fonts/packages.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/activation/top-level.nix
+    ../../system/etc/etc.nix
+    ../display-managers/gdm.nix
+    ../display-managers/generic.nix
+    ../display-managers/greetd.nix
+    ../display-managers/lemurs.nix
+    ../display-managers/ly.nix
+    ../display-managers/plasma-login-manager.nix
+    ../display-managers/sddm.nix
+    ./display-managers/lightdm.nix
+    ./display-managers/startx.nix
+    ./display-managers/sx.nix
+    ./display-managers/xpra.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -18,6 +18,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

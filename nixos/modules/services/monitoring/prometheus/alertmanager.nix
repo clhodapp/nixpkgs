@@ -49,6 +49,11 @@ in
       Due to incompatibility, the alertmanagerURL option has been removed,
       please use 'services.prometheus.alertmanagers' instead.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/boot/systemd.nix
+    ../../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

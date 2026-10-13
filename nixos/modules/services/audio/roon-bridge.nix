@@ -9,6 +9,17 @@ let
   cfg = config.services.roon-bridge;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall-iptables.nix
+    ../networking/firewall-nftables.nix
+    ../networking/firewall.nix
+    ../networking/nftables.nix
+    # END generated imports
+  ];
+
   options = {
     services.roon-bridge = {
       enable = lib.mkEnableOption "Roon Bridge";

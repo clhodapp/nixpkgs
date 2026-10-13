@@ -10,6 +10,16 @@ let
   formatList = l: lib.concatStringsSep "," l;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.services.cloudflare-ddns = {
     enable = lib.mkEnableOption "Cloudflare Dynamic DNS service";
 

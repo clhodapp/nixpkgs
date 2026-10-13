@@ -11,6 +11,17 @@ let
   inherit (lib) types;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.filebrowser = {
       enable = lib.mkEnableOption "FileBrowser";

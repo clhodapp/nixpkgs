@@ -190,6 +190,23 @@ in
         "path"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../misc/lib.nix
+    ../misc/meta.nix
+    ../services/hardware/udev.nix
+    ../system/activation/bootspec.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/efi.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    ../system/boot/modprobe.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/etc/etc.nix
+    # END generated imports
   ];
 
   ## Interface ##

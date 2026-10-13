@@ -673,6 +673,25 @@ in
       [ "security" "initialRootPassword" ]
       [ "users" "users" "root" "initialHashedPassword" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../misc/extra-arguments.nix
+    ../misc/ids.nix
+    ../programs/fish.nix
+    ../programs/shadow.nix
+    ../programs/xonsh.nix
+    ../programs/zsh/zsh.nix
+    ../security/google_oslogin.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/system/userborn.nix
+    ../system/activation/activation-script.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/boot/systemd/sysusers.nix
+    ../system/etc/etc.nix
+    ./shells-environment.nix
+    ./system-path.nix
+    # END generated imports
   ];
 
   ###### interface

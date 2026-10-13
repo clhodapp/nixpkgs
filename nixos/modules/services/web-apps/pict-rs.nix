@@ -10,6 +10,15 @@ let
   inherit (lib) maintainers mkOption types;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with maintainers; [ happysalada ];
   meta.doc = ./pict-rs.md;
 

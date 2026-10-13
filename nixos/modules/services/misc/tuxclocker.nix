@@ -13,6 +13,14 @@ in
       [ "programs" "tuxclocker" "enableAMD" ]
       [ "hardware" "amdgpu" "overdrive" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../hardware/amdgpu.nix
+    ../system/dbus.nix
+    ../x11/xserver.nix
+    # END generated imports
   ];
 
   options.programs.tuxclocker = {

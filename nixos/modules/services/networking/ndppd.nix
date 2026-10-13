@@ -118,6 +118,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.ndppd = {
     enable = mkEnableOption "daemon that proxies NDP (Neighbor Discovery Protocol) messages between interfaces";
     interface = mkOption {

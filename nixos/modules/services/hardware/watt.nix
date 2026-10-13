@@ -29,6 +29,21 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../desktops/cpupower-gui.nix
+    ../system/dbus.nix
+    ./auto-cpufreq.nix
+    ./power-profiles-daemon.nix
+    ./thermald.nix
+    ./tlp.nix
+    # END generated imports
+  ];
+
   options.services.watt = {
     enable = mkEnableOption "automatic CPU speed & power optimizer for Linux";
     package = mkPackageOption pkgs "watt" { };

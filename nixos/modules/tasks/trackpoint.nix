@@ -4,6 +4,15 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/hardware/udev.nix
+    ../services/x11/xserver.nix
+    ../system/boot/modprobe.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.trackpoint = {
       enable = lib.mkOption {

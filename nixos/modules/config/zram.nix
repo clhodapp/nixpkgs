@@ -19,6 +19,10 @@ in
       "zramSwap"
       "numDevices"
     ] "Using ZRAM devices as general purpose ephemeral block devices is no longer supported")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/system/zram-generator.nix
+    # END generated imports
   ];
 
   ###### interface

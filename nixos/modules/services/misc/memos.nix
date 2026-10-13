@@ -11,6 +11,16 @@ let
   envFileFormat = pkgs.formats.keyValue { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.memos = {
     enable = lib.mkEnableOption "Memos note-taking";
     package = lib.mkPackageOption pkgs "Memos" {

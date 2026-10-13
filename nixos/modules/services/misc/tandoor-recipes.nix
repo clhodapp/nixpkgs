@@ -34,6 +34,20 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/locale.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../misc/version.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with lib.maintainers; [ jvanbruegge ];
     doc = ./tandoor-recipes.md;

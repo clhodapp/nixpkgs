@@ -100,6 +100,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/networking.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.cjdns = {

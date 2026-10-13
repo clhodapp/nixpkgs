@@ -8,6 +8,13 @@ let
   cfg = config.services.a2boot;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.a2boot = {
     enable = lib.mkEnableOption "the a2boot daemon";
   };

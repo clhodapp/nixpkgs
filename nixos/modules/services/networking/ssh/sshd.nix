@@ -236,6 +236,19 @@ in
       [ "services" "openssh" "moduliFile" ]
       [ "services" "openssh" "settings" "ModuliFile" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/nsswitch.nix
+    ../../../config/users-groups.nix
+    ../../../programs/ssh.nix
+    ../../../security/pam.nix
+    ../../../system/activation/top-level.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../../../tasks/network-interfaces.nix
+    ../firewall.nix
+    # END generated imports
   ];
 
   ###### interface

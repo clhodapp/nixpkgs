@@ -31,6 +31,13 @@ in
       "remote"
       "listen"
     ] tlsOptionRemovedMessage)
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    # END generated imports
   ];
 
   options.services.journald.remote = {

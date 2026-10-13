@@ -85,6 +85,14 @@ in
         Use `services.grafana-image-renderer.settings.log.level = "debug"` instead.
       ''
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/locale.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ./grafana.nix
+    # END generated imports
   ];
 
   options.services.grafana-image-renderer = {

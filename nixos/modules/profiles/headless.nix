@@ -4,6 +4,15 @@
 { lib, ... }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/boot/emergency-mode.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   # Don't start a tty on the serial consoles.
   systemd.services."serial-getty@ttyS0".enable = lib.mkDefault false;
   systemd.services."serial-getty@hvc0".enable = false;

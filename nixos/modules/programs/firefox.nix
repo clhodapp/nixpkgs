@@ -42,7 +42,15 @@ in
         passff = "passff-host";
         tridactyl = "tridactyl-native";
         ugetIntegrator = "uget-integrator";
-      };
+      }
+    ++ [
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../lib/modules/generic/assertions.nix
+      ../../../lib/modules/generic/meta-maintainers.nix
+      ../config/system-path.nix
+      ../system/etc/etc.nix
+      # END generated imports
+    ];
 
   options.programs.firefox = {
     enable = lib.mkEnableOption "the Firefox web browser";

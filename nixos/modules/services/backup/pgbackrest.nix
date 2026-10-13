@@ -90,6 +90,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   # TODO: Add enableServer option and corresponding pgBackRest TLS server service.
   # TODO: Write wrapper around pgbackrest to turn --repo=<name> into --repo=<number>
   # The following two are dependent on improvements upstream:

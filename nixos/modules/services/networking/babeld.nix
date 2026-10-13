@@ -40,6 +40,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/sysctl.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   ###### interface
 

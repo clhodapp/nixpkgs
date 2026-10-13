@@ -9,6 +9,18 @@ let
   cfg = config.services.yubikey-agent;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../programs/gnupg.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../hardware/pcscd.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   meta.maintainers = with lib.maintainers; [

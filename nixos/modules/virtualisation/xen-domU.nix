@@ -3,6 +3,15 @@
 { ... }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/logging/syslogd.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/timesyncd.nix
+    # END generated imports
+  ];
+
   boot.loader.grub.device = "nodev";
 
   boot.initrd.kernelModules = [

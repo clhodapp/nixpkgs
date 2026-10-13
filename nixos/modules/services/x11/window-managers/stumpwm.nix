@@ -12,6 +12,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.windowManager.stumpwm.enable = mkEnableOption "stumpwm";
     services.xserver.windowManager.stumpwm.package = mkPackageOption pkgs "stumpwm" { };

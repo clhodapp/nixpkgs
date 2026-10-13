@@ -8,6 +8,13 @@ let
   cfg = config.services.paretosecurity;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   options.services.paretosecurity = {
     enable = lib.mkEnableOption "[ParetoSecurity](https://paretosecurity.com) [agent](https://github.com/ParetoSecurity/agent) and its root helper";

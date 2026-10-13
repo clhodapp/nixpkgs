@@ -44,6 +44,14 @@ let
     ++ (filter (file: builtins.typeOf file == "path") secretFiles);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/meta.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.dex = {
     enable = mkEnableOption "the OpenID Connect and OAuth2 identity provider";
 

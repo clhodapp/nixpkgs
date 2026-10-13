@@ -35,6 +35,16 @@ in
     (lib.mkRemovedOptionModule [ "services" "kea" "ctrl-agent" ] ''
       https://kb.isc.org/docs/things-to-be-aware-of-when-upgrading-to-kea-3-2#the-kea-control-agent-ca
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options.services.kea = with lib.types; {

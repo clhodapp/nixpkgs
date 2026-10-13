@@ -11,6 +11,13 @@ let
   plikdCfg = format.generate "plikd.cfg" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.plikd = {
       enable = lib.mkEnableOption "plikd, a temporary file upload system";

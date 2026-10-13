@@ -17,6 +17,15 @@ let
   cfg = config.services.imaginary;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.imaginary = {
     enable = mkEnableOption "imaginary image processing microservice";
 

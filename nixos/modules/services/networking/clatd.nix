@@ -12,6 +12,13 @@ let
   configFile = settingsFormat.generate "clatd.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ./networkmanager.nix
+    # END generated imports
+  ];
+
   options = {
     services.clatd = {
       enable = lib.mkEnableOption "clatd";

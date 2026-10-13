@@ -93,6 +93,20 @@ in
       [ "hardware" "alsa" "enableOSSEmulation" ]
     )
     (lib.mkRenamedOptionModule [ "sound" "extraConfig" ] [ "hardware" "alsa" "config" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/modprobe.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../desktops/pipewire/pipewire.nix
+    ../hardware/udev.nix
+    ./pulseaudio.nix
+    # END generated imports
   ];
 
   options.hardware.alsa = {

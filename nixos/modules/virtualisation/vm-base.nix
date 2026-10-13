@@ -15,6 +15,22 @@ let
   cfg = config.virtualisation;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/nix.nix
+    ../config/swap.nix
+    ../services/system/nix-daemon.nix
+    ../system/activation/top-level.nix
+    ../system/boot/luksroot.nix
+    ../system/boot/stage-1.nix
+    ../system/boot/systemd.nix
+    ../system/boot/timesyncd.nix
+    ../system/build.nix
+    ../tasks/filesystems.nix
+    ../tasks/filesystems/overlayfs.nix
+    # END generated imports
+  ];
+
   options = {
 
     virtualisation.memorySize = lib.mkOption {

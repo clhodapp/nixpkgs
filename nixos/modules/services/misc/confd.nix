@@ -19,6 +19,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/etcd.nix
+    # END generated imports
+  ];
+
   options.services.confd = {
     enable = lib.mkEnableOption "confd, a service to manage local application configuration files using templates and data from etcd/consul/redis/zookeeper";
 

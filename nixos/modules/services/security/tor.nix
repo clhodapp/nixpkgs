@@ -443,6 +443,16 @@ in
       [ "services" "tor" "relay" "portSpec" ]
       [ "services" "tor" "settings" "ORPort" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/systemd-confinement.nix
+    ../../system/boot/resolved.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

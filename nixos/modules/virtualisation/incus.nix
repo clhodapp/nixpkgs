@@ -584,5 +584,26 @@ in
     (lib.mkRemovedOptionModule [ "virtualisation" "incus" "bucketSupport" ] ''
       The option was only a temporary workaround to gate the insecure minio dependency until it could be dropped.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/sysctl.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/acme
+    ../security/apparmor.nix
+    ../services/network-filesystems/ceph.nix
+    ../services/networking/firewall.nix
+    ../services/networking/iscsi/initiator.nix
+    ../services/networking/nftables.nix
+    ../services/x11/xserver.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../tasks/filesystems/zfs.nix
+    ./lxc.nix
+    ./lxcfs.nix
+    ./openvswitch.nix
+    # END generated imports
   ];
 }

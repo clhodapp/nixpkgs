@@ -93,6 +93,21 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "hardware" "pulseaudio" ] [ "services" "pulseaudio" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/rtkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../hardware/udev.nix
+    ../networking/avahi-daemon.nix
+    ../networking/firewall.nix
+    ./jack.nix
+    # END generated imports
   ];
 
   options = {

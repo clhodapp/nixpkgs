@@ -9,6 +9,14 @@ let
   cfg = config.services.inputplumber;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.inputplumber = {
     enable = lib.mkEnableOption "InputPlumber";
     package = lib.mkPackageOption pkgs "inputplumber" { };

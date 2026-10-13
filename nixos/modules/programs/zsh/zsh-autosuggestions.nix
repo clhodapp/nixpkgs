@@ -14,6 +14,10 @@ in
       [ "programs" "zsh" "enableAutosuggestions" ]
       [ "programs" "zsh" "autosuggestions" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ./zsh.nix
+    # END generated imports
   ];
 
   options.programs.zsh.autosuggestions = {

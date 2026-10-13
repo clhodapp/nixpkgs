@@ -36,6 +36,22 @@ let
   settingsFile = settingsFormat.generate "pihole.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../logging/logrotate.nix
+    ./dnsmasq.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.pihole-ftl = {
     enable = mkEnableOption "Pi-hole FTL";
 

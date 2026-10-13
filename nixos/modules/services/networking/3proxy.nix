@@ -10,6 +10,13 @@ let
   optionalList = list: if list == [ ] then "*" else lib.concatMapStringsSep "," toString list;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services._3proxy = {
     enable = lib.mkEnableOption "3proxy";
     confFile = lib.mkOption {

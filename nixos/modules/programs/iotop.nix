@@ -9,6 +9,13 @@ let
   cfg = config.programs.iotop;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/sysctl.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     programs.iotop = {
       enable = lib.mkEnableOption "iotop + setcap wrapper";

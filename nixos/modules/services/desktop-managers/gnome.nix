@@ -123,6 +123,68 @@ in
       [ "services" "gnome" "core-utilities" "enable" ]
       [ "services" "gnome" "core-apps" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/packages.nix
+    ../../config/power-management.nix
+    ../../config/shells-environment.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../config/vte.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/mime.nix
+    ../../config/xdg/portal.nix
+    ../../i18n/input-method/default.nix
+    ../../installer/tools/tools.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../programs/dconf.nix
+    ../../programs/gnome-disks.nix
+    ../../programs/seahorse.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../security/rtkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../accessibility/orca.nix
+    ../desktops/accountsservice.nix
+    ../desktops/dleyna.nix
+    ../desktops/flatpak.nix
+    ../desktops/geoclue2.nix
+    ../desktops/gnome/at-spi2-core.nix
+    ../desktops/gnome/evolution-data-server.nix
+    ../desktops/gnome/gcr-ssh-agent.nix
+    ../desktops/gnome/glib-networking.nix
+    ../desktops/gnome/gnome-browser-connector.nix
+    ../desktops/gnome/gnome-initial-setup.nix
+    ../desktops/gnome/gnome-keyring.nix
+    ../desktops/gnome/gnome-online-accounts.nix
+    ../desktops/gnome/gnome-remote-desktop.nix
+    ../desktops/gnome/gnome-settings-daemon.nix
+    ../desktops/gnome/gnome-software.nix
+    ../desktops/gnome/gnome-user-share.nix
+    ../desktops/gnome/localsearch.nix
+    ../desktops/gnome/rygel.nix
+    ../desktops/gnome/sushi.nix
+    ../desktops/gnome/tinysparql.nix
+    ../desktops/gvfs.nix
+    ../desktops/system-config-printer.nix
+    ../display-managers/default.nix
+    ../hardware/bluetooth.nix
+    ../hardware/bolt.nix
+    ../hardware/libinput.nix
+    ../hardware/power-profiles-daemon.nix
+    ../hardware/udev.nix
+    ../hardware/udisks2.nix
+    ../hardware/upower.nix
+    ../misc/sysprof.nix
+    ../networking/avahi-daemon.nix
+    ../networking/networkmanager.nix
+    ../printing/cupsd.nix
+    ../x11/colord.nix
+    ../x11/xserver.nix
+    # END generated imports
   ];
 
   options = {

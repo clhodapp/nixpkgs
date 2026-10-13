@@ -8,6 +8,13 @@
 { lib, pkgs, ... }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../display-managers/gdm.nix
+    ./xserver.nix
+    # END generated imports
+  ];
 
   config = {
 

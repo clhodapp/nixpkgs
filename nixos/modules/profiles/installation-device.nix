@@ -22,6 +22,25 @@ with lib;
     # Include a copy of Nixpkgs so that nixos-install works out of
     # the box.
     ../installer/cd-dvd/channel.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/nix.nix
+    ../config/shells-environment.nix
+    ../config/sysctl.nix
+    ../config/users-groups.nix
+    ../misc/documentation.nix
+    ../misc/nixpkgs.nix
+    ../misc/version.nix
+    ../security/polkit.nix
+    ../security/sudo.nix
+    ../services/networking/firewall.nix
+    ../services/networking/networkmanager.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/ttys/getty.nix
+    ../services/x11/xserver.nix
+    ../system/activation/top-level.nix
+    ../system/etc/etc.nix
+    ../tasks/swraid.nix
+    # END generated imports
   ];
 
   config = {

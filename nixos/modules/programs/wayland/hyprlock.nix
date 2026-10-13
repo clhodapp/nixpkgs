@@ -9,6 +9,15 @@ let
   cfg = config.programs.hyprlock;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../security/pam.nix
+    ../../services/wayland/hypridle.nix
+    # END generated imports
+  ];
+
   options.programs.hyprlock = {
     enable = lib.mkEnableOption "hyprlock, Hyprland's GPU-accelerated screen locking utility";
     package = lib.mkPackageOption pkgs "hyprlock" { };

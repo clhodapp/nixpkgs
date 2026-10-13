@@ -11,6 +11,17 @@ let
   settingsFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.kashw2 ];
 
   options.services.pyroscope = {

@@ -10,6 +10,13 @@
   imports = [
     ./options.nix
     ./systemd.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    # END generated imports
   ];
 
   config = lib.modules.mkIf config.services.hylafax.enable {

@@ -46,6 +46,14 @@ in
       [ "security" "run0" "enableSudoAlias" ]
       [ "security" "run0" "sudo-shim" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ./polkit.nix
+    ./sudo-rs.nix
+    ./sudo.nix
+    # END generated imports
   ];
 
   config = mkMerge [

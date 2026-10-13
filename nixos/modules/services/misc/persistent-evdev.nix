@@ -15,6 +15,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.persistent-evdev = {
     enable = lib.mkEnableOption "virtual input devices that persist even if the backing device is hotplugged";
 

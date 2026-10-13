@@ -65,6 +65,20 @@ in
       [ "services" "samba" "enableNmbd" ]
       [ "services" "samba" "nmbd" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/nsswitch.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/pam.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   ###### interface

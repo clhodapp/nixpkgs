@@ -9,6 +9,12 @@ let
   cfg = config.programs.arp-scan;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     programs.arp-scan = {
       enable = lib.mkOption {

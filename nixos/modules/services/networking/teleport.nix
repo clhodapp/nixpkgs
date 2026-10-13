@@ -12,6 +12,13 @@ let
   settingsYaml = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.teleport = with lib.types; {
       enable = mkEnableOption "the Teleport service";

@@ -9,6 +9,12 @@ let
   fireqosConfig = pkgs.writeText "fireqos.conf" cfg.config;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.fireqos = {
     enable = lib.mkEnableOption "FireQOS";
 

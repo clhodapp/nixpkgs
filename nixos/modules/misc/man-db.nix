@@ -64,6 +64,14 @@ in
       [ "documentation" "man" "manualPages" ]
       [ "documentation" "man" "man-db" "manualPages" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ./documentation.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable (

@@ -43,6 +43,19 @@ let
       );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../system/activation/top-level.nix
+    ../system/boot/kernel.nix
+    ../system/boot/stage-1.nix
+    ../system/boot/systemd/dm-verity.nix
+    ../system/boot/uki.nix
+    ../system/build.nix
+    ../tasks/filesystems.nix
+    # END generated imports
+  ];
+
   options.image.repart.verityStore = {
     enable = lib.mkEnableOption "building images with a dm-verity protected nix store";
 

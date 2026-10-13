@@ -2,7 +2,22 @@
 # installation CD.
 { lib, pkgs, ... }:
 {
-  imports = [ ./installation-cd-base.nix ];
+  imports = [
+    ./installation-cd-base.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/power-management.nix
+    ../../config/system-path.nix
+    ../../security/polkit.nix
+    ../../services/misc/spice-vdagentd.nix
+    ../../services/x11/xserver.nix
+    ../../system/boot/plymouth.nix
+    ../../virtualisation/hyperv-guest.nix
+    ../../virtualisation/qemu-guest-agent.nix
+    ../../virtualisation/virtualbox-guest.nix
+    ../../virtualisation/vmware-guest.nix
+    ../../virtualisation/xe-guest-utilities.nix
+    # END generated imports
+  ];
 
   # Whitelist wheel users to do anything
   # This is useful for things like pkexec

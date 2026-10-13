@@ -336,6 +336,17 @@ in
       If you were using MySQL, please migrate to Postgres:
       https://docs.mattermost.com/deployment-guide/manual-postgres-migration.html
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/shells-environment.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/postgresql.nix
+    # END generated imports
   ];
 
   options = {

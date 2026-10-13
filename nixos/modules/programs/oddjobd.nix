@@ -9,6 +9,14 @@ let
   cfg = config.programs.oddjobd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../services/system/dbus.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     programs.oddjobd = {
       enable = lib.mkEnableOption "oddjob, a D-Bus service which runs odd jobs on behalf of client applications";

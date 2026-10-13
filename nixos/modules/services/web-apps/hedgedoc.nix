@@ -41,6 +41,14 @@ in
       please move these files to `/var/lib/hedgedoc/uploads`, or set the option to point
       at the correct location.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.hedgedoc = {

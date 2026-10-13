@@ -26,6 +26,11 @@ in
     (lib.mkRemovedOptionModule [ "services" "esdm" "verbose" ] ''
       There is no replacement.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.esdm = {

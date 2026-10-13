@@ -117,6 +117,17 @@ let
          }' -r vmod_path";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../system/activation/top-level.nix
+    ../../../system/boot/systemd.nix
+    ../../logging/logrotate.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [
     lib.maintainers.leona
     lib.maintainers.osnyx

@@ -52,6 +52,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../tasks/network-interfaces.nix
+    ./kernel.nix
+    ./stage-1.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
 
   options = {
 

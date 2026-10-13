@@ -8,6 +8,15 @@ let
   cfg = config.services.throttled;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../hardware/cpu/x86-msr.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     services.throttled = {
       enable = lib.mkEnableOption "fix for Intel CPU throttling";

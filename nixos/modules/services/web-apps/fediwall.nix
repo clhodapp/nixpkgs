@@ -11,6 +11,13 @@ let
   format = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../tasks/network-interfaces.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.fediwall = {
     enable = lib.mkEnableOption "fediwall, a social media wall for the fediverse";
     package = lib.mkPackageOption pkgs "fediwall" { };

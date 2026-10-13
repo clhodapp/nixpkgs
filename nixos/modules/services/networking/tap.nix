@@ -9,6 +9,13 @@ let
   cfg = config.services.tap;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.tap = {
     enable = lib.mkEnableOption "Tap, ATProtocol firehose sync utility";
 

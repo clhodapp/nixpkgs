@@ -15,6 +15,14 @@ let
 in
 with lib;
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.lokinet = {
     enable = mkEnableOption "Lokinet daemon";
 

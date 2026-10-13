@@ -53,6 +53,18 @@ let
     ) scripts;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/user.nix
+    ../../hardware/bluetooth.nix
+    ./pipewire.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ maintainers.k900 ];
 
   options = {

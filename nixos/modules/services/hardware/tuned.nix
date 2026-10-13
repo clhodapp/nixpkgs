@@ -105,6 +105,23 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../hardware/system-76.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./auto-cpufreq.nix
+    ./power-profiles-daemon.nix
+    ./tlp.nix
+    ./upower.nix
+    # END generated imports
+  ];
+
   options.services.tuned = {
     enable = lib.mkEnableOption "TuneD";
 

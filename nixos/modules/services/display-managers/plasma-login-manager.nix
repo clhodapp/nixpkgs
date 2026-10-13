@@ -36,6 +36,23 @@ let
   userConfigFile = iniFmt.generate "99-user.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ../x11/display-managers/default.nix
+    ../x11/xserver.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.plasma-login-manager = {
     enable = mkEnableOption "Plasma Login Manager";
     package = mkPackageOption pkgs [

@@ -12,6 +12,17 @@ let
   cfg = config.services.cage;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../hardware/graphics.nix
+    ../../misc/extra-arguments.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.cage = {
     enable = mkEnableOption "cage kiosk service";
 

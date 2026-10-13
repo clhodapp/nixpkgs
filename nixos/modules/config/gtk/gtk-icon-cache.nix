@@ -5,6 +5,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../services/x11/xserver.nix
+    ../system-path.nix
+    # END generated imports
+  ];
+
   options = {
     gtk.iconCache.enable = lib.mkOption {
       type = lib.types.bool;

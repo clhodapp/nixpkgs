@@ -79,6 +79,16 @@ in
     ] "this option is no longer necessary for Caddy 2")
     (mkRenamedOptionModule [ "services" "caddy" "ca" ] [ "services" "caddy" "acmeCA" ])
     (mkRenamedOptionModule [ "services" "caddy" "config" ] [ "services" "caddy" "extraConfig" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/sysctl.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../security/acme
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../networking/firewall.nix
+    # END generated imports
   ];
 
   # interface

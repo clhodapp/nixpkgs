@@ -44,6 +44,13 @@ in
       "wakapi"
       "smtpPasswordFile"
     ] "Use services.wakapi.environmentFiles instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
   ];
 
   options.services.wakapi = {

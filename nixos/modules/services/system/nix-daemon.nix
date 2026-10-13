@@ -142,6 +142,19 @@ in
         };
       };
     }
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/networking.nix
+    ../../config/nix.nix
+    ../../config/system-environment.nix
+    ../../config/users-groups.nix
+    ../../programs/ssh.nix
+    ../../security/ca.nix
+    ../../system/boot/stage-2.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   ###### interface

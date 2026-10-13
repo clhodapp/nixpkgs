@@ -33,6 +33,12 @@ in
       [ "services" "squeezelite" "extraArguments" ]
       [ "services" "squeezelite" "extraArgs" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../desktops/pipewire/pipewire.nix
+    ./pulseaudio.nix
+    # END generated imports
   ];
 
   options.services.squeezelite = {

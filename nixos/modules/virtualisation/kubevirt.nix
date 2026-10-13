@@ -9,6 +9,22 @@
   imports = [
     ../profiles/qemu-guest.nix
     ../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/label.nix
+    ../misc/version.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/system/cloud-init.nix
+    ../system/activation/top-level.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/loader.nix
+    ../system/boot/systemd.nix
+    ../system/build.nix
+    ../tasks/filesystems.nix
+    ./qemu-guest-agent.nix
+    # END generated imports
   ];
 
   config = {

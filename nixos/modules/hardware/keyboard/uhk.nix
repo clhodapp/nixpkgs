@@ -11,6 +11,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.keyboard.uhk = {
     enable = mkEnableOption ''
       non-root access to the firmware of UHK keyboards.

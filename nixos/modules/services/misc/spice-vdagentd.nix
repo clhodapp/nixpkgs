@@ -8,6 +8,13 @@ let
   cfg = config.services.spice-vdagentd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.spice-vdagentd = {
       enable = lib.mkEnableOption "Spice guest vdagent daemon";

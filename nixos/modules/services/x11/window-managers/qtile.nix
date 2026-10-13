@@ -20,6 +20,13 @@ in
       "qtile"
       "backend"
     ] "The qtile package now provides separate display sessions for both X11 and Wayland.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../system/etc/etc.nix
+    ../../desktops/gnome/gnome-keyring.nix
+    ../../display-managers/default.nix
+    # END generated imports
   ];
 
   options.services.xserver.windowManager.qtile = {

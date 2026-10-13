@@ -9,6 +9,15 @@ let
   mame = "mame${lib.optionalString pkgs.stdenv.hostPlatform.is64bit "64"}";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.mame = {
       enable = lib.mkOption {

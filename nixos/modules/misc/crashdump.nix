@@ -12,6 +12,13 @@ let
 in
 ###### interface
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/boot/kernel.nix
+    ../system/boot/stage-2.nix
+    # END generated imports
+  ];
+
   options = {
     boot = {
       crashDump = {

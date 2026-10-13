@@ -8,6 +8,12 @@
 with lib;
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.xl2tpd = {
       enable = mkEnableOption "xl2tpd, the Layer 2 Tunnelling Protocol Daemon";

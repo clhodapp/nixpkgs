@@ -52,5 +52,11 @@ with lib;
             "Format"
           ]
         )
-      ];
+      ]
+    ++ [
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../lib/modules/generic/assertions.nix
+      ./waagent.nix
+      # END generated imports
+    ];
 }

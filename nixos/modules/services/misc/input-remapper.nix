@@ -8,6 +8,16 @@ let
   cfg = config.services.input-remapper;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     services.input-remapper = {
       enable = lib.mkEnableOption "input-remapper, an easy to use tool to change the mapping of your input device buttons";

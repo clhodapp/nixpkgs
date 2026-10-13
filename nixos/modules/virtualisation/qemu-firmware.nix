@@ -10,6 +10,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.virtualisation.qemu.firmware = {
     enable = lib.mkEnableOption "QEMU firmware descriptors in {file}`/etc/qemu/firmware`";
 

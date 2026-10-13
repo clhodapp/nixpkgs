@@ -156,6 +156,23 @@ in
     ))
     (mkRemovedOptionModule [ "services" "printing" "cupsFilesConf" ] "")
     (mkRemovedOptionModule [ "services" "printing" "cupsdConf" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../system/boot/modprobe.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../hardware/udev.nix
+    ../networking/avahi-daemon.nix
+    ../networking/firewall.nix
+    ../system/dbus.nix
+    # END generated imports
   ];
 
   ###### interface

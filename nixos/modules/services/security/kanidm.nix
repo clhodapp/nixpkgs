@@ -294,6 +294,19 @@ in
       [ "services" "kanidm" "unixSettings" ]
       [ "services" "kanidm" "unix" "settings" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/nsswitch.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../networking/ssh/sshd.nix
+    # END generated imports
   ];
 
   options.services.kanidm = {

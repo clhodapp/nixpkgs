@@ -11,6 +11,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
 

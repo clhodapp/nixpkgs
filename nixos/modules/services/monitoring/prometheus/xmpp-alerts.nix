@@ -15,6 +15,10 @@ in
       [ "services" "prometheus" "xmpp-alerts" "configuration" ]
       [ "services" "prometheus" "xmpp-alerts" "settings" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.prometheus.xmpp-alerts = {

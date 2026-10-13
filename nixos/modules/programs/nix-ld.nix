@@ -20,6 +20,15 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/ldso.nix
+    ../config/system-environment.nix
+    ../config/system-path.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.mic92 ];
   options.programs.nix-ld = {
     enable = lib.mkEnableOption "nix-ld, Documentation: <https://github.com/nix-community/nix-ld>";

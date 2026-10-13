@@ -16,6 +16,9 @@
         "diskSize"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    # END generated imports
   ];
 
   options = {

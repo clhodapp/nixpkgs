@@ -34,6 +34,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     services.tor.torsocks = {
       enable = lib.mkOption {

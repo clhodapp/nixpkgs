@@ -27,6 +27,16 @@ in
     ] "Please use the new option: `security.apparmor.policies'.")
     ./apparmor/includes.nix
     ./apparmor/profiles.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../programs/shadow.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options = {

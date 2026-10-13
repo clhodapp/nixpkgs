@@ -97,6 +97,13 @@ in
       "snapserver"
       "streams"
     ] "Configure `services.snapserver.settings.stream.source` instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   ###### interface

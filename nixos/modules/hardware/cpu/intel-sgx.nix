@@ -4,6 +4,14 @@ let
   defaultPrvGroup = "sgx_prv";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.cpu.intel.sgx.enableDcapCompat = lib.mkOption {
     description = ''
       Whether to enable backward compatibility for SGX software build for the

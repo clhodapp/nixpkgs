@@ -86,6 +86,13 @@ in
       [ "services" "cyrus-imap" "sslCACert" ]
       [ "services" "cyrus-imap" "imapdSettings" "tls_client_ca_file" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
   options.services.cyrus-imap = {
     enable = mkEnableOption "Cyrus IMAP, an email, contacts and calendar server";

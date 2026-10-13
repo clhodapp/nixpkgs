@@ -239,6 +239,21 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../security/sudo.nix
+    ../services/hardware/udev.nix
+    ../services/logging/logrotate.nix
+    ../services/networking/dhcpcd.nix
+    ../services/networking/firewall.nix
+    ../services/system/cloud-init.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.services.waagent = {
     enable = lib.mkEnableOption "Windows Azure Linux Agent";
 

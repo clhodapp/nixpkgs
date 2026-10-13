@@ -18,6 +18,16 @@ let
     // cfg.extraNetworkConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../databases/etcd.nix
+    # END generated imports
+  ];
+
   options.services.flannel = {
     enable = lib.mkEnableOption "flannel";
 

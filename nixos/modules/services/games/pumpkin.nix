@@ -40,6 +40,15 @@ let
   whitelistFile = jsonFormat.generate "whitelist.json" cfg.whitelist.entries;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     DerGrumpf
     jk

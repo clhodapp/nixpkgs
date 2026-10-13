@@ -6,6 +6,11 @@ in
 {
   imports = [
     ./amd.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../.
+    ../../../system/boot/kernel.nix
+    ../../graphics.nix
+    # END generated imports
   ];
   options.hardware.facter.detected = {
     graphics.enable = lib.mkEnableOption "Enable the Graphics module" // {

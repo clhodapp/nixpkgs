@@ -125,6 +125,14 @@ in
       "varnish"
       "stateDir"
     ] "The `stateDir` option never was functional or useful. varnish uses compile-time settings.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/activation/top-level.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

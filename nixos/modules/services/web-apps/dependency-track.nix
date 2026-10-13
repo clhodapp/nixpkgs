@@ -49,6 +49,15 @@ let
     ) (filterNull settings);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.dependency-track = {
     enable = lib.mkEnableOption "dependency-track";
 

@@ -21,6 +21,17 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ./apiserver.nix
+    ./default.nix
+    ./pki.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.kubernetes.addonManager = with lib.types; {
 

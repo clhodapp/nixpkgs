@@ -16,6 +16,13 @@ in
       "kime"
       "config"
     ] "Use i18n.inputMethod.kime.* instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/shells-environment.nix
+    ../../misc/meta.nix
+    ../../system/etc/etc.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options.i18n.inputMethod.kime = {

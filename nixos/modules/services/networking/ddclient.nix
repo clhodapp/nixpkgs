@@ -80,6 +80,10 @@ in
       "password"
     ] "Use services.ddclient.passwordFile instead.")
     (lib.mkRemovedOptionModule [ "services" "ddclient" "ipv6" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   ###### interface

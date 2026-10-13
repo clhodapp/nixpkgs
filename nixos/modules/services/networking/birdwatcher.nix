@@ -8,6 +8,13 @@ let
   cfg = config.services.birdwatcher;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     services.birdwatcher = {
       package = lib.mkPackageOption pkgs "birdwatcher" { };

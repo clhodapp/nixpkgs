@@ -146,6 +146,20 @@ let
   amuleApiEnabled = cfg.settings.AmuleApi.Enabled == 1;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.amule = {
     enable = mkEnableOption "aMule daemon";
 

@@ -87,6 +87,13 @@ in
       Use `services.meilisearch.masterKeyFile` instead. It does not require you to prefix the file with "MEILI_MASTER_KEY=".
       If you were abusing this option to set other options, you can now configure them with `services.meilisearch.settings`.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.meilisearch = {

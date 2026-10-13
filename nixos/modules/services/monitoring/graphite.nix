@@ -75,6 +75,15 @@ in
     (lib.mkRemovedOptionModule [ "services" "graphite" "api" ] "")
     (lib.mkRemovedOptionModule [ "services" "graphite" "beacon" ] "")
     (lib.mkRemovedOptionModule [ "services" "graphite" "pager" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/locale.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../databases/mongodb.nix
+    # END generated imports
   ];
 
   ###### interface

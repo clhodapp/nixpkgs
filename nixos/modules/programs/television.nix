@@ -11,6 +11,16 @@ let
   cfg = config.programs.television;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./fish.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.television = {
     enable = mkEnableOption "Blazingly fast general purpose fuzzy finder TUI";
     package = mkPackageOption pkgs "television" { };

@@ -63,8 +63,8 @@ in
     };
   };
 
-  imports = (
-    map
+  imports =
+    (map
       (
         option:
         lib.mkRemovedOptionModule [
@@ -80,7 +80,13 @@ in
         "user"
         "group"
       ]
-  );
+    )
+    ++ [
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../lib/modules/generic/assertions.nix
+      ../../system/boot/systemd.nix
+      # END generated imports
+    ];
 
   config = lib.mkIf cfg.enable {
 

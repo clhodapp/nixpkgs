@@ -11,6 +11,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   options.services.freefall = {
 

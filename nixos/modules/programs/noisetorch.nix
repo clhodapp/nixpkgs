@@ -9,6 +9,13 @@ let
   cfg = config.programs.noisetorch;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options.programs.noisetorch = {
     enable = lib.mkEnableOption "noisetorch (+ setcap wrapper), a virtual microphone device with noise suppression";
 

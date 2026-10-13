@@ -12,6 +12,14 @@ let
   defaultUser = "node-red";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.node-red = {
     enable = mkEnableOption "the Node-RED service";
 

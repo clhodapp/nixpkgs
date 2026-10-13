@@ -67,6 +67,19 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/i18n.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    ./bash/bash.nix
+    ./fish.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.pay-respects = {
       enable = mkEnableOption "pay-respects, an app which corrects your previous console command";

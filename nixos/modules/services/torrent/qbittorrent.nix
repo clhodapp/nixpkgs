@@ -56,6 +56,17 @@ let
   configFile = pkgs.writeText "qBittorrent.conf" (gendeepINI cfg.serverConfig);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.qbittorrent = {
     enable = mkEnableOption "qbittorrent, BitTorrent client";
 

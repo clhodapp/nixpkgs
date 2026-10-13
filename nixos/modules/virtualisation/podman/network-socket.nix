@@ -16,6 +16,10 @@ in
 {
   imports = [
     ./network-socket-ghostunnel.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../services/networking/firewall.nix
+    # END generated imports
   ];
 
   options.virtualisation.podman.networkSocket = {

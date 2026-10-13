@@ -42,6 +42,12 @@ in
       [ "services" "bluemap" "packs" ]
     )
     (lib.mkRenamedOptionModule [ "services" "bluemap" "addons" ] [ "services" "bluemap" "packs" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.bluemap = {

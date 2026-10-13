@@ -245,6 +245,25 @@ in
     (mkRemovedOptionModule [ "virtualisation" "libvirtd" "qemuOvmfPackage" ]
       "The 'virtualisation.libvirtd.qemuOvmfPackage' option has been removed. All OVMF images distributed with QEMU are now available by default."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/nsswitch.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/ids.nix
+    ../programs/ssh.nix
+    ../security/polkit.nix
+    ../security/wrappers/default.nix
+    ../services/networking/firewall.nix
+    ../services/networking/firewalld
+    ../services/networking/nftables.nix
+    ../services/system/dbus.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ./openvswitch.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -28,6 +28,16 @@ let
   letsencryptEnabled = cfg.settings ? "letsencrypt-domain";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../firewall.nix
+    # END generated imports
+  ];
+
   options.services.netbird.relay = {
     enable = lib.mkEnableOption "Netbird's Relay Service";
     package = lib.mkPackageOption pkgs "netbird-relay" { };

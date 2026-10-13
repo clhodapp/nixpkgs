@@ -28,6 +28,11 @@ in
   imports = [
     ./nix-builder.nix
     ../virtualisation/vz-vm.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/systemd.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   config = {

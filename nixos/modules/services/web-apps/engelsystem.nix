@@ -25,6 +25,16 @@ in
       [ "services" "engelsystem" "config" ]
       [ "services" "engelsystem" "settings" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/mysql.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options.services.engelsystem = {

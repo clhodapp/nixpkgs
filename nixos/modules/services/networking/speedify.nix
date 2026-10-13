@@ -8,6 +8,16 @@ let
   cfg = config.services.speedify;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    ./networkmanager.nix
+    # END generated imports
+  ];
+
   options.services.speedify = {
     enable = lib.mkOption {
       type = lib.types.bool;

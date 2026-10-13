@@ -81,6 +81,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options = {
     services.dnsdist = {
       enable = lib.mkEnableOption "dnsdist domain name server";

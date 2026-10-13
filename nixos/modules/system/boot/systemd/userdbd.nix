@@ -10,6 +10,16 @@ let
   ) (lib.attrValues config.users.users);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/users-groups.nix
+    ../../../security/wrappers/default.nix
+    ../../../services/networking/ssh/sshd.nix
+    ../systemd.nix
+    # END generated imports
+  ];
+
   options.services.userdbd = {
     enable = lib.mkEnableOption ''
       the systemd JSON user/group record lookup service

@@ -14,6 +14,15 @@ let
   localMysql = cfg.database.createLocally && cfg.database.type == "mariadb";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ./mysql.nix
+    ./postgresql.nix
+    # END generated imports
+  ];
+
   options.services.lldap = with lib; {
     enable = mkEnableOption "lldap, a lightweight authentication server that provides an opinionated, simplified LDAP interface for authentication";
 

@@ -74,6 +74,15 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options = {
     services.tayga = {
       enable = mkEnableOption "Tayga";

@@ -20,6 +20,16 @@ let
   qnum = toString cfg.qnum;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ./firewall-iptables.nix
+    ./nftables.nix
+    # END generated imports
+  ];
+
   options.services.zapret = {
     enable = lib.mkEnableOption "the Zapret DPI bypass service.";
     package = lib.mkPackageOption pkgs "zapret" { };

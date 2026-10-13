@@ -10,6 +10,15 @@ let
   configFile = configFormat.generate "lact-config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.johnrtitor ];
 
   options.services.lact = {

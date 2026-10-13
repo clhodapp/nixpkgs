@@ -22,6 +22,13 @@ in
       [ "hardware" "logitech" "wireless" "enableGraphical" ]
       [ "programs" "solaar" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../programs/solaar.nix
+    ../services/hardware/udev.nix
+    ../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.hardware.logitech = {

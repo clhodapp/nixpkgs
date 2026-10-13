@@ -20,6 +20,14 @@ in
         "immersed"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/networking/firewall.nix
+    ../system/boot/kernel.nix
+    ../system/boot/modprobe.nix
+    # END generated imports
   ];
 
   options = {

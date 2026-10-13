@@ -53,6 +53,13 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.pantalaimon-headless.instances = lib.mkOption {
     default = { };
     type = lib.types.attrsOf (lib.types.submodule (import ./pantalaimon-options.nix));

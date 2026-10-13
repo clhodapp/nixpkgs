@@ -10,6 +10,14 @@ let
   configFile = settingsFormat.generate "matrix-hookshot-config.yml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options = {
     services.matrix-hookshot = {
       enable = lib.mkEnableOption "matrix-hookshot, a bridge between Matrix and project management services";

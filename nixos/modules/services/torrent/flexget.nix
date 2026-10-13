@@ -15,6 +15,13 @@ let
   configFile = "${toString cfg.homeDir}/flexget.yml";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.flexget = {
       enable = lib.mkEnableOption "FlexGet daemon";

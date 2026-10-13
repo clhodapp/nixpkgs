@@ -9,6 +9,37 @@ let
   cfg = config.services.desktopManager.lomiri;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/packages.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../programs/dconf.nix
+    ../../programs/xwayland.nix
+    ../../security/apparmor.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../audio/pulseaudio.nix
+    ../desktops/accountsservice.nix
+    ../desktops/ayatana-indicators.nix
+    ../desktops/geoclue2.nix
+    ../desktops/gnome/evolution-data-server.nix
+    ../desktops/pipewire/pipewire.nix
+    ../desktops/telepathy.nix
+    ../display-managers/default.nix
+    ../hardware/bluetooth.nix
+    ../hardware/udisks2.nix
+    ../hardware/upower.nix
+    ../networking/networkmanager.nix
+    ../system/dbus.nix
+    ../x11/display-managers/lightdm-greeters/lomiri.nix
+    ../x11/display-managers/lightdm.nix
+    ../x11/xserver.nix
+    # END generated imports
+  ];
+
   options.services.desktopManager.lomiri = {
     enable = lib.mkEnableOption ''
       the Lomiri graphical shell (formerly known as Unity8)

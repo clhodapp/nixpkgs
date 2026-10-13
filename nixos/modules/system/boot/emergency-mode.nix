@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ./systemd.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
 
   ###### interface
 

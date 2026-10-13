@@ -118,6 +118,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ./firewall-nftables.nix
+    ./firewall.nix
+    ./nat-iptables.nix
+    ./nat.nix
+    ./nftables.nix
+    # END generated imports
+  ];
 
   config = mkIf (config.networking.nftables.enable && cfg.enable) {
 

@@ -10,6 +10,15 @@ let
   configFile = settingsFormat.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.llama-swap = {
     enable = lib.mkEnableOption "the llama-swap service";
 

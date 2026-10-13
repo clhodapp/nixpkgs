@@ -10,6 +10,16 @@ let
   settingsFile = settingsFormat.generate "passless.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd/user.nix
+    ./gnupg.nix
+    # END generated imports
+  ];
 
   options.programs.passless = {
     enable = lib.mkEnableOption "passless";

@@ -22,6 +22,17 @@ let
   mountPaths = builtins.attrNames cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/users-groups.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ../tasks/filesystems.nix
+    # END generated imports
+  ];
+
   options.services.autotierfs = {
     enable = lib.mkEnableOption "the autotier passthrough tiering filesystem";
     package = lib.mkPackageOption pkgs "autotier" { };

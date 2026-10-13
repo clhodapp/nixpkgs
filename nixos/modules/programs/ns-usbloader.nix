@@ -8,6 +8,14 @@ let
   cfg = config.programs.ns-usbloader;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     programs.ns-usbloader = {
       enable = lib.mkEnableOption "ns-usbloader application with udev rules applied";

@@ -9,6 +9,16 @@ let
   cfg = config.services.weechat;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.services.weechat = {
     enable = lib.mkEnableOption "weechat";
 

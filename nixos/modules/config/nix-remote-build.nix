@@ -68,6 +68,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../system/etc/etc.nix
+    ./nix.nix
+    # END generated imports
+  ];
+
   options = {
     nix = {
       buildMachines = mkOption {

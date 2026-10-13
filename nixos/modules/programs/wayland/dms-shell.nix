@@ -49,6 +49,18 @@ in
     (lib.mkRemovedOptionModule (
       path ++ [ "enableCalendarEvents" ]
     ) "Install a supported calendar backend separately and select it in DMS settings.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../hardware/graphics.nix
+    ../../hardware/i2c.nix
+    ../../misc/extra-arguments.nix
+    ../../services/desktops/accountsservice.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options.programs.dms-shell = {

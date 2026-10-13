@@ -32,6 +32,13 @@ in
         "corednsImage"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/assertions.nix
+    ../../../../misc/meta.nix
+    ../addon-manager.nix
+    ../apiserver.nix
+    ../kubelet.nix
+    # END generated imports
   ];
 
   options.services.kubernetes.addons.dns = {

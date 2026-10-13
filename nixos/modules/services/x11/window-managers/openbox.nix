@@ -11,6 +11,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.windowManager.openbox.enable = mkEnableOption "openbox";
   };

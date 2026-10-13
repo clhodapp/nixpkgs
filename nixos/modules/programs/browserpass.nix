@@ -6,6 +6,12 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/etc/etc.nix
+    ./firefox.nix
+    # END generated imports
+  ];
 
   options.programs.browserpass.enable = lib.mkEnableOption "Browserpass native messaging host";
 

@@ -915,6 +915,16 @@ in
       [ "services" "gitlab-runner" "sessionServer" "sessionTimeout" ]
       [ "services" "gitlab-runner" "settings" "session_server" "session_timeout" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/networking.nix
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    ../../../tasks/network-interfaces.nix
+    ../../../virtualisation/docker.nix
+    ../../../virtualisation/podman/default.nix
+    # END generated imports
   ];
 
   meta.teams = [ teams.gitlab ];

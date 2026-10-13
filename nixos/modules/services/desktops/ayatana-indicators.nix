@@ -9,6 +9,14 @@ let
   cfg = config.services.ayatana-indicators;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.ayatana-indicators = {
     enable = lib.mkEnableOption ''
       Ayatana Indicators, a continuation of Canonical's Application Indicators

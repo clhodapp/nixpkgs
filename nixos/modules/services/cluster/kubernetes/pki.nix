@@ -48,6 +48,29 @@ let
   remote = with config.services; "https://${kubernetes.masterAddress}:${toString cfssl.port}";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/networking.nix
+    ../../../config/system-path.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../databases/etcd.nix
+    ../../networking/flannel.nix
+    ../../security/certmgr.nix
+    ../../security/cfssl.nix
+    ./addon-manager.nix
+    ./addons/dns.nix
+    ./apiserver.nix
+    ./controller-manager.nix
+    ./default.nix
+    ./flannel.nix
+    ./kubelet.nix
+    ./proxy.nix
+    ./scheduler.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.kubernetes.pki = with lib.types; {
 

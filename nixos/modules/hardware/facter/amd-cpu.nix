@@ -9,6 +9,14 @@ let
   kver = config.boot.kernelPackages.kernel.version;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/kernel.nix
+    ./.
+    ./virtualisation.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (config.hardware.facter.enable && isBaremetal && hasAmdCpu) {
     boot = lib.mkMerge [
       (lib.mkIf ((lib.versionAtLeast kver "5.17") && (lib.versionOlder kver "6.1")) {

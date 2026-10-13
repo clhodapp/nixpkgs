@@ -9,6 +9,16 @@ let
   settingsFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.services.litestream = {
     enable = lib.mkEnableOption "litestream";
 

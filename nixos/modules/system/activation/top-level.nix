@@ -125,6 +125,24 @@ in
       [ "system" "replaceDependencies" "replacements" ]
     )
     (mkRenamedOptionModule [ "system" "extraSystemBuilderCmds" ] [ "system" "systemBuilderCommands" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/i18n.nix
+    ../../config/nix.nix
+    ../../config/system-path.nix
+    ../../misc/label.nix
+    ../../misc/version.nix
+    ../../tasks/network-interfaces.nix
+    ../../virtualisation/nixos-containers.nix
+    ../boot/kernel.nix
+    ../boot/stage-1.nix
+    ../boot/systemd.nix
+    ../boot/systemd/initrd.nix
+    ./activation-script.nix
+    ./bootspec.nix
+    ./nixos-init.nix
+    ./pre-switch-check.nix
+    # END generated imports
   ];
 
   options = {

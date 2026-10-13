@@ -1,5 +1,11 @@
 { config, lib, ... }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../activation/bootspec.nix
+    # END generated imports
+  ];
+
   options.system.boot.extraInitrd = {
     paths = lib.mkOption {
       type = lib.types.listOf lib.types.str;

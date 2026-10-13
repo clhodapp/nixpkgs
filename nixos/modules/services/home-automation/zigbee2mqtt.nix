@@ -20,6 +20,14 @@ in
       "zigbee2mqtt"
       "config"
     ] "The option services.zigbee2mqtt.config was renamed to services.zigbee2mqtt.settings.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ./home-assistant.nix
+    # END generated imports
   ];
 
   options.services.zigbee2mqtt = {

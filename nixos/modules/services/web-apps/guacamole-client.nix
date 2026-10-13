@@ -9,6 +9,13 @@ let
   settingsFormat = pkgs.formats.javaProperties { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/etc/etc.nix
+    ../web-servers/tomcat.nix
+    # END generated imports
+  ];
+
   options = {
     services.guacamole-client = {
       enable = lib.mkEnableOption "Apache Guacamole Client (Tomcat)";

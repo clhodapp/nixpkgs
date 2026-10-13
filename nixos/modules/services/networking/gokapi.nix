@@ -11,6 +11,13 @@ let
   userSettingsFile = settingsFormat.generate "generated-config.json" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.gokapi = {
     enable = lib.mkEnableOption "Lightweight selfhosted Firefox Send alternative without public upload";
 

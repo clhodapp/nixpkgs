@@ -5,7 +5,19 @@
   ...
 }:
 {
-  imports = [ (import ./common.nix "nexus") ];
+  imports = [
+    (import ./common.nix "nexus")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../databases/postgresql.nix
+    ../../networking/firewall.nix
+    ./bank.nix
+    ./module.nix
+    # END generated imports
+  ];
 
   options.services.libeufin.nexus.settings = lib.mkOption {
     description = ''

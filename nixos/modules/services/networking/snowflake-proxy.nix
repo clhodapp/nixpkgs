@@ -11,6 +11,13 @@ let
   cfg = config.services.snowflake-proxy;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.snowflake-proxy = {
       enable = mkEnableOption "snowflake-proxy, a system to defeat internet censorship";

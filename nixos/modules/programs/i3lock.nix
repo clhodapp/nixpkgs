@@ -11,6 +11,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/pam.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
 
   ###### interface
 

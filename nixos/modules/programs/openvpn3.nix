@@ -26,6 +26,20 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/ids.nix
+    ../services/system/dbus.nix
+    ../system/boot/resolved.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.openvpn3 = {
     enable = mkEnableOption "the openvpn3 client";
     package = mkPackageOption pkgs "openvpn3" { };

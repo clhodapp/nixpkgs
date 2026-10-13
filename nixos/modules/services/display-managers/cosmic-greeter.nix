@@ -16,6 +16,23 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/graphics.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../desktops/accountsservice.nix
+    ../hardware/libinput.nix
+    ../system/dbus.nix
+    ./default.nix
+    ./greetd.nix
+    # END generated imports
+  ];
+
   meta.teams = [ lib.teams.cosmic ];
 
   options.services.displayManager.cosmic-greeter = {

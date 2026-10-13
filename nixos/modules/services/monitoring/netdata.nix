@@ -74,6 +74,24 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../security/pam.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../../tasks/filesystems/zfs.nix
+    ../../virtualisation/docker.nix
+    ../../virtualisation/libvirtd.nix
+    ../../virtualisation/podman/default.nix
+    ../networking/wireguard.nix
+    # END generated imports
+  ];
+
   options = {
     services.netdata = {
       enable = lib.mkEnableOption "netdata";

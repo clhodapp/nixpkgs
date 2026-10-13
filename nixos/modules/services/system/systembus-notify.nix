@@ -12,6 +12,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.systembus-notify = {
     enable = mkEnableOption ''
       System bus notification support

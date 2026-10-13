@@ -14,6 +14,19 @@
       preventing you from using the new implementation, please open an issue on
       GitHub.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/i18n.nix
+    ../../misc/version.nix
+    ../../security/sudo-rs.nix
+    ../../security/sudo.nix
+    ../boot/systemd.nix
+    ../build.nix
+    ./activatable-system.nix
+    ./activation-script.nix
+    ./pre-switch-check.nix
+    ./top-level.nix
+    # END generated imports
   ];
 
   options.system.switch = {

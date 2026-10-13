@@ -566,6 +566,16 @@ in
       services.tt-rss.root leads to a database schema upgrade that is not
       supported by the code active in the Nix store.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   ###### implementation

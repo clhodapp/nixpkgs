@@ -9,6 +9,14 @@ let
   cfg = config.programs.nethoscope;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ _0x4A6F ];
 
   options = {

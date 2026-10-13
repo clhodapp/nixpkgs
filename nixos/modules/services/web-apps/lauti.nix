@@ -18,6 +18,12 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "services" "eintopf" ] [ "services" "lauti" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.lauti = {

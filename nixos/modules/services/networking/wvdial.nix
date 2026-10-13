@@ -11,6 +11,12 @@ let
   cfg = config.environment.wvdial;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     environment.wvdial = {
       dialerDefaults = lib.mkOption {

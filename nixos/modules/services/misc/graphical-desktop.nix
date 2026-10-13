@@ -10,6 +10,25 @@ let
   dmcfg = config.services.displayManager;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/fonts/packages.nix
+    ../../config/system-path.nix
+    ../../config/xdg/autostart.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/menus.nix
+    ../../config/xdg/mime.nix
+    ../../hardware/graphics.nix
+    ../../programs/gnupg.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../accessibility/speechd.nix
+    ../desktops/pipewire/pipewire.nix
+    ../display-managers/default.nix
+    ../x11/xserver.nix
+    # END generated imports
+  ];
+
   options = {
     services.graphical-desktop.enable =
       lib.mkEnableOption "bits and pieces required for a graphical desktop session"

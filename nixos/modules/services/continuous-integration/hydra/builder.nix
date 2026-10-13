@@ -12,6 +12,16 @@ let
   format = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/nix.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.services.hydra-builder = {
     enable = lib.mkEnableOption "the Hydra build agent, which connects to the queue runner over gRPC and executes builds";
 

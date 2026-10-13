@@ -153,7 +153,19 @@ in
         "hostRSAKey"
         "hostDSSKey"
         "hostECDSAKey"
-      ];
+      ]
+    ++ [
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../lib/modules/generic/assertions.nix
+      ../../config/users-groups.nix
+      ../../programs/ssh.nix
+      ../../services/networking/ssh/sshd.nix
+      ./initrd-network.nix
+      ./networkd.nix
+      ./stage-1.nix
+      ./systemd/initrd.nix
+      # END generated imports
+    ];
 
   config =
     let

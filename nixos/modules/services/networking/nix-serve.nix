@@ -11,6 +11,14 @@ let
   cfg = config.services.nix-serve;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.nix-serve = {
       enable = mkEnableOption "nix-serve, the standalone Nix binary cache server";

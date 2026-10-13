@@ -22,6 +22,11 @@ in
       "services"
       "geoip-updater"
     ] "services.geoip-updater has been removed, use services.geoipupdate instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

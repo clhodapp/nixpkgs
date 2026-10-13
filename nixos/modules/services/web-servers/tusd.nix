@@ -26,6 +26,16 @@ let
   ++ cfg.extraArgs;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ m1-s ];
 
   options.services.tusd = {

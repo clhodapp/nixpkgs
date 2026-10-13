@@ -59,6 +59,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/users-groups.nix
+    ../../../misc/version.nix
+    ../../../system/boot/systemd.nix
+    ../firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.sabnzbd = {
       enable = mkEnableOption "the sabnzbd server";

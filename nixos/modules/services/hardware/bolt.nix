@@ -8,6 +8,14 @@ let
   cfg = config.services.hardware.bolt;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   options = {
     services.hardware.bolt = {
       enable = lib.mkOption {

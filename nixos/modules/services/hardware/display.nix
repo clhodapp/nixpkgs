@@ -8,6 +8,15 @@ let
   cfg = config.hardware.display;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../system/boot/kernel.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   meta.doc = ./display.md;
   meta.maintainers = with lib.maintainers; [
     nazarewk

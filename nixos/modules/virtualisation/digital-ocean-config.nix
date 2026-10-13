@@ -10,6 +10,19 @@ with lib;
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (modulesPath + "/virtualisation/digital-ocean-init.nix")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../services/monitoring/do-agent.nix
+    ../services/networking/dhcpcd.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/networkd.nix
+    ../system/boot/systemd.nix
+    ../tasks/filesystems.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
   ];
   options.virtualisation.digitalOcean = with types; {
     setRootPassword = mkOption {

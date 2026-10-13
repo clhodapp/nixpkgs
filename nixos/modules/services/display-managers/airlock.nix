@@ -15,6 +15,20 @@ let
     if g != "" then g else "greeter";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/packages.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/graphics.nix
+    ../../security/sudo.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../desktops/accountsservice.nix
+    ./greetd.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.airlock = {
     enable = lib.mkEnableOption "Airlock, a clean and modern Material Design 3 Quickshell greeter for greetd";
 

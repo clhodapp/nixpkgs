@@ -10,6 +10,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../hardware/digitalbitbox.nix
+    ../../misc/meta.nix
+    # END generated imports
+  ];
+
   options.programs.digitalbitbox = {
     enable = lib.mkOption {
       type = lib.types.bool;

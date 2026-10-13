@@ -95,6 +95,12 @@ in
       "hledger-web"
       "capabilities"
     ] "This option has been replaced by new option `services.hledger-web.allow`.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

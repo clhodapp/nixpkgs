@@ -18,6 +18,12 @@ let
   domain = "acme-dns.example.com";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.acme-dns = {
     enable = mkEnableOption "acme-dns";
 

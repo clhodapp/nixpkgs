@@ -3,7 +3,28 @@
 {
 
   # Bashless builds on perlless
-  imports = [ ./perlless.nix ];
+  imports = [
+    ./perlless.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/console.nix
+    ../config/nix.nix
+    ../config/power-management.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/man-db.nix
+    ../programs/bash/bash.nix
+    ../security/wrappers/default.nix
+    ../services/networking/firewall.nix
+    ../system/activation/activatable-system.nix
+    ../system/activation/nixos-init.nix
+    ../system/activation/top-level.nix
+    ../system/boot/kexec.nix
+    ../tasks/bcache.nix
+    ../tasks/lvm.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
+  ];
 
   # Remove bash from activation
   system.nixos-init.enable = lib.mkDefault true;

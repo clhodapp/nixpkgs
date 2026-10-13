@@ -15,6 +15,13 @@ in
     (lib.mkRemovedOptionModule [ "programs" "_1password" "gid" ] ''
       A preallocated GID will be used instead.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/ids.nix
+    ../security/wrappers/default.nix
+    # END generated imports
   ];
 
   options = {

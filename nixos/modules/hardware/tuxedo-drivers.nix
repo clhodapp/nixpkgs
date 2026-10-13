@@ -33,6 +33,11 @@ in
         "tuxedo-drivers"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    # END generated imports
   ];
 
   options.hardware.tuxedo-drivers = {

@@ -168,6 +168,16 @@ in
     }
     { options.services.frr = (lib.genAttrs allDaemons serviceOptions); }
     (lib.mkRemovedOptionModule [ "services" "frr" "zebra" "enable" ] "FRR zebra is always enabled")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
   ]
   ++ (map (
     d: lib.mkRenamedOptionModule [ "services" "frr" d "enable" ] [ "services" "frr" "${d}d" "enable" ]

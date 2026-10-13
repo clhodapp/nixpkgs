@@ -12,6 +12,18 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/nsswitch.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ./pam.nix
+    ./sudo-rs.nix
+    ./sudo.nix
+    # END generated imports
+  ];
 
   options = {
 

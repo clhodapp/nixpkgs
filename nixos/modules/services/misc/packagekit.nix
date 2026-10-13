@@ -50,6 +50,13 @@ in
       "packagekit"
       "backend"
     ] "Always set to test_nop, Nix backend is broken see #177946.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    # END generated imports
   ];
 
   options.services.packagekit = {

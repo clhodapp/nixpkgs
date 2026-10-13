@@ -67,6 +67,17 @@ in
       "zabbixServer"
       "extraConfig"
     ] "Use services.zabbixServer.settings instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../networking/firewall.nix
+    ../web-apps/zabbix.nix
+    # END generated imports
   ];
 
   # interface

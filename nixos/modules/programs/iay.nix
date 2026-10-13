@@ -17,6 +17,14 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ./bash/bash.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.iay = {
     enable = mkEnableOption "iay, a minimalistic shell prompt";
     package = mkPackageOption pkgs "iay" { };

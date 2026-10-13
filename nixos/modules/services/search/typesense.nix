@@ -25,6 +25,12 @@ let
   configFile = settingsFormatIni.generate "typesense.ini" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.typesense = {
     enable = mkEnableOption "typesense";
     package = mkPackageOption pkgs "typesense" { };

@@ -260,6 +260,20 @@ in
       [ "virtualisation" "docker" "liveRestore" ]
       [ "virtualisation" "docker" "daemon" "settings" "live-restore" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/networking.nix
+    ../config/sysctl.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/extra-arguments.nix
+    ../misc/ids.nix
+    ../misc/version.nix
+    ../services/hardware/nvidia-container-toolkit
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../tasks/filesystems/zfs.nix
+    # END generated imports
   ];
 
   ###### implementation

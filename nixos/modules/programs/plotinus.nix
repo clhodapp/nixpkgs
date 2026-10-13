@@ -9,6 +9,15 @@ let
   cfg = config.programs.plotinus;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/shells-environment.nix
+    ../config/system-environment.nix
+    ../misc/meta.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = pkgs.plotinus.meta.maintainers;
     doc = ./plotinus.md;

@@ -9,6 +9,12 @@ let
   cfg = config.programs.xss-lock;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.xss-lock = {
     enable = lib.mkEnableOption "xss-lock";
 

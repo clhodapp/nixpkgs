@@ -12,6 +12,12 @@ in
   imports = [
     ./server.nix
     ./node.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   options.services.tdarr = {

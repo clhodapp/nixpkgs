@@ -18,6 +18,15 @@ let
   cfg = config.services.iio-niri;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../hardware/sensor/iio.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.iio-niri = {
     enable = mkEnableOption "IIO-Niri";
 

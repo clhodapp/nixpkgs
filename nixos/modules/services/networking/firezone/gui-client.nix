@@ -17,6 +17,16 @@ let
   cfg = config.services.firezone.gui-client;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../desktops/gnome/gnome-keyring.nix
+    # END generated imports
+  ];
+
   options = {
     services.firezone.gui-client = {
       enable = mkEnableOption "the firezone gui client";

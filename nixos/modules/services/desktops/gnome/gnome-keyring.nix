@@ -10,6 +10,16 @@ let
   cfg = config.services.gnome.gnome-keyring;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../config/xdg/portal.nix
+    ../../../security/pam.nix
+    ../../../security/wrappers/default.nix
+    ../../system/dbus.nix
+    # END generated imports
+  ];
 
   meta = {
     teams = [ lib.teams.gnome ];

@@ -8,6 +8,17 @@ let
   cfg = config.services.rosec;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.rosec = {
     enable = lib.mkEnableOption "rosec, a secrets daemon implementing the freedesktop.org Secret Service API";
 

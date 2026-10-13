@@ -11,6 +11,12 @@ let
   cfg = config.programs.turbovnc;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../hardware/graphics.nix
+    # END generated imports
+  ];
+
   options = {
 
     programs.turbovnc = {

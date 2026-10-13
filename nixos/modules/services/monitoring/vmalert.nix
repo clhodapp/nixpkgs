@@ -53,6 +53,11 @@ in
       [ "services" "vmalert" "settings" ]
       [ "services" "vmalert" "instances" "" "settings" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   # interface

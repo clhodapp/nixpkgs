@@ -8,6 +8,15 @@ let
   cfg = config.services.espanso;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with lib.maintainers; [
       n8henrie

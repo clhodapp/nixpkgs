@@ -33,6 +33,24 @@ in
       [ "services" "xserver" "desktopManager" "e19" "enable" ]
       [ "services" "xserver" "desktopManager" "enlightenment" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/fonts/packages.nix
+    ../../../config/power-management.nix
+    ../../../config/system-path.nix
+    ../../../misc/extra-arguments.nix
+    ../../../security/wrappers/default.nix
+    ../../../system/boot/systemd/user.nix
+    ../../../system/etc/etc.nix
+    ../../display-managers/default.nix
+    ../../hardware/libinput.nix
+    ../../hardware/udisks2.nix
+    ../../hardware/upower.nix
+    ../../system/dbus.nix
+    ../display-managers/default.nix
+    ../xserver.nix
+    # END generated imports
   ];
 
   options = {

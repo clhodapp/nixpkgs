@@ -218,6 +218,15 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.fedimintd = mkOption {
       type = types.attrsOf (types.submodule fedimintdOpts);

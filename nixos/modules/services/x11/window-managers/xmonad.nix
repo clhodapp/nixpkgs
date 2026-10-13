@@ -60,6 +60,14 @@ let
   xmonad = if (cfg.config != null) then xmonad-config else xmonad-vanilla;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with maintainers; [
     lassulus
     xaverdh

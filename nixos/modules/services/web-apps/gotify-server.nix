@@ -23,6 +23,11 @@ in
         "GOTIFY_SERVER_PORT"
       ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.gotify = {

@@ -26,6 +26,11 @@ in
     ./dashboard.nix
     ./management.nix
     ./signal.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../misc/meta.nix
+    ../coturn.nix
+    # END generated imports
   ];
 
   options.services.netbird.server = {

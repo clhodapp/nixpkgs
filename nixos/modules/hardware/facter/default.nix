@@ -18,6 +18,10 @@
     ./networking
     ./system.nix
     ./virtualisation.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    # END generated imports
   ];
 
   meta.doc = ./facter.md;

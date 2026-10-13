@@ -18,6 +18,13 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd/user.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.mmsd = {
     enable = mkEnableOption "Multimedia Messaging Service Daemon";
     extraArgs = mkOption {

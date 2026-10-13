@@ -9,6 +9,14 @@ let
   cfg = config.services.windmill;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.windmill = {
     enable = lib.mkEnableOption "windmill service";
 

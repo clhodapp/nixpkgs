@@ -73,6 +73,14 @@ in
       "Use services.bird instead. bird3 is the new default bird package. You can choose to remain with bird2 by setting the service.bird.package option."
     )
     (lib.mkRemovedOptionModule [ "services" "bird6" ] "Use services.bird instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   ###### implementation

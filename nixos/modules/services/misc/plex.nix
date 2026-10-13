@@ -14,6 +14,13 @@ in
       "plex"
       "managePlugins"
     ] "Please omit or define the option: `services.plex.extraPlugins' instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

@@ -9,6 +9,22 @@ let
   cfg = config.system.nixos-init;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/shells-environment.nix
+    ../../services/hardware/udev.nix
+    ../../services/system/userborn.nix
+    ../boot/stage-2.nix
+    ../boot/systemd/initrd.nix
+    ../boot/systemd/sysusers.nix
+    ../build.nix
+    ../etc/etc.nix
+    ./activation-script.nix
+    ./bootspec.nix
+    # END generated imports
+  ];
+
   options.system.nixos-init = {
     enable = lib.mkEnableOption ''
       nixos-init, a system for bashless initialization.

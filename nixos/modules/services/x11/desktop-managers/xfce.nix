@@ -54,6 +54,42 @@ in
       [ "services" "xserver" "desktopManager" "xfce" "thunarPlugins" ]
       [ "programs" "thunar" "plugins" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/power-management.nix
+    ../../../config/system-path.nix
+    ../../../config/vte.nix
+    ../../../config/xdg/portal.nix
+    ../../../misc/extra-arguments.nix
+    ../../../programs/dconf.nix
+    ../../../programs/gdk-pixbuf.nix
+    ../../../programs/gnupg.nix
+    ../../../programs/thunar.nix
+    ../../../programs/wayland/labwc.nix
+    ../../../programs/xfconf.nix
+    ../../../security/pam.nix
+    ../../../security/polkit.nix
+    ../../../system/boot/systemd.nix
+    ../../audio/pulseaudio.nix
+    ../../desktops/accountsservice.nix
+    ../../desktops/gnome/glib-networking.nix
+    ../../desktops/gnome/gnome-keyring.nix
+    ../../desktops/gvfs.nix
+    ../../desktops/pipewire/pipewire.nix
+    ../../desktops/system-config-printer.nix
+    ../../desktops/tumbler.nix
+    ../../display-managers/default.nix
+    ../../hardware/libinput.nix
+    ../../hardware/udisks2.nix
+    ../../hardware/upower.nix
+    ../../networking/networkmanager.nix
+    ../../printing/cupsd.nix
+    ../colord.nix
+    ../display-managers/default.nix
+    ../xserver.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options = {

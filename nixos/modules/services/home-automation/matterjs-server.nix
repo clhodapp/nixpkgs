@@ -8,6 +8,14 @@ let
   cfg = config.services.matterjs-server;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.matterjs-server = {
     enable = lib.mkEnableOption "matterjs-server, a Matter Controller WebSocket server based on Matter.js";
 

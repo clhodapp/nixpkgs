@@ -6,7 +6,12 @@
 
 { lib, ... }:
 {
-  imports = [ ./installation-cd-base.nix ];
+  imports = [
+    ./installation-cd-base.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/activation/specialisation.nix
+    # END generated imports
+  ];
   isoImage.edition = "graphical";
   isoImage.showConfiguration = lib.mkDefault false;
 

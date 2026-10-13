@@ -70,6 +70,26 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/locale.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../tasks/network-interfaces.nix
+    ../databases/memcached.nix
+    ../databases/mysql.nix
+    ../logging/logrotate.nix
+    ../scheduling/cron.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   options.services.librenms = with lib; {
     enable = mkEnableOption "LibreNMS network monitoring system";
 

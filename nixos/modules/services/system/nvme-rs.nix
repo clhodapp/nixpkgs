@@ -13,6 +13,13 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.nvme-rs = {
     enable = lib.mkEnableOption "nvme-rs, a monitoring service";
 

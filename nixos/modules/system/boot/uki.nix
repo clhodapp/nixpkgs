@@ -17,6 +17,18 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../hardware/device-tree.nix
+    ../../misc/version.nix
+    ../activation/top-level.nix
+    ../build.nix
+    ./kernel.nix
+    ./systemd.nix
+    # END generated imports
+  ];
+
   options = {
 
     boot.uki = {

@@ -18,6 +18,16 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   config = mkIf cfg.enable {
     networking.firewall = mkIf cfg.openFirewall {
       allowedTCPPorts = [ 5150 ];

@@ -188,6 +188,17 @@ in
       [ "services" "postgresql" "extraPlugins" ]
       [ "services" "postgresql" "extensions" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../misc/meta.nix
+    ../../misc/version.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -8,6 +8,15 @@ let
   cfg = config.services.jotta-cli;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     services.jotta-cli = {
 

@@ -131,6 +131,12 @@ with lib;
       "zeronet"
       "logDir"
     ] "Zeronet will log by default in /var/lib/zeronet")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../security/tor.nix
+    # END generated imports
   ];
 
   meta = {

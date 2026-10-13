@@ -182,6 +182,11 @@ in
         If the group is still necessary, please define it manually using users.groups.cloudflared.
       ''
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.cloudflared = {

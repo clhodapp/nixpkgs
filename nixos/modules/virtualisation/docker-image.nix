@@ -3,6 +3,11 @@
 {
   imports = [
     ../profiles/docker-container.nix # FIXME, shouldn't include something from profiles/
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/networking/firewall.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/boot/stage-2.nix
+    # END generated imports
   ];
 
   boot.postBootCommands = ''

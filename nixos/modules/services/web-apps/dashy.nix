@@ -15,6 +15,13 @@ let
   cfg = config.services.dashy;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.dashy = {
     enable = mkEnableOption ''
       Dashy, a highly customizable, easy to use, privacy-respecting dashboard app.

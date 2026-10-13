@@ -43,6 +43,16 @@ in
       text for config as introduced by RFC0042:
       https://github.com/NixOS/rfcs/blob/master/rfcs/0042-config-option.md
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./udev.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -5,6 +5,16 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../hardware/sane.nix
+    ../hardware/udev.nix
+    ../networking/avahi-daemon.nix
+    ./cupsd.nix
+    # END generated imports
+  ];
+
   options = {
     services.ipp-usb = {
       enable = lib.mkEnableOption "ipp-usb, a daemon to turn an USB printer/scanner supporting IPP everywhere (aka AirPrint, WSD, AirScan) into a locally accessible network printer/scanner";

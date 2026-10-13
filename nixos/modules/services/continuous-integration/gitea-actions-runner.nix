@@ -54,6 +54,17 @@ let
     || (instance.token != null && instance.tokenFile == null);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/docker.nix
+    ../../virtualisation/podman/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.gitea-actions-runner.meta.maintainers;
 
   options.services.gitea-actions-runner = with types; {

@@ -7,6 +7,10 @@
   imports = [
     ../../profiles/minimal.nix
     ./installation-cd-base.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/fonts/fontconfig.nix
+    ../../misc/documentation.nix
+    # END generated imports
   ];
 
   documentation.man.enable = lib.mkOverride 500 true;

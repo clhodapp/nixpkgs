@@ -9,6 +9,13 @@ let
   cfg = config.programs.criu;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../misc/lib.nix
+    ../system/boot/kernel.nix
+    # END generated imports
+  ];
 
   options = {
     programs.criu = {

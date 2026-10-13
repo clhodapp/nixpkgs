@@ -21,6 +21,13 @@ let
   configFile = settingsFormat.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.pgscv = {
     enable = mkEnableOption "pgSCV, a PostgreSQL ecosystem metrics collector";
 

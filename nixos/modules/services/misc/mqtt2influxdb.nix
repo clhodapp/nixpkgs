@@ -118,6 +118,13 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../networking/mosquitto.nix
+    # END generated imports
+  ];
+
   options = {
     services.mqtt2influxdb = {
       enable = lib.mkEnableOption "BigClown MQTT to InfluxDB bridge";

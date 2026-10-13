@@ -17,6 +17,15 @@ let
   cfg = config.programs.dsearch;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.dsearch = {
     enable = mkEnableOption "dsearch, a fast filesystem search service with fuzzy matching";
 

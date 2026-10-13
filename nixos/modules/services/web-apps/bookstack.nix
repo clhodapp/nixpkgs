@@ -192,6 +192,16 @@ in
       "mail"
       "encryption"
     ] "Use services.bookstack.settings.MAIL_ENCRYPTION instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../tasks/network-interfaces.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options.services.bookstack = {

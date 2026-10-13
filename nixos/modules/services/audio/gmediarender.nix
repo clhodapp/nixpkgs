@@ -9,6 +9,13 @@ let
   cfg = config.services.gmediarender;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.gmediarender = {
     enable = lib.mkEnableOption "the gmediarender DLNA renderer";
 

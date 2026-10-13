@@ -26,6 +26,14 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../system/boot/systemd.nix
+    ../tasks/filesystems/zfs.nix
+    # END generated imports
+  ];
 
   options.virtualisation.containerd = with lib.types; {
     enable = lib.mkEnableOption "containerd container runtime";

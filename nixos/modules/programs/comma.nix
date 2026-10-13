@@ -9,6 +9,18 @@ let
   cfg = config.programs.comma;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./command-not-found/command-not-found.nix
+    ./fish.nix
+    ./nix-index.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.comma = {
     enable = lib.mkEnableOption "comma";
     package = lib.mkPackageOption pkgs "comma" { };

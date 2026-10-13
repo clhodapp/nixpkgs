@@ -54,6 +54,11 @@ in
       The service now runs under the dynamically allocated `icecast` group.
     '')
     (mkRenamedOptionModule [ "services" "icecast" "extraConf" ] [ "services" "icecast" "extraConfig" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   ###### interface

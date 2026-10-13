@@ -104,6 +104,17 @@ in
       "lasuite-meet"
       "frontendPackage"
     ] "services.lasuite-mette.package.frotend should be used instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../networking/livekit.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.lasuite-meet = {

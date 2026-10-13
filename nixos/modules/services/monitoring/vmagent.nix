@@ -58,6 +58,11 @@ in
       [ "services" "vmagent" "remoteWriteUrl" ]
       [ "services" "vmagent" "remoteWrite" "url" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options.services.vmagent = {

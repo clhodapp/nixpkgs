@@ -17,6 +17,17 @@ let
   cfg = config.services.vwifi;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/modprobe.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.vwifi =
       let

@@ -6,6 +6,12 @@
   imports = [
     ./netboot-base.nix
     ../../profiles/minimal.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../hardware/all-firmware.nix
+    ../../misc/documentation.nix
+    ../../services/networking/networkmanager.nix
+    ../../system/activation/top-level.nix
+    # END generated imports
   ];
 
   documentation.man.enable = lib.mkOverride 500 true;

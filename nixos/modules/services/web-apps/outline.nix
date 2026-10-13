@@ -17,6 +17,14 @@ in
       "outline"
       "sequelizeArguments"
     ] "Database migration are run agains configurated database by outline directly")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    # END generated imports
   ];
   # See here for a reference of all the options:
   #   https://github.com/outline/outline/blob/v0.67.0/.env.sample

@@ -6,6 +6,13 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../stage-1.nix
+    ./initrd.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (config.boot.initrd.enable && config.boot.initrd.systemd.enable) {
     # Copy secrets into the initrd if they cannot be appended
     boot.initrd.systemd.contents = lib.mkIf (!config.boot.loader.supportsInitrdSecrets) (

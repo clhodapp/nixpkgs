@@ -8,6 +8,16 @@ let
   cfg = config.hardware.opentabletdriver;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../system/boot/modprobe.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     gepbird
     thiagokokada

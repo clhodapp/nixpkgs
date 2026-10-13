@@ -9,6 +9,15 @@ let
   cfg = config.services.rsshub;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/redis.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.rsshub = {
     enable = lib.mkEnableOption "RSSHub service";
 

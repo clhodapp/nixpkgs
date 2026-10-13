@@ -417,6 +417,13 @@ in
         [ "services" "xserver" "libinput" "touchpad" ]
         [ "services" "libinput" "touchpad" ]
       )
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../lib/modules/generic/assertions.nix
+      ../../config/system-path.nix
+      ../../system/etc/etc.nix
+      ../x11/xserver.nix
+      ./udev.nix
+      # END generated imports
     ];
 
   options = {

@@ -45,6 +45,16 @@ let
   description = "iocaine, the deadliest poison known to AI";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.iocaine = {
     enable = mkEnableOption description;
 

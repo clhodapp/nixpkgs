@@ -10,6 +10,12 @@ let
   cfg = config.services.urserver;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd/user.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
 
   options.services.urserver.enable = lib.mkEnableOption "urserver";
 

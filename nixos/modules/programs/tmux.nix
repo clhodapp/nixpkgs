@@ -254,6 +254,14 @@ in
       [ "programs" "tmux" "extraTmuxConf" ]
       [ "programs" "tmux" "extraConfig" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../system/etc/etc.nix
+    # END generated imports
   ];
 
   meta.maintainers = with lib.maintainers; [ hxtmdev ];

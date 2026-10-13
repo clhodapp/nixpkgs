@@ -52,6 +52,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../system/etc/etc.nix
+    ../lightdm.nix
+    ./gtk.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.xserver.displayManager.lightdm.greeters.mini = {

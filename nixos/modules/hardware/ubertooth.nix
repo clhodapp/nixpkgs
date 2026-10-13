@@ -12,6 +12,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.ubertooth = {
     enable = lib.mkEnableOption "Ubertooth software and its udev rules";
 

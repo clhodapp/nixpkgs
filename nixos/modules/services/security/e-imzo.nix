@@ -8,6 +8,13 @@ let
   cfg = config.services.e-imzo;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     services.e-imzo = {
       enable = lib.mkEnableOption "E-IMZO";

@@ -71,6 +71,12 @@ in
     (mkRemovedOptionModule [ "services" "picom" "experimentalBackends" ] ''
       This option was removed by upstream since picom v10.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
   ];
 
   options.services.picom = {

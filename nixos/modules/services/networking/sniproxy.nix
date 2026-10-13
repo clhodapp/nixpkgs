@@ -23,6 +23,12 @@ in
     (mkRemovedOptionModule [ "services" "sniproxy" "logDir" ]
       "Now done by LogsDirectory=. Set to a custom path if you log to a different folder in your config."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

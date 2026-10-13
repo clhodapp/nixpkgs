@@ -105,6 +105,20 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../tasks/filesystems/zfs.nix
+    ../build.nix
+    ./kernel.nix
+    ./systemd.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ toastal ];
 
   options = {

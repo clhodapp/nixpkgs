@@ -10,6 +10,17 @@ let
   opt = options.services.gocd-agent;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-environment.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../programs/ssh.nix
+    ../../../security/ca.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.gocd-agent = {
       enable = lib.mkEnableOption "gocd-agent";

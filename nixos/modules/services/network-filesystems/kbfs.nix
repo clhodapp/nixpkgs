@@ -10,6 +10,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/boot/systemd/user.nix
+    ../networking/keybase.nix
+    # END generated imports
+  ];
 
   ###### interface
 

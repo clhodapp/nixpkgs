@@ -37,6 +37,13 @@ in
     (mkRemovedOptionModule' "kerberos" ''
       The option `krb5.kerberos' has been moved to `security.krb5.package'.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../services/system/kerberos/default.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options = {

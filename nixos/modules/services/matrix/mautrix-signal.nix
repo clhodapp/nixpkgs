@@ -65,6 +65,17 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ./conduit.nix
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options.services.mautrix-signal = {
     enable = lib.mkEnableOption "mautrix-signal, a Matrix-Signal puppeting bridge";
 

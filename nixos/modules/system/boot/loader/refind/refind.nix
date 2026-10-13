@@ -35,6 +35,20 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/assertions.nix
+    ../../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../../config/nix.nix
+    ../../../../tasks/filesystems.nix
+    ../../../activation/activation-script.nix
+    ../../../activation/top-level.nix
+    ../../luksroot.nix
+    ../efi.nix
+    ../loader.nix
+    # END generated imports
+  ];
+
   meta = {
     inherit (pkgs.refind.meta) maintainers;
   };

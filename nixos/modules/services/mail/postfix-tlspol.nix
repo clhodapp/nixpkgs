@@ -23,6 +23,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./postfix.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.postfix-tlspol.meta.maintainers;
 
   options.services.postfix-tlspol = {

@@ -260,6 +260,10 @@ in
       "options"
       "allowDocBook"
     ] "DocBook option documentation is no longer supported")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ./extra-arguments.nix
+    ./version.nix
+    # END generated imports
   ];
 
   options = {

@@ -744,6 +744,22 @@ in
           ''';
         }
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/all-firmware.nix
+    ../../misc/extra-arguments.nix
+    ../../security/tpm2.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../hardware/udev.nix
+    ../system/dbus.nix
+    ./connman.nix
+    ./networkmanager.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

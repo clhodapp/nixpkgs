@@ -8,6 +8,18 @@ let
   cfg = config.services.hardware.openrgb;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../hardware/cpu/amd-microcode.nix
+    ../../hardware/cpu/intel-microcode.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   options.services.hardware.openrgb = {
     enable = lib.mkEnableOption "OpenRGB server, for RGB lighting control";
 

@@ -116,6 +116,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/fcgiwrap.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.cgit = lib.mkOption {
       description = "Configure cgit instances.";

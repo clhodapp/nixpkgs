@@ -29,6 +29,15 @@ let
   nonFileSettings = filterAttrs (k: _: !hasSuffix "_FILE" k) cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.umami = {
     enable = mkEnableOption "umami";
 

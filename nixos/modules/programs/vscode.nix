@@ -10,6 +10,15 @@ let
   jsonFormat = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-environment.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.vscode = {
     enable = lib.mkEnableOption "VSCode editor";
 

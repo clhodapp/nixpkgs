@@ -9,6 +9,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system-path.nix
+    ../portal.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.lxqt ];
   };

@@ -9,6 +9,14 @@ let
   cfg = config.services.feishin;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.feishin = {
     enable = lib.mkEnableOption "the web version of Feishin";
 

@@ -36,6 +36,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ./nix-remote-build.nix
+    ./nix.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ rootile ];
   options = {
     lix.buildMachines = lib.mkOption {

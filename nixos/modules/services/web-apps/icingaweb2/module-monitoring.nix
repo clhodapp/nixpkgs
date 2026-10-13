@@ -44,6 +44,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/etc/etc.nix
+    ./icingaweb2.nix
+    # END generated imports
+  ];
+
   options.services.icingaweb2.modules.monitoring = with types; {
     enable = mkOption {
       type = bool;

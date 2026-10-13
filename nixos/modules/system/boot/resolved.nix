@@ -77,6 +77,22 @@ in
       "resolved"
       "extraConfig"
     ] "Use services.resolved.settings instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/nsswitch.nix
+    ../../config/resolvconf.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../services/networking/dnsmasq.nix
+    ../../services/networking/networkmanager.nix
+    ../../services/system/nix-daemon-firewall.nix
+    ../../tasks/network-interfaces.nix
+    ../etc/etc.nix
+    ./networkd.nix
+    ./systemd.nix
+    ./systemd/initrd.nix
+    ./systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   options = {

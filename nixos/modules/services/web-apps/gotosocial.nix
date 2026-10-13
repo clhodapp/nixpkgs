@@ -31,6 +31,19 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.doc = ./gotosocial.md;
   meta.maintainers = with lib.maintainers; [ blakesmith ];
 

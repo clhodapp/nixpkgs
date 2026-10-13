@@ -13,6 +13,14 @@ let
   usingDefaultUserAndGroup = cfg.user == "temporal" && cfg.group == "temporal";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.jpds ];
 
   options.services.temporal = {

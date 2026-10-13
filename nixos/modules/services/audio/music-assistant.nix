@@ -30,6 +30,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../networking/avahi-daemon.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.buildDocsInSandbox = false;
 
   options.services.music-assistant = {

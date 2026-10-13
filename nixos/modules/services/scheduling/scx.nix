@@ -9,6 +9,17 @@ let
   cfg = config.services.scx;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.scx = {
     enable = lib.mkEnableOption null // {
       description = ''

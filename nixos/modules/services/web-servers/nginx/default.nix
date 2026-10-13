@@ -1415,6 +1415,20 @@ in
       `services.nginx.experimentalZstdSettings` which adds the same configuration as the
       removed option.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../security/acme
+    ../../../security/ca.nix
+    ../../../system/boot/kernel.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../../../tasks/network-interfaces.nix
+    ../../logging/logrotate.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

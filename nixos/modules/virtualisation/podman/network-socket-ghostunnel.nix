@@ -14,6 +14,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../services/networking/ghostunnel.nix
+    ../../system/boot/systemd.nix
+    ./network-socket.nix
+    # END generated imports
+  ];
+
   options.virtualisation.podman.networkSocket = {
     server = mkOption {
       type = types.enum [ "ghostunnel" ];

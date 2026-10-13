@@ -75,6 +75,16 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../services/system/dbus.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.system76 = {
       enableAll = mkEnableOption "all recommended configuration for system76 systems";

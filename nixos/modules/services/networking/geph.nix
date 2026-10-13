@@ -8,6 +8,15 @@ let
   cfg = config.services.geph;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.geph = {
     enable = lib.mkEnableOption "geph client daemon";
 

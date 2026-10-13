@@ -8,6 +8,13 @@ let
   cfg = config.services.gs1200-exporter;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ DerGrumpf ];
 
   options.services.gs1200-exporter = {

@@ -37,6 +37,16 @@ let
   msrKernelParam = kernelParam { module = "msr"; };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../services/hardware/udev.nix
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.hardware.cpu.x86.msr =
     with lib.options;
     with lib.types;

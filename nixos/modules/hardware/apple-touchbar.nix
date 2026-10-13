@@ -11,6 +11,14 @@ let
   cfgFile = format.generate "config.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/hardware/udev.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.hardware.apple.touchBar = {
     enable = lib.mkEnableOption "support for the Touch Bar on some Apple laptops using tiny-dfr";
     package = lib.mkPackageOption pkgs "tiny-dfr" { };

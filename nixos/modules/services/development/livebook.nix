@@ -8,6 +8,14 @@ let
   cfg = config.services.livebook;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.livebook = {
     # Since livebook doesn't have a granular permission system (a user
     # either has access to all the data or none at all), the decision

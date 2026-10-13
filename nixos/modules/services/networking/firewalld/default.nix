@@ -18,6 +18,14 @@ in
     ./service.nix
     ./settings.nix
     ./zone.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../logging/logrotate.nix
+    ../../system/dbus.nix
+    # END generated imports
   ];
 
   options.services.firewalld = {

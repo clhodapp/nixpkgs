@@ -5,6 +5,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/nix.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   ###### interface
 

@@ -14,6 +14,22 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/power-management.nix
+    ../../../config/system-path.nix
+    ../../../config/xdg/portal.nix
+    ../../../config/xdg/portals/lxqt.nix
+    ../../../misc/extra-arguments.nix
+    ../../../programs/gnupg.nix
+    ../../desktops/gvfs.nix
+    ../../hardware/libinput.nix
+    ../../hardware/upower.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ teams.lxqt ];
   };

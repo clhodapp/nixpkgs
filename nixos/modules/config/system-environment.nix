@@ -31,6 +31,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../security/wrappers/default.nix
+    ../system/etc/etc.nix
+    ./shells-environment.nix
+    # END generated imports
+  ];
 
   options = {
 

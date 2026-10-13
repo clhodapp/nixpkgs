@@ -43,6 +43,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/networking.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/timesyncd.nix
+    # END generated imports
+  ];
 
   ###### interface
 

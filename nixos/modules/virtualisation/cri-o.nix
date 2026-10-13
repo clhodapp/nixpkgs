@@ -20,6 +20,18 @@ let
   cfgFile = format.generate "00-default.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ../tasks/filesystems/zfs.nix
+    ./containers.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ teams.podman ];
   };

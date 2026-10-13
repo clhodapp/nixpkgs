@@ -124,6 +124,18 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ./wireguard.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.majiir ];
 
   options.networking.wireguard = {

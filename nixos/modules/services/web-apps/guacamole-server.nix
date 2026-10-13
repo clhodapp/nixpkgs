@@ -17,6 +17,11 @@ in
       [ "services" "guacamole-server" "userMappingXml" ]
       [ "services" "guacamole-client" "userMappingXml" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ./guacamole-client.nix
+    # END generated imports
   ];
   options = {
     services.guacamole-server = {

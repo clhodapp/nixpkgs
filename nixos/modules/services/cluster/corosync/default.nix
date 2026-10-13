@@ -8,6 +8,14 @@ let
   cfg = config.services.corosync;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   # interface
   options.services.corosync = {
     enable = lib.mkEnableOption "corosync";

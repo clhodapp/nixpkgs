@@ -19,6 +19,14 @@ let
       warnConfig (pkgs.writeText "spotifyd.conf" cfg.config);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.spotifyd = {
       enable = lib.mkEnableOption "spotifyd, a Spotify playing daemon";

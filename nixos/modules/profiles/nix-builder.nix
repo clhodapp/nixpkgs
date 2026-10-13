@@ -45,6 +45,22 @@ in
         internal = true;
       };
     }
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/nix-channel.nix
+    ../config/nix.nix
+    ../config/users-groups.nix
+    ../installer/tools/tools.nix
+    ../misc/documentation.nix
+    ../misc/version.nix
+    ../security/polkit.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/ttys/getty.nix
+    ../system/activation/top-level.nix
+    ../system/build.nix
+    ../system/etc/etc.nix
+    ../tasks/swraid.nix
+    ../virtualisation/disk-size-option.nix
+    # END generated imports
   ];
 
   options.virtualisation.darwin-builder = with lib; {

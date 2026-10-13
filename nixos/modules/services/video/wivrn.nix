@@ -88,6 +88,17 @@ in
     (lib.mkRemovedOptionModule [ "services" "wivrn" "defaultRuntime" ] ''
       WiVRn now manages the active runtime itself, so this option has been removed.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd/user.nix
+    ../networking/avahi-daemon.nix
+    ../networking/firewall.nix
+    ../networking/firewalld
+    # END generated imports
   ];
   options = {
     services.wivrn = {

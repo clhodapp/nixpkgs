@@ -11,6 +11,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.flipperzero.enable = lib.mkEnableOption "udev rules and software for Flipper Zero devices";
 
   config = lib.mkIf cfg.enable {

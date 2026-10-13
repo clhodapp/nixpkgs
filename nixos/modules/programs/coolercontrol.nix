@@ -21,6 +21,12 @@ in
     (lib.mkRemovedOptionModule [ "programs" "coolercontrol" "nvidiaSupport" ] ''
       This option is deprecated as Nvidia drivers are automatically loaded at runtime.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/boot/systemd.nix
+    # END generated imports
   ];
 
   ##### implementation

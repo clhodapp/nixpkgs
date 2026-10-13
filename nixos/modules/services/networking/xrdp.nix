@@ -51,6 +51,23 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/fonts/packages.nix
+    ../../config/i18n.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../config/xdg/autostart.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/menus.nix
+    ../../config/xdg/mime.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../audio/pulseaudio.nix
+    ./firewall.nix
+    # END generated imports
+  ];
 
   ###### interface
 

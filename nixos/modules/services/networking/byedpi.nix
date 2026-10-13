@@ -9,6 +9,13 @@ let
   cfg = config.services.byedpi;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.byedpi = {
     enable = lib.mkEnableOption "the ByeDPI service";
     package = lib.mkPackageOption pkgs "byedpi" { };

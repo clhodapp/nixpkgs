@@ -20,6 +20,13 @@ let
   configFile = toml.generate "scion-router.toml" (recursiveUpdate defaultConfig cfg.settings);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    ./scion.nix
+    # END generated imports
+  ];
+
   options.services.scion.scion-router = {
     enable = mkEnableOption "the scion-router service";
     settings = mkOption {

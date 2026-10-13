@@ -6,6 +6,14 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nix.nix
+    ../../misc/nixpkgs.nix
+    ../../system/activation/top-level.nix
+    ../../system/build.nix
+    # END generated imports
+  ];
 
   options = {
 

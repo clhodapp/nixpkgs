@@ -89,6 +89,18 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../virtualisation/nixos-containers.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.jellyfin = {
       enable = mkEnableOption "Jellyfin Media Server";

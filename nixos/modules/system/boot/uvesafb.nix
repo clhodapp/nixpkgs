@@ -14,6 +14,13 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ./kernel.nix
+    ./stage-1.nix
+    # END generated imports
+  ];
+
   options = {
     boot.uvesafb = {
       enable = mkEnableOption "uvesafb";

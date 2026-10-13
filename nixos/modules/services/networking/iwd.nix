@@ -28,6 +28,21 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./networkmanager.nix
+    ./wpa_supplicant.nix
+    # END generated imports
+  ];
+
   options.networking.wireless.iwd = {
     enable = mkEnableOption "iwd";
 

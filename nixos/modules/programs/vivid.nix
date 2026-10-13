@@ -9,6 +9,17 @@ let
   cfg = config.programs.vivid;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./bash/ls-colors.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.vivid = {
       enable = lib.mkOption {

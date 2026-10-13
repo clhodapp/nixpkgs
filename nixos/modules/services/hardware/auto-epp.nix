@@ -12,6 +12,15 @@ let
   inherit (lib) mkOption types;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     services.auto-epp = {
       enable = lib.mkEnableOption "auto-epp for amd active pstate";

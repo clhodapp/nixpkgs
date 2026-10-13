@@ -11,6 +11,17 @@ in
   imports = [
     ./disk-size-option.nix
     ../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/label.nix
+    ../misc/version.nix
+    ../system/activation/top-level.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    ../system/build.nix
+    ../tasks/filesystems.nix
+    # END generated imports
   ];
 
   options.image = {

@@ -10,6 +10,19 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../misc/extra-arguments.nix
+    ../../../services/networking/ssh/sshd.nix
+    ../../../services/system/nscd.nix
+    ../../../tasks/filesystems.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    ./userdbd.nix
+    # END generated imports
+  ];
+
   options.services.homed = {
     enable = lib.mkEnableOption "systemd home area/user account manager";
 

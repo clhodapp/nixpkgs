@@ -11,6 +11,13 @@
   imports = [
     ../../profiles/base.nix
     ./sd-image.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/activation/top-level.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/loader/generic-extlinux-compatible
+    ../../system/boot/loader/grub/grub.nix
+    ../../system/build.nix
+    # END generated imports
   ];
 
   boot.loader.grub.enable = false;

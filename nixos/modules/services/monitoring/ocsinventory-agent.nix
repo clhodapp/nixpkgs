@@ -14,6 +14,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta = {
     doc = ./ocsinventory-agent.md;
     maintainers = with lib.maintainers; [ anthonyroussel ];

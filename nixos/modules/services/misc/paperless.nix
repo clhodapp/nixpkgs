@@ -140,6 +140,24 @@ in
       [ "services" "paperless" "extraConfig" ]
       [ "services" "paperless" "settings" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/locale.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/ca.nix
+    ../../security/sudo.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../search/tika.nix
+    ../web-servers/nginx/default.nix
+    ./gotenberg.nix
+    # END generated imports
   ];
 
   options.services.paperless = {

@@ -32,6 +32,18 @@ let
   ) cfg.partitions;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../misc/extra-arguments.nix
+    ../../etc/etc.nix
+    ../kernel.nix
+    ../systemd.nix
+    ./initrd.nix
+    # END generated imports
+  ];
+
   options = {
     boot.initrd.systemd.repart = {
       enable = lib.mkEnableOption "systemd-repart" // {

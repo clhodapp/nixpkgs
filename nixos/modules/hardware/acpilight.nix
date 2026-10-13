@@ -8,6 +8,13 @@ let
   cfg = config.hardware.acpilight;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.acpilight = {
       enable = lib.mkOption {

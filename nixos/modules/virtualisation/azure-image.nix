@@ -26,6 +26,17 @@ in
         "diskSize"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../misc/label.nix
+    ../misc/version.nix
+    ../system/activation/top-level.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/build.nix
+    ../tasks/filesystems.nix
+    # END generated imports
   ];
 
   options.virtualisation.azureImage = {

@@ -11,6 +11,19 @@
       [ "virtualisation" "containers" "cdi" "dynamic" "nvidia" "enable" ]
       [ "hardware" "nvidia-container-toolkit" "enable" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../hardware/graphics.nix
+    ../../../hardware/video/nvidia.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../../virtualisation/containers.nix
+    ../../../virtualisation/docker-rootless.nix
+    ../../../virtualisation/docker.nix
+    ../../../virtualisation/podman/default.nix
+    ../../x11/xserver.nix
+    ../udev.nix
+    # END generated imports
   ];
 
   options =

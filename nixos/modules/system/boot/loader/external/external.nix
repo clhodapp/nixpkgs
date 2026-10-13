@@ -11,6 +11,17 @@ let
   cfg = config.boot.loader.external;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../../misc/meta.nix
+    ../../../activation/activation-script.nix
+    ../../stage-1.nix
+    ../grub/grub.nix
+    ../systemd-boot/systemd-boot.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with maintainers; [
       cole-h

@@ -33,6 +33,19 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../networking/firewall.nix
+    ./default.nix
+    ./hbase.nix
+    ./hdfs.nix
+    # END generated imports
+  ];
+
   options.services.hadoop.yarn = {
     resourcemanager = {
       enable = lib.mkEnableOption "Hadoop YARN ResourceManager";

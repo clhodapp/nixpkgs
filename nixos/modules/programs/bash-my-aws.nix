@@ -14,6 +14,13 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ./bash/bash.nix
+    # END generated imports
+  ];
+
   options = {
     programs.bash-my-aws = {
       enable = lib.mkEnableOption "bash-my-aws";

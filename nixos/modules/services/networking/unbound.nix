@@ -387,5 +387,15 @@ in
     (mkRemovedOptionModule [ "services" "unbound" "extraConfig" ] ''
       You can use services.unbound.settings to add any configuration you want.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
   ];
 }

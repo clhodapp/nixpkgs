@@ -619,6 +619,13 @@ in
       This option has been removed as it made the cookie secret world-readable.
       Use services.oauth2-proxy.cookie.secretFile instead.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../web-apps/keycloak.nix
+    ./oauth2-proxy-nginx.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

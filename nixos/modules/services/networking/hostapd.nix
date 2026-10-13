@@ -1347,6 +1347,15 @@ in
           While upgrading your config, please consider using the newer SAE authentication scheme
           and one of the new `passwordFile`-like options to avoid putting the password into the world readable nix-store.'')
       )
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../lib/modules/generic/assertions.nix
+      ../../../../lib/modules/generic/meta-maintainers.nix
+      ../../config/system-path.nix
+      ../../misc/extra-arguments.nix
+      ../../system/boot/systemd.nix
+      ./iwd.nix
+      ./wpa_supplicant.nix
+      # END generated imports
     ];
 
   config = mkIf cfg.enable {

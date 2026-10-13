@@ -40,6 +40,17 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../system/activation/activation-script.nix
+    ../../system/boot/systemd/initrd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
+
   options = {
     services.envfs = {
       enable = lib.mkEnableOption "Envfs filesystem" // {

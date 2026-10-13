@@ -90,6 +90,19 @@ let
   configFile = format.generate "jibri.conf" { jibri = jibriConfig; };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/kernel.nix
+    ../../../system/boot/modprobe.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options.services.jibri = with types; {
     enable = mkEnableOption "Jitsi BRoadcasting Infrastructure" // {
       description = ''

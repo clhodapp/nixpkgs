@@ -32,6 +32,13 @@ in
     (lib.mkRemovedOptionModule [ "services" "journald" "gateway" "cert" ] tlsOptionRemovedMessage)
     (lib.mkRemovedOptionModule [ "services" "journald" "gateway" "key" ] tlsOptionRemovedMessage)
     (lib.mkRemovedOptionModule [ "services" "journald" "gateway" "trust" ] tlsOptionRemovedMessage)
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../systemd.nix
+    # END generated imports
   ];
 
   meta.maintainers = [ ];

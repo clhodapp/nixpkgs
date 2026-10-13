@@ -18,6 +18,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/sysctl.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../tasks/network-interfaces.nix
+    ./firewall.nix
+    # END generated imports
+  ];
 
   options = {
 

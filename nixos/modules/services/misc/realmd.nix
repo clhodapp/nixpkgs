@@ -10,6 +10,14 @@ let
   cfg = config.services.realmd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.realmd = {
     enable = mkEnableOption "realmd service for managing system enrollment in Active Directory domains";
 

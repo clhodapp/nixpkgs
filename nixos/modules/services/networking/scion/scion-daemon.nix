@@ -30,6 +30,13 @@ let
   configFile = toml.generate "scion-daemon.toml" (recursiveUpdate defaultConfig cfg.settings);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    ./scion.nix
+    # END generated imports
+  ];
+
   options.services.scion.scion-daemon = {
     enable = mkEnableOption "the scion-daemon service";
     settings = mkOption {

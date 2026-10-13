@@ -15,6 +15,15 @@ let
   agentSock = "blackfire/agent.sock";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = pkgs.blackfire.meta.maintainers;
     doc = ./blackfire.md;

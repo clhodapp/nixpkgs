@@ -11,6 +11,14 @@ let
   isRedisUnixSocket = lib.hasPrefix "/" cfg.redis.host;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/redis.nix
+    # END generated imports
+  ];
 
   meta.maintainers = [ lib.maintainers.albertlarsan68 ];
 

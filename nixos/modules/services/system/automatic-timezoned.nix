@@ -8,6 +8,17 @@ let
   cfg = config.services.automatic-timezoned;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/locale.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../desktops/geoclue2.nix
+    # END generated imports
+  ];
+
   options = {
     services.automatic-timezoned = {
       enable = lib.mkOption {

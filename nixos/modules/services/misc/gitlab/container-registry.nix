@@ -47,6 +47,15 @@ in
       "registry"
       "port"
     ] "Use services.gitlab.registry.settings.http.addr instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/users-groups.nix
+    ../../../misc/version.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../databases/postgresql.nix
+    ./default.nix
+    # END generated imports
   ];
   options.services.gitlab.registry = {
     enable = lib.mkEnableOption "GitLab container registry";

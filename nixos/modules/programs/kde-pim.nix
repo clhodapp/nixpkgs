@@ -16,6 +16,13 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/desktop-managers/plasma6.nix
+    # END generated imports
+  ];
+
   options.programs.kde-pim = {
     enable = lib.mkEnableOption "KDE PIM base packages";
     kmail = mkProgramOption "KMail";

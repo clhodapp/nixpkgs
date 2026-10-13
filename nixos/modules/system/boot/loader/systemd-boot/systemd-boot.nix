@@ -161,6 +161,23 @@ in
       ]
       (config: lib.strings.removeSuffix ".conf" config.boot.loader.systemd-boot.netbootxyz.entryFilename)
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/assertions.nix
+    ../../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../../config/nix.nix
+    ../../../../hardware/device-tree.nix
+    ../../../../misc/lib.nix
+    ../../../../misc/version.nix
+    ../../../activation/activation-script.nix
+    ../../../activation/bootspec.nix
+    ../../../activation/top-level.nix
+    ../../kernel.nix
+    ../../stage-1.nix
+    ../../systemd.nix
+    ../efi.nix
+    ../grub/grub.nix
+    ../loader.nix
+    # END generated imports
   ];
 
   options.boot.loader.systemd-boot = {

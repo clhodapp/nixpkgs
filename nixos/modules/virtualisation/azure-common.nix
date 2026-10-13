@@ -14,6 +14,21 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../services/networking/networkmanager.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/system/cloud-init.nix
+    ../system/boot/kernel.nix
+    ../system/boot/networkd.nix
+    ../system/boot/systemd.nix
+    ../tasks/network-interfaces.nix
+    ./waagent.nix
+    # END generated imports
+  ];
+
   options.virtualisation.azure = {
     acceleratedNetworking = lib.mkOption {
       default = false;

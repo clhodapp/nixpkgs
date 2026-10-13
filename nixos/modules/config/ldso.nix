@@ -24,6 +24,14 @@ let
   ldsoBasename32 = "ld-linux.so.2"; # last (splitString "/" pkgs.pkgsi686Linux.stdenv.cc.bintools.dynamicLinker)
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options = {
     environment.ldso = mkOption {
       type = types.nullOr types.path;

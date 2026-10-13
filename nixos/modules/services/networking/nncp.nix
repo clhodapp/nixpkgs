@@ -16,6 +16,14 @@ let
   pkg = programCfg.package;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../programs/nncp.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.nncp = {

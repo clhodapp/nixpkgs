@@ -11,6 +11,14 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "programs" "nekoray" ] [ "programs" "throne" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../security/polkit.nix
+    ../security/wrappers/default.nix
+    ../system/boot/resolved.nix
+    # END generated imports
   ];
 
   options = {

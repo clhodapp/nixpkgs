@@ -123,6 +123,31 @@ in
       "gdm"
       "wayland"
     ] "Disabling this option is no longer supported with GNOME 50.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../programs/dconf.nix
+    ../../security/pam.nix
+    ../../system/boot/plymouth.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../audio/pulseaudio.nix
+    ../desktops/accountsservice.nix
+    ../desktops/gnome/gnome-initial-setup.nix
+    ../security/fprintd.nix
+    ../system/dbus.nix
+    ../x11/display-managers/default.nix
+    ../x11/display-managers/lightdm.nix
+    ../x11/xserver.nix
+    ./default.nix
+    ./generic.nix
+    # END generated imports
   ];
 
   meta = {

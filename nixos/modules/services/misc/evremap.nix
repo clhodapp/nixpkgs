@@ -47,6 +47,15 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/uinput.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.evremap = {
     enable = lib.mkEnableOption "evremap, a keyboard input remapper for Linux/Wayland systems";
 

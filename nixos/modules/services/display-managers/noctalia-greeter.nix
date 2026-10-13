@@ -29,6 +29,19 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../desktops/accountsservice.nix
+    ./greetd.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.noctalia-greeter = {
     enable = mkEnableOption "Noctalia Greeter, a minimal login greeter for greetd";
 

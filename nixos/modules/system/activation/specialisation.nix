@@ -30,6 +30,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/meta.nix
+    ./top-level.nix
+    # END generated imports
+  ];
+
   options = {
     isSpecialisation = mkOption {
       type = lib.types.bool;

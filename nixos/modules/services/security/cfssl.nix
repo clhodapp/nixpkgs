@@ -9,6 +9,14 @@ let
   cfg = config.services.cfssl;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.cfssl = {
     enable = lib.mkEnableOption "the CFSSL CA api-server";
 

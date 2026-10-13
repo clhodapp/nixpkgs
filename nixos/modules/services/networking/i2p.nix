@@ -9,6 +9,14 @@ let
   homeDir = "/var/lib/i2p";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.i2p.enable = lib.mkEnableOption "I2P router";
 

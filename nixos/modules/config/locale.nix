@@ -17,6 +17,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/desktops/geoclue2.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ./system-environment.nix
+    # END generated imports
+  ];
+
   options = {
 
     time = {

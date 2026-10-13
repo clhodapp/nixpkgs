@@ -9,6 +9,14 @@ let
   ryzen-smu = config.boot.kernelPackages.ryzen-smu;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.hardware.cpu.amd.ryzen-smu = {
     enable = mkEnableOption ''
       ryzen_smu, a linux kernel driver that exposes access to the SMU (System Management Unit) for certain AMD Ryzen Processors.

@@ -3,7 +3,14 @@
 { lib, ... }:
 
 {
-  imports = [ ./installation-cd-graphical-base.nix ];
+  imports = [
+    ./installation-cd-graphical-base.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../services/desktop-managers/gnome.nix
+    ../../services/display-managers/default.nix
+    ../../services/display-managers/gdm.nix
+    # END generated imports
+  ];
 
   isoImage.edition = lib.mkDefault "gnome";
 

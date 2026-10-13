@@ -8,6 +8,14 @@ let
   cfg = config.services.goxlr-utility;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/autostart.nix
+    ../hardware/udev.nix
+    # END generated imports
+  ];
 
   options = {
     services.goxlr-utility = {

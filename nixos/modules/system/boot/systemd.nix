@@ -962,5 +962,32 @@ in
       "systemd"
       "enableCgroupAccounting"
     ] "To disable cgroup accounting, disable systemd.settings.Manager.*Accounting directly.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/i18n.nix
+    ../../config/locale.nix
+    ../../config/networking.nix
+    ../../config/nsswitch.nix
+    ../../config/shells-environment.nix
+    ../../config/sysctl.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../misc/lib.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../services/logging/logrotate.nix
+    ../../services/networking/ssh/sshd.nix
+    ../../services/system/dbus.nix
+    ../../tasks/filesystems.nix
+    ../../virtualisation/nixos-containers.nix
+    ../activation/nixos-init.nix
+    ../build.nix
+    ../etc/etc.nix
+    ./kernel.nix
+    ./stage-2.nix
+    ./systemd/user.nix
+    # END generated imports
   ];
 }

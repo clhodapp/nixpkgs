@@ -49,6 +49,14 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../hardware/cpu/x86-msr.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.undervolt = {
     enable = lib.mkEnableOption ''
       Undervolting service for Intel CPUs.

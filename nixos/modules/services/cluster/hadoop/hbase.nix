@@ -108,6 +108,17 @@ let
     });
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/networking.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../networking/firewall.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options.services.hadoop = {
 
     gatewayRole.enableHbaseCli = lib.mkEnableOption "HBase CLI tools";

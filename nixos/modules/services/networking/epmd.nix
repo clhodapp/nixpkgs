@@ -10,6 +10,15 @@ let
   cfg = config.services.epmd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.epmd = {
     enable = lib.mkOption {

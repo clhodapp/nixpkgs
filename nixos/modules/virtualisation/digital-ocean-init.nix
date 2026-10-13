@@ -17,6 +17,15 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/nix.nix
+    ../system/boot/systemd.nix
+    ../system/build.nix
+    # END generated imports
+  ];
+
   options.virtualisation.digitalOcean.rebuildFromUserData = mkOption {
     type = types.bool;
     default = true;

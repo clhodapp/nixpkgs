@@ -9,6 +9,17 @@ let
   cfg = config.programs.fzf;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./fish.nix
+    ./zsh/oh-my-zsh.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.fzf = {
       fuzzyCompletion = lib.mkEnableOption "fuzzy completion with fzf";

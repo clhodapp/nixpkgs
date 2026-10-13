@@ -22,6 +22,18 @@ let
     ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../services/printing/cupsd.nix
+    ../system/boot/kernel.nix
+    ../system/boot/modprobe.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = with lib; {
     virtualisation.vmware.host = {
       enable = mkEnableOption "VMware" // {

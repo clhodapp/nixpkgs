@@ -7,6 +7,14 @@
 
 {
   imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../services/networking/firewall.nix
+    ../system/boot/systemd.nix
+    # END generated imports
   ];
   options.programs.clash-verge = {
     enable = lib.mkEnableOption "Clash Verge";

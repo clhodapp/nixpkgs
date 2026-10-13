@@ -10,6 +10,12 @@ let
   inherit (config.nixops) enableDeprecatedAutoLuks;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    # END generated imports
+  ];
+
   options.nixops.enableDeprecatedAutoLuks = lib.mkEnableOption "the deprecated NixOps AutoLuks module";
 
   config = {

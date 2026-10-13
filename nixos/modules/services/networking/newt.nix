@@ -35,6 +35,11 @@ in
       [ "services" "newt" "endpoint" ]
       [ "services" "newt" "settings" "endpoint" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

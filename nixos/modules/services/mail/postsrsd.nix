@@ -68,6 +68,16 @@ in
       [ "services" "postsrsd" "separator" ]
       [ "services" "postsrsd" "settings" "separator" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./postfix.nix
+    # END generated imports
   ]
   ++
     map

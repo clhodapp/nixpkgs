@@ -18,6 +18,13 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    # END generated imports
+  ];
+
   options.programs.yazi = {
     enable = lib.mkEnableOption "yazi terminal file manager";
 

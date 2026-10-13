@@ -12,6 +12,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ./nftables.nix
+    # END generated imports
+  ];
+
   options = {
     services.v2raya = {
       enable = options.mkEnableOption "the v2rayA service";

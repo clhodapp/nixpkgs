@@ -41,6 +41,14 @@ let
   });
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.adguardhome = with lib.types; {
     enable = lib.mkEnableOption "AdGuard Home network-wide ad blocker";
 

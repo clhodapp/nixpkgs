@@ -750,6 +750,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ./prometheus/default.nix
+    # END generated imports
+  ];
 
   options.services.thanos = {
 

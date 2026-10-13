@@ -30,6 +30,13 @@ in
     (lib.mkRemovedOptionModule [ "services" "mopidy" "configuration" ] ''
       Use RFC42-style services.mopidy.settings instead.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   options = {

@@ -26,6 +26,15 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/meta.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   options.services.jirafeau = {
     adminPasswordSha256 = mkOption {
       type = types.str;

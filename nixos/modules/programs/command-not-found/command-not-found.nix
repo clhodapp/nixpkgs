@@ -29,6 +29,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../bash/bash.nix
+    ../fish.nix
+    ../zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.command-not-found = {
 
     enable = lib.mkOption {

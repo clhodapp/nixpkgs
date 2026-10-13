@@ -10,6 +10,13 @@ let
   opt = options.services.gophernicus;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.gophernicus = {
     enable = lib.mkEnableOption "gophernicus, a modern gopher daemon";
     package = lib.mkPackageOption pkgs "gophernicus" { };

@@ -9,6 +9,12 @@ let
   enable = config.programs.bash.enableLsColors;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ./bash.nix
+    # END generated imports
+  ];
+
   options = {
     programs.bash.enableLsColors = lib.mkEnableOption "extra colors in directory listings" // {
       default = true;

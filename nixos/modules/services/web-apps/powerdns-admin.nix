@@ -23,6 +23,14 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.powerdns-admin = {
     enable = mkEnableOption "the PowerDNS web interface";
 

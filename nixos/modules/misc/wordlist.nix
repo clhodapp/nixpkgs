@@ -12,6 +12,12 @@ let
     '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/shells-environment.nix
+    # END generated imports
+  ];
+
   options = {
     environment.wordlist = {
       enable = lib.mkEnableOption "environment variables for lists of words";

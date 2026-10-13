@@ -26,6 +26,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../activation/activation-script.nix
+    ../../../activation/top-level.nix
+    # END generated imports
+  ];
+
   options = {
 
     boot.loader.generationsDir = {

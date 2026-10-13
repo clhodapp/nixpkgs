@@ -23,6 +23,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.buildDocsInSandbox = false;
 
   options.services.go2rtc = with types; {

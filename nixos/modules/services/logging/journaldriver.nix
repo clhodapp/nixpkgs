@@ -21,6 +21,12 @@ let
   cfg = config.services.journaldriver;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.journaldriver = {
     enable = mkOption {
       type = types.bool;

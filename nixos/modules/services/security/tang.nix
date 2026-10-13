@@ -8,6 +8,14 @@ let
   cfg = config.services.tang;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.tang = {
     enable = lib.mkEnableOption "tang";
 

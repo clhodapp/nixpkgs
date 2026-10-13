@@ -22,6 +22,18 @@ in
 {
   imports = [
     (mkRenamedOptionModule [ "services" "vmwareGuest" ] [ "virtualisation" "vmware" "guest" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../services/hardware/udev.nix
+    ../services/x11/display-managers/default.nix
+    ../services/x11/xserver.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    # END generated imports
   ];
 
   meta = {

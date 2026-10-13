@@ -126,6 +126,11 @@
 
   imports = [
     (lib.mkRenamedOptionModule [ "system" "nssHosts" ] [ "system" "nssDatabases" "hosts" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/system/nscd.nix
+    ../system/etc/etc.nix
+    # END generated imports
   ];
 
   config = {

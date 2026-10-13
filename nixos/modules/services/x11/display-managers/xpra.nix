@@ -14,6 +14,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ../../audio/pulseaudio.nix
+    ../../display-managers/generic.nix
+    ../xserver.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

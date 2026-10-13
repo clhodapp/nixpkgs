@@ -17,6 +17,13 @@ in
       "autobrr"
       "secretFile"
     ] "autobrr no longer uses a session secret since version 1.82.0.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

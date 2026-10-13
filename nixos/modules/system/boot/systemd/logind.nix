@@ -104,5 +104,11 @@
       (settingsRename "lidSwitch" "HandleLidSwitch")
       (settingsRename "lidSwitchExternalPower" "HandleLidSwitchExternalPower")
       (settingsRename "lidSwitchDocked" "HandleLidSwitchDocked")
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../../lib/modules/generic/assertions.nix
+      ../../../misc/extra-arguments.nix
+      ../../etc/etc.nix
+      ../systemd.nix
+      # END generated imports
     ];
 }

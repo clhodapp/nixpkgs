@@ -15,6 +15,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ../../../misc/version.nix
+    ../xserver.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.xserver.desktopManager.xterm.enable = mkOption {

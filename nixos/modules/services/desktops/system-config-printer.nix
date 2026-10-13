@@ -5,6 +5,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
 
   ###### interface
 

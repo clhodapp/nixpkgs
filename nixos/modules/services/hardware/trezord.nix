@@ -8,6 +8,14 @@ let
   cfg = config.services.trezord;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ./udev.nix
+    # END generated imports
+  ];
 
   ### docs
 

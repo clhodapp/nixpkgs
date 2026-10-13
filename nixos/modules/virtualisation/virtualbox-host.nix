@@ -24,6 +24,22 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/ids.nix
+    ../security/wrappers/default.nix
+    ../services/hardware/udev.nix
+    ../services/networking/networkmanager.nix
+    ../system/boot/kernel.nix
+    ../system/boot/networkd.nix
+    ../system/boot/systemd.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options.virtualisation.virtualbox.host = {
     enable = lib.mkEnableOption "VirtualBox" // {
       description = ''

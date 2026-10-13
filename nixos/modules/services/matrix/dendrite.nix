@@ -11,6 +11,13 @@ let
   workingDir = "/var/lib/dendrite";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.dendrite = {
     enable = lib.mkEnableOption "matrix.org dendrite";
     package = lib.mkPackageOption pkgs "dendrite" { };

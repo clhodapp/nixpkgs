@@ -9,6 +9,15 @@ let
   cfg = config.programs.fuse;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ ];
 
   options.programs.fuse = {

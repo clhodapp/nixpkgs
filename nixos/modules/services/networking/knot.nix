@@ -318,6 +318,15 @@ in
     (mkChangedOptionModule [ "services" "knot" "extraConfig" ] [ "services" "knot" "settingsFile" ] (
       config: mkConfigFile config.services.knot.extraConfig
     ))
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 
   config = mkIf config.services.knot.enable {

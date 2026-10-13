@@ -14,6 +14,13 @@ in
     ./yarn.nix
     ./hdfs.nix
     ./hbase.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/shells-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/etc/etc.nix
+    # END generated imports
   ];
 
   options.services.hadoop = {

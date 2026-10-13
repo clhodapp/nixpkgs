@@ -29,6 +29,16 @@ in
       "portal"
       "gtkUsePortal"
     ] "This option has been removed due to being unsupported and discouraged by the GTK developers.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../programs/fuse.nix
+    ../../services/system/dbus.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system-environment.nix
+    ../system-path.nix
+    # END generated imports
   ];
 
   meta = {

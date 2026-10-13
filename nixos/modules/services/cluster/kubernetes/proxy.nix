@@ -19,6 +19,14 @@ in
       [ "services" "kubernetes" "proxy" "address" ]
       [ "services" "kubernetes" "proxy" "bindAddress" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../tasks/network-interfaces.nix
+    ./default.nix
+    ./pki.nix
+    # END generated imports
   ];
 
   ###### interface

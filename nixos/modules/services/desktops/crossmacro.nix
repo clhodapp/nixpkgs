@@ -9,6 +9,19 @@ let
   cfg = config.services.crossmacro;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/uinput.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.crossmacro = {
     enable = lib.mkEnableOption "CrossMacro, a cross-platform mouse and keyboard macro application";
 

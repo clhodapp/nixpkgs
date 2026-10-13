@@ -11,6 +11,24 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/fonts/fontdir.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../config/xdg/portal.nix
+    ../../misc/meta.nix
+    ../../programs/fuse.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   meta = {
     doc = ./flatpak.md;
     maintainers = pkgs.flatpak.meta.maintainers;

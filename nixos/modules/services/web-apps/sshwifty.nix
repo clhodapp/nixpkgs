@@ -10,6 +10,13 @@ let
   settings = format.generate "sshwifty.json" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.sshwifty = {
     enable = lib.mkEnableOption "Sshwifty";
     package = lib.mkPackageOption pkgs "sshwifty" { };

@@ -12,6 +12,15 @@ let
   configFile = format.generate "jicofo.conf" cfg.config;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.services.jicofo = with lib.types; {
     enable = lib.mkEnableOption "Jitsi Conference Focus - component of Jitsi Meet";
 

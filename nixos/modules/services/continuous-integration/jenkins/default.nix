@@ -9,6 +9,18 @@ let
   jenkinsUrl = "http://${cfg.listenAddress}:${toString cfg.port}${cfg.prefix}";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/shells-environment.nix
+    ../../../config/system-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.jenkins = {
       enable = lib.mkEnableOption "Jenkins, a continuous integration server";

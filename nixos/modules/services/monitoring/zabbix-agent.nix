@@ -43,6 +43,12 @@ in
       "zabbixAgent"
       "extraConfig"
     ] "Use services.zabbixAgent.settings instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   # interface

@@ -23,6 +23,19 @@
       "lxc"
       "privilegedContainer"
     ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/nix.nix
+    ../misc/label.nix
+    ../system/activation/activation-script.nix
+    ../system/activation/top-level.nix
+    ../system/boot/networkd.nix
+    ../system/boot/systemd.nix
+    ../system/build.nix
+    ../tasks/network-interfaces.nix
+    ./nixos-containers.nix
+    # END generated imports
   ];
 
   options = { };

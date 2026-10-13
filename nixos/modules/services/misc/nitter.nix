@@ -68,6 +68,12 @@ in
       [ "services" "nitter" "guestAccounts" ]
       [ "services" "nitter" "sessionsFile" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../databases/redis.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

@@ -99,6 +99,19 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../misc/version.nix
+    ../../services/hardware/udev.nix
+    ../etc/etc.nix
+    ./kernel.nix
+    ./stage-1.nix
+    ./systemd.nix
+    ./systemd/initrd.nix
+    ./systemd/tmpfiles.nix
+    # END generated imports
+  ];
 
   options = {
 

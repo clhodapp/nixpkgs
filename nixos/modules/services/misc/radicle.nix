@@ -134,6 +134,20 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/ca.nix
+    ../../security/systemd-confinement.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ../networking/firewall.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.radicle = {
       enable = lib.mkEnableOption "Radicle Seed Node";

@@ -40,6 +40,20 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/locale.nix
+    ../../config/system-path.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../desktops/geoclue2.nix
+    ../hardware/upower.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.clight = {
     enable = mkEnableOption "clight";
 

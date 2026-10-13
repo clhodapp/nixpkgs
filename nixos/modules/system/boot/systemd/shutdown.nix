@@ -13,6 +13,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/shells-environment.nix
+    ../../../misc/extra-arguments.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    # END generated imports
+  ];
+
   options.systemd.shutdownRamfs = {
     enable = lib.mkEnableOption "pivoting back to an initramfs for shutdown" // {
       default = true;

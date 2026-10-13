@@ -10,6 +10,14 @@ let
   opt = options.services.subsonic;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.subsonic = {
       enable = lib.mkEnableOption "Subsonic daemon";

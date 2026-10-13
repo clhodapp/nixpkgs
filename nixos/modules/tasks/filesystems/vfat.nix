@@ -14,6 +14,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/kernel.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd/initrd.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
+
   config = mkIf (config.boot.supportedFilesystems.vfat or false) {
 
     system.fsPackages = [

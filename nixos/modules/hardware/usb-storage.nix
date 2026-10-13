@@ -27,5 +27,9 @@
       [ "hardware" "usbStorage" "manageStartStop" ]
       [ "hardware" "usbStorage" "manageShutdown" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/hardware/udev.nix
+    # END generated imports
   ];
 }

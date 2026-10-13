@@ -5,6 +5,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/nixpkgs.nix
+    ./.
+    # END generated imports
+  ];
+
   # Skip setting hostPlatform if it's read-only
   config.nixpkgs =
     lib.optionalAttrs

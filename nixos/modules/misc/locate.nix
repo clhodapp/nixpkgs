@@ -19,6 +19,16 @@ in
     (lib.mkRemovedOptionModule [ "services" "locate" "localuser" ]
       "The services.locate.localuser option has been removed because support for findutils locate has been removed."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/wrappers/default.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ./extra-arguments.nix
+    # END generated imports
   ];
 
   options.services.locate = {

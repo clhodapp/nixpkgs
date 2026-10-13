@@ -118,6 +118,10 @@ in
       "deviceTree"
       "base"
     ] "Use hardware.deviceTree.kernelPackage instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../system/boot/kernel.nix
+    # END generated imports
   ];
 
   options = {

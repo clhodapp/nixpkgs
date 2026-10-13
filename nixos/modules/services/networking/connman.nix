@@ -20,6 +20,16 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "networking" "connman" ] [ "services" "connman" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ./iwd.nix
+    ./networkmanager.nix
+    ./wpa_supplicant.nix
+    # END generated imports
   ];
 
   ###### interface

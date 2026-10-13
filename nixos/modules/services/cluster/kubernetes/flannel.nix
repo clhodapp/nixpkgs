@@ -12,6 +12,20 @@ let
   storageBackend = "kubernetes";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../misc/meta.nix
+    ../../networking/dhcpcd.nix
+    ../../networking/firewall.nix
+    ../../networking/flannel.nix
+    ./addon-manager.nix
+    ./apiserver.nix
+    ./default.nix
+    ./kubelet.nix
+    ./pki.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.kubernetes.flannel = {
     enable = lib.mkEnableOption "flannel networking";

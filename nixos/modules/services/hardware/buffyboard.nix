@@ -25,6 +25,14 @@ let
   ini = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ colinsane ];
 
   options = {

@@ -8,6 +8,13 @@ let
   inherit (lib) literalExpression types;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../tasks/filesystems.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options = {
     openstack = {
       zfs = {

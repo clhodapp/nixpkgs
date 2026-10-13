@@ -552,6 +552,25 @@ in
       ];
     })
     ../../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/nix.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/label.nix
+    ../../misc/lib.nix
+    ../../misc/version.nix
+    ../../system/activation/specialisation.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/loader/grub/grub.nix
+    ../../system/boot/loader/grub/memtest.nix
+    ../../system/boot/loader/loader.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../../system/build.nix
+    # END generated imports
   ];
 
   options = {

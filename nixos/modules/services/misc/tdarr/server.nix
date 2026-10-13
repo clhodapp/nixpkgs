@@ -10,6 +10,15 @@ let
   serverEnabled = cfg.enable || cfg.server.enable;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../networking/firewall.nix
+    ./.
+    # END generated imports
+  ];
+
   options.services.tdarr.server = {
     enable = lib.mkEnableOption "Tdarr server";
 

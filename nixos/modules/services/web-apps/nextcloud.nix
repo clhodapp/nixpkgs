@@ -370,6 +370,23 @@ in
       [ "services" "nextcloud" "config" "objectstore" "s3" "autocreate" ]
       [ "services" "nextcloud" "config" "objectstore" "s3" "verify_bucket_exists" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../misc/version.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../networking/imaginary.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options.services.nextcloud = {

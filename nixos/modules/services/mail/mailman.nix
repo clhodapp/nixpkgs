@@ -105,6 +105,19 @@ in
     (lib.mkRemovedOptionModule [ "services" "mailman" "extraPythonPackages" ] ''
       Didn't have an effect for several years.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/sudo.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    ./postfix.nix
+    # END generated imports
   ];
 
   options = {

@@ -8,6 +8,13 @@ let
   cfg = config.services.linux-enable-ir-emitter;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.linux-enable-ir-emitter = {
       enable = lib.mkEnableOption "" // {

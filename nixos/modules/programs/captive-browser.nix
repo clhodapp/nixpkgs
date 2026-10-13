@@ -67,6 +67,15 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/networking/dhcpcd.nix
+    ../services/networking/networkmanager.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

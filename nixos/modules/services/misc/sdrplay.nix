@@ -5,6 +5,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.sdrplayApi = {
     enable = lib.mkOption {
       default = false;

@@ -29,6 +29,21 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/nsswitch.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/wrappers/default.nix
+    ../../system/activation/switchable-system.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
 
     boot.initrd.systemd.dbus = {

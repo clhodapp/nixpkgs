@@ -29,6 +29,15 @@ let
 in
 with lib;
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../services/hardware/udev.nix
+    ../../system/boot/modprobe.nix
+    # END generated imports
+  ];
+
   options.hardware.cpu.amd.sev = optionsFor "SEV" "sev";
 
   options.hardware.cpu.amd.sevGuest = optionsFor "SEV guest" "sev-guest";

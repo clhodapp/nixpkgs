@@ -3,7 +3,15 @@
 { lib, pkgs, ... }:
 
 {
-  imports = [ ./installation-cd-graphical-calamares.nix ];
+  imports = [
+    ./installation-cd-graphical-calamares.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/shells-environment.nix
+    ../../services/desktop-managers/gnome.nix
+    ../../services/display-managers/default.nix
+    ../../services/display-managers/gdm.nix
+    # END generated imports
+  ];
 
   isoImage.edition = lib.mkDefault "gnome";
 

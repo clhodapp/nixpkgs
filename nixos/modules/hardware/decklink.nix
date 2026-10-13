@@ -10,6 +10,13 @@ let
   kernelPackages = config.boot.kernelPackages;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.hardware.decklink.enable = lib.mkEnableOption "hardware support for the Blackmagic Design Decklink audio/video interfaces";
 
   config = lib.mkIf cfg.enable {

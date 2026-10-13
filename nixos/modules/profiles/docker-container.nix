@@ -20,6 +20,14 @@ in
     ../installer/cd-dvd/channel.nix
     ./minimal.nix
     ./clone-config.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/nix.nix
+    ../system/activation/activation-script.nix
+    ../system/activation/top-level.nix
+    ../system/boot/systemd.nix
+    ../system/build.nix
+    ../virtualisation/nixos-containers.nix
+    # END generated imports
   ];
 
   # Create the tarball

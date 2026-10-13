@@ -9,6 +9,14 @@ let
   firewallPort = 53317;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options.programs.localsend = {
     enable = lib.mkEnableOption "localsend, an open source cross-platform alternative to AirDrop";
 

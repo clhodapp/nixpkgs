@@ -5,6 +5,11 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../security/wrappers/default.nix
+    # END generated imports
+  ];
 
   ###### interface
 

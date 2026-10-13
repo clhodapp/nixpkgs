@@ -31,6 +31,16 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../config/fonts/packages.nix
+    ../../../../config/system-path.nix
+    ../../../../system/etc/etc.nix
+    ../lightdm.nix
+    ./gtk.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.displayManager.lightdm.greeters.slick = {
       enable = mkEnableOption "lightdm-slick-greeter as the lightdm greeter";

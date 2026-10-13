@@ -22,6 +22,14 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/etc/etc.nix
+    ../scheduling/cron.nix
+    # END generated imports
+  ];
+
   options = {
     services.rsnapshot = {
       enable = lib.mkEnableOption "rsnapshot backups";

@@ -10,6 +10,16 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../hardware/uinput.nix
+    ../services/hardware/udev.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.programs.xppen = {
     enable = lib.mkEnableOption "XPPen PenTablet application";
     package = lib.mkPackageOption pkgs "xppen_4" {

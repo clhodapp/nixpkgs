@@ -111,6 +111,17 @@ in
     (deprecateTopLevelOption [ "socketioPort" ])
     (deprecateTopLevelOption [ "clientSocketioPort" ])
     (removeOption [ "basicAuth" ] "Use a TLS-terminated reverse proxy with authentication instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../../databases/mysql.nix
+    ../../networking/firewall.nix
+    ../mirakurun.nix
+    # END generated imports
   ];
 
   options.services.epgstation = {

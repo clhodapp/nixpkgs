@@ -7,6 +7,13 @@ let
   cfg = config.security;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options = {
     security.lsm = lib.mkOption {
       type = lib.types.listOf lib.types.str;

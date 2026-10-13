@@ -30,6 +30,10 @@ in
       [ "networking" "enableRTL8192cFirmware" ]
       [ "hardware" "enableRedistributableFirmware" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/hardware/udev.nix
+    # END generated imports
   ];
 
   ###### interface

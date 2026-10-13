@@ -16,6 +16,14 @@ in
       [ "systemd" "oomd" "enableUserSlices" ]
     )
     (lib.mkRenamedOptionModule [ "systemd" "oomd" "extraConfig" ] [ "systemd" "oomd" "settings" "OOM" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/users-groups.nix
+    ../../../misc/extra-arguments.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    ./user.nix
+    # END generated imports
   ];
 
   options.systemd.oomd = {

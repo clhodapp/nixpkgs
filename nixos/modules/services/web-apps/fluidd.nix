@@ -10,6 +10,13 @@ let
   moonraker = config.services.moonraker;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/moonraker.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.fluidd = {
     enable = mkEnableOption "Fluidd, a Klipper web interface for managing your 3d printer";
 

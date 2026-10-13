@@ -21,6 +21,15 @@ let
   toml = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../system/boot/kernel.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.podman ];
   };

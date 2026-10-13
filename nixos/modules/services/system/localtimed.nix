@@ -8,7 +8,18 @@ let
   cfg = config.services.localtimed;
 in
 {
-  imports = [ (lib.mkRenamedOptionModule [ "services" "localtime" ] [ "services" "localtimed" ]) ];
+  imports = [
+    (lib.mkRenamedOptionModule [ "services" "localtime" ] [ "services" "localtimed" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/locale.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../desktops/geoclue2.nix
+    # END generated imports
+  ];
 
   options = {
     services.localtimed = {

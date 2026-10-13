@@ -56,6 +56,19 @@ in
       The smokeping web service is now served by nginx.
       In order to change the port, you need to change the nginx configuration under `services.nginx.virtualHosts.smokeping.listen.*.port`.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../web-servers/fcgiwrap.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options = {

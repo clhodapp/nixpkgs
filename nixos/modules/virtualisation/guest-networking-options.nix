@@ -53,6 +53,12 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    # END generated imports
+  ];
+
   options = {
     networking.primaryIPAddress = lib.mkOption {
       type = types.str;

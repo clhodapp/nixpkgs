@@ -22,6 +22,24 @@ with lib;
         "diskSize"
       ];
     })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../misc/label.nix
+    ../misc/version.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/system/cloud-init.nix
+    ../system/activation/top-level.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/loader.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    ../system/build.nix
+    ../tasks/filesystems.nix
+    ../tasks/network-interfaces.nix
+    ./qemu-guest-agent.nix
+    # END generated imports
   ];
 
   options.proxmox = {

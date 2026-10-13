@@ -222,6 +222,25 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/emergency-mode.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/coredump.nix
+    ../../system/boot/systemd/nspawn.nix
+    ../../system/boot/systemd/oomd.nix
+    ../../system/boot/systemd/repart.nix
+    ../../system/boot/systemd/shutdown.nix
+    ../../system/boot/systemd/sysupdate.nix
+    ../../system/boot/systemd/sysusers.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/boot/systemd/tpm2.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   options = {
     services.ghostunnel.enable = mkEnableOption "ghostunnel";

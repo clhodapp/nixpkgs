@@ -10,6 +10,14 @@ let
   cfg = config.services.redsocks;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ./firewall-iptables.nix
+    # END generated imports
+  ];
+
   ##### interface
   options = {
     services.redsocks = {

@@ -368,6 +368,13 @@ in
       ]
       "services.mpd.extraConfig was replaced by the declarative services.mpd.settings option, per RFC42."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

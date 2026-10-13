@@ -9,6 +9,17 @@ let
   cfg = config.boot.tmp;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/zram.nix
+    ../../services/system/zram-generator.nix
+    ../../tasks/filesystems.nix
+    ./systemd.nix
+    ./tmp.nix
+    # END generated imports
+  ];
+
   options = {
     boot.tmp = {
       useZram = lib.mkOption {

@@ -9,6 +9,14 @@ let
   cfg = config.hardware.amdgpu;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../hardware/graphics.nix
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.hardware.amdgpu = {
     legacySupport.enable = lib.mkEnableOption ''
       using `amdgpu` kernel driver instead of `radeon` for Southern Islands

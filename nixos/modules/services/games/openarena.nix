@@ -16,6 +16,13 @@ let
   cfg = config.services.openarena;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.openarena = {
       enable = mkEnableOption "OpenArena game server";

@@ -60,6 +60,18 @@ in
     (lib.mkRemovedOptionModule [ "services" "pretalx" "celery" "enable" ] ''
       Celery is now always required.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../logging/logrotate.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.pretalx = {

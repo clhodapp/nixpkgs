@@ -9,6 +9,16 @@ let
   cfg = config.boot.plymouth.tpm2-totp;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
+
   options.boot.plymouth.tpm2-totp = {
     enable = lib.mkEnableOption "tpm2-totp using Plymouth" // {
       description = "Whether to display a TOTP during boot using tpm2-totp and Plymouth.";

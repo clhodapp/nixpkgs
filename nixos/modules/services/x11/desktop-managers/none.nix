@@ -9,6 +9,13 @@ let
   runXdgAutostart = config.services.xserver.desktopManager.runXdgAutostartIfNone;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd/user.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.desktopManager.runXdgAutostartIfNone = mkOption {
       type = types.bool;

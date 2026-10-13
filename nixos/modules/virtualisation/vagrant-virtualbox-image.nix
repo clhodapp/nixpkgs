@@ -11,6 +11,12 @@
   imports = [
     ./vagrant-guest.nix
     ./virtualbox-image.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/users-groups.nix
+    ../misc/documentation.nix
+    ../misc/label.nix
+    ../system/build.nix
+    # END generated imports
   ];
 
   virtualbox.params = {

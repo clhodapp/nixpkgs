@@ -9,6 +9,15 @@ let
     lib.optionalString (params != [ ]) "options hid_xpadneo ${lib.concatStringsSep " " params}";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../services/hardware/bluetooth.nix
+    ../system/boot/kernel.nix
+    ../system/boot/modprobe.nix
+    # END generated imports
+  ];
+
   options.hardware.xpadneo = {
     enable = lib.mkEnableOption "the xpadneo driver for Xbox One wireless controllers";
 

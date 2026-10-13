@@ -38,6 +38,12 @@ in
       "hddfancontrol"
       "extraArgs"
     ] "Extra Args should now be specified per hddfancontrol instance in its attrset")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../hardware/sensor/hddtemp.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

@@ -10,6 +10,15 @@ let
   prg = config.programs;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./fish.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.autojump = {
 

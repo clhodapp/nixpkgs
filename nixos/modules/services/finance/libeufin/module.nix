@@ -12,6 +12,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/etc/etc.nix
+    ./bank.nix
+    ./nexus.nix
+    # END generated imports
+  ];
+
   options.services.libeufin = {
     settings = lib.mkOption {
       description = "Global configuration options for the libeufin bank system config file.";

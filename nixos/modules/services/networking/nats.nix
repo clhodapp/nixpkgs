@@ -33,6 +33,12 @@ let
     if cfg.validateConfig then validateConfig unvalidatedConfigFile else unvalidatedConfigFile;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   ### Interface
 

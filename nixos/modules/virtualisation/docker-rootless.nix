@@ -14,6 +14,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/networking.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options.virtualisation.docker.rootless = {

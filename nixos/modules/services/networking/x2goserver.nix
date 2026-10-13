@@ -27,6 +27,20 @@ in
 {
   imports = [
     (mkRenamedOptionModule [ "programs" "x2goserver" ] [ "services" "x2goserver" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../config/xdg/autostart.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/menus.nix
+    ../../config/xdg/mime.nix
+    ../../security/sudo-rs.nix
+    ../../security/sudo.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   options.services.x2goserver = {

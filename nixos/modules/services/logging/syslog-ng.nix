@@ -33,6 +33,11 @@ in
   imports = [
     (lib.mkRemovedOptionModule [ "services" "syslog-ng" "serviceName" ] "")
     (lib.mkRemovedOptionModule [ "services" "syslog-ng" "listenToJournal" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/journald.nix
+    # END generated imports
   ];
 
   options = {

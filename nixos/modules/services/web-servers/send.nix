@@ -9,6 +9,16 @@ let
   cfg = config.services.send;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/redis.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.send = {
       enable = lib.mkEnableOption "Send, a file sharing web sevice for ffsend.";

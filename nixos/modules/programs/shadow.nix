@@ -10,6 +10,19 @@ let
   cfg = config.security.loginDefs;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/extra-arguments.nix
+    ../security/pam.nix
+    ../security/wrappers/default.nix
+    ../services/display-managers/greetd.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
 
     security.shadow.enable = lib.mkEnableOption "" // {

@@ -8,6 +8,14 @@ let
   cfg = config.services.echoip;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ defelo ];
 
   options.services.echoip = {

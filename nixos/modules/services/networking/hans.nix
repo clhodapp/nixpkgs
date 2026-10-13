@@ -12,6 +12,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/sysctl.nix
+    ../../config/users-groups.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   ### configuration
 

@@ -26,6 +26,16 @@ let
   opts = options.services.homebox;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.homebox = {
     enable = mkEnableOption "homebox";
     package = mkPackageOption pkgs "homebox" { };

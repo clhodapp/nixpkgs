@@ -20,6 +20,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../security/wrappers/default.nix
+    ../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.programs.pmount = {
     enable = mkEnableOption ''
       pmount, a tool that allows normal users to mount removable devices

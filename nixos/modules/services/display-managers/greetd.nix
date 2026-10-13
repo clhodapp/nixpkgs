@@ -17,6 +17,16 @@ in
       "greetd"
       "vt"
     ] "The VT is now fixed to VT1.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options.services.greetd = {

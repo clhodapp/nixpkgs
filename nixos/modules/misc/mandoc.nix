@@ -29,6 +29,16 @@ let
   makeLeadingSlashes = map (path: if builtins.substring 0 1 path != "/" then "/${path}" else path);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-environment.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    ./documentation.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.sternenseemann ];
 
   options = {

@@ -10,6 +10,14 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "plexpy" ] [ "services" "tautulli" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

@@ -110,6 +110,13 @@ in
       [ "services" "klipper" "mutableConfigFolder" ]
       [ "services" "klipper" "configDir" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ./octoprint.nix
+    # END generated imports
   ];
 
   ##### interface

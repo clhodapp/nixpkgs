@@ -9,6 +9,16 @@ let
   cfg = config.programs.flashprog;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../hardware/libftdi.nix
+    ../hardware/libjaylink.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.programs.flashprog = {
     enable = lib.mkEnableOption ''
       configuring flashprog udev rules and

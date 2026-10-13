@@ -265,6 +265,17 @@ in
       "mastodon"
       "otpSecretFile"
     ] "The OTP_SECRET option was removed from Mastodon in version 4.4.0")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../mail/postfix.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options = {

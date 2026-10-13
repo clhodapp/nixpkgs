@@ -32,6 +32,17 @@ in
 {
   imports = [
     (import ./common.nix { inherit talerComponent servicesDB servicesNoDB; })
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../../databases/postgresql.nix
+    ../../networking/firewall.nix
+    ./module.nix
+    # END generated imports
   ];
 
   options.services.taler.exchange = {

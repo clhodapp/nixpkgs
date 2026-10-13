@@ -62,6 +62,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ./udev.nix
+    # END generated imports
+  ];
 
   ###### interface
 

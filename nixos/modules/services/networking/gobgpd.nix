@@ -10,6 +10,13 @@ let
   confFile = format.generate "gobgpd.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.gobgpd = {
     enable = lib.mkEnableOption "GoBGP Routing Daemon";
 

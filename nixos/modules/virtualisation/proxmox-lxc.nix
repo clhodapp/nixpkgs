@@ -10,6 +10,19 @@ with lib;
 {
   imports = [
     ../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/console.nix
+    ../config/nix.nix
+    ../misc/label.nix
+    ../security/wrappers/default.nix
+    ../services/networking/ssh/sshd.nix
+    ../system/activation/top-level.nix
+    ../system/boot/loader/init-script/init-script.nix
+    ../system/boot/systemd.nix
+    ../system/build.nix
+    ../tasks/network-interfaces.nix
+    ./nixos-containers.nix
+    # END generated imports
   ];
 
   options.proxmoxLXC = {

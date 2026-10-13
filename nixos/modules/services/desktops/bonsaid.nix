@@ -64,6 +64,14 @@ let
   cfg = config.services.bonsaid;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.colinsane ];
 
   options.services.bonsaid = {

@@ -10,6 +10,14 @@ let
   policyDoc = "https://github.com/thunderbird/policy-templates";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.thunderbird = {
     enable = lib.mkEnableOption "Thunderbird mail client";
 

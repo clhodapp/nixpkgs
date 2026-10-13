@@ -29,6 +29,14 @@ in
       [ "services" "iodine" "server" "extraConfig" ]
     )
     (lib.mkRemovedOptionModule [ "services" "iodined" "client" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   ### configuration

@@ -66,6 +66,15 @@ let
     config.services.postgresql.enable && lib.hasPrefix "postgresql://" url && hasLocalStrings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options = {
     services.atticd = {
       enable = lib.mkEnableOption "the atticd, the Nix Binary Cache server";

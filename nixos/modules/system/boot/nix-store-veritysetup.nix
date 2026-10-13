@@ -11,6 +11,16 @@ let
   json = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../activation/nixos-init.nix
+    ./systemd/dm-verity.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ nikstur ];
 
   options.boot.initrd.nix-store-veritysetup = {

@@ -9,6 +9,17 @@ let
   inherit (lib.options) mkEnableOption mkPackageOption;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../config/xdg/portals/wlr.nix
+    ../../services/display-managers/default.nix
+    ./uwsm.nix
+    # END generated imports
+  ];
+
   options.programs.pinnacle = {
     enable = mkEnableOption "pinnacle";
     package = mkPackageOption pkgs "pinnacle" {

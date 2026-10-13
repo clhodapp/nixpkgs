@@ -24,6 +24,25 @@ let
   settingsFormat = pkgs.formats.keyValue { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../services/hardware/acpid.nix
+    ../../services/hardware/udev.nix
+    ../../services/system/dbus.nix
+    ../../services/x11/display-managers/default.nix
+    ../../services/x11/xserver.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/modprobe.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../../virtualisation/docker.nix
+    ../graphics.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.nvidia = {
       enabled = lib.mkOption {

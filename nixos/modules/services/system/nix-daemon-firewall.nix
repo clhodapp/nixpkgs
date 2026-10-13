@@ -5,6 +5,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../networking/nftables.nix
+    # END generated imports
+  ];
+
   options.nix.firewall = {
     enable = lib.mkEnableOption "firewalling for outgoing traffic of the nix daemon";
 

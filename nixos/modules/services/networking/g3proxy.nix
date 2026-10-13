@@ -18,6 +18,12 @@ let
   settingsFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.g3proxy = {
     enable = mkEnableOption "g3proxy, a generic purpose forward proxy";
 

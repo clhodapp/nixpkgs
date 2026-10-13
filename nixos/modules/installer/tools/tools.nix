@@ -362,6 +362,20 @@ in
         The Bash implementation of nixos-rebuild has been removed in favor of the new Python implementation.
         If you have any issues with the new implementation, please create an issue in GitHub and tag the maintainers of 'nixos-rebuild-ng'.
       '')
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../lib/modules/generic/assertions.nix
+      ../../config/nix.nix
+      ../../config/system-path.nix
+      ../../misc/man-db.nix
+      ../../misc/version.nix
+      ../../security/run0.nix
+      ../../services/x11/xserver.nix
+      ../../system/activation/specialisation.nix
+      ../../system/boot/kernel.nix
+      ../../system/boot/systemd.nix
+      ../../system/build.nix
+      ../../tasks/network-interfaces.nix
+      # END generated imports
     ];
 
   config = {

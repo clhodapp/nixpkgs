@@ -8,6 +8,14 @@ let
   cfg = config.services.xe-guest-utilities;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../services/hardware/udev.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options = {
     services.xe-guest-utilities = {
       enable = lib.mkEnableOption "the XenServer guest utilities daemon";

@@ -11,6 +11,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/fonts/fontdir.nix
+    ../config/system-path.nix
+    # END generated imports
+  ];
+
   options.programs.xwayland = {
 
     enable = lib.mkEnableOption "Xwayland (an X server for interfacing X11 apps with the Wayland protocol)";

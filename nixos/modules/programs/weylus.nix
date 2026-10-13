@@ -9,6 +9,15 @@ let
   cfg = config.programs.weylus;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../hardware/uinput.nix
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options.programs.weylus = with lib.types; {
     enable = lib.mkEnableOption "weylus, which turns your smart phone into a graphic tablet/touch screen for your computer";
 

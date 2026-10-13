@@ -29,6 +29,15 @@ in
         [ readerConfig ]
       )
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./udev.nix
+    # END generated imports
   ];
 
   options.services.pcscd = {

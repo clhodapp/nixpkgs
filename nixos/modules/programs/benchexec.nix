@@ -28,6 +28,18 @@ let
       throw "uid expects string (username) or int (UID)";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../system/boot/systemd.nix
+    ../virtualisation/lxcfs.nix
+    ./cpu-energy-meter.nix
+    # END generated imports
+  ];
+
   options.programs.benchexec = {
     enable = lib.mkEnableOption "BenchExec";
     package = lib.options.mkPackageOption pkgs "benchexec" { };

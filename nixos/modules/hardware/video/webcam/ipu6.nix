@@ -20,6 +20,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../services/desktops/pipewire/wireplumber.nix
+    ../../../services/hardware/udev.nix
+    ../../../services/video/v4l2-relayd.nix
+    ../../../system/boot/kernel.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
 
   options.hardware.ipu6 = {
 

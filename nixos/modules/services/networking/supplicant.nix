@@ -92,6 +92,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
 
   ###### interface
 

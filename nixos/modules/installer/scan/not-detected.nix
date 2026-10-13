@@ -2,5 +2,11 @@
 { lib, ... }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../hardware/all-firmware.nix
+    # END generated imports
+  ];
+
   hardware.enableRedistributableFirmware = lib.mkDefault true;
 }

@@ -9,6 +9,16 @@ let
   cfg = config.services.tailscale.derper;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    ./firewall.nix
+    ./tailscale.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ SuperSandro2000 ];
 
   options = {

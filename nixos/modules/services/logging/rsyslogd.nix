@@ -32,6 +32,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/journald.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

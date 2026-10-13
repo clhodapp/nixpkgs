@@ -17,6 +17,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
     services.ofono = {

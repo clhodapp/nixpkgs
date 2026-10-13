@@ -148,6 +148,21 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/i18n.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/systemd-confinement.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    ./postfix.nix
+    ./spamassassin.nix
+    # END generated imports
+  ];
+
   options.services.public-inbox = {
     enable = mkEnableOption "the public-inbox mail archiver";
     package = mkPackageOption pkgs "public-inbox" { };

@@ -98,6 +98,10 @@ in
 {
   imports = [
     ./nghttpx-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

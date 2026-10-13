@@ -26,6 +26,13 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "services" "freenet" ] [ "services" "hyphanet" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

@@ -53,6 +53,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../networking/consul.nix
+    # END generated imports
+  ];
+
   options = {
     services.vault = {
       enable = lib.mkEnableOption "Vault daemon";

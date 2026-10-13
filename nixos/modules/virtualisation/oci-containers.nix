@@ -563,6 +563,15 @@ in
         ) [ "extraDockerOptions" ]
       ) oldcfg.docker-containers;
     }))
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/networking.nix
+    ../config/users-groups.nix
+    ../misc/version.nix
+    ../system/boot/systemd.nix
+    ./docker.nix
+    ./podman/default.nix
+    # END generated imports
   ];
 
   options.virtualisation.oci-containers = {

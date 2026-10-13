@@ -792,5 +792,23 @@ in
   };
 
   imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/swap.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/lib.nix
+    ../../misc/version.nix
+    ../../services/hardware/udev.nix
+    ../../services/networking/multipath.nix
+    ../../tasks/filesystems.nix
+    ../../tasks/network-interfaces.nix
+    ../../virtualisation/nixos-containers.nix
+    ../build.nix
+    ../etc/etc.nix
+    ./kernel.nix
+    ./networkd.nix
+    ./systemd.nix
+    ./systemd/initrd.nix
+    # END generated imports
   ];
 }

@@ -519,6 +519,19 @@ in
       "httpd"
       "sslServerKey"
     ] "Please define a virtual host using `services.httpd.virtualHosts`.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/locale.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../security/acme
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../../../tasks/network-interfaces.nix
+    ../../logging/logrotate.nix
+    # END generated imports
   ];
 
   # interface

@@ -72,6 +72,21 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../system/activation/activation-script.nix
+    ../../system/activation/switchable-system.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/sysusers.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
 
   options.services.userborn = {
 

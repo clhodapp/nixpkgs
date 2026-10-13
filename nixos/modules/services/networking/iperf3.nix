@@ -104,6 +104,13 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.iperf3 = api;
   config = mkIf cfg.enable imp;
 }

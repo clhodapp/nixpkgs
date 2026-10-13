@@ -68,6 +68,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/etc/etc.nix
+    ../sane.nix
+    # END generated imports
+  ];
+
   options = {
 
     hardware.sane.brscan5.enable = lib.mkEnableOption "the Brother brscan5 sane backend";

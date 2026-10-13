@@ -351,6 +351,14 @@ in
       [ "services" "xserver" "displayManager" "extraSessionFilesPackages" ]
       [ "services" "displayManager" "sessionPackages" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/fonts/fontconfig.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/user.nix
+    ../../display-managers/default.nix
+    ../xserver.nix
+    # END generated imports
   ];
 
 }

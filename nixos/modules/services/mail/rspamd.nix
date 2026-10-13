@@ -554,5 +554,14 @@ in
       "services"
       "rmilter"
     ] "Use services.rspamd.* instead to set up milter service")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./postfix.nix
+    # END generated imports
   ];
 }

@@ -13,6 +13,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/users-groups.nix
+    ./libvirtd.nix
+    # END generated imports
+  ];
 
   options = {
     virtualisation.appvm = {

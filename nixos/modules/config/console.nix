@@ -283,5 +283,18 @@ in
       Since NixOS switched to systemd (circa 2012), TTYs have been spawned on
       demand, so there is no need to configure them manually.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../services/x11/xserver.nix
+    ../system/boot/kernel.nix
+    ../system/boot/stage-1.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ./i18n.nix
+    ./system-environment.nix
+    ./system-path.nix
+    # END generated imports
   ];
 }

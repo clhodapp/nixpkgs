@@ -9,6 +9,12 @@ let
   configFile = pkgs.writeText "Corefile" cfg.config;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.coredns = {
     enable = lib.mkEnableOption "Coredns dns server";
 

@@ -26,6 +26,13 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/etc/etc.nix
+    ./.
+    # END generated imports
+  ];
+
   options.services.firewalld.services = mkOption {
     description = ''
       firewalld service configuration files. See {manpage}`firewalld.service(5)`.

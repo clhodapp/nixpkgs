@@ -550,5 +550,16 @@ in
       [ "services" "udev" "initrdRules" ]
       [ "boot" "initrd" "services" "udev" "rules" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../misc/lib.nix
+    ../../system/activation/activation-script.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/modprobe.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/initrd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ];
 }

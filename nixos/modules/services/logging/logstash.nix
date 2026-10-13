@@ -52,6 +52,10 @@ in
       "logstash"
       "enableWeb"
     ] "The web interface was removed from logstash")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   ###### interface

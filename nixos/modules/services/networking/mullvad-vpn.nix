@@ -18,6 +18,19 @@ let
   cfg = config.services.mullvad-vpn;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/resolved.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.mullvad-vpn = {
     enable = mkEnableOption "the Mullvad VPN service";
     package = mkPackageOption pkgs "mullvad" { };

@@ -37,6 +37,20 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../services/networking/ssh/sshd.nix
+    ../services/x11/xserver.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/user.nix
+    ../system/etc/etc.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

@@ -8,6 +8,12 @@ let
   cfg = config.services.duckling;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.duckling = {
       enable = lib.mkEnableOption "duckling";

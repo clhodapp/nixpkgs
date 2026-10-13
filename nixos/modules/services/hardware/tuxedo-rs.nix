@@ -9,6 +9,16 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../hardware/tuxedo-drivers.nix
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.tuxedo-rs = {
       enable = lib.mkEnableOption "Rust utilities for interacting with hardware from TUXEDO Computers";

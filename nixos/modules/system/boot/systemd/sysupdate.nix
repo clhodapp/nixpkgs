@@ -21,6 +21,16 @@ let
   }) cfg.transfers;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../misc/extra-arguments.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    # END generated imports
+  ];
+
   options.systemd.sysupdate = {
 
     enable = lib.mkEnableOption "systemd-sysupdate" // {

@@ -20,6 +20,13 @@ let
     if cfg.enableGossipEncryption then "/run/wgautomesh/wgautomesh.toml" else configFile;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.wgautomesh = {
     enable = mkEnableOption "the wgautomesh daemon";
     logLevel = mkOption {

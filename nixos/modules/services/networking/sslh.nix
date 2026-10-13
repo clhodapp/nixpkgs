@@ -32,6 +32,13 @@ in
       [ "services" "sslh" "settings" "verbose-connections" ]
       (config: if config.services.sslh.verbose then 1 else 0)
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/sysctl.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   meta.buildDocsInSandbox = false;

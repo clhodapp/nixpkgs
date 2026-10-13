@@ -56,6 +56,12 @@ in
       [ "programs" "zsh" "oh-my-zsh" "plugins" ]
       [ "programs" "zsh" "ohMyZsh" "plugins" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ./zsh.nix
+    # END generated imports
   ];
 
   options = {

@@ -12,6 +12,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.programs.k40-whisperer = {
     enable = lib.mkEnableOption "K40-Whisperer";
 

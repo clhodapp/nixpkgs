@@ -10,6 +10,14 @@ let
   isCustomDataDir = cfg.dataDir != "/var/lib/prowlarr";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.prowlarr = {
       enable = lib.mkEnableOption "Prowlarr, an indexer manager/proxy for Torrent trackers and Usenet indexers";

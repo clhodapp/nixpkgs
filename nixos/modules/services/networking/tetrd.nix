@@ -9,6 +9,15 @@ let
   cfg = config.services.tetrd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.services.tetrd = {
     enable = lib.mkEnableOption "tetrd";
     package = lib.mkPackageOption pkgs "tetrd" { };

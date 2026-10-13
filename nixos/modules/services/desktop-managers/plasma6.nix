@@ -65,6 +65,63 @@ in
       [ "services" "xserver" "desktopManager" "plasma6" "notoPackage" ]
       [ "services" "desktopManager" "plasma6" "notoPackage" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/fonts/fontconfig.nix
+    ../../config/fonts/packages.nix
+    ../../config/locale.nix
+    ../../config/power-management.nix
+    ../../config/qt.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/portal.nix
+    ../../hardware/sensor/iio.nix
+    ../../misc/extra-arguments.nix
+    ../../programs/chromium.nix
+    ../../programs/dconf.nix
+    ../../programs/firefox.nix
+    ../../programs/fuse.nix
+    ../../programs/gdk-pixbuf.nix
+    ../../programs/gnupg.nix
+    ../../programs/kde-pim.nix
+    ../../programs/kdeconnect.nix
+    ../../programs/partition-manager.nix
+    ../../programs/ssh.nix
+    ../../programs/xwayland.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../security/wrappers/default.nix
+    ../../system/activation/activation-script.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    ../accessibility/orca.nix
+    ../audio/pulseaudio.nix
+    ../desktops/accountsservice.nix
+    ../desktops/flatpak.nix
+    ../desktops/geoclue2.nix
+    ../desktops/pipewire/pipewire.nix
+    ../desktops/system-config-printer.nix
+    ../display-managers/default.nix
+    ../display-managers/sddm.nix
+    ../hardware/bluetooth.nix
+    ../hardware/bolt.nix
+    ../hardware/fwupd.nix
+    ../hardware/libinput.nix
+    ../hardware/power-profiles-daemon.nix
+    ../hardware/sane.nix
+    ../hardware/udev.nix
+    ../hardware/udisks2.nix
+    ../hardware/upower.nix
+    ../network-filesystems/samba.nix
+    ../networking/networkmanager.nix
+    ../printing/cupsd.nix
+    ../security/fprintd.nix
+    ../x11/colord.nix
+    ../x11/hardware/wacom.nix
+    ../x11/xserver.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

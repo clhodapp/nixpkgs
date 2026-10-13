@@ -17,5 +17,8 @@ with lib;
       Please use a different display manager such as LightDM, SDDM, or GDM.
       You can also use the startx module which uses Xinitrc.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    # END generated imports
   ];
 }

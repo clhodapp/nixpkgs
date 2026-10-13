@@ -9,6 +9,15 @@ let
   cfg = config.programs.feedbackd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    ../services/system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     programs.feedbackd = {
       enable = lib.mkEnableOption ''

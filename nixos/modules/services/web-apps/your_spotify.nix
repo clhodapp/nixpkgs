@@ -33,6 +33,15 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../databases/mongodb.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.your_spotify =
     let
       inherit (types)

@@ -7,5 +7,8 @@
     (lib.mkRemovedOptionModule [ "profiles" "hardened" ] ''
       The hardened profile has been removed, see the backward incompatibilities section of the 26.05 release notes for more information.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    # END generated imports
   ];
 }

@@ -176,6 +176,13 @@ in
   imports = [
     (lib.mkRemovedOptionModule [ "security" "setuidOwners" ] "Use security.wrappers instead")
     (lib.mkRemovedOptionModule [ "security" "setuidPrograms" ] "Use security.wrappers instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/shells-environment.nix
+    ../../system/activation/top-level.nix
+    ../../system/boot/systemd.nix
+    ../apparmor.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -181,6 +181,21 @@ in
     (lib.mkRemovedOptionModule [ "services" "fwupd" "enableTestRemote" ]
       "This option was removed after being removed upstream. It only provided a method for testing fwupd functionality, and should not have been exposed for use outside of nix tests."
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/polkit.nix
+    ../../system/boot/loader/efi.nix
+    ../../system/boot/loader/grub/grub.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./udev.nix
+    ./udisks2.nix
+    # END generated imports
   ];
 
   ###### implementation

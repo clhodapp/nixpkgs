@@ -9,6 +9,15 @@ let
   cfg = config.programs.envision;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/hardware/udev.nix
+    ../services/networking/avahi-daemon.nix
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
 
   options = {
     programs.envision = {

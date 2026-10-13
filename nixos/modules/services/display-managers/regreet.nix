@@ -12,6 +12,16 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "programs" "regreet" ] [ "services" "displayManager" "regreet" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/fonts/packages.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../desktops/accountsservice.nix
+    ./greetd.nix
+    # END generated imports
   ];
 
   options.services.displayManager.regreet = {

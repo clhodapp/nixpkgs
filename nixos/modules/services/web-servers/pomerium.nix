@@ -11,6 +11,13 @@ let
   format = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../security/acme
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.pomerium = {
     enable = mkEnableOption "the Pomerium authenticating reverse proxy";
 

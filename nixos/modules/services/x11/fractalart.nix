@@ -9,6 +9,13 @@ let
   cfg = config.services.fractalart;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ./display-managers/default.nix
+    # END generated imports
+  ];
+
   options.services.fractalart = {
     enable = mkOption {
       type = types.bool;

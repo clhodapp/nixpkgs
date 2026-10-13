@@ -10,6 +10,15 @@ let
   wireshark = cfg.package;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/wrappers/default.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     programs.wireshark = {
       enable = lib.mkOption {

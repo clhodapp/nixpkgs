@@ -16,6 +16,13 @@ with lib;
 {
   imports = [
     (mkRemovedOptionModule [ "ec2" "metadata" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../programs/ssh.nix
+    ../system/boot/systemd.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   config = {

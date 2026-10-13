@@ -951,6 +951,18 @@ in
 
       See the boot.initrd.secrets option documentation for more information.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/assertions.nix
+    ../../../../config/system-path.nix
+    ../../../../misc/version.nix
+    ../../../../virtualisation/nixos-containers.nix
+    ../../../activation/activation-script.nix
+    ../../../activation/top-level.nix
+    ../../../build.nix
+    ../../stage-1.nix
+    ../efi.nix
+    ../loader.nix
+    # END generated imports
   ];
 
 }

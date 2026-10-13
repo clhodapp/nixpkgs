@@ -35,6 +35,21 @@ let
       });
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/fonts/packages.nix
+    ../config/system-path.nix
+    ../hardware/graphics.nix
+    ../hardware/steam-hardware.nix
+    ../services/audio/pulseaudio.nix
+    ../services/desktops/pipewire/pipewire.nix
+    ../services/display-managers/default.nix
+    ../services/networking/firewall.nix
+    ./gamescope.nix
+    # END generated imports
+  ];
+
   options.programs.steam = {
     enable = lib.mkEnableOption "steam";
 

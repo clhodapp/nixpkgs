@@ -9,6 +9,22 @@ let
   cfg = config.programs.labwc;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../config/xdg/portals/wlr.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../services/display-managers/default.nix
+    ../../services/misc/graphical-desktop.nix
+    ../../services/x11/desktop-managers/none.nix
+    ../dconf.nix
+    ../xwayland.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ ];
 
   options.programs.labwc = {

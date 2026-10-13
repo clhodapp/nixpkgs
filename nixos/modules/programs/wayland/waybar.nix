@@ -9,6 +9,15 @@ let
   cfg = config.programs.waybar;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.waybar = {
     enable = lib.mkEnableOption "waybar, a highly customizable Wayland bar for Sway and Wlroots based compositors";
     package =

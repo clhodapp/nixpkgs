@@ -10,6 +10,16 @@ let
   cfg = config.services.baikal;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.wrvsrx ];
   options = {
     services.baikal = {

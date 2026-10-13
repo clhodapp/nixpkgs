@@ -9,6 +9,13 @@ let
   cfg = config.services.todesk;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.todesk.enable = lib.mkEnableOption "ToDesk daemon";
     services.todesk.package = lib.mkPackageOption pkgs "todesk" { };

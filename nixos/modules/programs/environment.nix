@@ -11,6 +11,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/shells-environment.nix
+    ../config/system-environment.nix
+    ../config/system-path.nix
+    ./less.nix
+    # END generated imports
+  ];
 
   config = {
 

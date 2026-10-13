@@ -11,6 +11,13 @@ let
   format = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.haste-server = {
     enable = lib.mkEnableOption "haste-server";
     openFirewall = lib.mkEnableOption "firewall passthrough for haste-server";

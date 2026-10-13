@@ -4,6 +4,13 @@ let
   cfg = config.hardware.facter.detected.graphics.amd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../.
+    ../../../services/x11/xserver.nix
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.graphics = {
     amd.enable = lib.mkEnableOption "Enable the AMD Graphics module" // {
       default = builtins.elem "amdgpu" (

@@ -9,6 +9,13 @@ let
   cfg = config.programs.tcpdump;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/users-groups.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     programs.tcpdump = {
       enable = lib.mkOption {

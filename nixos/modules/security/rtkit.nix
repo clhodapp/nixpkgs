@@ -9,6 +9,18 @@ let
   cfg = config.security.rtkit;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/extra-arguments.nix
+    ../services/system/dbus.nix
+    ../system/boot/systemd.nix
+    ./polkit.nix
+    # END generated imports
+  ];
+
   options.security.rtkit = {
     enable = lib.mkOption {
       type = lib.types.bool;

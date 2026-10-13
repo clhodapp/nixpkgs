@@ -5,6 +5,15 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/nix.nix
+    ../../../system/boot/systemd.nix
+    ./options.nix
+    # END generated imports
+  ];
+
   config.assertions = lib.flatten (
     lib.flip lib.mapAttrsToList config.services.github-runners (
       name: cfg:

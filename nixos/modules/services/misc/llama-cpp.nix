@@ -36,6 +36,12 @@ in
       "llama-cpp"
       "extraFlags"
     ] "Use `services.llama-cpp.settings` instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

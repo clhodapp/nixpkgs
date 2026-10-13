@@ -18,6 +18,15 @@ let
   tomlFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.cardwired = {
     enable = mkEnableOption "Cardwire eBPF-based GPU manager daemon";
 

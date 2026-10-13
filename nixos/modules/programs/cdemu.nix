@@ -9,6 +9,16 @@ let
   cfg = config.programs.cdemu;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    ../services/system/dbus.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   options = {
     programs.cdemu = {

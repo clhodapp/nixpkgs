@@ -65,6 +65,20 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../services/network-filesystems/nfsd.nix
+    ../../services/networking/rpcbind.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../filesystems.nix
+    ../network-interfaces.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

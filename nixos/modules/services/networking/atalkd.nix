@@ -19,6 +19,17 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/lib.nix
+    ../../misc/meta.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.atalkd = {
     enable = lib.mkEnableOption "the AppleTalk daemon";
 

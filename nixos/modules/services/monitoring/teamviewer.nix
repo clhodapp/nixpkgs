@@ -9,6 +9,14 @@ let
   cfg = config.services.teamviewer;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     services.teamviewer = {
       enable = lib.mkEnableOption "TeamViewer daemon & system package";

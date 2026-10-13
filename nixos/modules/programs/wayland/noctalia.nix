@@ -9,6 +9,19 @@ let
   cfg = config.programs.noctalia;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/sounds.nix
+    ../../services/hardware/bluetooth.nix
+    ../../services/hardware/power-profiles-daemon.nix
+    ../../services/hardware/upower.nix
+    ../../services/networking/networkmanager.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.noctalia = {
     enable = lib.mkEnableOption "noctalia, a sleek and customizable desktop shell for Wayland";
 

@@ -19,6 +19,13 @@ let
   cfg = config.services.ustreamer;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.ustreamer = {
     enable = mkEnableOption "µStreamer, a lightweight MJPEG-HTTP streamer";
 

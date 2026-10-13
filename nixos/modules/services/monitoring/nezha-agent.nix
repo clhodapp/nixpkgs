@@ -204,6 +204,12 @@ in
 
       Nezha-agent v1 uses the client secret from the dashboard to connect.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

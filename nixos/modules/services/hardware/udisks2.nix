@@ -16,6 +16,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./udev.nix
+    # END generated imports
+  ];
 
   ###### interface
 

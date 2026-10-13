@@ -10,6 +10,17 @@ let
   settingsFormat = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../services/hardware/amdgpu.nix
+    ./kernel.nix
+    ./plymouth.nix
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
+
   options.boot.initrd.unl0kr = {
     enable = lib.mkEnableOption "unl0kr in initrd" // {
       description = "Whether to enable the unl0kr on-screen keyboard in initrd to unlock LUKS.";

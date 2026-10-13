@@ -13,6 +13,19 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/docker.nix
+    ../../virtualisation/libvirtd.nix
+    # END generated imports
+  ];
+
   meta = {
     doc = ./gns3-server.md;
     maintainers = [ lib.maintainers.anthonyroussel ];

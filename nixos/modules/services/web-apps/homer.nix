@@ -10,6 +10,14 @@ let
   configFile = settingsFormat.generate "homer-config.yml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.homer = {
     enable = lib.mkEnableOption ''
       A dead simple static HOMepage for your servER to keep your services on hand, from a simple yaml configuration file.

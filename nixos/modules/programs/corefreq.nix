@@ -10,6 +10,14 @@ let
   kernelPackages = config.boot.kernelPackages;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     programs.corefreq = {
       enable = lib.mkEnableOption "the corefreq daemon and kernel module";

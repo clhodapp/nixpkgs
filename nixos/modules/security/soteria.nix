@@ -9,6 +9,15 @@ let
   cfg = config.security.soteria;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/boot/systemd/user.nix
+    ./polkit.nix
+    # END generated imports
+  ];
+
   options.security.soteria = {
     enable = lib.mkEnableOption null // {
       description = ''

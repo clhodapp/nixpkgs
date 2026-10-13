@@ -38,6 +38,23 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/ca.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ../mail/dovecot.nix
+    ../mail/postfix.nix
+    ../misc/geoipupdate.nix
+    ../search/elasticsearch.nix
+    ./grafana.nix
+    # END generated imports
+  ];
+
   options.services.parsedmarc = {
 
     enable = lib.mkEnableOption ''

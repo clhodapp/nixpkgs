@@ -20,6 +20,22 @@ in
     ./lxc-instance-common.nix
 
     ../profiles/qemu-guest.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../misc/version.nix
+    ../services/hardware/udev.nix
+    ../system/activation/top-level.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/kernel.nix
+    ../system/boot/loader/grub/grub.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    ../system/boot/systemd.nix
+    ../system/boot/uki.nix
+    ../system/build.nix
+    ../tasks/filesystems.nix
+    ./incus-agent.nix
+    # END generated imports
   ];
 
   config = {

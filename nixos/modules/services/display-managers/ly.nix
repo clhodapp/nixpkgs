@@ -62,6 +62,23 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ../x11/display-managers/default.nix
+    ../x11/xserver.nix
+    ./default.nix
+    ./generic.nix
+    # END generated imports
+  ];
+
   options = {
     services.displayManager.ly = {
       enable = mkEnableOption "ly as the display manager";

@@ -12,6 +12,22 @@ let
   isNetworkd = config.networking.useNetworkd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/resolvconf.nix
+    ../../config/sysctl.nix
+    ../../config/system-path.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ./dhcpcd.nix
+    ./firewall.nix
+    ./networkmanager.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with maintainers; [
     mbaillie
     mfrw

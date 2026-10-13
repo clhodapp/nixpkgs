@@ -5,6 +5,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../system/etc/etc.nix
+    ./shells-environment.nix
+    ./system-path.nix
+    # END generated imports
+  ];
 
   options = {
 

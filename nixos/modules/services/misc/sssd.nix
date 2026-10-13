@@ -26,6 +26,19 @@ let
       mkSettingsFileUnsubstituted cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/nsswitch.nix
+    ../../security/krb5
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../networking/ssh/sshd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     services.sssd = {
       enable = lib.mkEnableOption "the System Security Services Daemon";

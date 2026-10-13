@@ -136,6 +136,21 @@ in
       [ "services" "xserver" "desktopManager" "phosh" ]
       [ "services" "desktopManager" "phosh" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../i18n/input-method/default.nix
+    ../../i18n/input-method/ibus.nix
+    ../../programs/feedbackd.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../display-managers/default.nix
+    ../misc/graphical-desktop.nix
+    ./gnome.nix
+    # END generated imports
   ];
 
   options = {

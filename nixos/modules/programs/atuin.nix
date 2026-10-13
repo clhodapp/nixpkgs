@@ -14,6 +14,19 @@ let
   settingsFile = tomlFormat.generate "atuin-config" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../system/boot/systemd/user.nix
+    ../system/etc/etc.nix
+    ./bash/bash.nix
+    ./fish.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.atuin = {
     enable = lib.mkEnableOption "atuin";
 

@@ -15,6 +15,16 @@ let
   localConfFilePath = "/var/lib/zerotier-one/local.conf";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ./dhcpcd.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.zerotierone.enable = mkEnableOption "ZeroTierOne";
 
   options.services.zerotierone.joinNetworks = mkOption {

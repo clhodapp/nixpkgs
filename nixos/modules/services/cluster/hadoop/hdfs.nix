@@ -95,6 +95,18 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../system/boot/systemd.nix
+    ../../networking/firewall.nix
+    ./default.nix
+    ./hbase.nix
+    ./yarn.nix
+    # END generated imports
+  ];
+
   options.services.hadoop.hdfs = {
 
     namenode = hadoopServiceOption { serviceName = "HDFS NameNode"; } // {

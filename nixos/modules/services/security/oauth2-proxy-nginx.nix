@@ -3,6 +3,13 @@ let
   cfg = config.services.oauth2-proxy.nginx;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../web-servers/nginx/default.nix
+    ./oauth2-proxy.nix
+    # END generated imports
+  ];
+
   options.services.oauth2-proxy.nginx = {
     proxy = lib.mkOption {
       type = lib.types.str;

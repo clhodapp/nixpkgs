@@ -13,6 +13,15 @@ let
   cfg = config.services.urxvtd;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.urxvtd = {
     enable = mkOption {
       type = types.bool;

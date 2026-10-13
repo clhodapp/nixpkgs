@@ -8,6 +8,16 @@ let
   cfg = config.services.tigerbeetle;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with lib.maintainers; [ danielsidhion ];
     doc = ./tigerbeetle.md;

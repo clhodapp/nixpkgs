@@ -12,6 +12,13 @@ let
   cfg = config.programs.java;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../system/boot/binfmt.nix
+    # END generated imports
+  ];
 
   options = {
 

@@ -67,6 +67,18 @@ let
       netCfg.listen.port;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   # Interface
 
   options = {

@@ -17,6 +17,19 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../hardware/graphics.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.moonshine = {
     enable = lib.mkEnableOption "Moonshine, a headless game streaming server for Moonlight clients";
 

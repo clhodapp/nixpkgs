@@ -144,6 +144,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/systemd-confinement.nix
+    # END generated imports
+  ];
 
   ###### interface
 

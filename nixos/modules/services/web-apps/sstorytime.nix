@@ -63,6 +63,19 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../databases/postgresql.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = lib.teams.ngi.members;
 
   options.services.sstorytime = {

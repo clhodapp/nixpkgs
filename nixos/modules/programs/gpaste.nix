@@ -7,6 +7,15 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/desktop-managers/gnome.nix
+    ../services/system/dbus.nix
+    ../services/x11/desktop-managers/cinnamon.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   ###### interface
   options = {

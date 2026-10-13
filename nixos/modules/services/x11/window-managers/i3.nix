@@ -94,5 +94,12 @@ in
       "i3-gaps"
       "enable"
     ] "i3-gaps was merged into i3. Use services.xserver.windowManager.i3.enable instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../config/system-path.nix
+    ../../../programs/i3lock.nix
+    ../../../system/etc/etc.nix
+    ./default.nix
+    # END generated imports
   ];
 }

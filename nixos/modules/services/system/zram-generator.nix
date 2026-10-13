@@ -9,6 +9,16 @@ let
   settingsFormat = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/lib.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with lib.maintainers; [ nickcao ];
   };

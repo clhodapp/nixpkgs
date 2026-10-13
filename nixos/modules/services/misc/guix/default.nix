@@ -65,6 +65,21 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/networking.nix
+    ../../../config/shells-environment.nix
+    ../../../config/system-environment.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../system/activation/activation-script.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/etc/etc.nix
+    ../../networking/avahi-daemon.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ ];
 
   options.services.guix = with lib; {

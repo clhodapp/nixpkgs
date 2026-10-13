@@ -32,6 +32,14 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.drasl = {
     enable = lib.mkEnableOption "Drasl";
     package = lib.mkPackageOption pkgs "drasl" { };

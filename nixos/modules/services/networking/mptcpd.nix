@@ -9,6 +9,15 @@ let
   settingsFormat = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./networkmanager.nix
+    # END generated imports
+  ];
 
   options = {
 

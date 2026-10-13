@@ -6,6 +6,21 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../config/xdg/portal.nix
+    ../config/xdg/portals/lxqt.nix
+    ../config/xdg/portals/wlr.nix
+    ../services/audio/pulseaudio.nix
+    ../services/desktop-managers/gnome.nix
+    ../services/desktop-managers/plasma6.nix
+    ../services/desktops/pipewire/pipewire.nix
+    ../services/x11/desktop-managers/cinnamon.nix
+    ./wayland/hyprland.nix
+    # END generated imports
+  ];
+
   options.programs.zoom-us = {
     enable = lib.mkEnableOption "zoom.us video conferencing application";
     package = lib.mkPackageOption pkgs "zoom-us" { };

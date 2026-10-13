@@ -15,6 +15,19 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../audio/pulseaudio.nix
+    ../desktops/pipewire/pipewire.nix
+    ./avahi-daemon.nix
+    ./firewall.nix
+    # END generated imports
+  ];
 
   ###### interface
 

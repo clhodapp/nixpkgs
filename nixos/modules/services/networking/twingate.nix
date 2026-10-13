@@ -9,6 +9,16 @@ let
   cfg = config.services.twingate;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/resolved.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    ./networkmanager.nix
+    # END generated imports
+  ];
+
   options.services.twingate = {
     enable = lib.mkEnableOption "Twingate Client daemon";
     package = lib.mkPackageOption pkgs "twingate" { };

@@ -8,6 +8,15 @@ let
   cfg = config.services.cpupower-gui;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     services.cpupower-gui = {
       enable = lib.mkOption {

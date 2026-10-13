@@ -11,6 +11,13 @@ let
   configFile = format.generate "pinnwand.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.pinnwand = {
     enable = lib.mkEnableOption "Pinnwand, a pastebin";
 

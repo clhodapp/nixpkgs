@@ -27,6 +27,17 @@ let
   isLocallyDistributed = config.services.livekit.enable;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    ./livekit.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ k900 ];
   options.services.livekit.ingress = {
     enable = lib.mkEnableOption "the livekit ingress service";

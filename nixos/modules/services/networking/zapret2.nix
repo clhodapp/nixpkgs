@@ -221,6 +221,18 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/sysctl.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ./nftables.nix
+    # END generated imports
+  ];
+
   options.services.zapret2 = {
     enable = lib.mkEnableOption "zapret2, an extensible DPI bypass program";
     package = lib.mkPackageOption pkgs "zapret2" { };

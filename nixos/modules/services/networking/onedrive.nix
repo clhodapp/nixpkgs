@@ -23,6 +23,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   meta.doc = ./onedrive.md;
 
   options.services.onedrive = {

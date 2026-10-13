@@ -7,6 +7,19 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../security/polkit.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../system/dbus.nix
+    ../pipewire/pipewire.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.gnome ];
   };

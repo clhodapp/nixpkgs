@@ -10,6 +10,15 @@ let
   configFile = configFormat.generate "logid.cfg" cfg.config;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     services.logiops = {
       enable = lib.mkEnableOption "LogiOps, a unofficial userspace driver for HID++ Logitech devices";

@@ -10,6 +10,15 @@ let
   toml = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../security/acme
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.doh-server = {
     enable = lib.mkEnableOption "DNS-over-HTTPS server";
 

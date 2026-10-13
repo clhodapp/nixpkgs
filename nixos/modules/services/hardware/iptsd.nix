@@ -11,6 +11,16 @@ let
   configFile = format.generate "iptsd.conf" cfg.config;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   options.services.iptsd = {
     enable = lib.mkEnableOption "the userspace daemon for Intel Precise Touch & Stylus";
 

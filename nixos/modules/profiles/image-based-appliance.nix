@@ -10,6 +10,13 @@
   # Appliances are always "minimal".
   imports = [
     "${modulesPath}/profiles/minimal.nix"
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/nix.nix
+    ../config/users-groups.nix
+    ../system/activation/switchable-system.nix
+    ../system/boot/systemd/initrd.nix
+    ../tasks/network-interfaces.nix
+    # END generated imports
   ];
 
   # The system cannot be rebuilt.

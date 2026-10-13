@@ -14,6 +14,18 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-environment.nix
+    ../../config/system-path.nix
+    ../../programs/fuse.nix
+    ../../system/boot/systemd.nix
+    ../hardware/udev.nix
+    ../hardware/udisks2.nix
+    ../system/dbus.nix
+    # END generated imports
+  ];
 
   meta = {
     teams = [ lib.teams.gnome ];

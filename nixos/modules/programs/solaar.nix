@@ -17,6 +17,15 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../hardware/logitech.nix
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.solaar = {
     enable = mkEnableOption "Solaar, the open source driver for Logitech devices.";
 

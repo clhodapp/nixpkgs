@@ -577,5 +577,8 @@ in
       "`services.overseerr` has been replaced by `services.seerr` as the project has been merged with Jellyseerr under Seerr."
     )
     # Do NOT add any option renames here, see top of the file
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../lib/modules/generic/assertions.nix
+    # END generated imports
   ];
 }

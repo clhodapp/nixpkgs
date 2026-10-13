@@ -29,6 +29,13 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../misc/meta.nix
+    ../system/build.nix
+    # END generated imports
+  ];
+
   options = {
 
     virtualisation.vmVariant = mkOption {

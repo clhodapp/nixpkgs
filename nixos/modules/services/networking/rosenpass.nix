@@ -23,6 +23,17 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/systemd.nix
+    ./wg-quick.nix
+    ./wireguard.nix
+    # END generated imports
+  ];
+
   options.services.rosenpass =
     let
       inherit (lib)

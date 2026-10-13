@@ -46,6 +46,16 @@ in
       [ "services" "kubernetes" "etcd" "caFile" ]
       [ "services" "kubernetes" "apiserver" "etcd" "caFile" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../databases/etcd.nix
+    ./addon-manager.nix
+    ./addons/dns.nix
+    ./default.nix
+    ./pki.nix
+    # END generated imports
   ];
 
   ###### interface

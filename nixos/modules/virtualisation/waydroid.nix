@@ -22,6 +22,21 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ../misc/lib.nix
+    ../services/networking/firewall.nix
+    ../services/networking/nftables.nix
+    ../services/system/dbus.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/tmpfiles.nix
+    ../system/etc/etc.nix
+    ./lxc.nix
+    # END generated imports
+  ];
 
   options.virtualisation.waydroid = {
     enable = lib.mkEnableOption "Waydroid";

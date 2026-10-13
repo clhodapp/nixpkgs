@@ -16,6 +16,16 @@ let
   swanctlParams = import ./swanctl-params.nix lib;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ../strongswan.nix
+    # END generated imports
+  ];
+
   options.services.strongswan-swanctl = {
     enable = mkEnableOption "strongswan-swanctl service";
 

@@ -17,6 +17,14 @@ in
       [ "services" "kubernetes" "controllerManager" "bindAddress" ]
     )
     (lib.mkRemovedOptionModule [ "services" "kubernetes" "controllerManager" "insecurePort" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ./apiserver.nix
+    ./default.nix
+    ./pki.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -12,6 +12,16 @@ let
   uiPackage = cfg.ui.package.override { customConfig = cfg.ui.config; };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.nominatim = {
     enable = lib.mkOption {
       type = lib.types.bool;

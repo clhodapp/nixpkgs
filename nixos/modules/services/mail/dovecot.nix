@@ -251,6 +251,17 @@ in
       [ "services" "dovecot2" "protocols" ]
       [ "services" "dovecot2" "settings" "protocols" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../misc/version.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    # END generated imports
   ]
   ++ (
     let

@@ -8,6 +8,12 @@ let
   cfg = config.services.cloudflare-dyndns;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.cloudflare-dyndns = {
       enable = lib.mkEnableOption "Cloudflare Dynamic DNS Client";

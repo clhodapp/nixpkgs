@@ -23,6 +23,16 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/users-groups.nix
+    ../../../security/wrappers/default.nix
+    ../../../system/etc/etc.nix
+    ../ssh/sshd.nix
+    # END generated imports
+  ];
+
   options.services.opkssh = {
     enable = lib.mkEnableOption "OpenID Connect SSH authentication";
 

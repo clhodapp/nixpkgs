@@ -23,6 +23,11 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "unifi-poller" ] [ "services" "unpoller" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.unpoller = {

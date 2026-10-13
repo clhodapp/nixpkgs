@@ -68,6 +68,12 @@ in
 {
   imports = [
     ../image/file-options.nix
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../misc/label.nix
+    ../misc/version.nix
+    ../system/build.nix
+    # END generated imports
   ];
 
   meta = {

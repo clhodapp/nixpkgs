@@ -42,6 +42,18 @@ in
       need the legacy VESA 800x600 fallback, set
       `boot.kernelParams = [ "vga=0x317" "nomodeset" ];` directly.
     '')
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/sysctl.nix
+    ../../hardware/device-tree.nix
+    ../../misc/lib.nix
+    ../../services/hardware/udev.nix
+    ../activation/top-level.nix
+    ../build.nix
+    ../etc/etc.nix
+    ./stage-1.nix
+    ./systemd.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -10,6 +10,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     programs.nano = {
       enable = lib.mkEnableOption "nano, a small user-friendly console text editor" // {

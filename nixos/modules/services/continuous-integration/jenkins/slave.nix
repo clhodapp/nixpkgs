@@ -11,6 +11,15 @@ let
   masterCfg = config.services.jenkins;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/users-groups.nix
+    ../../../misc/ids.nix
+    ../../../programs/java.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options = {
     services.jenkinsSlave = {
       # todo:

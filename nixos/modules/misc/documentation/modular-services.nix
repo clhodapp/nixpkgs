@@ -33,6 +33,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../documentation.nix
+    # END generated imports
+  ];
+
   documentation.nixos.extraModules = [
     modularServicesModule
   ];

@@ -12,6 +12,20 @@ let
   cfg = xcfg.desktopManager.cde;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../security/wrappers/default.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../networking/rpcbind.nix
+    ../../networking/xinetd.nix
+    ../xserver.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options.services.xserver.desktopManager.cde = {
     enable = mkEnableOption "Common Desktop Environment";
 

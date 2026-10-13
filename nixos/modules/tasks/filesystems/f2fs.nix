@@ -11,6 +11,15 @@ let
   inInitrd = config.boot.initrd.supportedFilesystems.f2fs or false;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/kernel.nix
+    ../../system/boot/stage-1.nix
+    ../../system/boot/systemd/initrd.nix
+    ../filesystems.nix
+    # END generated imports
+  ];
+
   config = mkIf (config.boot.supportedFilesystems.f2fs or false) {
 
     system.fsPackages = [ pkgs.f2fs-tools ];

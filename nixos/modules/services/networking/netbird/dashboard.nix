@@ -34,6 +34,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.netbird.server.dashboard = {
     enable = mkEnableOption "the static netbird dashboard frontend";
 

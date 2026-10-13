@@ -32,6 +32,18 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    ../mail/mail.nix
+    # END generated imports
+  ];
+
   options.services.certspotter = {
     enable = lib.mkEnableOption "Cert Spotter, a Certificate Transparency log monitor";
 

@@ -23,6 +23,13 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../.
+    ../../../services/security/fprintd.nix
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.fingerprint.enable = lib.mkEnableOption "Fingerprint devices" // {
     default =
       isSupported (config.hardware.facter.report.hardware.unknown or [ ])

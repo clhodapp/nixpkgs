@@ -58,6 +58,13 @@ let
   } cfg.settings configFile;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.rust-federation-tester = {
     enable = lib.mkEnableOption "rust-federation-tester";
 

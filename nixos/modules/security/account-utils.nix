@@ -9,6 +9,18 @@ let
   format = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/nsswitch.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../system/boot/systemd.nix
+    ../system/etc/etc.nix
+    ./pam.nix
+    ./wrappers/default.nix
+    # END generated imports
+  ];
+
   options.security.account-utils = {
     enable = lib.mkEnableOption "the account-utils implementation of Unix user authentication and management";
     package = lib.mkPackageOption pkgs "account-utils" { };

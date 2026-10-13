@@ -13,6 +13,14 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../build.nix
+    ./activation-script.nix
+    ./top-level.nix
+    # END generated imports
+  ];
+
   options = {
     system.activatable = mkOption {
       type = types.bool;

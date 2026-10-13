@@ -8,6 +8,14 @@ let
   cfg = config.programs.iio-hyprland;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../hardware/sensor/iio.nix
+    # END generated imports
+  ];
+
   options = {
     programs.iio-hyprland = {
       enable = lib.mkEnableOption "iio-hyprland and iio-sensor-proxy";

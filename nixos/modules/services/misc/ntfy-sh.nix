@@ -22,6 +22,13 @@ in
       "ntfy-sh"
       "group"
     ] "ntfy-sh is now a DynamicUser service, so a static group is no longer needed.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.ntfy-sh = {

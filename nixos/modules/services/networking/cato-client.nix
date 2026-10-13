@@ -10,6 +10,15 @@ let
   cfg = config.services.cato-client;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/wrappers/default.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.cato-client = {
     enable = mkEnableOption "cato-client service";
     package = mkPackageOption pkgs "cato-client" { };

@@ -127,6 +127,21 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/power-management.nix
+    ../../config/resolvconf.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../security/polkit.nix
+    ../../system/boot/resolved.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../../virtualisation/nixos-containers.nix
+    ./wireguard.nix
+    # END generated imports
+  ];
 
   ###### interface
 

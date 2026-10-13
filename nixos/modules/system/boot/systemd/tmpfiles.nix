@@ -147,6 +147,17 @@ let
   mkRuleFileContent = paths: concatStrings (pathsToRules paths);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../build.nix
+    ../../etc/etc.nix
+    ../systemd.nix
+    ./initrd.nix
+    ./user.nix
+    # END generated imports
+  ];
+
   options = {
     systemd.tmpfiles.rules = mkOption {
       type = types.listOf types.str;

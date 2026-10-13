@@ -8,6 +8,17 @@ let
   cfg = config.programs.nix-index;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/system-path.nix
+    ./bash/bash.nix
+    ./command-not-found/command-not-found.nix
+    ./fish.nix
+    ./zsh/zsh.nix
+    # END generated imports
+  ];
+
   options.programs.nix-index = with lib; {
     enable = mkEnableOption "nix-index, a file database for nixpkgs";
 

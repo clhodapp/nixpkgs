@@ -32,6 +32,13 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/etc/etc.nix
+    ./.
+    # END generated imports
+  ];
+
   options.services.firewalld.zones = mkOption {
     description = ''
       firewalld zone configuration files.

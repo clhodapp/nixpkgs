@@ -8,6 +8,12 @@ let
   cfg = config.services.keybase;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   ###### interface
 

@@ -280,6 +280,15 @@ in
   imports = [
     (lib.mkRemovedOptionModule [ "services" "angrr" "removeRoot" ] configFileMigrationMsg)
     (lib.mkRemovedOptionModule [ "services" "angrr" "ownedOnly" ] configFileMigrationMsg)
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../programs/direnv.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ./nix-gc.nix
+    # END generated imports
   ];
   options = {
     services.angrr = {

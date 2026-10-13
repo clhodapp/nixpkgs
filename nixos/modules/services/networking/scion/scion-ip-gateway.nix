@@ -29,6 +29,14 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../system/boot/systemd.nix
+    ./scion-dispatcher.nix
+    ./scion.nix
+    # END generated imports
+  ];
+
   options.services.scion.scion-ip-gateway = {
     enable = mkEnableOption "the scion-ip-gateway service";
     config = mkOption {

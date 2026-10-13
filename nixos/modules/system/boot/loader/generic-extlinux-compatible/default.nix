@@ -23,6 +23,16 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../../lib/modules/generic/assertions.nix
+    ../../../../hardware/device-tree.nix
+    ../../../activation/activation-script.nix
+    ../../../activation/top-level.nix
+    ../loader.nix
+    # END generated imports
+  ];
+
   options = {
     boot.loader.generic-extlinux-compatible = {
       enable = mkOption {

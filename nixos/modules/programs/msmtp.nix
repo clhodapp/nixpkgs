@@ -10,6 +10,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../services/mail/mail.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ euxane ];
 
   options = {

@@ -11,6 +11,15 @@ let
   defaultGroup = "sillytavern";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.A1ca7raz ];
 
   options = {

@@ -72,6 +72,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../boot/systemd.nix
+    ../../etc/etc.nix
+    # END generated imports
+  ];
+
   _class = "nixos";
 
   # First half of the magic: mix systemd logic into the otherwise abstract services

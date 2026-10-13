@@ -16,6 +16,19 @@ in
       "lemurs"
       "vt"
     ] "The VT is now fixed to VT1.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../security/pam.nix
+    ../../system/boot/systemd.nix
+    ../desktops/gnome/gnome-keyring.nix
+    ../desktops/seatd.nix
+    ../system/dbus.nix
+    ../x11/xserver.nix
+    ./default.nix
+    ./generic.nix
+    # END generated imports
   ];
 
   options.services.displayManager.lemurs = {

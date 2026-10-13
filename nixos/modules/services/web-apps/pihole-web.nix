@@ -9,6 +9,15 @@ let
   cfg = config.services.pihole-web;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/meta.nix
+    ../../system/etc/etc.nix
+    ../networking/pihole-ftl.nix
+    # END generated imports
+  ];
+
   options.services.pihole-web = {
     enable = lib.mkEnableOption "Pi-hole dashboard";
 

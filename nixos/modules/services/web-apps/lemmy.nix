@@ -23,6 +23,17 @@ in
       "lemmy"
       "jwtSecretPath"
     ] "As of v0.13.0, Lemmy auto-generates the JWT secret.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/meta.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    ./pict-rs.nix
+    # END generated imports
   ];
 
   options.services.lemmy = {

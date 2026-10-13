@@ -11,6 +11,16 @@ let
   inherit (config.system) stateVersion;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.odoo = {
       enable = lib.mkEnableOption "odoo, an open source ERP and CRM system";

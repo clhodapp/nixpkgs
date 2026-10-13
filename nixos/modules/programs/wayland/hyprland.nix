@@ -142,6 +142,23 @@ in
       "hyprland"
       "nvidiaPatches"
     ] "Nvidia patches are no longer needed")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../config/xdg/portals/wlr.nix
+    ../../security/pam.nix
+    ../../security/polkit.nix
+    ../../security/wrappers/default.nix
+    ../../services/display-managers/default.nix
+    ../../services/misc/graphical-desktop.nix
+    ../../services/x11/desktop-managers/none.nix
+    ../../system/boot/systemd/user.nix
+    ../dconf.nix
+    ../xwayland.nix
+    ./uwsm.nix
+    # END generated imports
   ];
 
   meta.teams = [ lib.teams.hyprland ];

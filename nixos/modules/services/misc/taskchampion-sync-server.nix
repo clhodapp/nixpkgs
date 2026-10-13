@@ -12,6 +12,15 @@ let
   defaultDir = "/var/lib/taskchampion-sync-server";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.taskchampion-sync-server = {
     enable = lib.mkEnableOption "TaskChampion Sync Server for Taskwarrior 3";
     package = lib.mkPackageOption pkgs "taskchampion-sync-server" { };

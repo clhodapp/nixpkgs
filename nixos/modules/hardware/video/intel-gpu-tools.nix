@@ -9,6 +9,13 @@ let
   cfg = config.hardware.intel-gpu-tools;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.intel-gpu-tools = {
       enable = lib.mkEnableOption "a setcap wrapper for intel-gpu-tools";

@@ -9,6 +9,14 @@ let
   pkg = cfg.package;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../system/boot/systemd.nix
+    ../databases/postgresql.nix
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.mealie = {
     enable = lib.mkEnableOption "Mealie, a recipe manager and meal planner";
 

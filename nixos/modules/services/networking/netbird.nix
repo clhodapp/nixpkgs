@@ -80,6 +80,28 @@ in
 
   imports = [
     (mkAliasOptionModule [ "services" "netbird" "tunnels" ] [ "services" "netbird" "clients" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/sysctl.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/meta.nix
+    ../../security/polkit.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/networkd.nix
+    ../../system/boot/resolved.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/network-interfaces.nix
+    ../display-managers/default.nix
+    ../x11/xserver.nix
+    ./dhcpcd.nix
+    ./firewall.nix
+    ./firewalld/zone.nix
+    ./networkmanager.nix
+    ./nftables.nix
+    # END generated imports
   ];
 
   options.services.netbird = {

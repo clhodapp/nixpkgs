@@ -28,6 +28,18 @@ let
   ) config.services.mautrix-meta.instances;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ./conduit.nix
+    ./dendrite.nix
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options = {
     services.mautrix-meta = {
 

@@ -125,6 +125,12 @@ in
       [ "services" "nginx" "gitweb" "virtualHost" ]
       [ "services" "gitweb" "nginx" "virtualHost" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfgNginx.enable {

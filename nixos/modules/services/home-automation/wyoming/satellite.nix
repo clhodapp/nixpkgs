@@ -33,6 +33,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../misc/meta.nix
+    ../../../system/boot/systemd.nix
+    ../../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   meta.buildDocsInSandbox = false;
 
   options.services.wyoming.satellite = with types; {

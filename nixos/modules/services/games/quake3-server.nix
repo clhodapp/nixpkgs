@@ -63,6 +63,11 @@ in
       [ "services" "quake3-server" "port" ]
       [ "services" "quake3-server" "settings" "net_port" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

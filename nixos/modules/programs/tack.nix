@@ -8,6 +8,13 @@ let
   cfg = config.programs.tack;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-environment.nix
+    ../config/system-path.nix
+    # END generated imports
+  ];
+
   options.programs.tack = {
     enable = lib.mkEnableOption "tack, flake-like toml nix pins";
 

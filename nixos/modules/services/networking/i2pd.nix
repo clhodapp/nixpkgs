@@ -355,6 +355,12 @@ in
     [
       (rename "inTunnels" "serverTunnels")
       (rename "outTunnels" "clientTunnels")
+      # BEGIN generated imports, written by `nix-module-imports fix`
+      ../../../../lib/modules/generic/assertions.nix
+      ../../../../lib/modules/generic/meta-maintainers.nix
+      ../../system/activation/top-level.nix
+      ../../system/boot/systemd.nix
+      # END generated imports
     ];
 
   ###### Implementation ######

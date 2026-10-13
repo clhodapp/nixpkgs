@@ -8,6 +8,15 @@ let
   cfg = config.services.bitbox-bridge;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ./udev.nix
+    # END generated imports
+  ];
+
   options = {
     services.bitbox-bridge = {
       enable = lib.mkEnableOption "Bitbox bridge daemon, for use with Bitbox hardware wallets.";

@@ -37,6 +37,13 @@ in
         builtins.fromJSON value
     ))
     (mkRenamedOptionModule [ "services" "redshift" "provider" ] [ "location" "provider" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/locale.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd/user.nix
+    ../desktops/geoclue2.nix
+    # END generated imports
   ];
 
   options.services.redshift = {

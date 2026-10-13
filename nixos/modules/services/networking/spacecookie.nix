@@ -32,6 +32,11 @@ in
       [ "services" "spacecookie" "hostname" ]
       [ "services" "spacecookie" "settings" "hostname" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ./firewall.nix
+    # END generated imports
   ];
 
   options = {

@@ -51,6 +51,15 @@ let
     ];
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    ./pam.nix
+    ./wrappers/default.nix
+    # END generated imports
+  ];
 
   ###### interface
 

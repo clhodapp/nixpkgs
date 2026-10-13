@@ -71,6 +71,17 @@ let
     } "exec -a ${lib.getExe pkgs.babelfish} babelfish < ${path} > $out;";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../misc/documentation.nix
+    ../system/build.nix
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options = {
     programs.fish = {
       enable = lib.mkOption {

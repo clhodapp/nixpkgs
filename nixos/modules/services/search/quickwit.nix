@@ -14,6 +14,12 @@ let
   usingDefaultUserAndGroup = cfg.user == "quickwit" && cfg.group == "quickwit";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   options.services.quickwit = {
     enable = lib.mkEnableOption "Quickwit";

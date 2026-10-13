@@ -6,6 +6,15 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../services/system/dbus.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     programs.appgate-sdp = {
       enable = lib.mkEnableOption "the AppGate SDP VPN client";

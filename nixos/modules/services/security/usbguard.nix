@@ -284,5 +284,11 @@ in
       [ "services" "usbguard" "implictPolicyTarget" ]
       [ "services" "usbguard" "implicitPolicyTarget" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 }

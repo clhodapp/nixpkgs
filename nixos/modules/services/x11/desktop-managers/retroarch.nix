@@ -12,6 +12,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../config/system-path.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   options.services.xserver.desktopManager.retroarch = {
     enable = mkEnableOption "RetroArch";
 

@@ -266,6 +266,17 @@ in
     (mkRenamedOptionModule [ "services" "searx" "settingsFile" ] [ "services" "searx" "settingsPath" ])
     (mkRenamedOptionModule [ "services" "searx" "configFile" ] [ "services" "searx" "settingsFile" ])
     (mkRenamedOptionModule [ "services" "searx" "runInUwsgi" ] [ "services" "searx" "configureUwsgi" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../databases/redis.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/uwsgi.nix
+    ./firewall.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

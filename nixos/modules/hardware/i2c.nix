@@ -9,6 +9,15 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    ../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.hardware.i2c = {
     enable = lib.mkEnableOption ''
       i2c devices support. By default access is granted to users in the "i2c"

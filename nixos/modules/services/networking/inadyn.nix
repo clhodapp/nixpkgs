@@ -51,6 +51,14 @@ let
   configFile = if (cfg.configFile != null) then cfg.configFile else configFile';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    # END generated imports
+  ];
+
   options.services.inadyn =
     with lib.types;
     let

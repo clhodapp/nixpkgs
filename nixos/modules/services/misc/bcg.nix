@@ -20,6 +20,14 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../networking/mosquitto.nix
+    # END generated imports
+  ];
+
   options = {
     services.bcg = {
       enable = lib.mkEnableOption "BigClown gateway";

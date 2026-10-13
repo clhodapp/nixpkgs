@@ -53,6 +53,17 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../misc/extra-arguments.nix
+    ../../../security/krb5
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    ./default.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.enable && package.passthru.implementation == "heimdal") {
     environment.etc."heimdal-kdc/kdc.conf".source = kdcConfFile;
 

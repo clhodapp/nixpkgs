@@ -15,6 +15,15 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../system/boot/systemd.nix
+    ../../virtualisation/nixos-containers.nix
+    # END generated imports
+  ];
+
   options.services.immichframe = {
     enable = mkEnableOption "ImmichFrame";
     package = lib.mkPackageOption pkgs "immichframe" { };

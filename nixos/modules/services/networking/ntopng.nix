@@ -41,6 +41,15 @@ in
 
   imports = [
     (mkRenamedOptionModule [ "services" "ntopng" "http-port" ] [ "services" "ntopng" "httpPort" ])
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   options = {

@@ -23,6 +23,20 @@ let
   unifiedConfigDir = cfg.stateDir + "/config";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/ids.nix
+    ../../security/polkit.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ./klipper.nix
+    # END generated imports
+  ];
+
   options = {
     services.moonraker = {
       enable = lib.mkEnableOption "Moonraker, an API web server for Klipper";

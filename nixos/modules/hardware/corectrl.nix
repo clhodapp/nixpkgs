@@ -23,6 +23,15 @@ in
       [ "programs" "corectrl" "gpuOverclock" "ppfeaturemask" ]
       [ "hardware" "amdgpu" "overdrive" "ppfeaturemask" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../security/polkit.nix
+    ../services/hardware/amdgpu.nix
+    ../services/system/dbus.nix
+    # END generated imports
   ];
 
   options.programs.corectrl = {

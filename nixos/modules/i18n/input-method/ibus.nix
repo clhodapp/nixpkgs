@@ -37,6 +37,16 @@ in
       [ "programs" "ibus" "plugins" ]
       [ "i18n" "inputMethod" "ibus" "engines" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/shells-environment.nix
+    ../../config/system-path.nix
+    ../../config/xdg/portal.nix
+    ../../misc/meta.nix
+    ../../programs/dconf.nix
+    ../../services/system/dbus.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options = {

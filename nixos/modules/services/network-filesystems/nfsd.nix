@@ -30,6 +30,13 @@ in
       [ "services" "nfs" "statdPort" ]
       [ "services" "nfs" "server" "statdPort" ]
     )
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../../tasks/filesystems.nix
+    ../networking/rpcbind.nix
+    # END generated imports
   ];
 
   ###### interface

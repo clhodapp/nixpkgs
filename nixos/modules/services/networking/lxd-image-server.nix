@@ -11,6 +11,17 @@ let
   location = "/var/www/simplestreams";
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/users-groups.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/tmpfiles.nix
+    ../../system/etc/etc.nix
+    ../logging/logrotate.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.lxd-image-server = {
       enable = lib.mkEnableOption "lxd-image-server";

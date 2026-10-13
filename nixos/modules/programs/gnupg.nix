@@ -29,6 +29,15 @@ in
       "agent"
       "pinentryFlavor"
     ] "Use programs.gnupg.agent.pinentryPackage instead")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/shells-environment.nix
+    ../config/system-path.nix
+    ../services/system/dbus.nix
+    ../system/boot/systemd/user.nix
+    ../system/etc/etc.nix
+    ./ssh.nix
+    # END generated imports
   ];
 
   options.programs.gnupg = {

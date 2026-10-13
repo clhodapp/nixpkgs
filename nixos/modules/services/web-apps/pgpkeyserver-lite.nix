@@ -19,6 +19,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../security/sks.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
 
   options = {
 

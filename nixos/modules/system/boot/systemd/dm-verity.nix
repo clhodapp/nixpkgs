@@ -4,6 +4,16 @@ let
   cfg = config.boot.initrd.systemd.dmVerity;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../../../lib/modules/generic/meta-maintainers.nix
+    ../../../tasks/lvm.nix
+    ../kernel.nix
+    ./initrd.nix
+    # END generated imports
+  ];
+
   options = {
     boot.initrd.systemd.dmVerity = {
       enable = lib.mkEnableOption "dm-verity" // {

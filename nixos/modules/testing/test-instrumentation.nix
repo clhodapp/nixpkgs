@@ -85,6 +85,27 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
+    ../config/sysctl.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../misc/lib.nix
+    ../misc/version.nix
+    ../services/display-managers/default.nix
+    ../services/hardware/udev.nix
+    ../services/logging/logrotate.nix
+    ../system/boot/kernel.nix
+    ../system/boot/systemd.nix
+    ../system/boot/systemd/initrd.nix
+    ../system/boot/systemd/journald.nix
+    ../system/boot/systemd/user.nix
+    ../tasks/network-interfaces.nix
+    ../virtualisation/nixos-containers.nix
+    ../virtualisation/qemu-guest-agent.nix
+    # END generated imports
+  ];
 
   options.testing = {
     backdoor = lib.mkEnableOption "backdoor service in stage 2" // {

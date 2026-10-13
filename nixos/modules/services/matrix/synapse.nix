@@ -426,7 +426,20 @@ in
       "matrix-synapse"
       "registration_shared_secret"
     ] "Pass this value via extraConfigFiles instead")
-
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../misc/ids.nix
+    ../../misc/meta.nix
+    ../../misc/version.nix
+    ../../system/boot/systemd.nix
+    ../../tasks/network-interfaces.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   options =

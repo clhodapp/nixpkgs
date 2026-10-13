@@ -8,6 +8,14 @@ let
   cfg = config.hardware.cpu.intel.npu;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../services/hardware/udev.nix
+    ../graphics.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.cpu.intel.npu = {
       enable = lib.mkEnableOption "Intel NPU support";

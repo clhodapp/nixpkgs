@@ -30,6 +30,15 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.duckdns = {
     enable = lib.mkEnableOption "DuckDNS Dynamic DNS Client";
     tokenFile = lib.mkOption {

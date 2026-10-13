@@ -158,6 +158,15 @@ in
       "pgbouncer"
       "extraConfig"
     ] "Use services.pgbouncer.settings instead.")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/users-groups.nix
+    ../../misc/extra-arguments.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options.services.pgbouncer = {

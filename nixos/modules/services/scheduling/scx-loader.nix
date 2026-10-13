@@ -16,6 +16,20 @@ let
   ) cfg.schedsPackages;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../../config/system-path.nix
+    ../../security/polkit.nix
+    ../../system/boot/kernel.nix
+    ../../system/boot/systemd.nix
+    ../../system/etc/etc.nix
+    ../system/dbus.nix
+    ./scx.nix
+    # END generated imports
+  ];
+
   options.services.scx-loader = {
     enable = lib.mkEnableOption "SCX Loader service, a daemon to run schedulers from userspace using dbus. This requires kernel version 6.12 and later.";
 

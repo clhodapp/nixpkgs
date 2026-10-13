@@ -698,6 +698,18 @@ in
 {
   imports = [
     (mkRemovedOptionModule [ "boot" "initrd" "luks" "enable" ] "")
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../misc/extra-arguments.nix
+    ../../tasks/lvm.nix
+    ./clevis.nix
+    ./kernel.nix
+    ./modprobe.nix
+    ./stage-1.nix
+    ./systemd/initrd.nix
+    ./systemd/tpm2.nix
+    # END generated imports
   ];
 
   options = {

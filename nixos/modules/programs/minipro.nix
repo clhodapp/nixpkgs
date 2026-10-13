@@ -9,6 +9,15 @@ let
   cfg = config.programs.minipro;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/meta-maintainers.nix
+    ../config/system-path.nix
+    ../config/users-groups.nix
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     programs.minipro = {
       enable = lib.mkEnableOption "minipro" // {

@@ -15,6 +15,15 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../config/system-path.nix
+    ../../system/boot/systemd.nix
+    ../../system/boot/systemd/user.nix
+    ../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.services.speechd = {
     # FIXME: figure out how to deprecate this EXTREMELY CAREFULLY
     # default guessed conservatively in ../misc/graphical-desktop.nix

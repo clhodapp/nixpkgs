@@ -26,6 +26,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../../../lib/modules/generic/assertions.nix
+    ../../../misc/extra-arguments.nix
+    ../../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.wyoming.faster-whisper = with types; {
     package = mkPackageOption pkgs "wyoming-faster-whisper" { };
 

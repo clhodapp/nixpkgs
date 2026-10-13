@@ -9,6 +9,15 @@ let
   ini = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../config/system-path.nix
+    ../system/etc/etc.nix
+    ./pam.nix
+    ./wrappers/default.nix
+    # END generated imports
+  ];
+
   options.security.please = {
     enable = lib.mkEnableOption ''
       please, a Sudo clone which allows a users to execute a command or edit a

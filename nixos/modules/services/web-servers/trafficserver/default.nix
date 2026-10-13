@@ -43,6 +43,16 @@ let
   mkPluginConfig = cfg: concatStringsSep "\n" (map (p: "${p.path} ${p.arg}") cfg);
 in
 {
+  imports = [
+    # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../config/system-path.nix
+    ../../../config/users-groups.nix
+    ../../../system/boot/systemd.nix
+    ../../../system/boot/systemd/tmpfiles.nix
+    ../../../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.services.trafficserver = {
     enable = mkEnableOption "Apache Traffic Server";
 
