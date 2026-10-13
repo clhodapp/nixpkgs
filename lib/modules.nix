@@ -521,29 +521,32 @@ let
               }
               ...
             ];
+            # Every module once, by key
+            unique = [ ... ];
           }
+
+        The nesting under `modules` follows the imports, so a module that
+        several modules import appears under each of them, and modules that
+        import each other nest without end. The nesting is built only as far
+        as it is read. `disabled` and `unique` are computed by visiting each
+        key once, so neither depends on how many ways a module is reached.
       */
       collectStructuredModules =
         let
-          collectResults = modules: {
-            disabled = concatLists (catAttrs "disabled" modules);
-            inherit modules;
-          };
-        in
-        parentFile: parentKey: initialModules: args:
-        collectResults (
-          imap1 (
-            n: x:
-            let
-              module = checkModule (loadModule args parentFile "${parentKey}:anon-${toString n}" x);
-              collectedImports = collectStructuredModules module._file module.key module.imports args;
-            in
-            {
-              key = module.key;
-              module = module;
-              modules = collectedImports.modules;
-              disabled =
-                (
+          collect =
+            parentFile: parentKey: initialModules: args:
+            imap1 (
+              n: x:
+              let
+                module = checkModule (loadModule args parentFile "${parentKey}:anon-${toString n}" x);
+              in
+              {
+                key = module.key;
+                module = module;
+                modules = collect module._file module.key module.imports args;
+                # The modules this module disables itself. What the
+                # modules it imports disable is on those modules.
+                disabled =
                   if module.disabledModules != [ ] then
                     [
                       {
@@ -552,53 +555,70 @@ let
                       }
                     ]
                   else
-                    [ ]
-                )
-                ++ collectedImports.disabled;
-            }
-          ) initialModules
-        );
+                    [ ];
+              }
+            ) initialModules;
+        in
+        parentFile: parentKey: initialModules: args:
+        let
+          modules = collect parentFile parentKey initialModules args;
+          unique = genericClosure {
+            startSet = modules;
+            operator = attrs: attrs.modules;
+          };
+        in
+        {
+          disabled = concatLists (catAttrs "disabled" unique);
+          inherit modules unique;
+        };
 
-      # filterModules :: String -> { disabled, modules } -> [ Module ]
+      # filterModules :: String -> { disabled, modules, unique } -> [ Module ]
       #
       # Filters a structure as emitted by collectStructuredModules by removing all disabled
       # modules recursively. It returns the final list of unique-by-key modules
       filterModules =
         modulesPath:
-        { disabled, modules }:
+        {
+          disabled,
+          modules,
+          unique,
+        }:
         let
           isDisabledModule = isDisabled modulesPath disabled;
           keyFilter = filter (attrs: !isDisabledModule attrs);
         in
         catAttrs "module" (
-          genericClosure (
-            if disabled == [ ] then
-              {
-                startSet = modules;
-                operator = attrs: attrs.modules;
-              }
-            else
-              {
-                startSet = keyFilter modules;
-                operator = attrs: keyFilter attrs.modules;
-              }
-          )
+          if disabled == [ ] then
+            unique
+          else
+            genericClosure {
+              startSet = keyFilter modules;
+              operator = attrs: keyFilter attrs.modules;
+            }
         );
 
       toGraph =
         modulesPath:
-        { disabled, modules }:
+        { disabled, modules, ... }:
         let
           isDisabledModule = isDisabled modulesPath disabled;
 
-          toModuleGraph = structuredModule: {
+          # `above` holds the keys of the modules that the module is
+          # nested under. A module that imports itself, through others,
+          # comes up again below itself. There it is listed without
+          # its imports, so that the graph ends.
+          toModuleGraph = above: structuredModule: {
             disabled = isDisabledModule structuredModule;
             inherit (structuredModule) key;
             file = structuredModule.module._file;
-            imports = map toModuleGraph structuredModule.modules;
+            imports =
+              if elem structuredModule.key above then
+                [ ]
+              else
+                map (toModuleGraph (above ++ [ structuredModule.key ])) structuredModule.modules;
           };
         in
-        map toModuleGraph (filter (x: x.key != "lib/modules.nix") modules);
+        map (toModuleGraph [ ]) (filter (x: x.key != "lib/modules.nix") modules);
     in
     modulesPath: initialModules: args: {
       modules = filterModules modulesPath (collectStructuredModules unknownModule "" initialModules args);
