@@ -9,6 +9,12 @@ let
   cfg = config.services.adw-bluetooth;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ ezratweaver ];
 
   options.services.adw-bluetooth = {

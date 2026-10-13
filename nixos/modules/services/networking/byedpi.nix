@@ -9,6 +9,12 @@ let
   cfg = config.services.byedpi;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.byedpi = {
     enable = lib.mkEnableOption "the ByeDPI service";
     package = lib.mkPackageOption pkgs "byedpi" { };

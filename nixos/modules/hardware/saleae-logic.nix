@@ -9,6 +9,12 @@ let
   cfg = config.hardware.saleae-logic;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.saleae-logic = {
     enable = lib.mkEnableOption "udev rules for Saleae Logic devices";
 

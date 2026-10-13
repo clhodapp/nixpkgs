@@ -1,5 +1,11 @@
 { config, lib, ... }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./system-path.nix
+    # END generated imports
+  ];
+
   options = {
     appstream.enable = lib.mkOption {
       type = lib.types.bool;

@@ -9,6 +9,11 @@ let
   defaultConf = "${pkgs.pommed_light}/etc/pommed.conf.mactel";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   options = {
 

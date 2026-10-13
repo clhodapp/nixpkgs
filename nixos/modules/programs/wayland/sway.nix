@@ -11,6 +11,12 @@ let
   wayland-lib = import ./lib.nix { inherit lib; };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/video/nvidia.nix
+    # END generated imports
+  ];
+
   options.programs.sway = {
     enable = lib.mkEnableOption ''
       Sway, the i3-compatible tiling Wayland compositor. You can manually launch

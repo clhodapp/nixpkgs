@@ -43,6 +43,9 @@ in
       text for config as introduced by RFC0042:
       https://github.com/NixOS/rfcs/blob/master/rfcs/0042-config-option.md
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
   ];
 
   ###### interface

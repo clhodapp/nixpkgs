@@ -35,6 +35,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   meta.buildDocsInSandbox = false;
 
   meta.maintainers = with lib.maintainers; [

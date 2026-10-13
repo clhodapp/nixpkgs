@@ -38,6 +38,9 @@ in
       "hddfancontrol"
       "extraArgs"
     ] "Extra Args should now be specified per hddfancontrol instance in its attrset")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/sensor/hddtemp.nix
+    # END generated imports
   ];
 
   options = {

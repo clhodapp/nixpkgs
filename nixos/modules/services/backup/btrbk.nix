@@ -140,6 +140,12 @@ let
   serviceEnabled = cfg.instances != { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/doas.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ oxalica ];
 
   options = {

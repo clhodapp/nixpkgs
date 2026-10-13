@@ -10,6 +10,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options.programs.udevil.enable = lib.mkEnableOption "udevil, to mount filesystems without password";
 
   config = lib.mkIf cfg.enable {

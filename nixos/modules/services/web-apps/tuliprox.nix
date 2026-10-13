@@ -14,6 +14,12 @@ let
   mappingSettingsYaml = settingsFormat.generate "mapping.yml" cfg.mappingSettings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/locale.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ nyanloutre ];
 
   options.services.tuliprox = {

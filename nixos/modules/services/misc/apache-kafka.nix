@@ -201,6 +201,9 @@ in
       "apache-kafka"
       "serverProperties"
     ] "Please see services.apache-kafka.settings and its documentation instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

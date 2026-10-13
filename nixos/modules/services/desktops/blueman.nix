@@ -9,6 +9,12 @@ let
   cfg = config.services.blueman;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
     services.blueman = {

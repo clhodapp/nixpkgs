@@ -89,6 +89,13 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    ../../virtualisation/nixos-containers.nix
+    # END generated imports
+  ];
+
   options = {
     services.jellyfin = {
       enable = mkEnableOption "Jellyfin Media Server";

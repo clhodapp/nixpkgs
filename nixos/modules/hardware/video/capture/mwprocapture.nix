@@ -8,6 +8,11 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/kernel.nix
+    # END generated imports
+  ];
 
   options.hardware.mwProCapture.enable = lib.mkEnableOption "the Magewell Pro Capture family kernel module";
 

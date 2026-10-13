@@ -9,6 +9,12 @@ let
   tomlFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.goeland = {
     enable = lib.mkEnableOption "goeland, an alternative to rss2email";
 

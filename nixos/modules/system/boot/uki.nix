@@ -17,6 +17,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/device-tree.nix
+    # END generated imports
+  ];
+
   options = {
 
     boot.uki = {

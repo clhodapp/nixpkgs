@@ -52,6 +52,11 @@ in
         "enabled_bridges"
       ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options = {

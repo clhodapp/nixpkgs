@@ -8,6 +8,12 @@ let
   cfg = config.services.hardware.bolt;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./udev.nix
+    # END generated imports
+  ];
+
   options = {
     services.hardware.bolt = {
       enable = lib.mkOption {

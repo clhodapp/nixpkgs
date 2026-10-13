@@ -336,6 +336,9 @@ in
       If you were using MySQL, please migrate to Postgres:
       https://docs.mattermost.com/deployment-guide/manual-postgres-migration.html
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
   ];
 
   options = {

@@ -19,6 +19,9 @@ in
       "parallels"
       "autoMountShares"
     ] "Shares are always automatically mounted since Parallels Desktop 20.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/timesyncd.nix
+    # END generated imports
   ];
 
   options = {

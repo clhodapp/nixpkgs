@@ -54,6 +54,12 @@ let
     || (instance.token != null && instance.tokenFile == null);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/docker.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.gitea-actions-runner.meta.maintainers;
 
   options.services.gitea-actions-runner = with types; {

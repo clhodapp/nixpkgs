@@ -6,6 +6,11 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
+  ];
 
   meta = {
     teams = [ lib.teams.pantheon ];

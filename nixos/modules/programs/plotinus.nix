@@ -9,6 +9,12 @@ let
   cfg = config.programs.plotinus;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/shells-environment.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = pkgs.plotinus.meta.maintainers;
     doc = ./plotinus.md;

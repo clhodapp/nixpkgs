@@ -46,6 +46,9 @@ in
       [ "security" "run0" "enableSudoAlias" ]
       [ "security" "run0" "sudo-shim" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./sudo-rs.nix
+    # END generated imports
   ];
 
   config = mkMerge [

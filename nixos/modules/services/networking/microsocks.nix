@@ -31,6 +31,12 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.microsocks = {
     enable = lib.mkEnableOption "Tiny, portable SOCKS5 server with very moderate resource usage";
     user = lib.mkOption {

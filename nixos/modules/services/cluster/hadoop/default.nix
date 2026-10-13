@@ -14,6 +14,9 @@ in
     ./yarn.nix
     ./hdfs.nix
     ./hbase.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/shells-environment.nix
+    # END generated imports
   ];
 
   options.services.hadoop = {

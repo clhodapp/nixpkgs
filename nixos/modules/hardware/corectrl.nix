@@ -23,6 +23,9 @@ in
       [ "programs" "corectrl" "gpuOverclock" "ppfeaturemask" ]
       [ "hardware" "amdgpu" "overdrive" "ppfeaturemask" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/users-groups.nix
+    # END generated imports
   ];
 
   options.programs.corectrl = {

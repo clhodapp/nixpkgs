@@ -20,6 +20,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./peertube.nix
+    # END generated imports
+  ];
+
   options.services.peertube-runner = {
     enable = lib.mkEnableOption "peertube-runner";
     package = lib.mkPackageOption pkgs [ "peertube" "runner" ] { };

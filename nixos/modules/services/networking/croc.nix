@@ -10,6 +10,12 @@ let
   rootDir = "/run/croc";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.croc = {
     enable = lib.mkEnableOption "croc relay";
     ports = lib.mkOption {

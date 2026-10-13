@@ -13,6 +13,12 @@ let
   opt = options.services.gocd-server;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/ca.nix
+    # END generated imports
+  ];
+
   options = {
     services.gocd-server = {
       enable = mkEnableOption "gocd-server";

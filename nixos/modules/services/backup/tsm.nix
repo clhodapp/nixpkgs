@@ -73,6 +73,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/tsm-client.nix
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   inherit options;
 

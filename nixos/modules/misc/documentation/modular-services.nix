@@ -33,6 +33,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../documentation.nix
+    # END generated imports
+  ];
+
   documentation.nixos.extraModules = [
     modularServicesModule
   ];

@@ -10,6 +10,12 @@ let
   layerDir = "${cfg.package}/share/vulkan/implicit_layer.d";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.renderdoc = {
     enable = lib.mkEnableOption "RenderDoc a frame-capture based graphics debugger";
 

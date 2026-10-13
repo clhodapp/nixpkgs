@@ -8,6 +8,11 @@ let
   cfg = config.services.ympd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./mpd.nix
+    # END generated imports
+  ];
 
   ###### interface
 

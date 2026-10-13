@@ -17,6 +17,12 @@ let
   cfg = config.programs.dsearch;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.dsearch = {
     enable = mkEnableOption "dsearch, a fast filesystem search service with fuzzy matching";
 

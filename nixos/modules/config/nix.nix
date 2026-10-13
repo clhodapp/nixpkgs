@@ -135,6 +135,9 @@ in
         "sandboxPaths"
       ];
     })
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../programs/bash/bash-completion.nix
+    # END generated imports
   ]
   ++ mapAttrsToList (
     oldConf: newConf:

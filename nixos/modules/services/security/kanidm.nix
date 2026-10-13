@@ -294,6 +294,9 @@ in
       [ "services" "kanidm" "unixSettings" ]
       [ "services" "kanidm" "unix" "settings" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/ssh/sshd.nix
+    # END generated imports
   ];
 
   options.services.kanidm = {

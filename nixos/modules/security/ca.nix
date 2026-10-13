@@ -18,6 +18,11 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
 
   options = {
     security.pki.installCACerts = lib.mkEnableOption "installing CA certificates to the system" // {

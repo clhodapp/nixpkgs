@@ -8,6 +8,12 @@ let
   cfg = config.services.endlessh-go;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.endlessh-go = {
     enable = lib.mkEnableOption "endlessh-go service";
 

@@ -66,6 +66,9 @@ in
       [ "services" "murmur" "sslCert" ]
       [ "services" "murmur" "tls" "certPath" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    # END generated imports
   ];
 
   options = {

@@ -14,6 +14,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "nixseparatedebuginfod2" "substituter" ] ''
       Instead of `services.nixseparatedebuginfod2.substituter = "foo"`, set `services.nixseparatedebuginfod2.substituters = [ "foo" ]` (possibly with mkForce to override the default value).
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/debug-info.nix
+    # END generated imports
   ];
   options = {
     services.nixseparatedebuginfod2 = {

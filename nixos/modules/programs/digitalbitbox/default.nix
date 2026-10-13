@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/digitalbitbox.nix
+    # END generated imports
+  ];
+
   options.programs.digitalbitbox = {
     enable = lib.mkOption {
       type = lib.types.bool;

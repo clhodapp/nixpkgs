@@ -46,6 +46,9 @@ in
       [ "services" "kubernetes" "etcd" "caFile" ]
       [ "services" "kubernetes" "apiserver" "etcd" "caFile" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./addon-manager.nix
+    # END generated imports
   ];
 
   ###### interface

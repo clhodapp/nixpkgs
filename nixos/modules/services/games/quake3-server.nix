@@ -63,6 +63,9 @@ in
       [ "services" "quake3-server" "port" ]
       [ "services" "quake3-server" "settings" "net_port" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

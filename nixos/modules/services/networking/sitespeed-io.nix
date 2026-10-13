@@ -9,6 +9,12 @@ let
   format = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.sitespeed-io = {
     enable = lib.mkEnableOption "Sitespeed.io";
 

@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/pam.nix
+    # END generated imports
+  ];
+
   options = {
     programs.screen = {
       enable = lib.mkEnableOption "screen, a basic terminal multiplexer";

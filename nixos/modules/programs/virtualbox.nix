@@ -5,6 +5,12 @@ let
     + "instead.";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../virtualisation/virtualbox-host.nix
+    # END generated imports
+  ];
+
   config.warnings = [ msg ];
   config.virtualisation.virtualbox.host.enable = true;
 }

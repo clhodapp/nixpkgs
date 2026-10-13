@@ -26,6 +26,12 @@ let
   cfgfile = settingsFormat.generate "cloud.cfg" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/networkd.nix
+    # END generated imports
+  ];
+
   options = {
     services.cloud-init = {
       enable = lib.mkOption {

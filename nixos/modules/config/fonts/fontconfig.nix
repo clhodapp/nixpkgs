@@ -323,6 +323,10 @@ in
     (lib.mkRemovedOptionModule [ "fonts" "fontconfig" "dpi" ] "Use display server-specific options")
     (lib.mkRemovedOptionModule [ "hardware" "video" "hidpi" "enable" ] fontconfigNote)
     (lib.mkRemovedOptionModule [ "fonts" "optimizeForVeryHighDPI" ] fontconfigNote)
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/apparmor.nix
+    ./packages.nix
+    # END generated imports
   ]
   ++ lib.forEach [ "enable" "substitutions" "preset" ] (
     opt:

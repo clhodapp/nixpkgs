@@ -77,6 +77,10 @@ in
       "resolved"
       "extraConfig"
     ] "Use services.resolved.settings instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../services/networking/dnsmasq.nix
+    ../../services/system/nix-daemon-firewall.nix
+    # END generated imports
   ];
 
   options = {

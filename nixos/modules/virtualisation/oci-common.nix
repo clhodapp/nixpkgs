@@ -9,7 +9,13 @@ let
   cfg = config.oci;
 in
 {
-  imports = [ ../profiles/qemu-guest.nix ];
+  imports = [
+    ../profiles/qemu-guest.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/grow-partition.nix
+    ./oci-options.nix
+    # END generated imports
+  ];
 
   # Taken from /proc/cmdline of Ubuntu 20.04.2 LTS on OCI
   boot.kernelParams = [

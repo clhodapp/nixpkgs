@@ -11,6 +11,12 @@ let
   yamlFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
+  ];
+
   options.services.fluent-bit = {
     enable = lib.mkEnableOption "Fluent Bit";
     package = lib.mkPackageOption pkgs "fluent-bit" { };

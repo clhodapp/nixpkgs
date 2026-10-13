@@ -181,6 +181,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "fwupd" "enableTestRemote" ]
       "This option was removed after being removed upstream. It only provided a method for testing fwupd functionality, and should not have been exposed for use outside of nix tests."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/loader/grub/grub.nix
+    # END generated imports
   ];
 
   ###### implementation

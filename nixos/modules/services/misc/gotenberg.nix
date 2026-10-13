@@ -48,6 +48,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.gotenberg = {
       enable = mkEnableOption "Gotenberg, a stateless API for PDF files";

@@ -54,6 +54,9 @@ in
       [ "services" "avahi" "allowInterfaces" ]
     )
     (lib.mkRenamedOptionModule [ "services" "avahi" "nssmdns" ] [ "services" "avahi" "nssmdns4" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/nsswitch.nix
+    # END generated imports
   ];
 
   options.services.avahi = {

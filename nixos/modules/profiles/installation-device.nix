@@ -22,6 +22,10 @@ with lib;
     # Include a copy of Nixpkgs so that nixos-install works out of
     # the box.
     ../installer/cd-dvd/channel.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/nixpkgs.nix
+    ../services/ttys/getty.nix
+    # END generated imports
   ];
 
   config = {

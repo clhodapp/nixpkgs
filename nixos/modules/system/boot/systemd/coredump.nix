@@ -17,6 +17,9 @@ in
       "coredump"
       "extraConfig"
     ] "Use systemd.coredump.settings.Coredump instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/sysctl.nix
+    # END generated imports
   ];
 
   options = {

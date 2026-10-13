@@ -19,6 +19,9 @@
         the sysctl "user.max_user_namespaces".
       ''
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/nix.nix
+    # END generated imports
   ];
 
   options = {

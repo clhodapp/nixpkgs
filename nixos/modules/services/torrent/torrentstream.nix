@@ -10,6 +10,12 @@ let
   dataDir = "/var/lib/torrentstream/";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.torrentstream = {
     enable = lib.mkEnableOption "TorrentStream daemon";
     package = lib.mkPackageOption pkgs "torrentstream" { };

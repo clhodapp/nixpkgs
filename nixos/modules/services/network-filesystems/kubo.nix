@@ -534,5 +534,8 @@ in
       [ "services" "kubo" "ipnsMountDir" ]
       [ "services" "kubo" "settings" "Mounts" "IPNS" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/shells-environment.nix
+    # END generated imports
   ];
 }

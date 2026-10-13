@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/uinput.nix
+    # END generated imports
+  ];
+
   options.programs.xppen = {
     enable = lib.mkEnableOption "XPPen PenTablet application";
     package = lib.mkPackageOption pkgs "xppen_4" {

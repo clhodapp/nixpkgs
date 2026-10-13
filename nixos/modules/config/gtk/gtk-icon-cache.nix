@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../services/x11/xserver.nix
+    # END generated imports
+  ];
+
   options = {
     gtk.iconCache.enable = lib.mkOption {
       type = lib.types.bool;

@@ -27,6 +27,12 @@ let
   defaultTemplatesDir = "${cfg.settings.repo.scanPath}/templates";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.legit = {
     enable = mkEnableOption "legit git web frontend";
 

@@ -23,6 +23,9 @@
       "lxc"
       "privilegedContainer"
     ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./nixos-containers.nix
+    # END generated imports
   ];
 
   options = { };

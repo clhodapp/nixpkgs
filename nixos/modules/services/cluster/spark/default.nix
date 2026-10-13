@@ -8,6 +8,12 @@ let
   cfg = config.services.spark;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.spark = {
       master = {

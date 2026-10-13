@@ -85,6 +85,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/systemd/journald.nix
+    ../virtualisation/nixos-containers.nix
+    ../virtualisation/qemu-guest-agent.nix
+    # END generated imports
+  ];
 
   options.testing = {
     backdoor = lib.mkEnableOption "backdoor service in stage 2" // {

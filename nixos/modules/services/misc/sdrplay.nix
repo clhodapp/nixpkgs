@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.sdrplayApi = {
     enable = lib.mkOption {
       default = false;

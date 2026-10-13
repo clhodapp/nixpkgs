@@ -16,6 +16,12 @@ let
   swanctlParams = import ./swanctl-params.nix lib;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../strongswan.nix
+    # END generated imports
+  ];
+
   options.services.strongswan-swanctl = {
     enable = mkEnableOption "strongswan-swanctl service";
 

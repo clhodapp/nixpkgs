@@ -280,6 +280,10 @@ in
   imports = [
     (lib.mkRemovedOptionModule [ "services" "angrr" "removeRoot" ] configFileMigrationMsg)
     (lib.mkRemovedOptionModule [ "services" "angrr" "ownedOnly" ] configFileMigrationMsg)
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/direnv.nix
+    ./nix-gc.nix
+    # END generated imports
   ];
   options = {
     services.angrr = {

@@ -19,6 +19,12 @@ let
   runtimeManifest = "${cfg.package}/share/openxr/1/openxr_monado.json";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/graphics.nix
+    # END generated imports
+  ];
+
   options.services.monado = {
     enable = mkEnableOption "Monado user service";
 

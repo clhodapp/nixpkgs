@@ -33,6 +33,18 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/blesh.nix
+    ./bash/ls-colors.nix
+    ./bash/undistract-me.nix
+    ./zsh/oh-my-zsh.nix
+    ./zsh/zsh-autoenv.nix
+    ./zsh/zsh-autosuggestions.nix
+    ./zsh/zsh-syntax-highlighting.nix
+    # END generated imports
+  ];
+
   options.programs.starship = {
     enable = lib.mkEnableOption "the Starship shell prompt";
 

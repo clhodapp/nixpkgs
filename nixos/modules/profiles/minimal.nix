@@ -9,6 +9,13 @@ let
   inherit (lib) mkDefault;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/stub-ld.nix
+    ../programs/command-not-found/command-not-found.nix
+    # END generated imports
+  ];
+
   documentation = {
     enable = mkDefault false;
     doc.enable = mkDefault false;

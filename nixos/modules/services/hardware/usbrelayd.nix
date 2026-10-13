@@ -8,6 +8,12 @@ let
   cfg = config.services.usbrelayd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.usbrelayd = with lib.types; {
     enable = lib.mkEnableOption "USB Relay MQTT daemon";
 

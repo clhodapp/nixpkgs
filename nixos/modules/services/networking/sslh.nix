@@ -32,6 +32,9 @@ in
       [ "services" "sslh" "settings" "verbose-connections" ]
       (config: if config.services.sslh.verbose then 1 else 0)
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/sysctl.nix
+    # END generated imports
   ];
 
   meta.buildDocsInSandbox = false;

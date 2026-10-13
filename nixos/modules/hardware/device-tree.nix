@@ -118,6 +118,9 @@ in
       "deviceTree"
       "base"
     ] "Use hardware.deviceTree.kernelPackage instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/kernel.nix
+    # END generated imports
   ];
 
   options = {

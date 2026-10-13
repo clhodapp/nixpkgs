@@ -9,6 +9,12 @@ let
   cfg = config.programs.streamdeck-ui;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.programs.streamdeck-ui = {
     enable = lib.mkEnableOption "streamdeck-ui";
 

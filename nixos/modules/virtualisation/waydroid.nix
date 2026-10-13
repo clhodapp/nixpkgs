@@ -22,6 +22,11 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./lxc.nix
+    # END generated imports
+  ];
 
   options.virtualisation.waydroid = {
     enable = lib.mkEnableOption "Waydroid";

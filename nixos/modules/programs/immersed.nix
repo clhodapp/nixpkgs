@@ -20,6 +20,9 @@ in
         "immersed"
       ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

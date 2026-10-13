@@ -222,6 +222,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/coredump.nix
+    ../../system/boot/systemd/nspawn.nix
+    ../../system/boot/systemd/oomd.nix
+    ../../system/boot/systemd/sysupdate.nix
+    # END generated imports
+  ];
 
   options = {
     services.ghostunnel.enable = mkEnableOption "ghostunnel";

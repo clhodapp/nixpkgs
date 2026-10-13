@@ -33,6 +33,9 @@ in
       [ "services" "squeezelite" "extraArguments" ]
       [ "services" "squeezelite" "extraArgs" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./pulseaudio.nix
+    # END generated imports
   ];
 
   options.services.squeezelite = {

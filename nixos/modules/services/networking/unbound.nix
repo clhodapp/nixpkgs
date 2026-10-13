@@ -387,5 +387,8 @@ in
     (mkRemovedOptionModule [ "services" "unbound" "extraConfig" ] ''
       You can use services.unbound.settings to add any configuration you want.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/ca.nix
+    # END generated imports
   ];
 }

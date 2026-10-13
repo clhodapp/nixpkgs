@@ -8,7 +8,12 @@ let
   cfg = config.services.localtimed;
 in
 {
-  imports = [ (lib.mkRenamedOptionModule [ "services" "localtime" ] [ "services" "localtimed" ]) ];
+  imports = [
+    (lib.mkRenamedOptionModule [ "services" "localtime" ] [ "services" "localtimed" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/locale.nix
+    # END generated imports
+  ];
 
   options = {
     services.localtimed = {

@@ -9,6 +9,12 @@ let
   cfg = config.boot.plymouth.tpm2-totp;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
+
   options.boot.plymouth.tpm2-totp = {
     enable = lib.mkEnableOption "tpm2-totp using Plymouth" // {
       description = "Whether to display a TOTP during boot using tpm2-totp and Plymouth.";

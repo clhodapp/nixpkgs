@@ -370,6 +370,14 @@ in
       [ "services" "nextcloud" "config" "objectstore" "s3" "autocreate" ]
       [ "services" "nextcloud" "config" "objectstore" "s3" "verify_bucket_exists" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../networking/imaginary.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options.services.nextcloud = {

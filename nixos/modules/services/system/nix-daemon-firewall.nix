@@ -5,6 +5,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/nftables.nix
+    # END generated imports
+  ];
+
   options.nix.firewall = {
     enable = lib.mkEnableOption "firewalling for outgoing traffic of the nix daemon";
 

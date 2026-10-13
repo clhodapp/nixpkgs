@@ -10,6 +10,12 @@ let
   format = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.turn-rs = {
     enable = lib.mkEnableOption "turn-rs server";
     package = lib.mkPackageOption pkgs "turn-rs" { };

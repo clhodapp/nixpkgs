@@ -9,6 +9,12 @@ let
   cfg = config.programs.ghidra;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.ghidra = {
     enable = lib.mkEnableOption "Ghidra, a software reverse engineering (SRE) suite of tools";
 

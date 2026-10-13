@@ -392,6 +392,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    # END generated imports
+  ];
+
   options.services.wstunnel = {
     enable = lib.mkEnableOption "wstunnel";
 

@@ -8,6 +8,12 @@
 with lib;
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.xray = {

@@ -9,6 +9,12 @@ let
   inherit (lib) mkIf mkEnableOption mkPackageOption;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.systemd-lock-handler = {
     enable = mkEnableOption "systemd-lock-handler";
     package = mkPackageOption pkgs "systemd-lock-handler" { };

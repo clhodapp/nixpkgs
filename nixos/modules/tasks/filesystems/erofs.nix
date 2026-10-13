@@ -13,6 +13,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (inInitrd || inSystem) {
 
     system.fsPackages = [ pkgs.erofs-utils ];

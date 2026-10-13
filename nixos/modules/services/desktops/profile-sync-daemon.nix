@@ -8,6 +8,12 @@ let
   cfg = config.services.psd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.psd = with lib.types; {
     enable = lib.mkOption {
       type = bool;

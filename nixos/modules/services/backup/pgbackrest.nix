@@ -90,6 +90,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   # TODO: Add enableServer option and corresponding pgBackRest TLS server service.
   # TODO: Write wrapper around pgbackrest to turn --repo=<name> into --repo=<number>
   # The following two are dependent on improvements upstream:

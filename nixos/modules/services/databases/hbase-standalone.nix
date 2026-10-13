@@ -38,6 +38,9 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "services" "hbase" ] [ "services" "hbase-standalone" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   ###### interface

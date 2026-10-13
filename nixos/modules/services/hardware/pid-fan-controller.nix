@@ -9,6 +9,12 @@ let
   settingsFormat = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.pid-fan-controller = {
     enable = lib.mkEnableOption "the PID fan controller, which controls the configured fans by running a closed-loop PID control loop";
     package = lib.mkPackageOption pkgs "pid-fan-controller" { };

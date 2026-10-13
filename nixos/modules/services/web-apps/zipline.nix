@@ -8,6 +8,12 @@ let
   cfg = config.services.zipline;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ defelo ];
 
   options.services.zipline = {

@@ -8,6 +8,12 @@ let
   cfg = config.programs.nh;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/misc/nix-gc.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     NotAShelf
     mdaniels5757

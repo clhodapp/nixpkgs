@@ -190,6 +190,10 @@ in
         "path"
       ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    # END generated imports
   ];
 
   ## Interface ##

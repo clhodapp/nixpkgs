@@ -10,6 +10,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.programs.jai-jail = {
     enable = lib.mkEnableOption "jai, a sandbox for AI agents";
 

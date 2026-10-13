@@ -235,5 +235,8 @@ in
       "dataDir"
     ] "You should move contents of dataDir to /var/lib/unifi/data")
     (lib.mkRenamedOptionModule [ "services" "unifi" "openPorts" ] [ "services" "unifi" "openFirewall" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 }

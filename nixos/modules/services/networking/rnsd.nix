@@ -9,6 +9,12 @@ let
   settingsFormat = pkgs.formats.configobj { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall-nftables.nix
+    # END generated imports
+  ];
+
   options = {
     services.rnsd = {
       enable = lib.mkEnableOption "Enable Reticulum Network Stack Daemon (rnsd)";

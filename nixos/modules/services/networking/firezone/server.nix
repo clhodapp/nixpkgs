@@ -172,6 +172,10 @@ in
     (lib.mkRemovedOptionModule [ "services" "firezone" "server" "provision" ] ''
       Firezone provisioning support has been removed due to outsized maintenance efforts. See https://github.com/NixOS/nixpkgs/pull/529428.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../databases/postgresql.nix
+    ../../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.firezone.server = {

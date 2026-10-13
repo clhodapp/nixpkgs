@@ -25,6 +25,12 @@ let
     settings: concatStringsSep " " (cli.toCommandLineGNU { } (filterAttrs (const isNonNull) settings));
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.mailpit.instances = mkOption {
     default = { };
     type = types.attrsOf (

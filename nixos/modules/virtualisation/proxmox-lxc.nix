@@ -10,6 +10,10 @@ with lib;
 {
   imports = [
     ../image/file-options.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/loader/init-script/init-script.nix
+    ./nixos-containers.nix
+    # END generated imports
   ];
 
   options.proxmoxLXC = {

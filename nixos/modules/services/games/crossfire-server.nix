@@ -9,6 +9,12 @@ let
   serverPort = 13327;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.crossfire-server = {
     enable = lib.mkOption {
       type = lib.types.bool;

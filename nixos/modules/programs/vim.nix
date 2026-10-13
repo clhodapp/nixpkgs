@@ -9,6 +9,12 @@ let
   cfg = config.programs.vim;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/system-environment.nix
+    # END generated imports
+  ];
+
   options.programs.vim = {
     enable = lib.mkEnableOption "Vi IMproved, an advanced text editor";
 

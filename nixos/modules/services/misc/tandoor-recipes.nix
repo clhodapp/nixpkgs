@@ -34,6 +34,13 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/ca.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with lib.maintainers; [ jvanbruegge ];
     doc = ./tandoor-recipes.md;

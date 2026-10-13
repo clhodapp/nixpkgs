@@ -105,6 +105,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../mail/postfix.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.peertube = {
     enable = lib.mkEnableOption "Peertube";
 

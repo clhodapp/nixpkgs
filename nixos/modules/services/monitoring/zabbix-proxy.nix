@@ -58,6 +58,9 @@ in
       "zabbixProxy"
       "extraConfig"
     ] "Use services.zabbixProxy.settings instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./zabbix-server.nix
+    # END generated imports
   ];
 
   # interface

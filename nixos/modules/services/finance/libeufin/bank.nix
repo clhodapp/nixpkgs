@@ -5,7 +5,14 @@
   ...
 }:
 {
-  imports = [ (import ./common.nix "bank") ];
+  imports = [
+    (import ./common.nix "bank")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../databases/postgresql.nix
+    ../taler/module.nix
+    ./module.nix
+    # END generated imports
+  ];
 
   options.services.libeufin.bank = {
     initialAccounts = lib.mkOption {

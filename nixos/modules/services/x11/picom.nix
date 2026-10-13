@@ -71,6 +71,9 @@ in
     (mkRemovedOptionModule [ "services" "picom" "experimentalBackends" ] ''
       This option was removed by upstream since picom v10.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
   ];
 
   options.services.picom = {

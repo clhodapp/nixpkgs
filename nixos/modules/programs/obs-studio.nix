@@ -9,6 +9,12 @@ let
   cfg = config.programs.obs-studio;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/polkit.nix
+    # END generated imports
+  ];
+
   options.programs.obs-studio = {
     enable = lib.mkEnableOption "Free and open source software for video recording and live streaming";
 

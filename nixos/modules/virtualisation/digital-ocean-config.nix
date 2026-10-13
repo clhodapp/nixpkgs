@@ -10,6 +10,11 @@ with lib;
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (modulesPath + "/virtualisation/digital-ocean-init.nix")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/monitoring/do-agent.nix
+    ../services/networking/dhcpcd.nix
+    ../system/boot/grow-partition.nix
+    # END generated imports
   ];
   options.virtualisation.digitalOcean = with types; {
     setRootPassword = mkOption {

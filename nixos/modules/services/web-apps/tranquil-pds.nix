@@ -12,6 +12,12 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.tranquil-pds = {
     enable = lib.mkEnableOption "tranquil-pds AT Protocol personal data server";
 

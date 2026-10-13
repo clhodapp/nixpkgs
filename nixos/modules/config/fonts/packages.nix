@@ -16,6 +16,9 @@ in
     ] "Use fonts.packages = [ pkgs.corefonts ]; instead.")
     (lib.mkRenamedOptionModule [ "fonts" "enableDefaultFonts" ] [ "fonts" "enableDefaultPackages" ])
     (lib.mkRenamedOptionModule [ "fonts" "fonts" ] [ "fonts" "packages" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../../lib/modules/generic/assertions.nix
+    # END generated imports
   ];
 
   options = {

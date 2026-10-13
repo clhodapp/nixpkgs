@@ -9,6 +9,12 @@ let
   cfg = config.programs.ryzen-monitor-ng;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/cpu/amd-ryzen-smu.nix
+    # END generated imports
+  ];
+
   options = {
     programs.ryzen-monitor-ng = {
       enable = mkEnableOption ''

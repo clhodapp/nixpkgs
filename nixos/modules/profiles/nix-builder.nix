@@ -45,6 +45,11 @@ in
         internal = true;
       };
     }
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/nix-channel.nix
+    ../services/ttys/getty.nix
+    ../virtualisation/disk-size-option.nix
+    # END generated imports
   ];
 
   options.virtualisation.darwin-builder = with lib; {

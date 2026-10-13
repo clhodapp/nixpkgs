@@ -22,6 +22,9 @@ in
       [ "programs" "bash" "enableCompletion" ]
       [ "programs" "bash" "completion" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.completion.enable {

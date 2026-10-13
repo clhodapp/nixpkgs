@@ -9,6 +9,12 @@ let
   cfg = config.programs.xastir;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options.programs.xastir = {
     enable = lib.mkEnableOption "Xastir Graphical APRS client";
   };

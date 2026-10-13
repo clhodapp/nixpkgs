@@ -11,6 +11,12 @@ let
   configFile = format.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/activation/top-level.nix
+    # END generated imports
+  ];
+
   options.services.blocky = {
     enable = lib.mkEnableOption "blocky, a fast and lightweight DNS proxy as ad-blocker for local network with many features";
 

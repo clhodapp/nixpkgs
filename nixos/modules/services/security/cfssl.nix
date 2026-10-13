@@ -9,6 +9,12 @@ let
   cfg = config.services.cfssl;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.cfssl = {
     enable = lib.mkEnableOption "the CFSSL CA api-server";
 

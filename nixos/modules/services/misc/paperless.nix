@@ -140,6 +140,13 @@ in
       [ "services" "paperless" "extraConfig" ]
       [ "services" "paperless" "settings" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../search/tika.nix
+    ../web-servers/nginx/default.nix
+    ./gotenberg.nix
+    # END generated imports
   ];
 
   options.services.paperless = {

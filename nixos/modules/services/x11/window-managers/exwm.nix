@@ -21,6 +21,9 @@ in
     (mkRemovedOptionModule [ "services" "xserver" "windowManager" "exwm" "enableDefaultConfig" ]
       "The upstream EXWM project no longer provides a default configuration, instead copy (parts of) exwm-config.el to your local config."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./default.nix
+    # END generated imports
   ];
 
   options = {

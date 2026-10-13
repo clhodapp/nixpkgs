@@ -117,6 +117,9 @@ in
     (mkRemovedOptionModule [ "services" "kubernetes" "kubelet" "allowPrivileged" ] "")
     (mkRemovedOptionModule [ "services" "kubernetes" "kubelet" "networkPlugin" ] "")
     (mkRemovedOptionModule [ "services" "kubernetes" "kubelet" "containerRuntime" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./addons/dns.nix
+    # END generated imports
   ];
 
   ###### interface

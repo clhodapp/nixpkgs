@@ -10,6 +10,12 @@ let
   settingsFile = settingsFormat.generate "ulogd.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.ulogd = {
       enable = lib.mkEnableOption "ulogd, a userspace logging daemon for netfilter/iptables related logging";

@@ -1,6 +1,12 @@
 { lib, pkgs, ... }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../programs/command-not-found/command-not-found.nix
+    # END generated imports
+  ];
+
   # Remove perl from activation
   system.etc.overlay.enable = lib.mkDefault true;
   services.userborn.enable = lib.mkDefault true;

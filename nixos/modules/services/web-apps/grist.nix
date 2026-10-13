@@ -20,6 +20,12 @@ let
   cfg = config.services.grist;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/redis.nix
+    # END generated imports
+  ];
+
   options.services.grist = {
     enable = mkEnableOption "Grist";
 

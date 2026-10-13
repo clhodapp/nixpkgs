@@ -36,6 +36,12 @@ let
   userConfigFile = iniFmt.generate "99-user.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.plasma-login-manager = {
     enable = mkEnableOption "Plasma Login Manager";
     package = mkPackageOption pkgs [

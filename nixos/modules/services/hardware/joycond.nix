@@ -8,6 +8,12 @@ let
   cfg = config.services.joycond;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./udev.nix
+    # END generated imports
+  ];
+
   options.services.joycond = {
     enable = lib.mkEnableOption "support for Nintendo Pro Controllers and Joycons";
 

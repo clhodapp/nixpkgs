@@ -68,6 +68,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/krb5
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.enable && package.passthru.implementation == "krb5") {
     environment = {
       etc."krb5kdc/kdc.conf".source = kdcConfFile;

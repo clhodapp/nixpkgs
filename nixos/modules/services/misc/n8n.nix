@@ -67,6 +67,9 @@ in
       "n8n"
       "webhookUrl"
     ] "Use services.n8n.environment.WEBHOOK_URL instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/locale.nix
+    # END generated imports
   ];
 
   options.services.n8n = {

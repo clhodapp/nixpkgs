@@ -16,6 +16,9 @@ in
       "kime"
       "config"
     ] "Use i18n.inputMethod.kime.* instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/shells-environment.nix
+    # END generated imports
   ];
 
   options.i18n.inputMethod.kime = {

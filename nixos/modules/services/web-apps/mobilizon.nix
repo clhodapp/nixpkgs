@@ -65,6 +65,13 @@ let
   secretEnvFile = "/var/lib/mobilizon/secret-env.sh";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.mobilizon = {
       enable = mkEnableOption "Mobilizon federated organization and mobilization platform";

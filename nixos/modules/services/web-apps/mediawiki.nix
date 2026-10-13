@@ -573,6 +573,13 @@ in
       [ "services" "mediawiki" "virtualHost" ]
       [ "services" "mediawiki" "httpd" "virtualHost" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

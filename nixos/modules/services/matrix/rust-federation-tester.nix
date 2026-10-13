@@ -58,6 +58,12 @@ let
   } cfg.settings configFile;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
+  ];
+
   options.services.rust-federation-tester = {
     enable = lib.mkEnableOption "rust-federation-tester";
 

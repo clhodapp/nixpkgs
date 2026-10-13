@@ -15,6 +15,14 @@ let
   cfg = config.virtualisation;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/nix-daemon.nix
+    ../system/boot/timesyncd.nix
+    ../tasks/filesystems/overlayfs.nix
+    # END generated imports
+  ];
+
   options = {
 
     virtualisation.memorySize = lib.mkOption {

@@ -22,6 +22,12 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/timesyncd.nix
+    # END generated imports
+  ];
+
   options.services.ntpd-rs = {
     enable = lib.mkEnableOption "Network Time Service (ntpd-rs)";
     metrics.enable = lib.mkEnableOption "ntpd-rs Prometheus Metrics Exporter";

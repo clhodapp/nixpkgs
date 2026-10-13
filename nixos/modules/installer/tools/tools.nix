@@ -362,6 +362,9 @@ in
         The Bash implementation of nixos-rebuild has been removed in favor of the new Python implementation.
         If you have any issues with the new implementation, please create an issue in GitHub and tag the maintainers of 'nixos-rebuild-ng'.
       '')
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../security/run0.nix
+      # END generated imports
     ];
 
   config = {

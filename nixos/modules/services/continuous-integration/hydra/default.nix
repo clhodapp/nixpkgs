@@ -100,6 +100,9 @@ in
       The queue runner no longer reads Nix build machines files. Builders now
       connect to it via gRPC, see `services.hydra-builder`.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../databases/postgresql.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -183,6 +183,15 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/systemd-confinement.nix
+    ../databases/mysql.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   # interface
   options = {
     services.kimai = {

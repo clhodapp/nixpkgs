@@ -19,6 +19,9 @@ in
       [ "services" "xserver" "windowManager" "fvwm" ]
       [ "services" "xserver" "windowManager" "fvwm2" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./default.nix
+    # END generated imports
   ];
 
   ###### interface

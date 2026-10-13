@@ -123,6 +123,9 @@ in
       "gdm"
       "wayland"
     ] "Disabling this option is no longer supported with GNOME 50.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/plymouth.nix
+    # END generated imports
   ];
 
   meta = {

@@ -69,6 +69,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./conduit.nix
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options.services.mautrix-whatsapp = {
     enable = lib.mkEnableOption "mautrix-whatsapp, a Matrix-WhatsApp puppeting bridge";
 

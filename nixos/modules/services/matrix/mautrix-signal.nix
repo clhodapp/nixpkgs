@@ -65,6 +65,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./conduit.nix
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options.services.mautrix-signal = {
     enable = lib.mkEnableOption "mautrix-signal, a Matrix-Signal puppeting bridge";
 

@@ -11,6 +11,9 @@ in
   imports = [
     # Should have never been on the top-level.
     (lib.mkRenamedOptionModule [ "snapraid" ] [ "services" "snapraid" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.snapraid = with lib.types; {

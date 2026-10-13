@@ -11,6 +11,12 @@ let
   networkmanagerEnabled = config.networking.networkmanager.enable;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./networkmanager.nix
+    # END generated imports
+  ];
+
   options = {
     networking.netplan = {
       enable = lib.mkEnableOption "Whether to enable the netplan-configure service at boot";

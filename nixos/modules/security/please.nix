@@ -9,6 +9,12 @@ let
   ini = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./pam.nix
+    # END generated imports
+  ];
+
   options.security.please = {
     enable = lib.mkEnableOption ''
       please, a Sudo clone which allows a users to execute a command or edit a

@@ -69,6 +69,9 @@ in
       "pdfding"
       "backup"
     ] "The automated backup functionality has been removed by upstream in 1.14.0.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
   ];
 
   options.services.pdfding = {

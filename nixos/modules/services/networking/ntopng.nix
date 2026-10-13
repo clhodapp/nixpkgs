@@ -41,6 +41,9 @@ in
 
   imports = [
     (mkRenamedOptionModule [ "services" "ntopng" "http-port" ] [ "services" "ntopng" "httpPort" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   options = {

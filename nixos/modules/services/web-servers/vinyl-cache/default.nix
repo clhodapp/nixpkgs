@@ -117,6 +117,12 @@ let
          }' -r vmod_path";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../logging/logrotate.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [
     lib.maintainers.leona
     lib.maintainers.osnyx

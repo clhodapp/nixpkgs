@@ -22,6 +22,12 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.mollysocket = {
     enable = mkEnableOption ''
       [MollySocket](https://github.com/mollyim/mollysocket) for getting Signal

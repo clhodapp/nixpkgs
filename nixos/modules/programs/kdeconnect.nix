@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/uinput.nix
+    # END generated imports
+  ];
+
   options.programs.kdeconnect = {
     enable = lib.mkEnableOption ''
       kdeconnect.

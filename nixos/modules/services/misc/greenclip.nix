@@ -8,6 +8,11 @@ let
   cfg = config.services.greenclip;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   options.services.greenclip = {
     enable = lib.mkEnableOption "Greenclip, a clipboard manager";

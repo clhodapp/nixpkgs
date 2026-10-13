@@ -318,6 +318,9 @@ in
     (mkChangedOptionModule [ "services" "knot" "extraConfig" ] [ "services" "knot" "settingsFile" ] (
       config: mkConfigFile config.services.knot.extraConfig
     ))
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   config = mkIf config.services.knot.enable {

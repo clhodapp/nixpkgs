@@ -161,6 +161,9 @@ in
       ]
       (config: lib.strings.removeSuffix ".conf" config.boot.loader.systemd-boot.netbootxyz.entryFilename)
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../../config/nix.nix
+    # END generated imports
   ];
 
   options.boot.loader.systemd-boot = {

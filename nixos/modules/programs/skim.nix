@@ -19,6 +19,9 @@ in
     (mkRemovedOptionModule [ "programs" "skim" "fuzzyCompletion" ]
       "programs.skim.fuzzyCompletion has been removed. Completions are now included in the package itself."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/bash.nix
+    # END generated imports
   ];
 
   options = {

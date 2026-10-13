@@ -14,6 +14,10 @@
       preventing you from using the new implementation, please open an issue on
       GitHub.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./activatable-system.nix
+    ./pre-switch-check.nix
+    # END generated imports
   ];
 
   options.system.switch = {

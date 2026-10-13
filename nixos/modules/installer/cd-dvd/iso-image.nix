@@ -552,6 +552,9 @@ in
       ];
     })
     ../../image/file-options.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/loader/grub/memtest.nix
+    # END generated imports
   ];
 
   options = {

@@ -20,6 +20,9 @@ in
     (lib.mkRemovedOptionModule [ "programs" "direnv" "finalPackage" ]
       "programs.direnv.finalPackage has been removed now, as its value is identical to programs.direnv.package."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/nix.nix
+    # END generated imports
   ];
   options.programs.direnv = {
 

@@ -8,6 +8,12 @@ let
   cfg = config.services.ssh-agent-switcher;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/shells-environment.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.jmmv ];
 
   options = {

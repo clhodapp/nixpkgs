@@ -31,6 +31,12 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/pam.nix
+    # END generated imports
+  ];
+
   options.programs.rust-motd = {
     enable = lib.mkEnableOption "rust-motd, a Message Of The Day (MOTD) generator";
     enableMotdInSSHD = lib.mkOption {

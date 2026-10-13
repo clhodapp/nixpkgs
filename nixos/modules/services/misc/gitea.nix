@@ -85,6 +85,11 @@ in
       "gitea"
       "useWizard"
     ] "Has been removed because it was broken and lacked automated testing.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../mail/postfix.nix
+    # END generated imports
   ];
 
   options = {

@@ -123,6 +123,21 @@ in
       [ "services" "gnome" "core-utilities" "enable" ]
       [ "services" "gnome" "core-apps" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/mime.nix
+    ../../installer/tools/tools.nix
+    ../../programs/gnome-disks.nix
+    ../../programs/seahorse.nix
+    ../desktops/gnome/gnome-browser-connector.nix
+    ../desktops/gnome/gnome-initial-setup.nix
+    ../desktops/gnome/gnome-remote-desktop.nix
+    ../desktops/gnome/gnome-software.nix
+    ../desktops/gnome/localsearch.nix
+    ../desktops/gnome/sushi.nix
+    ../desktops/gnome/tinysparql.nix
+    ../hardware/bolt.nix
+    ../misc/sysprof.nix
+    # END generated imports
   ];
 
   options = {

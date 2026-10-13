@@ -22,6 +22,10 @@ in
       [ "hardware" "logitech" "wireless" "enableGraphical" ]
       [ "programs" "solaar" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../programs/solaar.nix
+    ../services/hardware/udev.nix
+    # END generated imports
   ];
 
   options.hardware.logitech = {

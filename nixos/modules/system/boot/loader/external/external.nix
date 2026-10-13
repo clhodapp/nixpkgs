@@ -11,6 +11,12 @@ let
   cfg = config.boot.loader.external;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../systemd-boot/systemd-boot.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with maintainers; [
       cole-h

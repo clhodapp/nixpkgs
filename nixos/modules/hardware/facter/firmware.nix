@@ -8,6 +8,14 @@ let
   hasIntelCpu = facterLib.hasIntelCpu report;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../cpu/amd-microcode.nix
+    ../cpu/intel-microcode.nix
+    ./.
+    # END generated imports
+  ];
+
   config = lib.mkIf (config.hardware.facter.enable && isBaremetal) {
     # none (e.g. bare-metal)
     # provide firmware for devices that might not have been detected by nixos-facter

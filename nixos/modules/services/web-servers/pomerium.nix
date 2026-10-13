@@ -11,6 +11,12 @@ let
   format = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    # END generated imports
+  ];
+
   options.services.pomerium = {
     enable = mkEnableOption "the Pomerium authenticating reverse proxy";
 

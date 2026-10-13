@@ -9,6 +9,12 @@ let
   cfg = config.programs.wayland.miracle-wm;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/portal.nix
+    # END generated imports
+  ];
+
   options.programs.wayland.miracle-wm = {
     enable = lib.mkEnableOption ''
       miracle-wm, a tiling Mir based Wayland compositor. You can manually launch miracle-wm by

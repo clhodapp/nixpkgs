@@ -9,6 +9,12 @@ let
   cfg = config.programs.partition-manager;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/dbus.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.oxalica ];
 
   options = {

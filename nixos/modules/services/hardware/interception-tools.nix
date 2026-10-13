@@ -8,6 +8,12 @@ let
   cfg = config.services.interception-tools;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.interception-tools = {
     enable = lib.mkOption {
       type = lib.types.bool;

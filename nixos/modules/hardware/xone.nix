@@ -8,6 +8,12 @@ let
   cfg = config.hardware.xone;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./xpad-noone.nix
+    # END generated imports
+  ];
+
   options.hardware.xone = {
     enable = lib.mkEnableOption "the xone driver for Xbox One and Xbox Series X|S accessories";
   };

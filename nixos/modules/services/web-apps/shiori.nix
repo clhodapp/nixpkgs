@@ -9,6 +9,13 @@ let
   cfg = config.services.shiori;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options = {
     services.shiori = {
       enable = lib.mkEnableOption "Shiori simple bookmarks manager";

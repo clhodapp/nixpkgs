@@ -9,6 +9,12 @@ let
   cfg = config.services.ddns-updater;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.ddns-updater = {
     enable = lib.mkEnableOption "Container to update DNS records periodically with WebUI for many DNS providers";
 

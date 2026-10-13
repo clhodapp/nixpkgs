@@ -16,6 +16,9 @@ in
       [ "services" "displayManager" "environment" ]
       [ "services" "displayManager" "generic" "environment" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

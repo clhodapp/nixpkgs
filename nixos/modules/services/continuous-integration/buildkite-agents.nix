@@ -160,6 +160,12 @@ let
   mapAgents = function: lib.mkMerge (lib.mapAttrsToList function enabledAgents);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/networking.nix
+    # END generated imports
+  ];
+
   options.services.buildkite-agents = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submodule buildkiteOptions);
     default = { };

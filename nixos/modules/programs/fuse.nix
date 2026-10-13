@@ -9,6 +9,12 @@ let
   cfg = config.programs.fuse;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ ];
 
   options.programs.fuse = {

@@ -22,6 +22,9 @@ in
 {
   imports = [
     (mkRenamedOptionModule [ "services" "vmwareGuest" ] [ "virtualisation" "vmware" "guest" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/wrappers/default.nix
+    # END generated imports
   ];
 
   meta = {

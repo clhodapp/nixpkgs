@@ -8,6 +8,12 @@ let
   cfg = config.services.orbit;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.orbit = {
     enable = lib.mkEnableOption "Fleet Orbit agent" // {
       description = "Enable the Fleet Orbit agent.";

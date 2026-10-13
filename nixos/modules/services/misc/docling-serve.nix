@@ -10,6 +10,12 @@ let
   cfg = config.services.docling-serve;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.docling-serve = {
       enable = lib.mkEnableOption "Docling Serve server";

@@ -27,6 +27,11 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
 
   options.services.trilium-server = with lib; {
     enable = mkEnableOption "trilium-server";

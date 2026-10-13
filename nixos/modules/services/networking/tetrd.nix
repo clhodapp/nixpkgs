@@ -9,6 +9,12 @@ let
   cfg = config.services.tetrd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/resolvconf.nix
+    # END generated imports
+  ];
+
   options.services.tetrd = {
     enable = lib.mkEnableOption "tetrd";
     package = lib.mkPackageOption pkgs "tetrd" { };

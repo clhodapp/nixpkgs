@@ -33,6 +33,11 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/ca.nix
+    # END generated imports
+  ];
 
   ###### interface
 

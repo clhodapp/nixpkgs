@@ -5,6 +5,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/nix.nix
+    ./options.nix
+    # END generated imports
+  ];
+
   config.assertions = lib.flatten (
     lib.flip lib.mapAttrsToList config.services.github-runners (
       name: cfg:

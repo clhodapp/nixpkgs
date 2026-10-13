@@ -126,6 +126,12 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/libvirtd.nix
+    # END generated imports
+  ];
+
   options = {
     services.libvirtd.autoSnapshot = {
       enable = lib.mkEnableOption "LibVirt VM snapshots";

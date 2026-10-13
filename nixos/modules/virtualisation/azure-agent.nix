@@ -52,5 +52,10 @@ with lib;
             "Format"
           ]
         )
-      ];
+      ]
+    ++ [
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ./waagent.nix
+      # END generated imports
+    ];
 }

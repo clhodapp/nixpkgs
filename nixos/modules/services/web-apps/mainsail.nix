@@ -10,6 +10,13 @@ let
   moonraker = config.services.moonraker;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/moonraker.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.mainsail = {
     enable = mkEnableOption "a modern and responsive user interface for Klipper";
 

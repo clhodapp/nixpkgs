@@ -95,6 +95,9 @@ in
       Use {option}`secretApiKeyFile` instead.
       If you insist on keeping the API key world-readable, you can use `oink.secretApiKeyFile = pkgs.writeText "secret-api-key" "secret";`.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
   config = lib.mkIf cfg.enable {
     systemd.services.oink = {

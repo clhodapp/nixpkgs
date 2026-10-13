@@ -56,6 +56,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../../lib/modules/generic/assertions.nix
+    ../../config/system-path.nix
+    ../../misc/meta.nix
+    # END generated imports
+  ];
+
   options.i18n = {
     inputMethod = {
       enable = lib.mkEnableOption "an additional input method type" // {

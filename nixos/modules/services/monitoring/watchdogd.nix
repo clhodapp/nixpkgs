@@ -40,6 +40,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.watchdogd = {
     enable = lib.mkEnableOption "watchdogd, an advanced system & process supervisor";
     package = lib.mkPackageOption pkgs "watchdogd" { };

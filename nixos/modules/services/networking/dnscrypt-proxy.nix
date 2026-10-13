@@ -15,6 +15,9 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "dnscrypt-proxy2" ] [ "services" "dnscrypt-proxy" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.dnscrypt-proxy = {

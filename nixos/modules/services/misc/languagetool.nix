@@ -74,6 +74,9 @@ in
       "languagetool"
       "jrePackage"
     ] "The jre is now always taken from the package's jre attribute.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

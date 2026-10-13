@@ -29,6 +29,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./namecoind.nix
+    ./pdns-recursor.nix
+    # END generated imports
+  ];
 
   ###### interface
 

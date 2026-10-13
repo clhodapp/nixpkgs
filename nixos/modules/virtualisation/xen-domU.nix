@@ -3,6 +3,13 @@
 { ... }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/logging/syslogd.nix
+    ../system/boot/timesyncd.nix
+    # END generated imports
+  ];
+
   boot.loader.grub.device = "nodev";
 
   boot.initrd.kernelModules = [

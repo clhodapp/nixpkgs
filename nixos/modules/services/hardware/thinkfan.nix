@@ -128,6 +128,11 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/modprobe.nix
+    # END generated imports
+  ];
 
   options = {
 

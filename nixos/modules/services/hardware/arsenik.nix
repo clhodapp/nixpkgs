@@ -8,6 +8,12 @@ let
   cfg = config.services.arsenik;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./kanata.nix
+    # END generated imports
+  ];
+
   options.services.arsenik = {
     enable = lib.mkEnableOption "A 33-key layout that works with all keyboards.";
     package = lib.mkPackageOption pkgs "arsenik" { };

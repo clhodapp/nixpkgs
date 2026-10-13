@@ -8,6 +8,12 @@ let
   cfg = config.programs.umbriel;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/portal.nix
+    # END generated imports
+  ];
+
   options.programs.umbriel = {
     enable = lib.mkEnableOption "Umbriel, a Wayland compositor built on wlroots and SceneFX";
     package = lib.mkPackageOption pkgs "umbriel" { };

@@ -32,6 +32,9 @@ in
         "corednsImage"
       ];
     })
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../apiserver.nix
+    # END generated imports
   ];
 
   options.services.kubernetes.addons.dns = {

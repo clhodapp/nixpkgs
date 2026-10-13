@@ -131,6 +131,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../scheduling/cron.nix
+    # END generated imports
+  ];
+
   options = {
     services.logcheck = {
       enable = lib.mkEnableOption "logcheck cron job, to mail anomalies in the system logfiles to the administrator";

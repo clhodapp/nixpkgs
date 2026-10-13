@@ -23,6 +23,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    ../../virtualisation/nixos-containers.nix
+    # END generated imports
+  ];
 
   options.services.opensearch = {
     enable = lib.mkEnableOption "OpenSearch";

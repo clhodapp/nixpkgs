@@ -15,6 +15,12 @@ let
   localConfFilePath = "/var/lib/zerotier-one/local.conf";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./dhcpcd.nix
+    # END generated imports
+  ];
+
   options.services.zerotierone.enable = mkEnableOption "ZeroTierOne";
 
   options.services.zerotierone.joinNetworks = mkOption {

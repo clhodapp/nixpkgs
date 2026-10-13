@@ -9,6 +9,12 @@ let
   settingsFormat = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.goupile = {
     enable = lib.mkEnableOption "Goupile server";
     package = lib.mkPackageOption pkgs "goupile" { };

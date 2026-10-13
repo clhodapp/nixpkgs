@@ -11,6 +11,12 @@ let
   configFile = settingsFormat.generate "config.toml" cfg.extraConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   meta = {
     inherit (pkgs.telegraf.meta) maintainers;
   };

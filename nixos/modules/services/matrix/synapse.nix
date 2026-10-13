@@ -426,7 +426,10 @@ in
       "matrix-synapse"
       "registration_shared_secret"
     ] "Pass this value via extraConfigFiles instead")
-
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   options =

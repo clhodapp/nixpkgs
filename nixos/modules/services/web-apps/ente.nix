@@ -40,6 +40,13 @@ let
   yamlFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.ente = {
     web = {
       enable = mkEnableOption "Ente web frontend (Photos, Albums)";

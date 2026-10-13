@@ -8,6 +8,12 @@ let
   cfg = config.services.g810-led;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./udev.nix
+    # END generated imports
+  ];
+
   options = {
     services.g810-led = {
       enable = lib.mkEnableOption "g810-led, a Linux LED controller for some Logitech G Keyboards";

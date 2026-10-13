@@ -20,6 +20,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.turborepo-remote-cache = {
     enable = mkEnableOption "Turborepo Remote Cache" // {
       description = ''

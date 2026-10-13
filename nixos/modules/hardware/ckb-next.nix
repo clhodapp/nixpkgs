@@ -12,6 +12,9 @@ in
   imports = [
     (lib.mkRenamedOptionModule [ "hardware" "ckb" "enable" ] [ "hardware" "ckb-next" "enable" ])
     (lib.mkRenamedOptionModule [ "hardware" "ckb" "package" ] [ "hardware" "ckb-next" "package" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.hardware.ckb-next = {

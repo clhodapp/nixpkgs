@@ -31,6 +31,12 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./gtk.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.displayManager.lightdm.greeters.slick = {
       enable = mkEnableOption "lightdm-slick-greeter as the lightdm greeter";

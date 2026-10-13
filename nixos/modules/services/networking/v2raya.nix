@@ -12,6 +12,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./nftables.nix
+    # END generated imports
+  ];
+
   options = {
     services.v2raya = {
       enable = options.mkEnableOption "the v2rayA service";

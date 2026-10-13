@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/binfmt.nix
+    # END generated imports
+  ];
+
   options.programs.appimage = {
     enable = lib.mkEnableOption "appimage-run wrapper script for executing appimages on NixOS";
     binfmt = lib.mkEnableOption "binfmt registration to run appimages via appimage-run seamlessly";

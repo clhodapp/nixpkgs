@@ -103,6 +103,9 @@ in
     (lib.mkRemovedOptionModule [ "boot" "bootspec" "enable" ] ''
       Bootspec is now always generated and can no longer be disabled.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./specialisation.nix
+    # END generated imports
   ];
 
   options.boot.bootspec = {

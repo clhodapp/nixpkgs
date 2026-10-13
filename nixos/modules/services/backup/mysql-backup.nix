@@ -82,6 +82,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    # END generated imports
+  ];
+
   options = {
     services.mysqlBackup = {
       enable = lib.mkEnableOption "MySQL backups";

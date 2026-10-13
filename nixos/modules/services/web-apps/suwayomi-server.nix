@@ -17,6 +17,12 @@ let
   format = pkgs.formats.hocon { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.suwayomi-server = {
       enable = mkEnableOption "Suwayomi, a free and open source manga reader server that runs extensions built for Tachiyomi";

@@ -53,6 +53,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/consul.nix
+    # END generated imports
+  ];
+
   options = {
     services.vault = {
       enable = lib.mkEnableOption "Vault daemon";

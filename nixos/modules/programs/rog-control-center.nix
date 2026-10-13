@@ -9,6 +9,12 @@ let
   cfg = config.programs.rog-control-center;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/asusd.nix
+    # END generated imports
+  ];
+
   options = {
     programs.rog-control-center = {
       enable = lib.mkEnableOption "the rog-control-center application";

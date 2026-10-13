@@ -4,6 +4,13 @@ let
   cfg = config.hardware.facter.detected.networking.intel;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../.
+    ../../network/intel-2200bg.nix
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.networking.intel = with lib; {
     _2200BG.enable = mkEnableOption "the Facter Intel 2200BG module" // {
 

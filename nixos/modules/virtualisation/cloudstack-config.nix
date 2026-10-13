@@ -3,6 +3,10 @@
 {
   imports = [
     ../profiles/qemu-guest.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/cloud-init.nix
+    ../system/boot/grow-partition.nix
+    # END generated imports
   ];
 
   config = {

@@ -9,6 +9,12 @@ let
   kclockPkg = pkgs.kdePackages.kclock;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/dbus.nix
+    # END generated imports
+  ];
+
   options.programs.kclock = {
     enable = lib.mkEnableOption "KClock";
   };

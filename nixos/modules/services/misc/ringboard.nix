@@ -8,6 +8,12 @@ let
   cfg = config.services.ringboard;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.ringboard = {
     x11.enable = lib.mkEnableOption "X11 support for Ringboard";
     wayland.enable = lib.mkEnableOption "Wayland support for Ringboard";

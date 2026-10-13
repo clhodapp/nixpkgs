@@ -192,6 +192,10 @@ in
       "mail"
       "encryption"
     ] "Use services.bookstack.settings.MAIL_ENCRYPTION instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options.services.bookstack = {

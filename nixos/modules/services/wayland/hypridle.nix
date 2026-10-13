@@ -9,6 +9,13 @@ let
   cfg = config.services.hypridle;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/wayland/hyprland.nix
+    ../../programs/wayland/hyprlock.nix
+    # END generated imports
+  ];
+
   options.services.hypridle = {
     enable = lib.mkEnableOption "hypridle, Hyprland's idle daemon";
     package = lib.mkPackageOption pkgs "hypridle" { };

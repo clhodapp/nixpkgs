@@ -409,6 +409,9 @@ in
       "azuread"
       "tenantId"
     ] "This option has been deprecated upstream.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.services.grafana = {

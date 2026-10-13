@@ -927,6 +927,9 @@ in
       [ "services" "syncthing" "options" ]
       [ "services" "syncthing" "settings" "options" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/networking.nix
+    # END generated imports
   ]
   ++
     map

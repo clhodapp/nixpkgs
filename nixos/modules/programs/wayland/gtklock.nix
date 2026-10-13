@@ -18,6 +18,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/pam.nix
+    # END generated imports
+  ];
+
   options.programs.gtklock = {
     enable = mkEnableOption "gtklock, a GTK-based lockscreen for Wayland";
 

@@ -8,6 +8,12 @@ let
   cfg = config.boot.bcache;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.boot.bcache.enable = lib.mkEnableOption "bcache mount support" // {
     default = true;
     example = false;

@@ -22,6 +22,9 @@ in
       "services"
       "geoip-updater"
     ] "services.geoip-updater has been removed, use services.geoipupdate instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

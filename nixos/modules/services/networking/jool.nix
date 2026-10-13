@@ -139,6 +139,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/activation/top-level.nix
+    # END generated imports
+  ];
+
   options = {
     networking.jool.enable = lib.mkOption {
       type = lib.types.bool;

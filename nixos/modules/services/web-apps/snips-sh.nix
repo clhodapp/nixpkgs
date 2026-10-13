@@ -21,6 +21,12 @@ let
   cfg = config.services.snips-sh;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     isabelroses
     NotAShelf

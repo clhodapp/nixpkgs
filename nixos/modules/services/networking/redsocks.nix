@@ -10,6 +10,12 @@ let
   cfg = config.services.redsocks;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall-iptables.nix
+    # END generated imports
+  ];
+
   ##### interface
   options = {
     services.redsocks = {

@@ -9,6 +9,12 @@ let
   cfg = config.services.rustus;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with maintainers; [ happysalada ];
 
   options.services.rustus = {

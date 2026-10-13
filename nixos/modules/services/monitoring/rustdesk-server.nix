@@ -29,6 +29,9 @@ in
       [ "services" "rustdesk-server" "extraSignalArgs" ]
       [ "services" "rustdesk-server" "signal" "extraArgs" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.services.rustdesk-server =

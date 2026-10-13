@@ -8,6 +8,12 @@ let
   imcfg = config.i18n.inputMethod;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/shells-environment.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (imcfg.enable && imcfg.type == "nabi") {
     i18n.inputMethod.package = pkgs.nabi;
 

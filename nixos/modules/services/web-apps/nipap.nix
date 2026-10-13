@@ -26,6 +26,12 @@ let
   escapedHost = host: if lib.hasInfix ":" host then "[${host}]" else host;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.nipap = {
     enable = lib.mkEnableOption "global Neat IP Address Planner (NIPAP) configuration";
 

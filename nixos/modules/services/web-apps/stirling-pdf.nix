@@ -9,6 +9,12 @@ let
   cfg = config.services.stirling-pdf;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.stirling-pdf = {
     enable = lib.mkEnableOption "the stirling-pdf service";
 

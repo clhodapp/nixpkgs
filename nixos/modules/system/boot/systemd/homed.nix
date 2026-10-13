@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./userdbd.nix
+    # END generated imports
+  ];
+
   options.services.homed = {
     enable = lib.mkEnableOption "systemd home area/user account manager";
 

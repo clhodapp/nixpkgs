@@ -9,6 +9,13 @@ let
   cfg = config.programs.ccache;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/nixpkgs.nix
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options.programs.ccache = {
     # host configuration
     enable = lib.mkEnableOption "CCache, a compiler cache for fast recompilation of C/C++ code";

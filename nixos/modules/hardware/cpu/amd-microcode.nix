@@ -9,6 +9,12 @@ let
   cfg = config.hardware.cpu.amd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/stage-1.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
 

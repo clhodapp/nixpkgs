@@ -11,6 +11,12 @@ let
   configFile = format.generate "iptsd.conf" cfg.config;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./udev.nix
+    # END generated imports
+  ];
+
   options.services.iptsd = {
     enable = lib.mkEnableOption "the userspace daemon for Intel Precise Touch & Stylus";
 

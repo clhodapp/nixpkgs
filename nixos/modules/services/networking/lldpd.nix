@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.lldpd = {
     enable = lib.mkEnableOption "Link Layer Discovery Protocol Daemon";
 

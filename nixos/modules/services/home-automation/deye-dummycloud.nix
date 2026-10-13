@@ -9,6 +9,12 @@ let
   cfg = config.services.deye-dummycloud;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.deye-dummycloud = {
     enable = lib.mkEnableOption "the deye-dummycloud service";
 

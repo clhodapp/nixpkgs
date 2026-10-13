@@ -311,6 +311,9 @@ in
       Since Buildbot 0.9.0, status targets are deprecated and ignored.
       Review your configuration and migrate to reporters (available at services.buildbot-master.reporters).
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
   ];
 
   meta.teams = [ lib.teams.buildbot ];

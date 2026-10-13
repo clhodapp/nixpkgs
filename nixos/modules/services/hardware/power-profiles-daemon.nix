@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./auto-cpufreq.nix
+    ./tlp.nix
+    # END generated imports
+  ];
 
   ###### interface
 

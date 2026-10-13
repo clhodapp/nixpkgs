@@ -251,6 +251,9 @@ in
       [ "services" "dovecot2" "protocols" ]
       [ "services" "dovecot2" "settings" "protocols" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ]
   ++ (
     let

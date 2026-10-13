@@ -744,6 +744,10 @@ in
           ''';
         }
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/tpm2.nix
+    ./connman.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

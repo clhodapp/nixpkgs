@@ -37,6 +37,9 @@ in
         builtins.fromJSON value
     ))
     (mkRenamedOptionModule [ "services" "redshift" "provider" ] [ "location" "provider" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/locale.nix
+    # END generated imports
   ];
 
   options.services.redshift = {

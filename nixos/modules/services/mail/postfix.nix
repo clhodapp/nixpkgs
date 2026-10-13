@@ -1296,5 +1296,8 @@ in
       [ "services" "postfix" "settings" "main" "smtp_tls_security_level" ]
       (config: lib.mkIf config.services.postfix.useDane "dane")
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/ca.nix
+    # END generated imports
   ];
 }

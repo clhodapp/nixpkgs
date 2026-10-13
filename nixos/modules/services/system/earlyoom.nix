@@ -161,6 +161,9 @@ in
     (mkRemovedOptionModule [ "services" "earlyoom" "ignoreOOMScoreAdjust" ] ''
       This option is deprecated and ignored by earlyoom since 1.7.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systembus-notify.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

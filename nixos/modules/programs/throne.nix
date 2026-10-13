@@ -11,6 +11,9 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "programs" "nekoray" ] [ "programs" "throne" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/polkit.nix
+    # END generated imports
   ];
 
   options = {

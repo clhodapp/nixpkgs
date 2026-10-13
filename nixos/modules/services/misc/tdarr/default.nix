@@ -12,6 +12,9 @@ in
   imports = [
     ./server.nix
     ./node.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.services.tdarr = {

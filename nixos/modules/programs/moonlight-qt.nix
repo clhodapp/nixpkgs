@@ -9,6 +9,12 @@ let
   cfg = config.programs.moonlight-qt;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options.programs.moonlight-qt = {
     enable = lib.mkEnableOption "Moonlight Qt, a client for playing your PC games on almost any device";
 

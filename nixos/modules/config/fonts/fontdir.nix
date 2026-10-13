@@ -80,6 +80,9 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "fonts" "enableFontDir" ] [ "fonts" "fontDir" "enable" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../services/x11/xserver.nix
+    # END generated imports
   ];
 
 }

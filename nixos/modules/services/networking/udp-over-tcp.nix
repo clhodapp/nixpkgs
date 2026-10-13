@@ -216,6 +216,12 @@ let
     );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.udp-over-tcp = {
     package = mkPackageOption pkgs "udp-over-tcp" { };
     tcp2udp = mkOption {

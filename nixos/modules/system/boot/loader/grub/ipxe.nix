@@ -28,6 +28,12 @@ let
     if builtins.typeOf value == "path" then value else builtins.toFile "${name}.ipxe" value;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./grub.nix
+    # END generated imports
+  ];
+
   options = {
     boot.loader.grub.ipxe = mkOption {
       type = types.attrsOf (types.either types.path types.str);

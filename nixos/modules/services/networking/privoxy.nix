@@ -312,6 +312,10 @@ in
         text for config as introduced by RFC0042:
         https://github.com/NixOS/rfcs/blob/master/rfcs/0042-config-option.md
       '')
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../security/ca.nix
+      ../security/tor.nix
+      # END generated imports
     ];
 
   meta.maintainers = with lib.maintainers; [ rnhmjoj ];

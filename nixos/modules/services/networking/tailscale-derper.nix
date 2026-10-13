@@ -9,6 +9,13 @@ let
   cfg = config.services.tailscale.derper;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    ./tailscale.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ SuperSandro2000 ];
 
   options = {

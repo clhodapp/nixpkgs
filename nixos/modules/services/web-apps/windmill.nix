@@ -9,6 +9,12 @@ let
   cfg = config.services.windmill;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.windmill = {
     enable = lib.mkEnableOption "windmill service";
 

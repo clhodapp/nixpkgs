@@ -17,6 +17,12 @@ let
   cfg = config.services.firezone.gui-client;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.firezone.gui-client = {
       enable = mkEnableOption "the firezone gui client";

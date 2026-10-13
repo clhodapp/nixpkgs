@@ -9,6 +9,12 @@ let
   cfg = config.boot.kexec;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systemd.nix
+    # END generated imports
+  ];
+
   meta = {
     inherit (pkgs.kexec-tools.meta) maintainers;
   };

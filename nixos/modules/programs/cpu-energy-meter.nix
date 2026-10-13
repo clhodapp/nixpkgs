@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/cpu/x86-msr.nix
+    # END generated imports
+  ];
+
   options.programs.cpu-energy-meter = {
     enable = lib.mkEnableOption "CPU Energy Meter";
     package = lib.mkPackageOption pkgs "cpu-energy-meter" { };

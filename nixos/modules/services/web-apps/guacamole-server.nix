@@ -17,6 +17,9 @@ in
       [ "services" "guacamole-server" "userMappingXml" ]
       [ "services" "guacamole-client" "userMappingXml" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./guacamole-client.nix
+    # END generated imports
   ];
   options = {
     services.guacamole-server = {

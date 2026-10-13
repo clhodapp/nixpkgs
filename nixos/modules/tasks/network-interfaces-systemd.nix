@@ -223,6 +223,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/networking/dhcpcd.nix
+    # END generated imports
+  ];
+
   config = mkMerge [
 
     (mkIf config.boot.initrd.network.enable {

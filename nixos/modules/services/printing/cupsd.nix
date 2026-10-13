@@ -156,6 +156,9 @@ in
     ))
     (mkRemovedOptionModule [ "services" "printing" "cupsFilesConf" ] "")
     (mkRemovedOptionModule [ "services" "printing" "cupsdConf" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/avahi-daemon.nix
+    # END generated imports
   ];
 
   ###### interface

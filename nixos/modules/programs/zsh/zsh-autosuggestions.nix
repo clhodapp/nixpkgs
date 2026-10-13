@@ -14,6 +14,9 @@ in
       [ "programs" "zsh" "enableAutosuggestions" ]
       [ "programs" "zsh" "autosuggestions" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./zsh.nix
+    # END generated imports
   ];
 
   options.programs.zsh.autosuggestions = {

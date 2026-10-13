@@ -443,6 +443,9 @@ in
       [ "services" "tor" "relay" "portSpec" ]
       [ "services" "tor" "settings" "ORPort" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/systemd-confinement.nix
+    # END generated imports
   ];
 
   options = {

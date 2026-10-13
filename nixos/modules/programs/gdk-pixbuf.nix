@@ -16,6 +16,9 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "xserver" "gdk-pixbuf" ] [ "programs" "gdk-pixbuf" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/system-environment.nix
+    # END generated imports
   ];
 
   options = {

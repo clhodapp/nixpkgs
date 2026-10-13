@@ -9,6 +9,12 @@ let
   homeDir = "/var/lib/i2p";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.i2p.enable = lib.mkEnableOption "I2P router";
 

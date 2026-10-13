@@ -9,6 +9,12 @@ let
   cfg = config.services.hardware.argonone;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/i2c.nix
+    # END generated imports
+  ];
+
   options.services.hardware.argonone = {
     enable = lib.mkEnableOption "the driver for Argon One Raspberry Pi case fan and power button";
     package = lib.mkPackageOption pkgs "argononed" { };

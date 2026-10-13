@@ -33,6 +33,9 @@ in
       [ "services" "xserver" "desktopManager" "e19" "enable" ]
       [ "services" "xserver" "desktopManager" "enlightenment" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/power-management.nix
+    # END generated imports
   ];
 
   options = {

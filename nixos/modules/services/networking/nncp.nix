@@ -16,6 +16,12 @@ let
   pkg = programCfg.package;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/nncp.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.nncp = {

@@ -14,6 +14,12 @@ let
       pkgs.writeText "duplicati-parameters" cfg.parameters;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.duplicati = {
       enable = lib.mkEnableOption "Duplicati";

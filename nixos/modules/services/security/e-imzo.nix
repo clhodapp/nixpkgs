@@ -8,6 +8,12 @@ let
   cfg = config.services.e-imzo;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     services.e-imzo = {
       enable = lib.mkEnableOption "E-IMZO";

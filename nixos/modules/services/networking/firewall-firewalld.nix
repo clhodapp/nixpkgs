@@ -4,6 +4,12 @@ let
   cfg = config.networking.firewall;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/sysctl.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.enable && cfg.backend == "firewalld") {
     assertions = [
       {

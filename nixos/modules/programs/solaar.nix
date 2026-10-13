@@ -17,6 +17,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/logitech.nix
+    # END generated imports
+  ];
+
   options.programs.solaar = {
     enable = mkEnableOption "Solaar, the open source driver for Logitech devices.";
 

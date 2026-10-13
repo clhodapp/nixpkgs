@@ -53,6 +53,12 @@ let
     ) scripts;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/bluetooth.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ maintainers.k900 ];
 
   options = {

@@ -9,6 +9,12 @@ let
   cfg = config.services.protonmail-bridge;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.protonmail-bridge = {
     enable = lib.mkEnableOption "protonmail bridge";
 

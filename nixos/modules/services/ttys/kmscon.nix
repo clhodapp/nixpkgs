@@ -75,6 +75,9 @@ in
       [ "services" "kmscon" "hwRender" ]
       [ "services" "kmscon" "config" "hwaccel" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./getty.nix
+    # END generated imports
   ];
 
   options = {

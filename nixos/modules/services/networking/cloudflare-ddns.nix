@@ -10,6 +10,12 @@ let
   formatList = l: lib.concatStringsSep "," l;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.cloudflare-ddns = {
     enable = lib.mkEnableOption "Cloudflare Dynamic DNS service";
 

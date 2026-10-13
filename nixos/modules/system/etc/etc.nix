@@ -89,7 +89,12 @@ in
 
 {
 
-  imports = [ ../build.nix ];
+  imports = [
+    ../build.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../activation/nixos-init.nix
+    # END generated imports
+  ];
 
   ###### interface
 

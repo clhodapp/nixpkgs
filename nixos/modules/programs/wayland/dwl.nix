@@ -8,6 +8,12 @@ let
   cfg = config.programs.dwl;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/portal.nix
+    # END generated imports
+  ];
+
   options.programs.dwl = {
     enable = lib.mkEnableOption ''
       Dwl is a compact, hackable compositor for Wayland based on wlroots.

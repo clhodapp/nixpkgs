@@ -74,5 +74,8 @@ in
       "bspwm"
       "sessionScript"
     ] "bspwm package does not provide bspwm-session anymore.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./default.nix
+    # END generated imports
   ];
 }

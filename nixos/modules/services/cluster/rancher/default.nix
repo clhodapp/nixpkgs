@@ -980,6 +980,9 @@ in
     [
       (import ./k3s.nix args)
       (import ./rke2.nix args)
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../../config/sysctl.nix
+      # END generated imports
     ];
 
   meta.teams = [ lib.teams.k3s ];

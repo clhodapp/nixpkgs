@@ -97,6 +97,9 @@ in
       "snapserver"
       "streams"
     ] "Configure `services.snapserver.settings.stream.source` instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   ###### interface

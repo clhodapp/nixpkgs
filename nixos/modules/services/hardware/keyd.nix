@@ -75,6 +75,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "keyd" "settings" ]
       "Use keyboards.<filename>.settings instead. If you don't need a multi-file configuration, just add keyboards.default before the settings. See https://github.com/NixOS/nixpkgs/pull/243271."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.services.keyd = {

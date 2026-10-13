@@ -23,6 +23,12 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../.
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.fingerprint.enable = lib.mkEnableOption "Fingerprint devices" // {
     default =
       isSupported (config.hardware.facter.report.hardware.unknown or [ ])

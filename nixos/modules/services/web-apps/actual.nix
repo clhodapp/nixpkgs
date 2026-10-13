@@ -20,6 +20,12 @@ let
   formatType = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
+  ];
+
   options.services.actual = {
     enable = mkEnableOption "actual, a privacy focused app for managing your finances";
     package = mkPackageOption pkgs "actual-server" { };

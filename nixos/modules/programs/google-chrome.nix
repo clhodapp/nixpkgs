@@ -9,6 +9,12 @@ let
   cfg = config.programs.google-chrome;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/system-environment.nix
+    # END generated imports
+  ];
+
   options.programs.google-chrome = {
     enable = lib.mkEnableOption "Google Chrome browser";
     package = lib.mkPackageOption pkgs "google-chrome" { };

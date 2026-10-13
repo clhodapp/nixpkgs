@@ -142,6 +142,9 @@ in
       "hyprland"
       "nvidiaPatches"
     ] "Nvidia patches are no longer needed")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./uwsm.nix
+    # END generated imports
   ];
 
   meta.teams = [ lib.teams.hyprland ];

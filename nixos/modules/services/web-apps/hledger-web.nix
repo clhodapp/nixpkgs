@@ -95,6 +95,9 @@ in
       "hledger-web"
       "capabilities"
     ] "This option has been replaced by new option `services.hledger-web.allow`.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

@@ -9,6 +9,12 @@ let
   configFile = pkgs.writeText "create_ap.conf" (lib.generators.toKeyValue { } cfg.settings);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.create_ap = {
       enable = lib.mkEnableOption "setting up wifi hotspots using create_ap";

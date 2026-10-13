@@ -105,6 +105,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/system-76.nix
+    # END generated imports
+  ];
+
   options.services.tuned = {
     enable = lib.mkEnableOption "TuneD";
 

@@ -99,6 +99,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.ceph = {
     # Ceph has a monolithic configuration file but different sections for
     # each daemon, a separate client section and a global section

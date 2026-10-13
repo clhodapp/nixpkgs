@@ -176,6 +176,9 @@ in
   imports = [
     (lib.mkRemovedOptionModule [ "security" "setuidOwners" ] "Use security.wrappers instead")
     (lib.mkRemovedOptionModule [ "security" "setuidPrograms" ] "Use security.wrappers instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/shells-environment.nix
+    # END generated imports
   ];
 
   ###### interface

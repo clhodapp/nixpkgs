@@ -49,6 +49,9 @@ in
       Due to incompatibility, the alertmanagerURL option has been removed,
       please use 'services.prometheus.alertmanagers' instead.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

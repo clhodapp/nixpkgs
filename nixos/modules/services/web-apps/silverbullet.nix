@@ -11,6 +11,12 @@ let
   defaultSpaceDir = "/var/lib/silverbullet";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.silverbullet = {
       enable = lib.mkEnableOption "Silverbullet, an open-source, self-hosted, offline-capable Personal Knowledge Management (PKM) web application";

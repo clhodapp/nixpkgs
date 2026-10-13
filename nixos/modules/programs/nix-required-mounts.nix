@@ -90,6 +90,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/nix.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ SomeoneSerge ];
   options.programs.nix-required-mounts = {
     enable = lib.mkEnableOption "Expose extra paths to the sandbox depending on derivations' requiredSystemFeatures";

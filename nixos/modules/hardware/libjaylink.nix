@@ -9,6 +9,12 @@ let
   cfg = config.hardware.libjaylink;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.hardware.libjaylink = {
     enable = lib.mkEnableOption ''
       udev rules for devices supported by libjaylink.

@@ -9,6 +9,12 @@ let
   cfg = config.programs.winbox;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options.programs.winbox = {
     enable = lib.mkEnableOption "MikroTik Winbox";
     package = lib.mkPackageOption pkgs "winbox" { };

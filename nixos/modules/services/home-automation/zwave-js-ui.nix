@@ -16,6 +16,12 @@ let
   cfg = config.services.zwave-js-ui;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.zwave-js-ui = {
     enable = mkEnableOption "zwave-js-ui";
 

@@ -13,6 +13,11 @@ let
   configFile = settingsFormat.generate "molly-brown.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   options.services.molly-brown = {
 

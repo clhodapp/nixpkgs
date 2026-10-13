@@ -9,6 +9,12 @@ let
   ports = [ 6659 ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.irkerd = {
     enable = lib.mkOption {
       description = "Whether to enable irker, an IRC notification daemon.";

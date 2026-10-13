@@ -9,6 +9,12 @@ let
   cfg = config.programs.xscreensaver;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./sonar.nix
+    # END generated imports
+  ];
+
   options.programs.xscreensaver = {
     enable = lib.mkEnableOption "all of the xscreensaver programs";
     package = lib.mkPackageOption pkgs "xscreensaver" { };

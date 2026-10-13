@@ -68,6 +68,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../sane.nix
+    # END generated imports
+  ];
+
   options = {
 
     hardware.sane.brscan4.enable = lib.mkEnableOption "Brother's brscan4 scan backend" // {

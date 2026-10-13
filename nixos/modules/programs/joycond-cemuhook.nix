@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/joycond.nix
+    # END generated imports
+  ];
+
   options.programs.joycond-cemuhook = {
     enable = lib.mkEnableOption "joycond-cemuhook, a program to enable support for cemuhook's UDP protocol for joycond devices";
   };

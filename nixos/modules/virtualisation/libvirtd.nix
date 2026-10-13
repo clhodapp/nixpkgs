@@ -245,6 +245,9 @@ in
     (mkRemovedOptionModule [ "virtualisation" "libvirtd" "qemuOvmfPackage" ]
       "The 'virtualisation.libvirtd.qemuOvmfPackage' option has been removed. All OVMF images distributed with QEMU are now available by default."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/nsswitch.nix
+    # END generated imports
   ];
 
   ###### interface

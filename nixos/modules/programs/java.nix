@@ -12,6 +12,11 @@ let
   cfg = config.programs.java;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/binfmt.nix
+    # END generated imports
+  ];
 
   options = {
 

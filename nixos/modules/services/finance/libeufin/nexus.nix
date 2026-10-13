@@ -5,7 +5,12 @@
   ...
 }:
 {
-  imports = [ (import ./common.nix "nexus") ];
+  imports = [
+    (import ./common.nix "nexus")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bank.nix
+    # END generated imports
+  ];
 
   options.services.libeufin.nexus.settings = lib.mkOption {
     description = ''

@@ -17,6 +17,12 @@ let
   cfg = config.services.meme-bingo-web;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.meme-bingo-web = {
       enable = mkEnableOption ''

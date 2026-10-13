@@ -285,6 +285,15 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   # interface
   options = {
     services.invoiceplane = mkOption {

@@ -8,6 +8,12 @@ let
   cfg = config.services.matterjs-server;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.matterjs-server = {
     enable = lib.mkEnableOption "matterjs-server, a Matter Controller WebSocket server based on Matter.js";
 

@@ -26,6 +26,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "esdm" "verbose" ] ''
       There is no replacement.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.esdm = {

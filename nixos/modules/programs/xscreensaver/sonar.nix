@@ -10,6 +10,13 @@ let
   globalCfg = config.programs.xscreensaver;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/wrappers/default.nix
+    ./xscreensaver.nix
+    # END generated imports
+  ];
+
   options.programs.xscreensaver.sonar = {
     enable = lib.mkEnableOption "xscreensaver";
   };

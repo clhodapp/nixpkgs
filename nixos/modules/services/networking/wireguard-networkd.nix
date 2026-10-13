@@ -124,6 +124,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/networkd.nix
+    ./wireguard.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.majiir ];
 
   options.networking.wireguard = {

@@ -51,6 +51,9 @@ in
       [ "services" "yggdrasil" "config" ]
       [ "services" "yggdrasil" "settings" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./dhcpcd.nix
+    # END generated imports
   ];
 
   options = {

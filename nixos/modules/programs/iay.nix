@@ -17,6 +17,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/bash.nix
+    # END generated imports
+  ];
+
   options.programs.iay = {
     enable = mkEnableOption "iay, a minimalistic shell prompt";
     package = mkPackageOption pkgs "iay" { };

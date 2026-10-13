@@ -87,6 +87,9 @@ in
       Use `services.meilisearch.masterKeyFile` instead. It does not require you to prefix the file with "MEILI_MASTER_KEY=".
       If you were abusing this option to set other options, you can now configure them with `services.meilisearch.settings`.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.meilisearch = {

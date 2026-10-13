@@ -21,6 +21,12 @@ let
   configPath = if cfg.enableReload then "/etc/freeswitch" else configDirectory;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.freeswitch = {
       enable = lib.mkEnableOption "FreeSWITCH";

@@ -284,5 +284,8 @@ in
       [ "services" "usbguard" "implictPolicyTarget" ]
       [ "services" "usbguard" "implicitPolicyTarget" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/polkit.nix
+    # END generated imports
   ];
 }

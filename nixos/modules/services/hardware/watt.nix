@@ -29,6 +29,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../desktops/cpupower-gui.nix
+    ./thermald.nix
+    # END generated imports
+  ];
+
   options.services.watt = {
     enable = mkEnableOption "automatic CPU speed & power optimizer for Linux";
     package = mkPackageOption pkgs "watt" { };

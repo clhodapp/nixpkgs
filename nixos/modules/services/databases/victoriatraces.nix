@@ -33,6 +33,12 @@ let
   ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
+  ];
+
   options.services.victoriatraces = {
     enable = mkEnableOption "VictoriaTraces is an open source distributed traces storage and query engine from VictoriaMetrics";
     package = mkPackageOption pkgs "victoriatraces" { };

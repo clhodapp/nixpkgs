@@ -8,6 +8,12 @@ let
   cfg = config.services.jmusicbot;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.jmusicbot = {
       enable = lib.mkEnableOption "jmusicbot, a Discord music bot that's easy to set up and run yourself";

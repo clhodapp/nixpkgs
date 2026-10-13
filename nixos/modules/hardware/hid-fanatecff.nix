@@ -6,6 +6,12 @@ let
   inherit (lib) maintainers mkEnableOption mkIf;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.hid-fanatecff = {
     enable = mkEnableOption "hid-fanatecff, a Linux kernel driver that aims to add support for Fanatec devices";
   };

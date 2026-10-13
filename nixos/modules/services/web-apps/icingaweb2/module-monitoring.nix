@@ -44,6 +44,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./icingaweb2.nix
+    # END generated imports
+  ];
+
   options.services.icingaweb2.modules.monitoring = with types; {
     enable = mkOption {
       type = bool;

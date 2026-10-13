@@ -6,6 +6,11 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./accountsservice.nix
+    # END generated imports
+  ];
 
   ###### interface
 

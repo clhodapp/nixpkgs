@@ -962,5 +962,9 @@ in
       "systemd"
       "enableCgroupAccounting"
     ] "To disable cgroup accounting, disable systemd.settings.Manager.*Accounting directly.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/networking.nix
+    ../../virtualisation/nixos-containers.nix
+    # END generated imports
   ];
 }

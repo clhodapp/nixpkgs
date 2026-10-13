@@ -20,6 +20,12 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/mosquitto.nix
+    # END generated imports
+  ];
+
   options = {
     services.bcg = {
       enable = lib.mkEnableOption "BigClown gateway";

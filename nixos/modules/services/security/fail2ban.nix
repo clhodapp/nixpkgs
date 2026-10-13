@@ -79,6 +79,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "fail2ban" "extraSettings" ]
       "The extra default configuration can now be set using `services.fail2ban.jails.DEFAULT.settings`."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   ###### interface

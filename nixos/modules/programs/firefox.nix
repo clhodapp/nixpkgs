@@ -42,7 +42,12 @@ in
         passff = "passff-host";
         tridactyl = "tridactyl-native";
         ugetIntegrator = "uget-integrator";
-      };
+      }
+    ++ [
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../system/etc/etc.nix
+      # END generated imports
+    ];
 
   options.programs.firefox = {
     enable = lib.mkEnableOption "the Firefox web browser";

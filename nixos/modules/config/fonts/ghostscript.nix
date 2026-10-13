@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./packages.nix
+    # END generated imports
+  ];
+
   options = {
     fonts.enableGhostscriptFonts = lib.mkOption {
       type = lib.types.bool;

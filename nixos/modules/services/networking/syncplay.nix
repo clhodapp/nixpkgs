@@ -73,6 +73,9 @@ in
     (mkRemovedOptionModule [ "services" "syncplay" "group" ]
       "The syncplay service now uses DynamicUser, override the systemd unit settings if you need the old functionality."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    # END generated imports
   ];
 
   options = {

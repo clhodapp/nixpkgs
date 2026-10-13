@@ -11,6 +11,12 @@ let
   settingsFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.kashw2 ];
 
   options.services.pyroscope = {

@@ -20,6 +20,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/ldso.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.mic92 ];
   options.programs.nix-ld = {
     enable = lib.mkEnableOption "nix-ld, Documentation: <https://github.com/nix-community/nix-ld>";

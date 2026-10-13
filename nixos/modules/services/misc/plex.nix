@@ -14,6 +14,9 @@ in
       "plex"
       "managePlugins"
     ] "Please omit or define the option: `services.plex.extraPlugins' instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options = {

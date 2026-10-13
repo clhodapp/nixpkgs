@@ -8,6 +8,12 @@ let
   cfg = config.services.input-remapper;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     services.input-remapper = {
       enable = lib.mkEnableOption "input-remapper, an easy to use tool to change the mapping of your input device buttons";

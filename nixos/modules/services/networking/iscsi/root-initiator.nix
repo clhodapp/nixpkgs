@@ -9,6 +9,12 @@ let
   cfg = config.boot.iscsi-initiator;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./initiator.nix
+    # END generated imports
+  ];
+
   # If you're booting entirely off another machine you may want to add
   # this snippet to always boot the latest "system" version. It is not
   # enabled by default in case you have an initrd on a local disk:

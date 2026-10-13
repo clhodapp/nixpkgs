@@ -56,6 +56,9 @@ in
       [ "programs" "zsh" "oh-my-zsh" "plugins" ]
       [ "programs" "zsh" "ohMyZsh" "plugins" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./zsh.nix
+    # END generated imports
   ];
 
   options = {

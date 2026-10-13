@@ -27,6 +27,12 @@ let
     );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options = {
     services.synapse-auto-compressor = {
       enable = lib.mkEnableOption "synapse-auto-compressor";

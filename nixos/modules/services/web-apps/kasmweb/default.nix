@@ -9,6 +9,12 @@ let
   cfg = config.services.kasmweb;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../virtualisation/oci-containers.nix
+    # END generated imports
+  ];
+
   options.services.kasmweb = {
     enable = lib.mkEnableOption "kasmweb";
 

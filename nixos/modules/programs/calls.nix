@@ -9,6 +9,12 @@ let
   cfg = config.programs.calls;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./dconf.nix
+    # END generated imports
+  ];
+
   options = {
     programs.calls = {
       enable = lib.mkEnableOption ''

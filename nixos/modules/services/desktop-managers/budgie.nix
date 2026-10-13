@@ -68,6 +68,24 @@ in
       [ "services" "xserver" "desktopManager" "budgie" ]
       [ "services" "desktopManager" "budgie" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/gnome-terminal.nix
+    ../../programs/nm-applet.nix
+    ../../programs/wayland/gtklock.nix
+    ../../programs/wayland/labwc.nix
+    ../desktops/dleyna.nix
+    ../desktops/gnome/evolution-data-server.nix
+    ../desktops/gnome/gcr-ssh-agent.nix
+    ../desktops/gnome/glib-networking.nix
+    ../desktops/gnome/gnome-online-accounts.nix
+    ../desktops/gnome/gnome-settings-daemon.nix
+    ../desktops/gnome/gnome-user-share.nix
+    ../desktops/gnome/rygel.nix
+    ../desktops/gvfs.nix
+    ../hardware/upower.nix
+    ../printing/cupsd.nix
+    ../x11/colord.nix
+    # END generated imports
   ];
 
   options = {

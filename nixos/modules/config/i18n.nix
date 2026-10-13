@@ -30,6 +30,12 @@ let
     ++ (lib.optional (builtins.isString cfg.extraLocales) cfg.extraLocales);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./system-environment.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   options = {

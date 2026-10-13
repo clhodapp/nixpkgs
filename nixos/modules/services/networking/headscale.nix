@@ -678,6 +678,9 @@ in
     (mkRemovedOptionModule [ "services" "headscale" "openIdConnect" "domainMap" ] ''
       Headscale no longer uses domain_map. If you're using an old version of headscale you can still set this option via services.headscale.settings.oidc.domain_map.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

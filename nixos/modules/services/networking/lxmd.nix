@@ -9,6 +9,12 @@ let
   settingsFormat = pkgs.formats.configobj { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./rnsd.nix
+    # END generated imports
+  ];
+
   options = {
     services.lxmd = {
       enable = lib.mkEnableOption "Enable Reticulum Network Lightweight Extensible Message Format Daemon (lxmd)";

@@ -58,6 +58,12 @@ let
   hasLocalPostgresDB = localPostgresDBs != [ ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options.services.maubot = with lib; {
     enable = mkEnableOption "maubot";
 

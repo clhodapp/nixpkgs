@@ -8,6 +8,12 @@ let
   cfg = config.networking.modemmanager;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/polkit.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.freedesktop ];
   };

@@ -41,6 +41,9 @@ in
         "enable"
       ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/dbus.nix
+    # END generated imports
   ];
 
   options = {

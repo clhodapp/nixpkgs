@@ -50,6 +50,9 @@ in
       "packagekit"
       "backend"
     ] "Always set to test_nop, Nix backend is broken see #177946.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
   ];
 
   options.services.packagekit = {

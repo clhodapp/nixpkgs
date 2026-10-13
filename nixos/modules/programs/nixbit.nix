@@ -16,6 +16,12 @@ let
   cfg = config.programs.nixbit;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.nixbit = {
     enable = mkEnableOption "Nixbit configuration";
 

@@ -8,6 +8,12 @@ let
   cfg = config.services.ivpn;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/iproute2.nix
+    # END generated imports
+  ];
+
   options.services.ivpn = {
     enable = lib.mkOption {
       type = lib.types.bool;

@@ -9,6 +9,12 @@ let
   cfg = config.programs.noctalia;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../services/hardware/bluetooth.nix
+    # END generated imports
+  ];
+
   options.programs.noctalia = {
     enable = lib.mkEnableOption "noctalia, a sleek and customizable desktop shell for Wayland";
 

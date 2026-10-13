@@ -29,6 +29,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../bash/bash.nix
+    # END generated imports
+  ];
+
   options.programs.command-not-found = {
 
     enable = lib.mkOption {

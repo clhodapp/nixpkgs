@@ -68,6 +68,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewalld
+    # END generated imports
+  ];
+
   options = {
     networking.firewall = {
       enable = lib.mkOption {

@@ -15,6 +15,12 @@ let
   default_home = "/var/lib/bepasty";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.bepasty = {
     enable = lib.mkEnableOption "bepasty, a binary pastebin server";
 

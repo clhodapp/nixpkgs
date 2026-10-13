@@ -392,6 +392,10 @@ in
       This option has been removed. Use services.slurm.dbdserver.storagePassFile
       and services.slurm.dbdserver.extraConfig instead.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../hardware/video/nvidia.nix
+    ../../security/munge.nix
+    # END generated imports
   ];
 
   ###### implementation

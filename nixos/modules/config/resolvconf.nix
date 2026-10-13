@@ -61,6 +61,9 @@ in
       "resolvconf"
       "useHostResolvConf"
     ] "This option was never used for anything anyways")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./users-groups.nix
+    # END generated imports
   ];
 
   options = {

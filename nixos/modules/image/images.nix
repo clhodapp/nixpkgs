@@ -63,6 +63,12 @@ let
   ) config.image.modules;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/build.nix
+    # END generated imports
+  ];
+
   options = {
     system.build = {
       images = lib.mkOption {

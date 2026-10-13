@@ -104,6 +104,11 @@ in
       "lasuite-meet"
       "frontendPackage"
     ] "services.lasuite-mette.package.frotend should be used instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../networking/livekit.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.lasuite-meet = {

@@ -29,6 +29,9 @@ in
       [ "services" "iodine" "server" "extraConfig" ]
     )
     (lib.mkRemovedOptionModule [ "services" "iodined" "client" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   ### configuration

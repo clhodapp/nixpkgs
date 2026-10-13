@@ -16,6 +16,10 @@ in
       "timesyncd"
       "extraConfig"
     ] "Use services.timesyncd.settings.Time instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/networking.nix
+    ../../virtualisation/nixos-containers.nix
+    # END generated imports
   ];
 
   options = {

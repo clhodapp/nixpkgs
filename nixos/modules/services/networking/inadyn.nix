@@ -51,6 +51,12 @@ let
   configFile = if (cfg.configFile != null) then cfg.configFile else configFile';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.inadyn =
     with lib.types;
     let

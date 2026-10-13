@@ -11,6 +11,12 @@ let
   cfg = config.programs.television;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/bash.nix
+    # END generated imports
+  ];
+
   options.programs.television = {
     enable = mkEnableOption "Blazingly fast general purpose fuzzy finder TUI";
     package = mkPackageOption pkgs "television" { };

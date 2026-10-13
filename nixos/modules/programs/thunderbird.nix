@@ -10,6 +10,12 @@ let
   policyDoc = "https://github.com/thunderbird/policy-templates";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.thunderbird = {
     enable = lib.mkEnableOption "Thunderbird mail client";
 

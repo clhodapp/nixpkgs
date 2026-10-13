@@ -14,6 +14,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   config = mkIf (config.boot.supportedFilesystems.apfs or false) {
 
     system.fsPackages = [ pkgs.apfsprogs ];

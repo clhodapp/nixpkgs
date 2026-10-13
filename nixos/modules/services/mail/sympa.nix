@@ -87,6 +87,14 @@ let
   enabledFiles = lib.filterAttrs (n: v: v.enable) cfg.settingsFile;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    ./postfix.nix
+    # END generated imports
+  ];
 
   ###### interface
   options.services.sympa = with lib.types; {

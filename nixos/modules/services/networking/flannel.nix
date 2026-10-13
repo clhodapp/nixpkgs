@@ -18,6 +18,12 @@ let
     // cfg.extraNetworkConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/etcd.nix
+    # END generated imports
+  ];
+
   options.services.flannel = {
     enable = lib.mkEnableOption "flannel";
 

@@ -8,6 +8,11 @@
 { lib, pkgs, ... }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../display-managers/gdm.nix
+    # END generated imports
+  ];
 
   config = {
 

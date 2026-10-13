@@ -78,6 +78,12 @@ let
     ++ collectorAttrs "capabilities";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/video/nvidia.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     BonusPlay
     arunoruto

@@ -110,6 +110,15 @@ let
       });
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/steam-hardware.nix
+    ../services/hardware/inputplumber.nix
+    ../services/hardware/powerstation.nix
+    ./gamescope.nix
+    # END generated imports
+  ];
+
   options.programs.opengamepadui = {
     enable = lib.mkEnableOption "opengamepadui";
 

@@ -16,6 +16,12 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/desktop-managers/plasma6.nix
+    # END generated imports
+  ];
+
   options.programs.kde-pim = {
     enable = lib.mkEnableOption "KDE PIM base packages";
     kmail = mkProgramOption "KMail";

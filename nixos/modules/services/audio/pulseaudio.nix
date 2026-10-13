@@ -93,6 +93,10 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "hardware" "pulseaudio" ] [ "services" "pulseaudio" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/rtkit.nix
+    ./jack.nix
+    # END generated imports
   ];
 
   options = {

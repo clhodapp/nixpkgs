@@ -266,6 +266,11 @@ in
     (mkRenamedOptionModule [ "services" "searx" "settingsFile" ] [ "services" "searx" "settingsPath" ])
     (mkRenamedOptionModule [ "services" "searx" "configFile" ] [ "services" "searx" "settingsFile" ])
     (mkRenamedOptionModule [ "services" "searx" "runInUwsgi" ] [ "services" "searx" "configureUwsgi" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/redis.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/uwsgi.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

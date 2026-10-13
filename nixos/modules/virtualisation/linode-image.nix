@@ -33,6 +33,9 @@ in
         "diskSize"
       ];
     })
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/loader/limine/limine.nix
+    # END generated imports
   ];
 
   options = {

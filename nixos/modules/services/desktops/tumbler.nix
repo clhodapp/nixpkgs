@@ -15,6 +15,9 @@ in
 
   imports = [
     (lib.mkRemovedOptionModule [ "services" "tumbler" "package" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
   ];
 
   meta = {

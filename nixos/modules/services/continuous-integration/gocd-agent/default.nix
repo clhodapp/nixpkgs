@@ -10,6 +10,12 @@ let
   opt = options.services.gocd-agent;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/ca.nix
+    # END generated imports
+  ];
+
   options = {
     services.gocd-agent = {
       enable = lib.mkEnableOption "gocd-agent";

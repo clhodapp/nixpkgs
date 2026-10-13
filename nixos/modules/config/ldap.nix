@@ -326,5 +326,9 @@ in
       [ "users" "ldap" "bind" "password" ]
       [ "users" "ldap" "bind" "passwordFile" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/ids.nix
+    ./nsswitch.nix
+    # END generated imports
   ];
 }

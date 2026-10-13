@@ -18,6 +18,9 @@ in
   imports = [
     ../profiles/headless.nix
     ../profiles/qemu-guest.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/grow-partition.nix
+    # END generated imports
   ];
 
   fileSystems."/" = {

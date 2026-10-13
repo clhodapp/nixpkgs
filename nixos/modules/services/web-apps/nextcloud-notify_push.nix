@@ -11,6 +11,12 @@ let
   cfgN = config.services.nextcloud;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./nextcloud.nix
+    # END generated imports
+  ];
+
   options.services.nextcloud.notify_push = {
     enable = lib.mkEnableOption "Notify push";
 

@@ -8,6 +8,11 @@ let
   cfg = config.services.offlineimap;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   options.services.offlineimap = {
     enable = lib.mkEnableOption "OfflineIMAP, a software to dispose your mailbox(es) as a local Maildir(s)";

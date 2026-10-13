@@ -11,6 +11,12 @@ let
   configFile = settingsFormat.generate "gamemode.ini" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     programs.gamemode = {
       enable = lib.mkEnableOption "GameMode to optimise system performance on demand";

@@ -189,6 +189,20 @@ in
       "systemd"
       "extraConfig"
     ] "Use boot.initrd.systemd.settings.Manager instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../services/networking/ifstate.nix
+    ../../../tasks/bcache.nix
+    ../../../tasks/swraid.nix
+    ../clevis-luks-askpass.nix
+    ../clevis.nix
+    ../emergency-mode.nix
+    ../initrd-openvpn.nix
+    ../initrd-ssh.nix
+    ../nix-store-veritysetup.nix
+    ../unl0kr.nix
+    ./fido2.nix
+    ./repart.nix
+    # END generated imports
   ];
 
   options.boot.initrd.systemd = {

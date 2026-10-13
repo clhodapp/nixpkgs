@@ -20,6 +20,9 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "programs" "mangowc" ] [ "programs" "mango" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/portal.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

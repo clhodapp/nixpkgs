@@ -13,6 +13,13 @@ let
   isLocallyDistributed = config.services.livekit.ingress.enable;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/redis.nix
+    ./livekit-ingress.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ quadradical ];
   options.services.livekit = {
     enable = lib.mkEnableOption "the livekit server";

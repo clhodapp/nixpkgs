@@ -39,6 +39,9 @@ in
       [ "services" "harmonia" "cache" "settings" ]
     )
     # Note: package stays at the top level
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/nix-gc.nix
+    # END generated imports
   ];
 
   options = {

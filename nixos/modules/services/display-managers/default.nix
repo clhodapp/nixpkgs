@@ -182,6 +182,9 @@ in
       [ "services" "xserver" "displayManager" "sessionPackages" ]
       [ "services" "displayManager" "sessionPackages" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./generic.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

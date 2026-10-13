@@ -50,6 +50,9 @@ in
       [ "boot" "loader" "limine" "forceMbr" ]
       [ "boot" "loader" "limine" "force" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../../config/nix.nix
+    # END generated imports
   ];
 
   options.boot.loader.limine = {

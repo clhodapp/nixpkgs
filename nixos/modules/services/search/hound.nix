@@ -25,6 +25,9 @@ in
     (lib.mkChangedOptionModule [ "services" "hound" "config" ] [ "services" "hound" "settings" ] (
       config: builtins.fromJSON config.services.hound.config
     ))
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/ca.nix
+    # END generated imports
   ];
 
   meta.maintainers = with lib.maintainers; [ SuperSandro2000 ];

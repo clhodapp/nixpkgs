@@ -42,6 +42,9 @@ in
       "journald"
       "extraConfig"
     ] "Use services.journald.settings.Journal instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
   ];
 
   options = {

@@ -26,6 +26,10 @@ in
         "diskSize"
       ];
     })
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/grow-partition.nix
+    ../system/boot/loader/limine/limine.nix
+    # END generated imports
   ];
 
   options.virtualisation.azureImage = {

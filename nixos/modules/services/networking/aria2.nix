@@ -49,6 +49,9 @@ in
       [ "services" "aria2" "rpcListenPort" ]
       [ "services" "aria2" "settings" "rpc-listen-port" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options = {
