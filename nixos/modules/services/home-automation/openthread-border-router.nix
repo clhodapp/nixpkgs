@@ -21,6 +21,12 @@ let
   logLevel = lib.getAttr cfg.logLevel logLevelMappings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/sysctl.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     jamiemagee
     leonm1

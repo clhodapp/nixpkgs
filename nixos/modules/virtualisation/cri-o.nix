@@ -20,6 +20,12 @@ let
   cfgFile = format.generate "00-default.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./containers.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ teams.podman ];
   };

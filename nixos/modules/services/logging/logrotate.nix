@@ -146,6 +146,9 @@ in
       "logrotate"
       "configFile"
     ] "Use services.logrotate.settings instead to specify extra configuration")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
   ];
 
   options = {

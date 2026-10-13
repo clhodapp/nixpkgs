@@ -12,6 +12,11 @@ let
   settingsFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
 
   options.services.nebula-lighthouse-service = {
     enable = lib.mkEnableOption "nebula-lighthouse-service";

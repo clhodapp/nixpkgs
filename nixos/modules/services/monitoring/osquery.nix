@@ -34,6 +34,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.services.osquery = {
     enable = lib.mkEnableOption "osqueryd daemon";
 

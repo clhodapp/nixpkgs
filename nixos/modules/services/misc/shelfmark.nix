@@ -8,6 +8,12 @@ let
   cfg = config.services.shelfmark;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.shelfmark = {
 
     enable = lib.mkEnableOption "Shelfmark, a self-hosted book and audiobook search and download interface";

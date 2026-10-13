@@ -9,6 +9,12 @@ let
   cfg = config.services.stratis;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.stratis = {
     enable = lib.mkEnableOption "Stratis Storage - Easy to use local storage management for Linux";
   };

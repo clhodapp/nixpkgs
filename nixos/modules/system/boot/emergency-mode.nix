@@ -5,6 +5,11 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systemd/initrd.nix
+    # END generated imports
+  ];
 
   ###### interface
 

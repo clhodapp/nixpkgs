@@ -16,6 +16,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../programs/wayland/wayfire.nix
+    # END generated imports
+  ];
+
   options = {
 
     services.xserver.desktopManager.mate = {

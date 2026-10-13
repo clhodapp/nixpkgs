@@ -28,6 +28,12 @@ let
   letsencryptEnabled = cfg.settings ? "letsencrypt-domain";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../firewall.nix
+    # END generated imports
+  ];
+
   options.services.netbird.relay = {
     enable = lib.mkEnableOption "Netbird's Relay Service";
     package = lib.mkPackageOption pkgs "netbird-relay" { };

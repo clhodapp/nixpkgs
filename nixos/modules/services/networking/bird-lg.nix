@@ -67,6 +67,9 @@ in
       [ "services" "bird-lg" "proxy" "listenAddress" ]
       [ "services" "bird-lg" "proxy" "listenAddresses" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bird.nix
+    # END generated imports
   ];
 
   options = {

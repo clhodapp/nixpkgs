@@ -38,6 +38,16 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../mail/dovecot.nix
+    ../mail/postfix.nix
+    ../misc/geoipupdate.nix
+    ../search/elasticsearch.nix
+    ./grafana.nix
+    # END generated imports
+  ];
+
   options.services.parsedmarc = {
 
     enable = lib.mkEnableOption ''

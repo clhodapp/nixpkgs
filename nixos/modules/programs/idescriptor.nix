@@ -8,6 +8,12 @@ let
   cfg = config.programs.idescriptor;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/usbmuxd.nix
+    # END generated imports
+  ];
+
   options.programs.idescriptor = {
     enable = lib.mkEnableOption "iDescriptor, a cross-platform iDevice management tool";
 

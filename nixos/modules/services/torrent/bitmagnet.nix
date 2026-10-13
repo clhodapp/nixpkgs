@@ -25,6 +25,12 @@ let
   freeformType = (pkgs.formats.yaml { }).type;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.bitmagnet = {
     enable = mkEnableOption "Bitmagnet service";
     useLocalPostgresDB = mkOption {

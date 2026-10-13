@@ -698,6 +698,9 @@ in
 {
   imports = [
     (mkRemovedOptionModule [ "boot" "initrd" "luks" "enable" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systemd/tpm2.nix
+    # END generated imports
   ];
 
   options = {

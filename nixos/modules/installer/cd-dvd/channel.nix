@@ -39,6 +39,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/nix-flakes.nix
+    # END generated imports
+  ];
+
   options.system.installer.channel.enable =
     (lib.mkEnableOption "bundling NixOS/Nixpkgs channel in the installer")
     // {

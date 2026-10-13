@@ -13,6 +13,11 @@ let
   platform = pkgs.stdenv.hostPlatform;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./all-firmware.nix
+    # END generated imports
+  ];
 
   options = {
     hardware.enableAllHardware = lib.mkEnableOption "Enable support for most hardware";

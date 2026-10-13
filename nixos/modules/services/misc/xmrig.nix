@@ -10,6 +10,12 @@ let
   configFile = json.generate "config.json" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/cpu/x86-msr.nix
+    # END generated imports
+  ];
+
   options = {
     services.xmrig = {
       enable = lib.mkEnableOption "XMRig Mining Software";

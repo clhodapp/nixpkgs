@@ -8,6 +8,11 @@ let
   cfg = config.services.clipcat;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
 
   options.services.clipcat = {
     enable = lib.mkEnableOption "Clipcat clipboard daemon";

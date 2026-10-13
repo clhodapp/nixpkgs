@@ -104,6 +104,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.iperf3 = api;
   config = mkIf cfg.enable imp;
 }

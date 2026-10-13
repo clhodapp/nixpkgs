@@ -11,6 +11,12 @@ let
   cfg = config.hardware.tenstorrent;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.tenstorrent.enable = mkEnableOption "Tenstorrent driver & utilities";
 
   config = mkIf cfg.enable {

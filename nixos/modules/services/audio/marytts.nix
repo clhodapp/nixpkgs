@@ -9,6 +9,12 @@ let
   format = pkgs.formats.javaProperties { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.marytts = {
     enable = lib.mkEnableOption "MaryTTS";
 

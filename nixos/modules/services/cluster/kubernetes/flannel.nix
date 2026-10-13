@@ -12,6 +12,13 @@ let
   storageBackend = "kubernetes";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../networking/dhcpcd.nix
+    ./kubelet.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.kubernetes.flannel = {
     enable = lib.mkEnableOption "flannel networking";

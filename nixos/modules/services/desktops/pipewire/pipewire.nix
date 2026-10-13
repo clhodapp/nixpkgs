@@ -364,6 +364,9 @@ in
       `services.pipewire.extraConfig.client-rt` is no longer applicable, as `client-rt.conf` has been
       removed upstream. Please move your customizations to `services.pipewire.extraConfig.client`.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./wireplumber.nix
+    # END generated imports
   ];
 
   ###### implementation

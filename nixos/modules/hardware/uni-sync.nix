@@ -9,6 +9,12 @@ let
   cfg = config.hardware.uni-sync;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with maintainers; [ yunfachi ];
 
   options.hardware.uni-sync = {

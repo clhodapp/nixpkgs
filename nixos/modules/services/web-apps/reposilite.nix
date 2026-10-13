@@ -256,6 +256,13 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.reposilite = {
     enable = lib.mkEnableOption "Reposilite";
     package = lib.mkPackageOption pkgs "reposilite" { } // {

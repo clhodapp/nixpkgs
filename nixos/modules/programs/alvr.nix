@@ -9,6 +9,12 @@ let
   cfg = config.programs.alvr;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     programs.alvr = {
       enable = lib.mkEnableOption "ALVR, the VR desktop streamer";

@@ -8,6 +8,12 @@ let
   cfg = config.networking.iproute2;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.networking.iproute2 = {
     enable = lib.mkEnableOption "copying IP route configuration files";
     rttablesExtraConfig = lib.mkOption {

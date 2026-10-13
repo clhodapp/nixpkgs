@@ -11,6 +11,11 @@ in
   imports = [
     ./disk-size-option.nix
     ../image/file-options.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/grow-partition.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    # END generated imports
   ];
 
   options.image = {

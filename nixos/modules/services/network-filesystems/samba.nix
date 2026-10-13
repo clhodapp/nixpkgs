@@ -65,6 +65,9 @@ in
       [ "services" "samba" "enableNmbd" ]
       [ "services" "samba" "nmbd" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/nsswitch.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -8,6 +8,12 @@ let
   cfg = config.services.hardware.deepcool-digital-linux;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.NotAShelf ];
 
   options.services.hardware.deepcool-digital-linux = {

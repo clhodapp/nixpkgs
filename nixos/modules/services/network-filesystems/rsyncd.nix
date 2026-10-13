@@ -63,8 +63,8 @@ in
     };
   };
 
-  imports = (
-    map
+  imports =
+    (map
       (
         option:
         lib.mkRemovedOptionModule [
@@ -80,7 +80,12 @@ in
         "user"
         "group"
       ]
-  );
+    )
+    ++ [
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../system/boot/systemd.nix
+      # END generated imports
+    ];
 
   config = lib.mkIf cfg.enable {
 

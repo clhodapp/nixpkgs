@@ -17,6 +17,14 @@ let
     } tlpConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/cpu/x86-msr.nix
+    ../../tasks/cpu-freq.nix
+    ../../tasks/scsi-link-power-management.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
     services.tlp = {

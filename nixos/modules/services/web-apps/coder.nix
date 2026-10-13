@@ -14,6 +14,12 @@ let
   configRefUrl = "https://coder.com/docs/@main/admin/setup/configuration-reference";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options = {
     services.coder = {
       enable = mkEnableOption "Coder service";

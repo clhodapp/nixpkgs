@@ -9,6 +9,12 @@ let
   cfg = config.programs.zsh.zsh-autoenv;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.zsh.zsh-autoenv = {
       enable = lib.mkEnableOption "zsh-autoenv";

@@ -53,6 +53,10 @@ in
     (mkRemovedOptionModule [ "services" "getty" "serialSpeed" ]
       ''set non-standard baudrates with `boot.kernelParams` i.e. boot.kernelParams = ["console=ttyS2,1500000"];''
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/documentation.nix
+    ../../virtualisation/nixos-containers.nix
+    # END generated imports
   ];
 
   options = {

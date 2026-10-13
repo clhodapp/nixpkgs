@@ -23,6 +23,9 @@ in
 {
   imports = [
     (mkRemovedOptionModule [ "security" "polkit" "debug" ] "Use security.polkit.extraArgs instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/security/fprintd.nix
+    # END generated imports
   ];
 
   options.security.polkit = {

@@ -8,6 +8,9 @@
   imports = [
     (lib.mkRenamedOptionModule [ "services" "dleyna-server" ] [ "services" "dleyna" ])
     (lib.mkRenamedOptionModule [ "services" "dleyna-renderer" ] [ "services" "dleyna" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
   ];
 
   ###### interface

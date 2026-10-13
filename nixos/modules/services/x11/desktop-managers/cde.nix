@@ -12,6 +12,13 @@ let
   cfg = xcfg.desktopManager.cde;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../networking/rpcbind.nix
+    ../../networking/xinetd.nix
+    # END generated imports
+  ];
+
   options.services.xserver.desktopManager.cde = {
     enable = mkEnableOption "Common Desktop Environment";
 

@@ -11,6 +11,15 @@ let
   cfg = config.services.scion;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./scion-control.nix
+    ./scion-daemon.nix
+    ./scion-ip-gateway.nix
+    ./scion-router.nix
+    # END generated imports
+  ];
+
   options.services.scion = {
     enable = mkEnableOption "all of the scion components and services";
     package = mkPackageOption pkgs "scion" { };

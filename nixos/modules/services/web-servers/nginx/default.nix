@@ -1415,6 +1415,10 @@ in
       `services.nginx.experimentalZstdSettings` which adds the same configuration as the
       removed option.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/acme
+    ../../../security/ca.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

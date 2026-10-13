@@ -1909,6 +1909,20 @@ in
       [ "security" "pam" "u2f" "cue" ]
       [ "security" "pam" "u2f" "settings" "cue" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/console.nix
+    ../config/ldap.nix
+    ../services/misc/sssd.nix
+    ../services/security/howdy
+    ../services/security/intune.nix
+    ../services/security/kanidm.nix
+    ../services/x11/xscreensaver.nix
+    ../system/boot/systemd/homed.nix
+    ../tasks/filesystems/zfs.nix
+    ../virtualisation/nixos-containers.nix
+    ./oath.nix
+    ./pam_mount.nix
+    # END generated imports
   ];
 
   ###### interface

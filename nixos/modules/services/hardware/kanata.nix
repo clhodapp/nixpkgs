@@ -173,6 +173,12 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.kanata = {
     enable = lib.mkEnableOption "kanata, a tool to improve keyboard comfort and usability with advanced customization";
     package = lib.mkPackageOption pkgs "kanata" {

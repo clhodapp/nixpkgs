@@ -9,6 +9,12 @@ let
   cfg = config.programs.yubikey-manager;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/pcscd.nix
+    # END generated imports
+  ];
+
   options = {
     programs.yubikey-manager = {
       enable = lib.mkEnableOption "yubikey-manager";

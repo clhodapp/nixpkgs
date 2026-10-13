@@ -33,6 +33,13 @@ let
   configFile = toml.generate "scion-control.toml" (recursiveUpdate defaultConfig cfg.settings);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/systemd.nix
+    ./scion-dispatcher.nix
+    # END generated imports
+  ];
+
   options.services.scion.scion-control = {
     enable = mkEnableOption "the scion-control service";
     settings = mkOption {

@@ -8,6 +8,12 @@ let
   cfg = config.services.jitterentropy-rngd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.jitterentropy-rngd = {
     enable = lib.mkEnableOption "jitterentropy-rngd service configuration";
     package = lib.mkPackageOption pkgs "jitterentropy-rngd" { };

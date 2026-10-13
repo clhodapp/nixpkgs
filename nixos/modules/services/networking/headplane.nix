@@ -33,6 +33,12 @@ let
   settingsFile = settingsFormat.generate "headplane-config.yaml" (filterSettings settings);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./headscale.nix
+    # END generated imports
+  ];
+
   options.services.headplane = {
     enable = mkEnableOption "Headplane";
     package = mkPackageOption pkgs "headplane" { };

@@ -26,6 +26,9 @@ in
       [ "programs" "zsh" "syntax-highlighting" "patterns" ]
       [ "programs" "zsh" "syntaxHighlighting" "patterns" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./zsh.nix
+    # END generated imports
   ];
 
   options = {

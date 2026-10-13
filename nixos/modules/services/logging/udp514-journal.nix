@@ -10,6 +10,12 @@ let
   description = "Forward syslog from network (udp/514) to journal";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/systemd-confinement.nix
+    # END generated imports
+  ];
+
   options = {
     services.udp514-journal = {
       enable = lib.mkEnableOption "the udp514-journal systemd socket/service";

@@ -58,6 +58,9 @@ in
       [ "services" "automysqlbackup" "config" ]
       [ "services" "automysqlbackup" "settings" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./mysql-backup.nix
+    # END generated imports
   ];
 
   # interface

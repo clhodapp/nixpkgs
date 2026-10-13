@@ -9,6 +9,12 @@ let
   mame = "mame${lib.optionalString pkgs.stdenv.hostPlatform.is64bit "64"}";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.mame = {
       enable = lib.mkOption {

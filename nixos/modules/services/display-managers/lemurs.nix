@@ -16,6 +16,9 @@ in
       "lemurs"
       "vt"
     ] "The VT is now fixed to VT1.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../desktops/seatd.nix
+    # END generated imports
   ];
 
   options.services.displayManager.lemurs = {

@@ -9,6 +9,12 @@ let
   cfg = config.services.yubikey-agent;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/pcscd.nix
+    # END generated imports
+  ];
+
   ###### interface
 
   meta.maintainers = with lib.maintainers; [

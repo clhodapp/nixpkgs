@@ -21,6 +21,12 @@ let
   // cfg.extraConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/redis.nix
+    # END generated imports
+  ];
+
   options.services.docuseal = {
     enable = lib.mkEnableOption "DocuSeal, open source document signing";
 

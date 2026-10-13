@@ -9,6 +9,12 @@ let
   cfg = config.services.scx;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.services.scx = {
     enable = lib.mkEnableOption null // {
       description = ''

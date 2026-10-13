@@ -9,6 +9,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/tuxedo-drivers.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.tuxedo-rs = {
       enable = lib.mkEnableOption "Rust utilities for interacting with hardware from TUXEDO Computers";

@@ -9,6 +9,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../portal.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.lxqt ];
   };

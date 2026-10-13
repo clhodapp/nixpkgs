@@ -8,6 +8,13 @@ let
   cfg = config.services.hardware.openrgb;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/cpu/amd-microcode.nix
+    ../../hardware/cpu/intel-microcode.nix
+    # END generated imports
+  ];
+
   options.services.hardware.openrgb = {
     enable = lib.mkEnableOption "OpenRGB server, for RGB lighting control";
 

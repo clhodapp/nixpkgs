@@ -9,6 +9,12 @@ let
   cfg = config.services.shorewall6;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.shorewall6 = {
       enable = lib.mkOption {

@@ -30,6 +30,12 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./networking.nix
+    # END generated imports
+  ];
+
   options.networking.stevenblack = {
     enable = mkEnableOption "the stevenblack hosts file blocklist";
 

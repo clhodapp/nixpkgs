@@ -8,6 +8,13 @@ let
   cfg = config.services.aurral;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/ca.nix
+    ../../security/systemd-confinement.nix
+    # END generated imports
+  ];
+
   options = {
     services.aurral = {
       enable = lib.mkEnableOption "Aurral is the Lidarr companion for self-hosted music discovery";

@@ -8,6 +8,12 @@ let
   cfg = config.programs.streamcontroller;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/desktop-managers/plasma6.nix
+    # END generated imports
+  ];
+
   options.programs.streamcontroller = {
     enable = lib.mkEnableOption "StreamController";
     package = lib.mkOption {

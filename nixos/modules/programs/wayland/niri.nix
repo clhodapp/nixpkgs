@@ -8,6 +8,12 @@ let
   cfg = config.programs.niri;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/portal.nix
+    # END generated imports
+  ];
+
   options.programs.niri = {
     enable = lib.mkEnableOption "Niri, a scrollable-tiling Wayland compositor";
 

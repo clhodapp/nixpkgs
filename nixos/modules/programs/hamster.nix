@@ -6,6 +6,12 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/dbus.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.hamster.meta.maintainers;
 
   options.programs.hamster.enable = lib.mkEnableOption "hamster, a time tracking program";

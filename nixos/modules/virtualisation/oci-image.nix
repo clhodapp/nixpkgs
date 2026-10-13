@@ -12,6 +12,9 @@ in
   imports = [
     ./oci-common.nix
     ../image/file-options.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/loader/limine/limine.nix
+    # END generated imports
   ];
 
   config = {

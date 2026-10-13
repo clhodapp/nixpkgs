@@ -940,6 +940,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "prosody" "uploadHttp" ]
       "mod_http_upload has been obsoloted and been replaced by mod_http_file_share which can be configured with httpFileShare options."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

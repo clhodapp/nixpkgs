@@ -72,6 +72,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../boot/systemd.nix
+    # END generated imports
+  ];
+
   _class = "nixos";
 
   # First half of the magic: mix systemd logic into the otherwise abstract services

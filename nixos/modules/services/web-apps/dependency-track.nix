@@ -49,6 +49,13 @@ let
     ) (filterNull settings);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.dependency-track = {
     enable = lib.mkEnableOption "dependency-track";
 

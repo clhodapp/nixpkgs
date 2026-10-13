@@ -104,5 +104,8 @@
       (settingsRename "lidSwitch" "HandleLidSwitch")
       (settingsRename "lidSwitchExternalPower" "HandleLidSwitchExternalPower")
       (settingsRename "lidSwitchDocked" "HandleLidSwitchDocked")
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../../misc/extra-arguments.nix
+      # END generated imports
     ];
 }

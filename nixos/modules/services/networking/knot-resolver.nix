@@ -32,6 +32,12 @@ let
   ) { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/resolvconf.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [
     lib.maintainers.vcunat # upstream developer
     lib.maintainers.leona

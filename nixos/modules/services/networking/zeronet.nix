@@ -131,6 +131,9 @@ with lib;
       "zeronet"
       "logDir"
     ] "Zeronet will log by default in /var/lib/zeronet")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/tor.nix
+    # END generated imports
   ];
 
   meta = {

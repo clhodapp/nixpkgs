@@ -10,6 +10,12 @@ let
   cfg = config.security.loginDefs;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/display-managers/greetd.nix
+    # END generated imports
+  ];
+
   options = {
 
     security.shadow.enable = lib.mkEnableOption "" // {

@@ -4,6 +4,12 @@ let
   cfg = config.boot.initrd.systemd.dmVerity;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../tasks/lvm.nix
+    # END generated imports
+  ];
+
   options = {
     boot.initrd.systemd.dmVerity = {
       enable = lib.mkEnableOption "dm-verity" // {

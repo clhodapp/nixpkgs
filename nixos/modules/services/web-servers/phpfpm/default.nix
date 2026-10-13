@@ -184,6 +184,9 @@ in
   imports = [
     (mkRemovedOptionModule [ "services" "phpfpm" "poolConfigs" ] "Use services.phpfpm.pools instead.")
     (mkRemovedOptionModule [ "services" "phpfpm" "phpIni" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options = {

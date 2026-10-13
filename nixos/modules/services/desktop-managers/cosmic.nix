@@ -48,6 +48,22 @@ let
     ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/qt.nix
+    ../../config/xdg/icons.nix
+    ../../config/xdg/sounds.nix
+    ../../hardware/video/switcheroo-control.nix
+    ../accessibility/orca.nix
+    ../desktops/flatpak.nix
+    ../desktops/system76-scheduler.nix
+    ../display-managers/cosmic-greeter.nix
+    ../hardware/acpid.nix
+    ../hardware/power-profiles-daemon.nix
+    ../hardware/tuned.nix
+    # END generated imports
+  ];
+
   meta.teams = [ lib.teams.cosmic ];
 
   options = {

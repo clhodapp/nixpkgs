@@ -31,6 +31,13 @@ let
     ++ lib.optionals (lib.hasInfix "mysql" cfg.environment.DATABASE_URL) [ "mysql.service" ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   meta.buildDocsInSandbox = false;
 
   options.services.strichliste = {

@@ -8,6 +8,12 @@ let
   cfg = config.programs.nix-index;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./command-not-found/command-not-found.nix
+    # END generated imports
+  ];
+
   options.programs.nix-index = with lib; {
     enable = mkEnableOption "nix-index, a file database for nixpkgs";
 

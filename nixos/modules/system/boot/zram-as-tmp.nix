@@ -9,6 +9,13 @@ let
   cfg = config.boot.tmp;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/zram.nix
+    ./tmp.nix
+    # END generated imports
+  ];
+
   options = {
     boot.tmp = {
       useZram = lib.mkOption {

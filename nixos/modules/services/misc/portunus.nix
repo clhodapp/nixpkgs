@@ -8,6 +8,13 @@ let
   cfg = config.services.portunus;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    ../web-apps/dex.nix
+    # END generated imports
+  ];
+
   options.services.portunus = {
     enable = lib.mkEnableOption "Portunus, a self-contained user/group management and authentication service for LDAP";
 

@@ -140,6 +140,13 @@ in
       "dashboard"
     ] "Removed due to it being an outdated version")
     (lib.mkRemovedOptionModule [ "services" "kubernetes" "verbose" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../virtualisation/containerd.nix
+    ../../networking/flannel.nix
+    ./controller-manager.nix
+    ./flannel.nix
+    ./proxy.nix
+    # END generated imports
   ];
 
   ###### interface

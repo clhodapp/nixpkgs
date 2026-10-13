@@ -584,5 +584,12 @@ in
     (lib.mkRemovedOptionModule [ "virtualisation" "incus" "bucketSupport" ] ''
       The option was only a temporary workaround to gate the insecure minio dependency until it could be dropped.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/acme
+    ../services/network-filesystems/ceph.nix
+    ../services/networking/iscsi/initiator.nix
+    ./lxc.nix
+    ./lxcfs.nix
+    # END generated imports
   ];
 }

@@ -550,5 +550,8 @@ in
       [ "services" "udev" "initrdRules" ]
       [ "boot" "initrd" "services" "udev" "rules" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/modprobe.nix
+    # END generated imports
   ];
 }

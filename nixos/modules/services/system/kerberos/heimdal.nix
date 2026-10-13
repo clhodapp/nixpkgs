@@ -53,6 +53,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.enable && package.passthru.implementation == "heimdal") {
     environment.etc."heimdal-kdc/kdc.conf".source = kdcConfFile;
 

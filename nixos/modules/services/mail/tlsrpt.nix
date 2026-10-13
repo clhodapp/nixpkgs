@@ -63,6 +63,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./postfix.nix
+    # END generated imports
+  ];
+
   options.services.tlsrpt = {
     enable = mkEnableOption "the TLSRPT services";
 

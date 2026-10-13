@@ -9,6 +9,12 @@ let
   cfg = config.programs.fzf;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./zsh/oh-my-zsh.nix
+    # END generated imports
+  ];
+
   options = {
     programs.fzf = {
       fuzzyCompletion = lib.mkEnableOption "fuzzy completion with fzf";

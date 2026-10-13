@@ -29,6 +29,13 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/meta.nix
+    ../system/build.nix
+    # END generated imports
+  ];
+
   options = {
 
     virtualisation.vmVariant = mkOption {

@@ -21,6 +21,12 @@ let
   toml = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.programs.vellum = {
     enable = mkEnableOption "vellum, a live screen annotation overlay for Wayland";
 

@@ -9,6 +9,12 @@ let
   cfg = config.programs.autoenv;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/bash.nix
+    # END generated imports
+  ];
+
   options = {
     programs.autoenv = {
       enable = lib.mkEnableOption "autoenv";

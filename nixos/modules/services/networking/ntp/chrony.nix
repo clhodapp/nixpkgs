@@ -66,6 +66,13 @@ let
   ) { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/malloc.nix
+    ../../../system/boot/timesyncd.nix
+    # END generated imports
+  ];
+
   options = {
     services.chrony = {
       enable = lib.mkOption {

@@ -239,6 +239,13 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/networking/dhcpcd.nix
+    ../services/system/cloud-init.nix
+    # END generated imports
+  ];
+
   options.services.waagent = {
     enable = lib.mkEnableOption "Windows Azure Linux Agent";
 

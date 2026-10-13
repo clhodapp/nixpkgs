@@ -162,6 +162,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../firewall-nftables.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.raitobezarius ];
 
   options = {

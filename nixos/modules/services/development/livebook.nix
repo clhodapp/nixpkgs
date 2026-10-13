@@ -8,6 +8,12 @@ let
   cfg = config.services.livebook;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.livebook = {
     # Since livebook doesn't have a granular permission system (a user
     # either has access to all the data or none at all), the decision

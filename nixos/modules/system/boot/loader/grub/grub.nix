@@ -951,6 +951,11 @@ in
 
       See the boot.initrd.secrets option documentation for more information.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../../virtualisation/nixos-containers.nix
+    ../efi.nix
+    ../loader.nix
+    # END generated imports
   ];
 
 }

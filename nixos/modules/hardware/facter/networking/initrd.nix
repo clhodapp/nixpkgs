@@ -5,6 +5,12 @@ let
   inherit (config.hardware.facter) report;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../.
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.boot.initrd.networking.kernelModules = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default = lib.uniqueStrings (facterLib.collectDrivers (report.hardware.network_controller or [ ]));

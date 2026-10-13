@@ -18,6 +18,12 @@ let
   cfg = config.services.kapla;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/system-environment.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = [ lib.maintainers.sempiternal-aurora ];
     teams = [ lib.teams.ngi ];

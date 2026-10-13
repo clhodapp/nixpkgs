@@ -11,6 +11,12 @@ let
   configFile = settingsFormat.generate "xdg-desktop-portal-wlr.ini" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../portal.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = [ ];
   };

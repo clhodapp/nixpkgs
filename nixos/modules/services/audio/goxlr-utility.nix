@@ -8,6 +8,11 @@ let
   cfg = config.services.goxlr-utility;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/autostart.nix
+    # END generated imports
+  ];
 
   options = {
     services.goxlr-utility = {

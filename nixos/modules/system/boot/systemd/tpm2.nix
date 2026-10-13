@@ -12,6 +12,9 @@
       [ "boot" "initrd" "systemd" "enableTpm2" ]
       [ "boot" "initrd" "systemd" "tpm2" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../kernel.nix
+    # END generated imports
   ];
 
   options = {

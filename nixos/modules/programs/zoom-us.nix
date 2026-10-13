@@ -6,6 +6,12 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./wayland/hyprland.nix
+    # END generated imports
+  ];
+
   options.programs.zoom-us = {
     enable = lib.mkEnableOption "zoom.us video conferencing application";
     package = lib.mkPackageOption pkgs "zoom-us" { };

@@ -15,6 +15,12 @@ let
     if g != "" then g else "greeter";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.airlock = {
     enable = lib.mkEnableOption "Airlock, a clean and modern Material Design 3 Quickshell greeter for greetd";
 

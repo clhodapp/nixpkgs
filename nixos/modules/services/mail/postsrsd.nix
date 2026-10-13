@@ -68,6 +68,9 @@ in
       [ "services" "postsrsd" "separator" ]
       [ "services" "postsrsd" "settings" "separator" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./postfix.nix
+    # END generated imports
   ]
   ++
     map

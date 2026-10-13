@@ -79,6 +79,9 @@ in
     ] "this option is no longer necessary for Caddy 2")
     (mkRenamedOptionModule [ "services" "caddy" "ca" ] [ "services" "caddy" "acmeCA" ])
     (mkRenamedOptionModule [ "services" "caddy" "config" ] [ "services" "caddy" "extraConfig" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/acme
+    # END generated imports
   ];
 
   # interface

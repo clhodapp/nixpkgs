@@ -31,6 +31,9 @@ in
       "mailhog"
       "user"
     ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./mail.nix
+    # END generated imports
   ];
 
   options = {

@@ -67,6 +67,9 @@ in
       "zabbixServer"
       "extraConfig"
     ] "Use services.zabbixServer.settings instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-apps/zabbix.nix
+    # END generated imports
   ];
 
   # interface

@@ -9,6 +9,12 @@ let
   cfg = config.security.soteria;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./polkit.nix
+    # END generated imports
+  ];
+
   options.security.soteria = {
     enable = lib.mkEnableOption null // {
       description = ''

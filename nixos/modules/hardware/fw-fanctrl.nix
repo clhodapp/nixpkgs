@@ -9,6 +9,12 @@ let
   cfg = config.hardware.fw-fanctrl;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.hardware.fw-fanctrl = {
     enable = lib.mkEnableOption "the fw-fanctrl systemd service and install the needed packages";
 

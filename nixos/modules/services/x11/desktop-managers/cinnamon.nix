@@ -22,6 +22,13 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../programs/system-config-printer.nix
+    ../../desktops/blueman.nix
+    # END generated imports
+  ];
+
   options = {
     services.cinnamon = {
       apps.enable = mkEnableOption "Cinnamon default applications";

@@ -12,6 +12,12 @@ let
   inherit (lib) mkOption types;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options = {
     services.auto-epp = {
       enable = lib.mkEnableOption "auto-epp for amd active pstate";

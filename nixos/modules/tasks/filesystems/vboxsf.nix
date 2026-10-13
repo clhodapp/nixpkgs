@@ -18,6 +18,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/virtualbox-guest.nix
+    # END generated imports
+  ];
+
   config = mkIf (config.boot.supportedFilesystems.vboxsf or false) {
 
     system.fsPackages = [ package ];

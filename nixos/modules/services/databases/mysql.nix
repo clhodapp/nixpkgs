@@ -60,6 +60,9 @@ in
       "mysql"
       "port"
     ] "Use services.mysql.settings.mysqld.port instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   ###### interface

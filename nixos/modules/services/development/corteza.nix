@@ -8,6 +8,12 @@ let
   cfg = config.services.corteza;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.corteza = {
     enable = lib.mkEnableOption "Corteza, a low-code platform";
     package = lib.mkPackageOption pkgs "corteza" { };

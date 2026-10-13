@@ -16,6 +16,9 @@ in
       "adjustor"
       "package"
     ] "Adjustor is now part of handheld-daemon package, so it can't be overriden")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./udev.nix
+    # END generated imports
   ];
   options.services.handheld-daemon = {
     enable = mkEnableOption "Handheld Daemon";

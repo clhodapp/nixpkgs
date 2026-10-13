@@ -28,6 +28,12 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./ca.nix
+    # END generated imports
+  ];
+
   options = {
     security.ipa = {
       enable = lib.mkEnableOption "FreeIPA domain integration";

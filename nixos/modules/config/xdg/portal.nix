@@ -29,6 +29,9 @@ in
       "portal"
       "gtkUsePortal"
     ] "This option has been removed due to being unsupported and discouraged by the GTK developers.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/fuse.nix
+    # END generated imports
   ];
 
   meta = {

@@ -29,6 +29,12 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.crab-hole = {
       enable = lib.mkEnableOption "Crab-hole Service";

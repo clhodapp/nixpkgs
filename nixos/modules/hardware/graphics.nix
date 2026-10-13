@@ -48,6 +48,9 @@ in
       [ "hardware" "opengl" "extraPackages32" ]
       [ "hardware" "graphics" "extraPackages32" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   options.hardware.graphics = {

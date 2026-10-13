@@ -25,6 +25,11 @@ in
     # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configure-access-to-serial-console.html
     ./ec2-data.nix
     ./amazon-init.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/misc/amazon-ssm-agent.nix
+    ../system/boot/grow-partition.nix
+    ./amazon-options.nix
+    # END generated imports
   ];
 
   config = {

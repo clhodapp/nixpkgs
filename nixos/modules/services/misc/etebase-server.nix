@@ -33,6 +33,9 @@ in
       [ "services" "etebase-server" "host" ]
       [ "services" "etebase-server" "settings" "allowed_hosts" "allowed_host1" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options = {

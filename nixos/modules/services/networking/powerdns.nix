@@ -13,6 +13,12 @@ let
   finalConfigDir = if cfg.secretFile == null then configDir else "/run/pdns";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.powerdns = {
       enable = mkEnableOption "PowerDNS domain name server";

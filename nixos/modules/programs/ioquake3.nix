@@ -32,6 +32,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.ioquake3 = {
     enable = lib.mkEnableOption "ioquake3, an enhanced, cross-platform, open source engine for id Software's Quake 3";
 

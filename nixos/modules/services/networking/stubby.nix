@@ -18,6 +18,9 @@ in
       "stubby"
       "debugLogging"
     ] "Use services.stubby.logLevel = \"debug\"; instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ]
   ++
     map

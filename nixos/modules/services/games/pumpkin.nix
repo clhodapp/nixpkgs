@@ -40,6 +40,12 @@ let
   whitelistFile = jsonFormat.generate "whitelist.json" cfg.whitelist.entries;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     DerGrumpf
     jk

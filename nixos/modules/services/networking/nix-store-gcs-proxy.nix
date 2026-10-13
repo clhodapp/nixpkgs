@@ -35,6 +35,12 @@ let
   mapProxies = function: lib.mkMerge (lib.mapAttrsToList function enabledProxies);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.nix-store-gcs-proxy = mkOption {
     type = types.attrsOf (types.submodule opts);
     default = { };

@@ -309,6 +309,9 @@ in
       ]
       "The frontend port is not configured in YAML any more and therefore cannot be determined at eval time any longer."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   meta = {

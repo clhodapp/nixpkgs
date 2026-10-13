@@ -10,6 +10,12 @@ let
   prg = config.programs;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/bash.nix
+    # END generated imports
+  ];
+
   options = {
     programs.autojump = {
 

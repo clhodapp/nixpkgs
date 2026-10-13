@@ -126,6 +126,9 @@
 
   imports = [
     (lib.mkRenamedOptionModule [ "system" "nssHosts" ] [ "system" "nssDatabases" "hosts" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/nscd.nix
+    # END generated imports
   ];
 
   config = {

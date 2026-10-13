@@ -351,6 +351,9 @@ in
       [ "services" "xserver" "displayManager" "extraSessionFilesPackages" ]
       [ "services" "displayManager" "sessionPackages" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/fonts/fontconfig.nix
+    # END generated imports
   ];
 
 }

@@ -11,6 +11,12 @@ let
   configFilePath = toml.generate "config.toml" cfg.configuration;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.static-web-server = {
       enable = lib.mkEnableOption "Static Web Server";

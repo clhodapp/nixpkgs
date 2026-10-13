@@ -8,6 +8,12 @@ let
   cfg = config.programs.fcast-receiver;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/networking/firewall.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = pkgs.fcast-receiver.meta.maintainers;
   };

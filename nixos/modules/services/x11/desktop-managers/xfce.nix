@@ -54,6 +54,9 @@ in
       [ "services" "xserver" "desktopManager" "xfce" "thunarPlugins" ]
       [ "programs" "thunar" "plugins" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../programs/thunar.nix
+    # END generated imports
   ];
 
   options = {

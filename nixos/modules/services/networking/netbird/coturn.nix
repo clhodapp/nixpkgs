@@ -31,6 +31,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/acme
+    ../../../security/systemd-confinement.nix
+    ../coturn.nix
+    # END generated imports
+  ];
+
   options.services.netbird.server.coturn = {
     enable = mkEnableOption "a Coturn server for Netbird, will also open the firewall on the configured range";
 

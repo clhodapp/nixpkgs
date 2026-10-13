@@ -114,6 +114,9 @@ in
     (mkRemovedOptionModule [ "services" "komodo-periphery" "outbound" "onboardingKey" ]
       "services.komodo-periphery.outbound.onboardingKey has been removed. Use outbound.onboardingKeyFile instead for better security."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/docker.nix
+    # END generated imports
   ];
 
   options.services.komodo-periphery = {

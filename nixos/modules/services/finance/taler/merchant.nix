@@ -25,6 +25,10 @@ in
 {
   imports = [
     (import ./common.nix { inherit talerComponent servicesDB; })
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../databases/postgresql.nix
+    ./module.nix
+    # END generated imports
   ];
 
   options.services.taler.merchant = {

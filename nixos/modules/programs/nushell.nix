@@ -8,6 +8,12 @@ let
   cfg = config.programs.nushell;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/system-path.nix
+    # END generated imports
+  ];
+
   options.programs.nushell = {
     enable = lib.mkEnableOption "nushell";
 

@@ -16,6 +16,9 @@ in
       [ "systemd" "oomd" "enableUserSlices" ]
     )
     (lib.mkRenamedOptionModule [ "systemd" "oomd" "extraConfig" ] [ "systemd" "oomd" "settings" "OOM" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.systemd.oomd = {

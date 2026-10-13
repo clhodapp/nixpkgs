@@ -27,6 +27,9 @@
 
   imports = [
     (lib.mkRenamedOptionModule [ "hardware" "usbWwan" ] [ "hardware" "usb-modeswitch" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
   ];
 
   config = lib.mkIf config.hardware.usb-modeswitch.enable {

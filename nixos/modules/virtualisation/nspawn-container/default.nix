@@ -23,6 +23,10 @@ in
 {
   imports = [
     ../credentials-options.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/activation/specialisation.nix
+    ../nixos-containers.nix
+    # END generated imports
   ];
 
   options = {

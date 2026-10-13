@@ -1,5 +1,12 @@
 { config, lib, ... }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../../lib/modules/generic/meta-maintainers.nix
+    ../system-path.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.freedesktop ];
   };

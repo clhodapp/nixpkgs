@@ -10,6 +10,12 @@ let
   configFile = configFormat.generate "logid.cfg" cfg.config;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     services.logiops = {
       enable = lib.mkEnableOption "LogiOps, a unofficial userspace driver for HID++ Logitech devices";

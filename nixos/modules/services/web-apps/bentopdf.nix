@@ -9,6 +9,13 @@ let
   cfg = config.services.bentopdf;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.bentopdf = {
     enable = lib.mkEnableOption "bentopdf Privacy First PDF Toolkit";
 

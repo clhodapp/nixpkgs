@@ -9,6 +9,12 @@ let
   inherit (lib.options) mkEnableOption mkPackageOption;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./uwsm.nix
+    # END generated imports
+  ];
+
   options.programs.pinnacle = {
     enable = mkEnableOption "pinnacle";
     package = mkPackageOption pkgs "pinnacle" {

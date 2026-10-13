@@ -9,6 +9,12 @@ let
   cfg = config.services.playerctld;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.playerctld = {
     enable = lib.mkEnableOption "the playerctld daemon";
 

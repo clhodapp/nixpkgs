@@ -260,6 +260,9 @@ in
       [ "virtualisation" "docker" "liveRestore" ]
       [ "virtualisation" "docker" "daemon" "settings" "live-restore" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/nvidia-container-toolkit
+    # END generated imports
   ];
 
   ###### implementation

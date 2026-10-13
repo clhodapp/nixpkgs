@@ -673,6 +673,12 @@ in
       [ "security" "initialRootPassword" ]
       [ "users" "users" "root" "initialHashedPassword" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../programs/fish.nix
+    ../programs/xonsh.nix
+    ../security/google_oslogin.nix
+    ../services/system/userborn.nix
+    # END generated imports
   ];
 
   ###### interface

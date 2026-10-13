@@ -132,6 +132,12 @@ let
     toKeyValueLines (defaultSettings.${cfgName} // (cfg.settings.${cfgName} or { }));
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/pcscd.nix
+    # END generated imports
+  ];
+
   options.hardware.nfc-nci = {
     enable = lib.mkEnableOption "PN5xx kernel module with udev rules, libnfc-nci userland, and optional ifdnfc-nci PC/SC driver";
 

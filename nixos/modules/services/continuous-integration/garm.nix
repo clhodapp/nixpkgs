@@ -52,6 +52,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.garm = {
     enable = lib.mkEnableOption "GARM, a self-hosted runner manager for GitHub Actions and Gitea Actions";
 

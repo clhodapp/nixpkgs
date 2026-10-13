@@ -30,6 +30,12 @@ let
   privilegedPort = cfg.port != null && cfg.port < 1024;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ _4evy ];
 
   options.services.hister = {

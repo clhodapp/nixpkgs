@@ -72,6 +72,12 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ DerGrumpf ];
 
   options.services.flame = {

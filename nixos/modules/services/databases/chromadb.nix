@@ -23,6 +23,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "chromadb" "logFile" ] ''
       ChromaDB has removed the --log-path parameter that logFile relied on.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

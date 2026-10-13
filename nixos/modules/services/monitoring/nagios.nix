@@ -87,6 +87,9 @@ in
       "nagios"
       "urlPath"
     ] "The urlPath option has been removed as it is hard coded to /nagios in the nagios package.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/apache-httpd/default.nix
+    # END generated imports
   ];
 
   meta.maintainers = with lib.maintainers; [ symphorien ];

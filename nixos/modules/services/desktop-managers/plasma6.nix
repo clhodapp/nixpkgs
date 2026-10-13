@@ -65,6 +65,20 @@ in
       [ "services" "xserver" "desktopManager" "plasma6" "notoPackage" ]
       [ "services" "desktopManager" "plasma6" "notoPackage" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/locale.nix
+    ../../hardware/sensor/iio.nix
+    ../../programs/chromium.nix
+    ../../programs/gdk-pixbuf.nix
+    ../../programs/gnupg.nix
+    ../../programs/kde-pim.nix
+    ../../programs/kdeconnect.nix
+    ../../programs/partition-manager.nix
+    ../display-managers/sddm.nix
+    ../hardware/sane.nix
+    ../network-filesystems/samba.nix
+    ../x11/hardware/wacom.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

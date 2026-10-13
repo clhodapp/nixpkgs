@@ -158,6 +158,17 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "dysnomia" ] [ "services" "dysnomia" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/docker.nix
+    ../databases/influxdb.nix
+    ../databases/mongodb.nix
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../networking/ejabberd.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/tomcat.nix
+    ./svnserve.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

@@ -4,6 +4,12 @@
 { lib, ... }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/emergency-mode.nix
+    # END generated imports
+  ];
+
   # Don't start a tty on the serial consoles.
   systemd.services."serial-getty@ttyS0".enable = lib.mkDefault false;
   systemd.services."serial-getty@hvc0".enable = false;

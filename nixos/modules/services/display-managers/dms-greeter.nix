@@ -109,6 +109,16 @@ let
       [ ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/wayland/dms-shell.nix
+    ../../programs/wayland/hyprland.nix
+    ../../programs/wayland/mango.nix
+    ../../programs/wayland/niri.nix
+    ../../programs/wayland/sway.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.dms-greeter = {
     enable = mkEnableOption "DankMaterialShell greeter";
 

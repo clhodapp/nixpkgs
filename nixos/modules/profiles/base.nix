@@ -9,6 +9,12 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../tasks/filesystems/zfs.nix
+    # END generated imports
+  ];
+
   # Include some utilities that are useful for installing or repairing
   # the system.
   environment.systemPackages = [

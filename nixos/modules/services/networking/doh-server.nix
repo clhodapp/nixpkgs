@@ -10,6 +10,12 @@ let
   toml = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    # END generated imports
+  ];
+
   options.services.doh-server = {
     enable = lib.mkEnableOption "DNS-over-HTTPS server";
 

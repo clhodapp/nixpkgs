@@ -33,6 +33,9 @@ in
       "mongodb"
       "initialRootPassword"
     ] "Use services.mongodb.initialRootPasswordFile to securely provide the initial root password.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   ###### interface

@@ -14,6 +14,9 @@ with lib;
 {
   imports = [
     (mkRenamedOptionModule [ "virtualisation" "growPartition" ] [ "boot" "growPartition" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systemd/repart.nix
+    # END generated imports
   ];
 
   options = {

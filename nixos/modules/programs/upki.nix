@@ -10,6 +10,12 @@ let
   configFile = format.generate "upki.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.upki = {
     enable = lib.mkEnableOption "upki certificate infrastructure cache updates";
 

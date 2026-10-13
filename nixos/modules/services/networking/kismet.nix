@@ -232,6 +232,12 @@ let
   cfg = config.services.kismet;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.kismet = {
     enable = mkEnableOption "kismet";
     package = mkPackageOption pkgs "kismet" { };

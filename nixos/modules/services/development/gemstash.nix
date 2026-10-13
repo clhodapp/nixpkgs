@@ -25,6 +25,12 @@ let
   cfg = config.services.gemstash;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.gemstash = {
     enable = lib.mkEnableOption "gemstash, a cache for rubygems.org and a private gem server";
 

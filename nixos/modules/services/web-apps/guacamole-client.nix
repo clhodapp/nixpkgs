@@ -9,6 +9,12 @@ let
   settingsFormat = pkgs.formats.javaProperties { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/tomcat.nix
+    # END generated imports
+  ];
+
   options = {
     services.guacamole-client = {
       enable = lib.mkEnableOption "Apache Guacamole Client (Tomcat)";

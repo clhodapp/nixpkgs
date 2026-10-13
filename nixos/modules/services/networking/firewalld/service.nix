@@ -26,6 +26,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./.
+    # END generated imports
+  ];
+
   options.services.firewalld.services = mkOption {
     description = ''
       firewalld service configuration files. See {manpage}`firewalld.service(5)`.

@@ -23,6 +23,9 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "services" "unifi-poller" ] [ "services" "unpoller" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.services.unpoller = {

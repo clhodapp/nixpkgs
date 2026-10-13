@@ -915,6 +915,9 @@ in
       [ "services" "gitlab-runner" "sessionServer" "sessionTimeout" ]
       [ "services" "gitlab-runner" "settings" "session_server" "session_timeout" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../virtualisation/docker.nix
+    # END generated imports
   ];
 
   meta.teams = [ teams.gitlab ];

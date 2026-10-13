@@ -35,6 +35,13 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/acme
+    ../web-servers/traefik.nix
+    # END generated imports
+  ];
+
   options.services = {
     pangolin = {
       enable = lib.mkEnableOption "Pangolin reverse proxy server";

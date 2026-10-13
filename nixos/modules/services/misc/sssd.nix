@@ -26,6 +26,12 @@ let
       mkSettingsFileUnsubstituted cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/krb5
+    # END generated imports
+  ];
+
   options = {
     services.sssd = {
       enable = lib.mkEnableOption "the System Security Services Daemon";

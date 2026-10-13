@@ -29,6 +29,12 @@ let
   );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./scion-dispatcher.nix
+    # END generated imports
+  ];
+
   options.services.scion.scion-ip-gateway = {
     enable = mkEnableOption "the scion-ip-gateway service";
     config = mkOption {

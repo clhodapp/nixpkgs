@@ -11,6 +11,12 @@
       [ "virtualisation" "containers" "cdi" "dynamic" "nvidia" "enable" ]
       [ "hardware" "nvidia-container-toolkit" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../hardware/video/nvidia.nix
+    ../../../virtualisation/containers.nix
+    ../../../virtualisation/docker-rootless.nix
+    ../../../virtualisation/podman/default.nix
+    # END generated imports
   ];
 
   options =

@@ -70,6 +70,12 @@ in
       [ "services" "limesurvey" "virtualHost" ]
       [ "services" "limesurvey" "httpd" "virtualHost" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   # interface

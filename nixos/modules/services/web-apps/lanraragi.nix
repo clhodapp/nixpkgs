@@ -9,6 +9,12 @@ let
   cfg = config.services.lanraragi;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/redis.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ tomasajt ];
 
   options.services = {

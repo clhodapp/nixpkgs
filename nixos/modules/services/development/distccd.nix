@@ -8,6 +8,12 @@ let
   cfg = config.services.distccd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.distccd = {
       enable = lib.mkEnableOption "distccd, a distributed C/C++ compiler";

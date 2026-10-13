@@ -4348,7 +4348,13 @@ let
 in
 
 {
-  imports = [ stage1Options ];
+  imports = [
+    stage1Options
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/iproute2.nix
+    ./resolved.nix
+    # END generated imports
+  ];
 
   options = {
     systemd.network = commonOptions true;

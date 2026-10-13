@@ -22,6 +22,12 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../scheduling/cron.nix
+    # END generated imports
+  ];
+
   options = {
     services.rsnapshot = {
       enable = lib.mkEnableOption "rsnapshot backups";

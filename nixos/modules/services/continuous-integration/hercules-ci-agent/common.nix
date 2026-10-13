@@ -43,6 +43,9 @@ in
     (mkRemovedOptionModule [ "services" "hercules-ci-agent" "patchNix" ]
       "Nix versions packaged in this version of Nixpkgs don't need a patched nix-daemon to work correctly in Hercules CI Agent clusters."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/nix.nix
+    # END generated imports
   ];
 
   options.services.hercules-ci-agent = {

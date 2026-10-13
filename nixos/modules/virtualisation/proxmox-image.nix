@@ -22,6 +22,13 @@ with lib;
         "diskSize"
       ];
     })
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/cloud-init.nix
+    ../system/boot/grow-partition.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    ./qemu-guest-agent.nix
+    # END generated imports
   ];
 
   options.proxmox = {

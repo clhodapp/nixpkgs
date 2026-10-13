@@ -8,6 +8,12 @@ let
   cfg = config.services.cloudflare-warp;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.cloudflare-warp = {
     enable = lib.mkEnableOption "Cloudflare Zero Trust client daemon";
 

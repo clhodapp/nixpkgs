@@ -53,6 +53,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "jitsi-videobridge" "apis" ]
       "services.jitsi-videobridge.apis was broken and has been migrated into the boolean option services.jitsi-videobridge.colibriRestApi. It is set to false by default, setting it to true will correctly enable the private /colibri rest API."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/sysctl.nix
+    # END generated imports
   ];
   options.services.jitsi-videobridge = with lib.types; {
     enable = lib.mkEnableOption "Jitsi Videobridge, a WebRTC compatible video router";

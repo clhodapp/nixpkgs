@@ -10,6 +10,12 @@ let
   settingsFormat = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../services/hardware/amdgpu.nix
+    # END generated imports
+  ];
+
   options.boot.initrd.unl0kr = {
     enable = lib.mkEnableOption "unl0kr in initrd" // {
       description = "Whether to enable the unl0kr on-screen keyboard in initrd to unlock LUKS.";

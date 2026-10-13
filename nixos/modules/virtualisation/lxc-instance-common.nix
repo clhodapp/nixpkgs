@@ -11,6 +11,9 @@
     ../installer/cd-dvd/channel.nix
     ../profiles/clone-config.nix
     ../profiles/minimal.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/ttys/getty.nix
+    # END generated imports
   ];
 
   # Allow the user to login as root without password.

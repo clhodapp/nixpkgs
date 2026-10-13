@@ -13,6 +13,9 @@ in
       [ "programs" "tuxclocker" "enableAMD" ]
       [ "hardware" "amdgpu" "overdrive" "enable" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/amdgpu.nix
+    # END generated imports
   ];
 
   options.programs.tuxclocker = {

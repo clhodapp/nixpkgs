@@ -32,6 +32,12 @@ let
       settingsFormat.generate "tailscale-serve-config.json" serveConfig;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./tailscale.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     bouk
   ];

@@ -9,6 +9,12 @@ let
   cfg = config.programs.miriway;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/xdg/icons.nix
+    # END generated imports
+  ];
+
   options.programs.miriway = {
     enable = lib.mkEnableOption ''
       Miriway, a Mir based Wayland compositor. You can manually launch Miriway by

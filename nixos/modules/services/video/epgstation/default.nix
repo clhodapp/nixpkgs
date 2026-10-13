@@ -111,6 +111,10 @@ in
     (deprecateTopLevelOption [ "socketioPort" ])
     (deprecateTopLevelOption [ "clientSocketioPort" ])
     (removeOption [ "basicAuth" ] "Use a TLS-terminated reverse proxy with authentication instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../databases/mysql.nix
+    ../mirakurun.nix
+    # END generated imports
   ];
 
   options.services.epgstation = {

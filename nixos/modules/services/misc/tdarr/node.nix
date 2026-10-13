@@ -45,6 +45,12 @@ let
   ) enabledNodes;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./.
+    # END generated imports
+  ];
+
   options.services.tdarr.nodes = lib.mkOption {
     default = { };
     description = "Attribute set of Tdarr processing nodes to run on this machine.";

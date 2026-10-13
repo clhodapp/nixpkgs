@@ -12,6 +12,9 @@
     ../../profiles/base.nix
     ../../profiles/installation-device.nix
     ./sd-image.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/loader/generic-extlinux-compatible
+    # END generated imports
   ];
 
   boot.loader = {

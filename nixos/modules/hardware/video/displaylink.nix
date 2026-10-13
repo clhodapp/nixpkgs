@@ -17,6 +17,11 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/power-management.nix
+    # END generated imports
+  ];
 
   config = lib.mkIf enabled {
 

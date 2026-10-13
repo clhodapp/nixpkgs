@@ -44,6 +44,12 @@ let
   stub-ld = stub-ld-for pkgs message;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./ldso.nix
+    # END generated imports
+  ];
+
   options = {
     environment.stub-ld = {
       enable = mkOption {

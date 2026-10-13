@@ -9,6 +9,12 @@ let
   cfg = config.programs.zmap;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
+
   options.programs.zmap = {
     enable = lib.mkEnableOption "ZMap, a network scanner designed for Internet-wide network surveys";
   };

@@ -53,6 +53,17 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/jibri/default.nix
+    ../networking/jigasi.nix
+    ../networking/jitsi-videobridge.nix
+    ../networking/prosody.nix
+    ../web-servers/caddy/default.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.jitsi-meet = with types; {
     enable = mkEnableOption "Jitsi Meet - Secure, Simple and Scalable Video Conferences";
 

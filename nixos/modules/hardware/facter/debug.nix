@@ -6,6 +6,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/nix.nix
+    ../../misc/nixpkgs.nix
+    # END generated imports
+  ];
 
   options = {
 

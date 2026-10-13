@@ -125,6 +125,9 @@ in
       "varnish"
       "stateDir"
     ] "The `stateDir` option never was functional or useful. varnish uses compile-time settings.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
   ];
 
   options = {

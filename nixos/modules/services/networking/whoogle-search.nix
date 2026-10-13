@@ -9,6 +9,12 @@ let
   cfg = config.services.whoogle-search;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.whoogle-search = {
       enable = lib.mkEnableOption "Whoogle, a metasearch engine";

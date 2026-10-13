@@ -26,6 +26,9 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "services" "freenet" ] [ "services" "hyphanet" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

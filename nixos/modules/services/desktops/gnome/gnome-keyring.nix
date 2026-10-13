@@ -10,6 +10,11 @@ let
   cfg = config.services.gnome.gnome-keyring;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/xdg/portal.nix
+    # END generated imports
+  ];
 
   meta = {
     teams = [ lib.teams.gnome ];

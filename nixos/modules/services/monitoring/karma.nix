@@ -9,6 +9,12 @@ let
   yaml = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.karma = {
     enable = lib.mkEnableOption "the Karma dashboard service";
 

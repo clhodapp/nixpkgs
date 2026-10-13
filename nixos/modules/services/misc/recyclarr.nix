@@ -16,6 +16,12 @@ let
   } cfg.configuration configPath;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.recyclarr = {
     enable = lib.mkEnableOption "recyclarr service";
 

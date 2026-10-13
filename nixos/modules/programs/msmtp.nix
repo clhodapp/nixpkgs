@@ -10,6 +10,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/mail/mail.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ euxane ];
 
   options = {

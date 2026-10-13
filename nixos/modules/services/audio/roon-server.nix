@@ -9,6 +9,12 @@ let
   cfg = config.services.roon-server;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall-nftables.nix
+    # END generated imports
+  ];
+
   options = {
     services.roon-server = {
       enable = lib.mkEnableOption "Roon Server";

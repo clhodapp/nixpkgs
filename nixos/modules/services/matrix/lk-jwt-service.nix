@@ -8,6 +8,12 @@ let
   cfg = config.services.lk-jwt-service;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.quadradical ];
   options.services.lk-jwt-service = {
     enable = lib.mkEnableOption "lk-jwt-service";

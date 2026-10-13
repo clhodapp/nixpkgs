@@ -9,6 +9,12 @@ let
   cfg = config.programs.neovim;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/system-environment.nix
+    # END generated imports
+  ];
+
   options.programs.neovim = {
     enable = lib.mkOption {
       type = lib.types.bool;

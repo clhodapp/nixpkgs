@@ -18,6 +18,12 @@ let
   cfg = config.services.mullvad-vpn;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/resolvconf.nix
+    # END generated imports
+  ];
+
   options.services.mullvad-vpn = {
     enable = mkEnableOption "the Mullvad VPN service";
     package = mkPackageOption pkgs "mullvad" { };

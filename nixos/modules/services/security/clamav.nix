@@ -41,6 +41,9 @@ in
       "daemon"
       "extraConfig"
     ] "Use services.clamav.daemon.settings instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options = {

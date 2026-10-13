@@ -127,6 +127,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/nixos-containers.nix
+    ./wireguard.nix
+    # END generated imports
+  ];
 
   ###### interface
 

@@ -71,6 +71,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.froide-govplan = {
 
     enable = lib.mkEnableOption "Gouvernment planer web app Govplan";

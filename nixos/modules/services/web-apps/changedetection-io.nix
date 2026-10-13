@@ -11,6 +11,12 @@ let
   cfg = config.services.changedetection-io;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/oci-containers.nix
+    # END generated imports
+  ];
+
   options.services.changedetection-io = {
     enable = mkEnableOption "changedetection-io";
 

@@ -8,6 +8,13 @@ let
   cfg = config.services.spire.agent;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/tpm2.nix
+    ./agent.nix
+    # END generated imports
+  ];
+
   options.services.spire.agent.settings.plugins.NodeAttestor.tpm = lib.mkOption {
     default = null;
     description = "TPM 2.0 node attestation plugin. When set, automatically enables security.tpm2 and grants the spire-agent user access to the TPM device.";

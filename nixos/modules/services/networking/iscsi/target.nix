@@ -11,6 +11,12 @@ let
   cfg = config.services.target;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   ###### interface
   options = {
     services.target = with types; {

@@ -21,6 +21,12 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./pki.nix
+    # END generated imports
+  ];
+
   ###### interface
   options.services.kubernetes.addonManager = with lib.types; {
 

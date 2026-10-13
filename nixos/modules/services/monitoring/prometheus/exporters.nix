@@ -391,6 +391,21 @@ let
     };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../hardware/rtl-sdr.nix
+    ../../../hardware/video/nvidia.nix
+    ../../databases/mysql.nix
+    ../../mail/mailman.nix
+    ../../misc/apache-kafka.nix
+    ../../misc/moonraker.nix
+    ../../networking/firewall-nftables.nix
+    ../../networking/unbound.nix
+    ../../security/fail2ban.nix
+    ../../web-servers/varnish/default.nix
+    ../unpoller.nix
+    # END generated imports
+  ];
 
   options.services.prometheus.exporters = mkOption {
     type = types.submodule {

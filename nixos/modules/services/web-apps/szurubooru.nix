@@ -19,6 +19,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.szurubooru = {
       enable = mkEnableOption "Szurubooru, an image board engine dedicated for small and medium communities";

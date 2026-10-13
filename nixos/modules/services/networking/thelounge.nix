@@ -40,6 +40,9 @@ in
       "thelounge"
       "private"
     ] "The option was renamed to `services.thelounge.public` to follow upstream changes.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.services.thelounge = {

@@ -9,6 +9,12 @@ let
   format = pkgs.formats.ini { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/nsswitch.nix
+    # END generated imports
+  ];
+
   options.security.account-utils = {
     enable = lib.mkEnableOption "the account-utils implementation of Unix user authentication and management";
     package = lib.mkPackageOption pkgs "account-utils" { };

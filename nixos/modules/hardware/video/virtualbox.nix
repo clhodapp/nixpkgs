@@ -4,6 +4,12 @@ let
   inherit (config.services.xserver) videoDrivers;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/virtualbox-guest.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (lib.elem "virtualbox" videoDrivers) {
     assertions = [
       {

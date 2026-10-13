@@ -11,6 +11,12 @@ let
   inherit (utils.systemdUtils.unitOptions) unitOption;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
+  ];
+
   options.services.rsync = {
     enable = lib.mkEnableOption "periodic directory syncing via rsync";
 

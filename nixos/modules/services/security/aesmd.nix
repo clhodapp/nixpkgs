@@ -49,6 +49,9 @@ in
       "settings"
       "whitelistUrl"
     ] "sgx-psw-v2.28 no longer supports Intel enclave signer cert whitelist management.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/cpu/intel-sgx.nix
+    # END generated imports
   ];
 
   options.services.aesmd = {

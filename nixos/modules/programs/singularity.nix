@@ -9,6 +9,11 @@ let
   cfg = config.programs.singularity;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
 
   options.programs.singularity = {
     enable = lib.mkEnableOption "singularity" // {

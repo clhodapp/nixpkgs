@@ -8,6 +8,12 @@ let
   cfg = config.hardware.xpad-noone;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   options.hardware.xpad-noone = {
     enable = lib.mkEnableOption "the Xpad driver from the Linux kernel with support for Xbox One controllers removed";
   };

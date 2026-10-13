@@ -29,6 +29,13 @@ let
   settingsFormat = pkgs.formats.yaml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/influxdb2.nix
+    ./smartd.nix
+    # END generated imports
+  ];
+
   options = {
     services.scrutiny = {
       enable = mkEnableOption "Scrutiny, a web application for drive monitoring";

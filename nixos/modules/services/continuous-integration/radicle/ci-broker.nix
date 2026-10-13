@@ -37,6 +37,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/radicle.nix
+    # END generated imports
+  ];
+
   meta.teams = [ lib.teams.radicle ];
 
   options.services.radicle.ci.broker = {

@@ -11,6 +11,12 @@ let
   inInitrd = config.boot.initrd.supportedFilesystems.f2fs or false;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   config = mkIf (config.boot.supportedFilesystems.f2fs or false) {
 
     system.fsPackages = [ pkgs.f2fs-tools ];

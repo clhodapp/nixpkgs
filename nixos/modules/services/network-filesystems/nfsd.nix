@@ -30,6 +30,9 @@ in
       [ "services" "nfs" "statdPort" ]
       [ "services" "nfs" "server" "statdPort" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/rpcbind.nix
+    # END generated imports
   ];
 
   ###### interface

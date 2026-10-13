@@ -20,6 +20,9 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "networking" "connman" ] [ "services" "connman" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./iwd.nix
+    # END generated imports
   ];
 
   ###### interface

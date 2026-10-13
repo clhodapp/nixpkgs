@@ -74,6 +74,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/docker.nix
+    ../../virtualisation/libvirtd.nix
+    ../networking/wireguard.nix
+    # END generated imports
+  ];
+
   options = {
     services.netdata = {
       enable = lib.mkEnableOption "netdata";

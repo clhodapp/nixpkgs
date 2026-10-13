@@ -11,6 +11,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/polkit.nix
+    # END generated imports
+  ];
+
   meta = {
     doc = ./flatpak.md;
     maintainers = pkgs.flatpak.meta.maintainers;

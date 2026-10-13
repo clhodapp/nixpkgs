@@ -9,6 +9,15 @@ let
   cfg = config.services.desktopManager.lomiri;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/xwayland.nix
+    ../desktops/ayatana-indicators.nix
+    ../desktops/telepathy.nix
+    ../x11/display-managers/lightdm-greeters/lomiri.nix
+    # END generated imports
+  ];
+
   options.services.desktopManager.lomiri = {
     enable = lib.mkEnableOption ''
       the Lomiri graphical shell (formerly known as Unity8)

@@ -10,6 +10,12 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   meta.maintainers = lib.teams.ngi.members;
 
   options.services.hockeypuck = {

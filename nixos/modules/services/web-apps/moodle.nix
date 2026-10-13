@@ -125,6 +125,15 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/apache-httpd/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   # interface
   options.services.moodle = {
     enable = mkEnableOption "Moodle web application";

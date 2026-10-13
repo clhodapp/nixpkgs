@@ -20,6 +20,9 @@ in
     ../installer/cd-dvd/channel.nix
     ./minimal.nix
     ./clone-config.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../virtualisation/nixos-containers.nix
+    # END generated imports
   ];
 
   # Create the tarball

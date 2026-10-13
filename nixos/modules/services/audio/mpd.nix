@@ -368,6 +368,9 @@ in
       ]
       "services.mpd.extraConfig was replaced by the declarative services.mpd.settings option, per RFC42."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

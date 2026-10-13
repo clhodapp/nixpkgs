@@ -21,6 +21,12 @@ let
     if ((lib.getName cfg.package) == (lib.getName pkgs.ananicy-cpp)) then "ananicy-cpp" else "ananicy";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.ananicy = {
     enable = lib.mkEnableOption "Ananicy, an auto nice daemon";
 

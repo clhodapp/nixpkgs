@@ -31,6 +31,12 @@ let
   cfg = config.hardware.gpgSmartcards;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options.hardware.gpgSmartcards = {
     enable = lib.mkEnableOption "udev rules for gnupg smart cards";
   };

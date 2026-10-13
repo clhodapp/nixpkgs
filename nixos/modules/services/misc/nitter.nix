@@ -68,6 +68,9 @@ in
       [ "services" "nitter" "guestAccounts" ]
       [ "services" "nitter" "sessionsFile" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   options = {

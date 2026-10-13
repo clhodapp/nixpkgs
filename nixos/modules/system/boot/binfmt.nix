@@ -60,6 +60,9 @@ in
 {
   imports = [
     (lib.mkRenamedOptionModule [ "boot" "binfmtMiscRegistrations" ] [ "boot" "binfmt" "registrations" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/nix.nix
+    # END generated imports
   ];
 
   options = {

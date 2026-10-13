@@ -236,6 +236,9 @@ in
       [ "services" "openssh" "moduliFile" ]
       [ "services" "openssh" "settings" "ModuliFile" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../programs/ssh.nix
+    # END generated imports
   ];
 
   ###### interface

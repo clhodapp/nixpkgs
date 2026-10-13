@@ -44,6 +44,9 @@ in
       "wakapi"
       "smtpPasswordFile"
     ] "Use services.wakapi.environmentFiles instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
   ];
 
   options.services.wakapi = {

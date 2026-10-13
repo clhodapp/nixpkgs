@@ -182,6 +182,9 @@ in
         If the group is still necessary, please define it manually using users.groups.cloudflared.
       ''
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.cloudflared = {

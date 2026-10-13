@@ -116,6 +116,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/fcgiwrap.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.cgit = lib.mkOption {
       description = "Configure cgit instances.";

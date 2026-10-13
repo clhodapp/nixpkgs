@@ -9,6 +9,13 @@ let
   cfg = config.programs.flashprog;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/libftdi.nix
+    ../hardware/libjaylink.nix
+    # END generated imports
+  ];
+
   options.programs.flashprog = {
     enable = lib.mkEnableOption ''
       configuring flashprog udev rules and

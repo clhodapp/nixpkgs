@@ -9,6 +9,12 @@ let
   cfg = config.services.crossmacro;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.crossmacro = {
     enable = lib.mkEnableOption "CrossMacro, a cross-platform mouse and keyboard macro application";
 

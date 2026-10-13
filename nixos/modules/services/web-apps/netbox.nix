@@ -125,6 +125,11 @@ in
     (mkRemovedOptionModule [ "services" "netbox" "gunicornArgs" ] ''
       Removed in favor of `services.netbox.gunicorn.extraArgs`, an attribute set passed to `lib.cli.toCommandLineGNU`.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.netbox = {

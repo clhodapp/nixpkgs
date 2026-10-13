@@ -143,6 +143,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options = {
     services.system76-scheduler = {
       enable = lib.mkEnableOption "system76-scheduler";

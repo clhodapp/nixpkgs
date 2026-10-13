@@ -9,6 +9,12 @@ let
   cfg = config.services.dunst;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/dbus.nix
+    # END generated imports
+  ];
+
   options.services.dunst = {
     enable = lib.mkEnableOption "Dunst notification daemon";
 

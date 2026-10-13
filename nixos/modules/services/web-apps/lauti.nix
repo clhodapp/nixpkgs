@@ -18,6 +18,9 @@ in
 
   imports = [
     (lib.mkRenamedOptionModule [ "services" "eintopf" ] [ "services" "lauti" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/version.nix
+    # END generated imports
   ];
 
   options.services.lauti = {

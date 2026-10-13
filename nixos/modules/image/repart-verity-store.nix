@@ -43,6 +43,12 @@ let
       );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/uki.nix
+    # END generated imports
+  ];
+
   options.image.repart.verityStore = {
     enable = lib.mkEnableOption "building images with a dm-verity protected nix store";
 

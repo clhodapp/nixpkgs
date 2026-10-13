@@ -8,6 +8,12 @@ let
   cfg = config.hardware.display;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./udev.nix
+    # END generated imports
+  ];
+
   meta.doc = ./display.md;
   meta.maintainers = with lib.maintainers; [
     nazarewk

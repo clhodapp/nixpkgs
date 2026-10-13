@@ -32,6 +32,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./.
+    # END generated imports
+  ];
+
   options.services.firewalld.zones = mkOption {
     description = ''
       firewalld zone configuration files.

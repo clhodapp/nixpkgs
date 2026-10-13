@@ -90,6 +90,10 @@ in
         From now on, vectorchord is used instead.
       ''
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   options.services.immich = {

@@ -72,6 +72,9 @@ in
     (lib.mkRenamedOptionModule [ "qt5" "enable" ] [ "qt" "enable" ])
     (lib.mkRenamedOptionModule [ "qt5" "platformTheme" ] [ "qt" "platformTheme" ])
     (lib.mkRenamedOptionModule [ "qt5" "style" ] [ "qt" "style" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./shells-environment.nix
+    # END generated imports
   ];
 
   options = {

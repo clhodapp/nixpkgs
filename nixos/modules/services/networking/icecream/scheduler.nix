@@ -11,6 +11,11 @@ let
   cfg = config.services.icecream.scheduler;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../firewall.nix
+    # END generated imports
+  ];
 
   ###### interface
 

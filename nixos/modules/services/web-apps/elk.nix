@@ -19,6 +19,12 @@ let
   cfg = config.services.elk;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.elk = {
     enable = mkEnableOption "Elk, a nimble Mastodon web client";
 

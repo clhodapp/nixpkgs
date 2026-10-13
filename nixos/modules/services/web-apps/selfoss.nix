@@ -71,6 +71,10 @@ in
       text for config as introduced by RFC0042:
       https://github.com/NixOS/rfcs/blob/master/rfcs/0042-config-option.md
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options = {

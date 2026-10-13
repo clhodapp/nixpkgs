@@ -65,6 +65,15 @@ let
   davisEnv = pkgs.writeText "davis.env" (davisEnvVars filteredConfig);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   options.services.davis = {
     enable = lib.mkEnableOption "Davis is a caldav and carddav server";
 

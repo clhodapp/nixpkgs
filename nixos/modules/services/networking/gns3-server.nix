@@ -13,6 +13,13 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/docker.nix
+    ../../virtualisation/libvirtd.nix
+    # END generated imports
+  ];
+
   meta = {
     doc = ./gns3-server.md;
     maintainers = [ lib.maintainers.anthonyroussel ];

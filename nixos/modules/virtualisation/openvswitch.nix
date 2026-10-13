@@ -172,6 +172,9 @@ in
       OpenVSwitch IPSec functionality has been removed, because it depended on racoon,
       which was removed from nixpkgs, because it was abanoded upstream.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/kernel.nix
+    # END generated imports
   ];
 
   meta.maintainers = with maintainers; [ netixx ];

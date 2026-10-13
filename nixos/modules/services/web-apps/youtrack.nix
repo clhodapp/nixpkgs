@@ -38,6 +38,9 @@ in
       "youtrack"
       "jvmOpts"
     ] "Please migrate to `services.youtrack.generalParameters`.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.youtrack = {

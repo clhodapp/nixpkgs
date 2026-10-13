@@ -17,6 +17,12 @@ let
   bridgeNeeded = lib.versionAtLeast cfg.jackd.package.version "1.9.12";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/shells-environment.nix
+    # END generated imports
+  ];
+
   options = {
     services.jack = {
       jackd = {

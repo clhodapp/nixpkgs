@@ -9,6 +9,12 @@ let
   cfg = config.programs.vivid;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/ls-colors.nix
+    # END generated imports
+  ];
+
   options = {
     programs.vivid = {
       enable = lib.mkOption {

@@ -47,6 +47,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.evremap = {
     enable = lib.mkEnableOption "evremap, a keyboard input remapper for Linux/Wayland systems";
 

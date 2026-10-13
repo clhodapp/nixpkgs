@@ -43,6 +43,12 @@ let
   mkPluginConfig = cfg: concatStringsSep "\n" (map (p: "${p.path} ${p.arg}") cfg);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.trafficserver = {
     enable = mkEnableOption "Apache Traffic Server";
 

@@ -49,6 +49,9 @@ in
     (lib.mkRemovedOptionModule (
       path ++ [ "enableCalendarEvents" ]
     ) "Install a supported calendar backend separately and select it in DMS settings.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/i2c.nix
+    # END generated imports
   ];
 
   options.programs.dms-shell = {

@@ -8,6 +8,12 @@ let
   cfg = config.boot.initrd.clevisLuksAskpass;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./networkd.nix
+    # END generated imports
+  ];
+
   options = {
     boot.initrd.clevisLuksAskpass.enable = lib.mkEnableOption ''
       clevis-luks-askpass in initrd.

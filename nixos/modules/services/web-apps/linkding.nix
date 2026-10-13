@@ -17,6 +17,12 @@ let
   cfg = config.services.linkding;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    # END generated imports
+  ];
+
   options.services.linkding = {
     enable = mkEnableOption "linkding, a self-hosted bookmark manager";
 

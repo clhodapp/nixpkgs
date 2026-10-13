@@ -8,6 +8,12 @@
 with lib;
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/misc/nix-optimise.nix
+    ./nixos-containers.nix
+    # END generated imports
+  ];
 
   config = mkIf config.boot.isContainer {
 

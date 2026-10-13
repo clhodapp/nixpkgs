@@ -11,6 +11,12 @@ let
   initrdSupport = config.boot.initrd.supportedFilesystems.ntfs or false;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   config = lib.mkMerge [
     (lib.mkIf (ntfsEnabled && ntfsPlusSupported && !ntfs3gEnabled) {
       system.fsPackages = [ pkgs.ntfsprogs-plus ];

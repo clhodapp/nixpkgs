@@ -10,6 +10,12 @@ let
   configFile = settingsFormat.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.sils ];
 
   options.services.invidious-router = {

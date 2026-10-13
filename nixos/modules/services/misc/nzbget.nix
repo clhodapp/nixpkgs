@@ -39,6 +39,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "misc" "nzbget" "openFirewall" ]
       "The port used by nzbget is managed through the web interface so you should adjust your firewall rules accordingly."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   # interface

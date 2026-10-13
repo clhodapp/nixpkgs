@@ -218,6 +218,9 @@ in
       "sddm"
       "extraConfig"
     ] "Set the option `services.displayManager.sddm.settings' instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/libinput.nix
+    # END generated imports
   ];
 
   options = {

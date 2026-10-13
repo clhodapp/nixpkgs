@@ -281,6 +281,10 @@ in
       [ "boot" "zfs" "allowHibernation" ]
       [ "boot" "zfs" "unsafeAllowHibernation" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../services/mail/mail.nix
+    ../../system/boot/systemd/shutdown.nix
+    # END generated imports
   ];
 
   ###### interface

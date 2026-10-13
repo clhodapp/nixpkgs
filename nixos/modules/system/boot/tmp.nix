@@ -7,6 +7,9 @@ in
     (lib.mkRenamedOptionModule [ "boot" "cleanTmpDir" ] [ "boot" "tmp" "cleanOnBoot" ])
     (lib.mkRenamedOptionModule [ "boot" "tmpOnTmpfs" ] [ "boot" "tmp" "useTmpfs" ])
     (lib.mkRenamedOptionModule [ "boot" "tmpOnTmpfsSize" ] [ "boot" "tmp" "tmpfsSize" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systemd/tmpfiles.nix
+    # END generated imports
   ];
 
   options = {

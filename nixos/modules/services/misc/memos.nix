@@ -11,6 +11,12 @@ let
   envFileFormat = pkgs.formats.keyValue { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.memos = {
     enable = lib.mkEnableOption "Memos note-taking";
     package = lib.mkPackageOption pkgs "Memos" {

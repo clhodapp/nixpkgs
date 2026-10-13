@@ -3,7 +3,12 @@
 {
 
   # Bashless builds on perlless
-  imports = [ ./perlless.nix ];
+  imports = [
+    ./perlless.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/kexec.nix
+    # END generated imports
+  ];
 
   # Remove bash from activation
   system.nixos-init.enable = lib.mkDefault true;

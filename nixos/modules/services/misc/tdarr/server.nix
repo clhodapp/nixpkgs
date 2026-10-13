@@ -10,6 +10,12 @@ let
   serverEnabled = cfg.enable || cfg.server.enable;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./.
+    # END generated imports
+  ];
+
   options.services.tdarr.server = {
     enable = lib.mkEnableOption "Tdarr server";
 

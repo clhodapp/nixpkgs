@@ -8,6 +8,11 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./ssh.nix
+    # END generated imports
+  ];
 
   ###### interface
 

@@ -48,6 +48,12 @@ let
     ));
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../virtualisation/docker.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.forgejo-runner.meta.maintainers;
 
   options.services.forgejo-runner = {

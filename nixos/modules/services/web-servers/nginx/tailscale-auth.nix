@@ -30,6 +30,10 @@ in
       [ "services" "nginx" "tailscaleAuth" "socketPath" ]
       [ "services" "tailscaleAuth" "socketPath" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../networking/tailscale-auth.nix
+    ./default.nix
+    # END generated imports
   ];
 
   options.services.nginx.tailscaleAuth = {

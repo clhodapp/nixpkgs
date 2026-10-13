@@ -307,6 +307,9 @@ in
         See <https://doc.powerdns.com/recursor/yamlsettings.html>.
       ''
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/resolvconf.nix
+    # END generated imports
   ];
 
   meta.maintainers = with lib.maintainers; [ rnhmjoj ];

@@ -17,6 +17,9 @@ in
       [ "services" "kubernetes" "controllerManager" "bindAddress" ]
     )
     (lib.mkRemovedOptionModule [ "services" "kubernetes" "controllerManager" "insecurePort" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./apiserver.nix
+    # END generated imports
   ];
 
   ###### interface

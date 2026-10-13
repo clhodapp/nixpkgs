@@ -18,6 +18,9 @@ in
       "hypervGuest"
       "videoMode"
     ] "The video mode can now be configured via standard tools, or in Hyper-V VM settings.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
   ];
 
   options = {

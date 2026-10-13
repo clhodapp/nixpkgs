@@ -13,6 +13,12 @@ let
   pkg = programCfg.package;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/systemd/tmpfiles.nix
+    # END generated imports
+  ];
+
   options.programs.nncp = {
 
     enable = lib.mkEnableOption "NNCP (Node to Node copy) utilities and configuration";

@@ -13,6 +13,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./activation-script.nix
+    # END generated imports
+  ];
+
   options = {
     system.activatable = mkOption {
       type = types.bool;

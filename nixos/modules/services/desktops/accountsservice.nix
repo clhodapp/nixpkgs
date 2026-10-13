@@ -6,6 +6,13 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/nsswitch.nix
+    ../../testing/service-runner.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.freedesktop ];
   };

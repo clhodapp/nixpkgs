@@ -10,6 +10,12 @@ let
   inherit (lib) maintainers mkOption types;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/version.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with maintainers; [ happysalada ];
   meta.doc = ./pict-rs.md;
 

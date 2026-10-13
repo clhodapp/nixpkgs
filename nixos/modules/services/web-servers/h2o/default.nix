@@ -270,6 +270,12 @@ let
   }";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/acme
+    # END generated imports
+  ];
+
   options = {
     services.h2o = {
       enable = mkEnableOption "H2O web server";

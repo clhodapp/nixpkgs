@@ -195,6 +195,10 @@ in
       The new config settings for OIDC are explained in the documentation:
       https://peering-manager.readthedocs.io/en/v1.9.3/administration/authentication/oidc/
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../databases/redis.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

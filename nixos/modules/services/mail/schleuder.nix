@@ -23,6 +23,12 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./postfix.nix
+    # END generated imports
+  ];
+
   options.services.schleuder = {
     enable = lib.mkEnableOption "Schleuder secure remailer";
     enablePostfix = lib.mkEnableOption "automatic postfix integration" // {

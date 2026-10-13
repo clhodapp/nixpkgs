@@ -13,6 +13,9 @@ in
     (lib.mkRemovedOptionModule [ "programs" "_1password-gui" "gid" ] ''
       A preallocated GID will be used instead.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/users-groups.nix
+    # END generated imports
   ];
 
   options = {

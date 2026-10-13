@@ -281,6 +281,10 @@ in
       ]
       "The seeded admin user is always created as email-verified; self-hosted Plausible does not require email verification"
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/clickhouse.nix
+    ../databases/postgresql.nix
+    # END generated imports
   ];
 
   config = mkIf cfg.enable {

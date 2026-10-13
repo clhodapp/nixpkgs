@@ -10,6 +10,12 @@ let
   concatenatedRooms = lib.concatStringsSep "|" (map rooms cfg.matrixRooms);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ lib.maintainers.erethon ];
 
   options.services.matrix-alertmanager = {

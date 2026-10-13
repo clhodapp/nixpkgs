@@ -15,6 +15,9 @@ in
       [ "services" "prometheus" "xmpp-alerts" "configuration" ]
       [ "services" "prometheus" "xmpp-alerts" "settings" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.prometheus.xmpp-alerts = {

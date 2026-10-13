@@ -41,6 +41,10 @@ in
       [ "services" "matomo" "periodicArchiveProcessingUrl" ]
       [ "services" "matomo" "hostname" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 
   options = {

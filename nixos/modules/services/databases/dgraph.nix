@@ -65,6 +65,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.dgraph = {
       enable = lib.mkEnableOption "Dgraph native GraphQL database with a graph backend";

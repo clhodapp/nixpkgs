@@ -98,6 +98,12 @@ let
     );
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./audit.nix
+    # END generated imports
+  ];
+
   options.security.auditd = {
     enable = lib.mkEnableOption "the Linux Audit daemon";
 

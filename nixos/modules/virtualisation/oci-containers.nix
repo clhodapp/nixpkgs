@@ -563,6 +563,9 @@ in
         ) [ "extraDockerOptions" ]
       ) oldcfg.docker-containers;
     }))
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./docker.nix
+    # END generated imports
   ];
 
   options.virtualisation.oci-containers = {

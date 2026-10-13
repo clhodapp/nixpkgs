@@ -60,6 +60,14 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./conduit.nix
+    ./dendrite.nix
+    ./synapse.nix
+    # END generated imports
+  ];
+
   options = {
     services.mautrix-discord = {
       enable = lib.mkEnableOption "Mautrix-Discord, a Matrix-Discord puppeting/relay-bot bridge";

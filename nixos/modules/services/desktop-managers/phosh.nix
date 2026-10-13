@@ -136,6 +136,10 @@ in
       [ "services" "xserver" "desktopManager" "phosh" ]
       [ "services" "desktopManager" "phosh" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../i18n/input-method/ibus.nix
+    ../../programs/feedbackd.nix
+    # END generated imports
   ];
 
   options = {

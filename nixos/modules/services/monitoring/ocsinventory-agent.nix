@@ -14,6 +14,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/ca.nix
+    # END generated imports
+  ];
+
   meta = {
     doc = ./ocsinventory-agent.md;
     maintainers = with lib.maintainers; [ anthonyroussel ];

@@ -16,6 +16,9 @@ with lib;
 {
   imports = [
     (mkRemovedOptionModule [ "ec2" "metadata" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../programs/ssh.nix
+    # END generated imports
   ];
 
   config = {

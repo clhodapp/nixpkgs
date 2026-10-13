@@ -12,6 +12,12 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.routedns = {
     enable = mkEnableOption "RouteDNS - DNS stub resolver, proxy and router";
 

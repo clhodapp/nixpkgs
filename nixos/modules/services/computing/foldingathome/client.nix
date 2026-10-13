@@ -27,6 +27,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "foldingathome" "config" ] ''
       Use <literal>services.foldingathome.extraArgs instead<literal>
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
   options.services.foldingathome = {
     enable = lib.mkEnableOption "Folding@home client";

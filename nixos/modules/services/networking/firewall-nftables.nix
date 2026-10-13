@@ -19,6 +19,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall-iptables.nix
+    # END generated imports
+  ];
+
   options = {
     networking.firewall = {
       extraInputRules = lib.mkOption {

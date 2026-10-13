@@ -15,6 +15,12 @@ let
 in
 with lib;
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/resolvconf.nix
+    # END generated imports
+  ];
+
   options.services.lokinet = {
     enable = mkEnableOption "Lokinet daemon";
 

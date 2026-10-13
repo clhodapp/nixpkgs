@@ -9,6 +9,12 @@ let
   cfg = config.services.microbin;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.microbin = {
     enable = lib.mkEnableOption "MicroBin is a super tiny, feature rich, configurable paste bin web application";
 

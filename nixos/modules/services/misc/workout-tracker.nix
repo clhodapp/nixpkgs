@@ -12,6 +12,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options = {
     services.workout-tracker = {
       enable = lib.mkEnableOption "workout tracking web application for personal use (or family, friends), geared towards running and other GPX-based activities";

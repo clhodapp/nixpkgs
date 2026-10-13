@@ -5,6 +5,12 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/loader/grub/grub.nix
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.uefi.supported = lib.mkEnableOption "the facter uefi module" // {
     default = config.hardware.facter.report.uefi.supported or false;
     defaultText = "hardware dependent";

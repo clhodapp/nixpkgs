@@ -23,6 +23,9 @@ in
       "dwm-status"
       "extraConfig"
     ] "Use services.dwm-status.settings instead.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/upower.nix
+    # END generated imports
   ];
 
   options = {

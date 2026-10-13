@@ -6,6 +6,9 @@ with lib;
   imports = [
     (mkRenamedOptionModule [ "boot" "loader" "grub" "timeout" ] [ "boot" "loader" "timeout" ])
     (mkRenamedOptionModule [ "boot" "loader" "gummiboot" "timeout" ] [ "boot" "loader" "timeout" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../../../lib/modules/generic/assertions.nix
+    # END generated imports
   ];
 
   options = {

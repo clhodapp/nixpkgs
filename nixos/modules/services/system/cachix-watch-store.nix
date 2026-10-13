@@ -8,6 +8,12 @@ let
   cfg = config.services.cachix-watch-store;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/nix.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = with lib.maintainers; [
       domenkozar

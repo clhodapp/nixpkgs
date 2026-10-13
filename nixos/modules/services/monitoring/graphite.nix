@@ -75,6 +75,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "graphite" "api" ] "")
     (lib.mkRemovedOptionModule [ "services" "graphite" "beacon" ] "")
     (lib.mkRemovedOptionModule [ "services" "graphite" "pager" ] "")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mongodb.nix
+    # END generated imports
   ];
 
   ###### interface

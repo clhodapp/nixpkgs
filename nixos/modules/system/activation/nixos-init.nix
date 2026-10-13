@@ -9,6 +9,13 @@ let
   cfg = config.system.nixos-init;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../boot/stage-2.nix
+    ./bootspec.nix
+    # END generated imports
+  ];
+
   options.system.nixos-init = {
     enable = lib.mkEnableOption ''
       nixos-init, a system for bashless initialization.

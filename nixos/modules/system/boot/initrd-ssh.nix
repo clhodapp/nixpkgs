@@ -153,7 +153,12 @@ in
         "hostRSAKey"
         "hostDSSKey"
         "hostECDSAKey"
-      ];
+      ]
+    ++ [
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../config/users-groups.nix
+      # END generated imports
+    ];
 
   config =
     let

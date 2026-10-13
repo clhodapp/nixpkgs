@@ -33,6 +33,14 @@ in
       [ "services" "xserver" "desktopManager" "pantheon" ]
       [ "services" "desktopManager" "pantheon" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/evince.nix
+    ../desktops/malcontent.nix
+    ../desktops/tumbler.nix
+    ../desktops/zeitgeist.nix
+    ../hardware/fwupd.nix
+    ../x11/touchegg.nix
+    # END generated imports
   ];
 
   options = {

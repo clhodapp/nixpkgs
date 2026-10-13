@@ -983,5 +983,12 @@ in
     (lib.mkRemovedOptionModule [ "minifyStaticFiles" "svg" "package" ] ''
       Override services.movim.package instead.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    ../web-servers/h2o/default.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
   ];
 }

@@ -10,6 +10,11 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../programs/java.nix
+    # END generated imports
+  ];
 
   options.services.bloop = {
     extraOptions = lib.mkOption {

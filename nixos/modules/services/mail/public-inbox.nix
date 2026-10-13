@@ -148,6 +148,14 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/systemd-confinement.nix
+    ./postfix.nix
+    ./spamassassin.nix
+    # END generated imports
+  ];
+
   options.services.public-inbox = {
     enable = mkEnableOption "the public-inbox mail archiver";
     package = mkPackageOption pkgs "public-inbox" { };

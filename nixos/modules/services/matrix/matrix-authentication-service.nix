@@ -51,6 +51,12 @@ let
   runtimeConfig = "/run/matrix-authentication-service/config.yaml";
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./synapse.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     eymeric
     flashonfire

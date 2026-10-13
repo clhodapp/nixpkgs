@@ -1731,6 +1731,17 @@ in
       "prometheus"
       "alertmanagerTimeout"
     ] "Deprecated upstream and no longer had any effect")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./alertmanager-gotify-bridge.nix
+    ./alertmanager-irc-relay.nix
+    ./alertmanager-ntfy.nix
+    ./alertmanager-webhook-logger.nix
+    ./alertmanager.nix
+    ./exporters.nix
+    ./pushgateway.nix
+    ./sachet.nix
+    ./xmpp-alerts.nix
+    # END generated imports
   ];
 
   options.services.prometheus = {

@@ -11,6 +11,12 @@ let
   configFile = format.generate "conduit.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [
     pstn
     SchweGELBin

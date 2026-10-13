@@ -18,6 +18,9 @@ in
     ./service.nix
     ./settings.nix
     ./zone.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../logging/logrotate.nix
+    # END generated imports
   ];
 
   options.services.firewalld = {

@@ -43,6 +43,12 @@ let
   webPorts = [ httpPort ] ++ optional httpRedirect settings.HTTPS_REDIRECT_PORT;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
+  ];
+
   options.services.broadcast-box = {
     enable = mkEnableOption "Broadcast Box";
     package = mkPackageOption pkgs "broadcast-box" { };

@@ -125,6 +125,10 @@ in
       [ "system" "replaceDependencies" "replacements" ]
     )
     (mkRenamedOptionModule [ "system" "extraSystemBuilderCmds" ] [ "system" "systemBuilderCommands" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/i18n.nix
+    ../../virtualisation/nixos-containers.nix
+    # END generated imports
   ];
 
   options = {

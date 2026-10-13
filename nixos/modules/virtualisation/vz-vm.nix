@@ -79,7 +79,13 @@ let
   staticConfigFile = hostPkgs.writeText "vzvm-config.json" (builtins.toJSON staticConfig);
 in
 {
-  imports = [ ./vm-base.nix ];
+  imports = [
+    ./vm-base.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./disk-size-option.nix
+    ./rosetta.nix
+    # END generated imports
+  ];
 
   options = {
 

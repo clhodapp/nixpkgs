@@ -17,6 +17,12 @@ let
     ++ lib.optionals (cfg.allowSetSystemTime) [ "CAP_SYS_TIME" ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/udev.nix
+    # END generated imports
+  ];
+
   options.services.deconz = {
 
     enable = lib.mkEnableOption "deCONZ, a Zigbee gateway for use with ConBee/RaspBee hardware (https://phoscon.de/)";

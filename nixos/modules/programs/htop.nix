@@ -25,6 +25,11 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/etc/etc.nix
+    # END generated imports
+  ];
 
   options.programs.htop = {
     package = lib.mkPackageOption pkgs "htop" { };

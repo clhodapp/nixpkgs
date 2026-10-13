@@ -29,6 +29,12 @@ let
 in
 with lib;
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.hardware.cpu.amd.sev = optionsFor "SEV" "sev";
 
   options.hardware.cpu.amd.sevGuest = optionsFor "SEV guest" "sev-guest";

@@ -9,6 +9,12 @@ let
   cfg = config.virtualisation.incus.agent;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./incus.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.lxc ];
   };

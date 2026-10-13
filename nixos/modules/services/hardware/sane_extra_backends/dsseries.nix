@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../sane.nix
+    # END generated imports
+  ];
+
   options = {
 
     hardware.sane.dsseries.enable = lib.mkEnableOption "Brother DSSeries scan backend" // {

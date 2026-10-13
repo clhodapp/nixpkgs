@@ -8,6 +8,12 @@ let
   cfg = config.programs.amnezia-vpn;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/dbus.nix
+    # END generated imports
+  ];
+
   options.programs.amnezia-vpn = {
     enable = lib.mkEnableOption "The AmneziaVPN client";
     package = lib.mkPackageOption pkgs "amnezia-vpn" { };

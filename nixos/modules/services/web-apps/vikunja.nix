@@ -19,6 +19,9 @@ in
     (mkRemovedOptionModule [ "services" "vikunja" "setupNginx" ]
       "services.vikunja no longer supports the automatic set up of a nginx virtual host. Set up your own webserver config with a proxy pass to the vikunja service."
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.vikunja = with lib; {

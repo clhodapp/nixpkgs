@@ -20,6 +20,9 @@ in
       "tabby"
       "indexInterval"
     ] "These options are now managed within the tabby WebGUI")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
   ];
   options = {
     services.tabby = {

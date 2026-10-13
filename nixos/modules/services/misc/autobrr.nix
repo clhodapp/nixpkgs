@@ -17,6 +17,9 @@ in
       "autobrr"
       "secretFile"
     ] "autobrr no longer uses a session secret since version 1.82.0.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

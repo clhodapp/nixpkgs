@@ -60,6 +60,9 @@ in
       "extraPlugins"
     ] "Netavark isn't compatible with CNI plugins.")
     ./network-socket.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../docker.nix
+    # END generated imports
   ];
 
   meta = {

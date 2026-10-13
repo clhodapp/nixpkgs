@@ -27,6 +27,9 @@ in
     ] "Please use the new option: `security.apparmor.policies'.")
     ./apparmor/includes.nix
     ./apparmor/profiles.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./default.nix
+    # END generated imports
   ];
 
   options = {

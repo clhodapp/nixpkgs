@@ -9,6 +9,12 @@ let
   sandbox = pkgs.chromium.sandbox;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./wrappers/default.nix
+    # END generated imports
+  ];
+
   options.security.chromiumSuidSandbox.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;

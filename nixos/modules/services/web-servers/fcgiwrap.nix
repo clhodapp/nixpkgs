@@ -34,7 +34,12 @@ in
           Isolated instances should instead be configured through
           `services.fcgiwrap.instances.*'.
         ''
-      );
+      )
+    ++ [
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../system/boot/systemd.nix
+      # END generated imports
+    ];
 
   options.services.fcgiwrap.instances = mkOption {
     description = "Configuration for fcgiwrap instances.";

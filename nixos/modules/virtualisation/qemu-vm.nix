@@ -456,6 +456,15 @@ in
       "virtualisation"
       "nixStore9pCache"
     ] "The 9p cache mode for the Nix store is no longer configurable.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/nixpkgs.nix
+    ../services/networking/dhcpcd.nix
+    ../services/system/nix-daemon.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/timesyncd.nix
+    ../system/boot/tmp.nix
+    ./qemu-guest-agent.nix
+    # END generated imports
   ];
 
   options = {

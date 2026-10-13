@@ -41,6 +41,9 @@ in
       please move these files to `/var/lib/hedgedoc/uploads`, or set the option to point
       at the correct location.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.hedgedoc = {

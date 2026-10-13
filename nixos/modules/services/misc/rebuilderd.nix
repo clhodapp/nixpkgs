@@ -14,6 +14,12 @@ let
   configFile = format.generate "rebuilderd.conf" settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.rebuilderd = {
     enable = mkEnableOption "rebuilderd service for independent verification of binary packages";
     package = mkPackageOption pkgs "rebuilderd" { };

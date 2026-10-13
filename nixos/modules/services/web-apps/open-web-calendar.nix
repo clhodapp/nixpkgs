@@ -38,6 +38,12 @@ let
   calendarSettingsFormat = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
+  ];
+
   options.services.open-web-calendar = {
 
     enable = mkEnableOption "OpenWebCalendar service";

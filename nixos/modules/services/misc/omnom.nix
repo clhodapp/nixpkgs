@@ -11,6 +11,12 @@ let
   configFile = settingsFormat.generate "omnom-config.yml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options = {
     services.omnom = {
       enable = lib.mkEnableOption "Omnom, a webpage bookmarking and snapshotting service";

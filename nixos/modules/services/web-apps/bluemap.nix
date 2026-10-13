@@ -42,6 +42,9 @@ in
       [ "services" "bluemap" "packs" ]
     )
     (lib.mkRenamedOptionModule [ "services" "bluemap" "addons" ] [ "services" "bluemap" "packs" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   options.services.bluemap = {

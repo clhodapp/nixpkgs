@@ -11,6 +11,11 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../hardware/pcscd.nix
+    # END generated imports
+  ];
 
   options.services.vsmartcard-vpcd = {
     enable = lib.mkEnableOption "Virtual smart card driver.";

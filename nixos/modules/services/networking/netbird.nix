@@ -80,6 +80,9 @@ in
 
   imports = [
     (mkAliasOptionModule [ "services" "netbird" "tunnels" ] [ "services" "netbird" "clients" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./dhcpcd.nix
+    # END generated imports
   ];
 
   options.services.netbird = {

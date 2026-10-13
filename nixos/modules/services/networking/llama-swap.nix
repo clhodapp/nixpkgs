@@ -10,6 +10,12 @@ let
   configFile = settingsFormat.generate "config.yaml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.llama-swap = {
     enable = lib.mkEnableOption "the llama-swap service";
 

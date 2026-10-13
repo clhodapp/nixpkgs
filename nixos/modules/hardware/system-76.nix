@@ -75,6 +75,12 @@ let
   };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/hardware/udev.nix
+    # END generated imports
+  ];
+
   options = {
     hardware.system76 = {
       enableAll = mkEnableOption "all recommended configuration for system76 systems";

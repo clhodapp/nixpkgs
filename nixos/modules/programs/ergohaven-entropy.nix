@@ -10,6 +10,12 @@ let
   inherit (lib) mkIf;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.programs.entropy = {
     enable = lib.mkOption {
       type = lib.types.bool;

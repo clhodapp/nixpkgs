@@ -13,6 +13,12 @@ let
   cfg = config.services.urxvtd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/shells-environment.nix
+    # END generated imports
+  ];
+
   options.services.urxvtd = {
     enable = mkOption {
       type = types.bool;

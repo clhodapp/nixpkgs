@@ -27,6 +27,9 @@ in
 {
   imports = [
     (mkRenamedOptionModule [ "programs" "x2goserver" ] [ "services" "x2goserver" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
   ];
 
   options.services.x2goserver = {

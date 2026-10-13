@@ -14,6 +14,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../security/pam.nix
+    # END generated imports
+  ];
+
   options.services.ocserv = {
     enable = mkEnableOption "ocserv";
 

@@ -22,6 +22,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   options.services.transfer-sh = {
     enable = mkEnableOption "Easy and fast file sharing from the command-line";
 

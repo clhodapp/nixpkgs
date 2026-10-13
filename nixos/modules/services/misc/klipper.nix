@@ -110,6 +110,9 @@ in
       [ "services" "klipper" "mutableConfigFolder" ]
       [ "services" "klipper" "configDir" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./octoprint.nix
+    # END generated imports
   ];
 
   ##### interface

@@ -17,6 +17,12 @@ let
     ];
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/shells-environment.nix
+    # END generated imports
+  ];
+
   meta.maintainers = pkgs.rush.meta.maintainers;
 
   options.programs.rush = with lib.types; {

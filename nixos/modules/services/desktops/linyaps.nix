@@ -10,6 +10,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/fonts/fontdir.nix
+    # END generated imports
+  ];
+
   meta = {
     maintainers = pkgs.linyaps.meta.maintainers;
   };

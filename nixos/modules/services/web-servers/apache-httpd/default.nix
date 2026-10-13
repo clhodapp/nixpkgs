@@ -519,6 +519,9 @@ in
       "httpd"
       "sslServerKey"
     ] "Please define a virtual host using `services.httpd.virtualHosts`.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../security/acme
+    # END generated imports
   ];
 
   # interface

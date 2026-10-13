@@ -24,6 +24,12 @@ let
     if isAttrs arg then go arg else go { path = arg; };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/i18n.nix
+    # END generated imports
+  ];
+
   # FIXME: most of the etcRule calls below have been
   # written systematically by converting from apparmor-profiles's profiles
   # without testing nor deep understanding of their uses,

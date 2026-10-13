@@ -14,6 +14,12 @@ let
   cfg = config.services.hyprwhspr-rs;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options.services.hyprwhspr-rs = {
     enable = mkEnableOption "hyprwhspr-rs";
     package = mkPackageOption pkgs "hyprwhspr-rs" { };

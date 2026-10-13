@@ -65,6 +65,12 @@ let
   '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/networking.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ ];
 
   options.services.guix = with lib; {

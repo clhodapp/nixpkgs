@@ -9,6 +9,12 @@ let
   cfg = config.services.xserver.imwheel;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd/user.nix
+    # END generated imports
+  ];
+
   options = {
     services.xserver.imwheel = {
       enable = mkEnableOption "IMWheel service";

@@ -6,6 +6,12 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   config = lib.mkMerge [
 
     (lib.mkIf (config.boot.initrd.supportedFilesystems.unionfs-fuse or false) {

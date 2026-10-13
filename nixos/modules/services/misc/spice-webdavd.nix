@@ -8,6 +8,12 @@ let
   cfg = config.services.spice-webdavd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../network-filesystems/davfs2.nix
+    # END generated imports
+  ];
+
   options = {
     services.spice-webdavd = {
       enable = lib.mkEnableOption "the spice guest webdav proxy daemon";

@@ -417,6 +417,9 @@ in
         [ "services" "xserver" "libinput" "touchpad" ]
         [ "services" "libinput" "touchpad" ]
       )
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ./udev.nix
+      # END generated imports
     ];
 
   options = {

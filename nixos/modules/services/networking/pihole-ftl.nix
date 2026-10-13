@@ -36,6 +36,12 @@ let
   settingsFile = settingsFormat.generate "pihole.toml" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.pihole-ftl = {
     enable = mkEnableOption "Pi-hole FTL";
 

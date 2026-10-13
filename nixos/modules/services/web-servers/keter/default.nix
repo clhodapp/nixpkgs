@@ -16,6 +16,9 @@ in
   imports = [
     (lib.mkRenamedOptionModule [ "services" "keter" "keterRoot" ] [ "services" "keter" "root" ])
     (lib.mkRenamedOptionModule [ "services" "keter" "keterPackage" ] [ "services" "keter" "package" ])
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../system/boot/systemd.nix
+    # END generated imports
   ];
 
   options.services.keter = {

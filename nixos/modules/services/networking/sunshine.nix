@@ -31,6 +31,12 @@ let
   configFile = settingsFormat.generate "sunshine.conf" cfg.settings;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/uinput.nix
+    # END generated imports
+  ];
+
   options.services.sunshine = with types; {
     enable = mkEnableOption "Sunshine, a self-hosted game stream host for Moonlight";
     package = mkPackageOption pkgs "sunshine" { };

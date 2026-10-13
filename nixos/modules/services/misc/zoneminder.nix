@@ -75,6 +75,15 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../web-servers/fcgiwrap.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/phpfpm/default.nix
+    # END generated imports
+  ];
+
   options = {
     services.zoneminder = with lib; {
       enable = lib.mkEnableOption ''

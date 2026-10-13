@@ -35,6 +35,11 @@ let
 in
 with lib;
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./udev.nix
+    # END generated imports
+  ];
 
   meta.maintainers = with maintainers; [ peterhoeg ];
 

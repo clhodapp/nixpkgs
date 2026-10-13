@@ -9,6 +9,12 @@ let
   cfg = config.programs.nm-applet;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/dbus.nix
+    # END generated imports
+  ];
+
   meta = {
     teams = [ lib.teams.freedesktop ];
   };

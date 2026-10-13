@@ -532,6 +532,12 @@ in
       "networkmanager"
       "enableDefaultPlugins"
     ] "Configure the required plugins explicitly in `networking.networkmanager.plugins`.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../hardware/all-firmware.nix
+    ../../security/audit.nix
+    ./iwd.nix
+    ./modemmanager.nix
+    # END generated imports
   ];
 
   ###### implementation

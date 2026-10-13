@@ -355,6 +355,9 @@ in
     [
       (rename "inTunnels" "serverTunnels")
       (rename "outTunnels" "clientTunnels")
+      # BEGIN generated imports: nix-module-imports writes the lines up to END
+      ../../system/activation/top-level.nix
+      # END generated imports
     ];
 
   ###### Implementation ######

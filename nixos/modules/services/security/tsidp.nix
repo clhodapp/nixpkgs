@@ -28,6 +28,12 @@ let
   cfg = config.services.tsidp;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/tailscale.nix
+    # END generated imports
+  ];
+
   options.services.tsidp = {
     enable = mkEnableOption "tsidp server";
 

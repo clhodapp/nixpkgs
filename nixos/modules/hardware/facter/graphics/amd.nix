@@ -4,6 +4,12 @@ let
   cfg = config.hardware.facter.detected.graphics.amd;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../.
+    # END generated imports
+  ];
+
   options.hardware.facter.detected.graphics = {
     amd.enable = lib.mkEnableOption "Enable the AMD Graphics module" // {
       default = builtins.elem "amdgpu" (

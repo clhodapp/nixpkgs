@@ -8,6 +8,12 @@ let
   cfg = config.services.lighthouse;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../networking/firewall.nix
+    # END generated imports
+  ];
+
   options = {
     services.lighthouse = {
       beacon = lib.mkOption {

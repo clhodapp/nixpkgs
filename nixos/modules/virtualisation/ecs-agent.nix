@@ -11,6 +11,12 @@ let
   cfg = config.services.ecs-agent;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./docker.nix
+    # END generated imports
+  ];
+
   options.services.ecs-agent = {
     enable = mkEnableOption "Amazon ECS agent";
 

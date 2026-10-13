@@ -221,6 +221,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/sysctl.nix
+    # END generated imports
+  ];
+
   options.services.zapret2 = {
     enable = lib.mkEnableOption "zapret2, an extensible DPI bypass program";
     package = lib.mkPackageOption pkgs "zapret2" { };

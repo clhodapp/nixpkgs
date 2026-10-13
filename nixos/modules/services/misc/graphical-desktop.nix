@@ -10,6 +10,14 @@ let
   dmcfg = config.services.displayManager;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/xdg/autostart.nix
+    ../../config/xdg/menus.nix
+    ../accessibility/speechd.nix
+    # END generated imports
+  ];
+
   options = {
     services.graphical-desktop.enable =
       lib.mkEnableOption "bits and pieces required for a graphical desktop session"

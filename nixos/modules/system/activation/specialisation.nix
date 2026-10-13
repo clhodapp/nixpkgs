@@ -30,6 +30,12 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./top-level.nix
+    # END generated imports
+  ];
+
   options = {
     isSpecialisation = mkOption {
       type = lib.types.bool;

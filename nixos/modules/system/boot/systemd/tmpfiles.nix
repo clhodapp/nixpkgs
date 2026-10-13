@@ -147,6 +147,12 @@ let
   mkRuleFileContent = paths: concatStrings (pathsToRules paths);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./initrd.nix
+    # END generated imports
+  ];
+
   options = {
     systemd.tmpfiles.rules = mkOption {
       type = types.listOf types.str;

@@ -9,6 +9,12 @@ let
   cfg = config.programs.virt-manager;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./dconf.nix
+    # END generated imports
+  ];
+
   options.programs.virt-manager = {
     enable = lib.mkEnableOption "virt-manager, an UI for managing virtual machines in libvirt";
 

@@ -8,6 +8,11 @@ let
   cfg = config.services.uptime-kuma;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
 
   meta.maintainers = [ lib.maintainers.julienmalka ];
 

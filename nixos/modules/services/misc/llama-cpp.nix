@@ -36,6 +36,9 @@ in
       "llama-cpp"
       "extraFlags"
     ] "Use `services.llama-cpp.settings` instead")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
   ];
 
   options = {

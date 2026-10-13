@@ -9,6 +9,12 @@ let
   cfg = config.services.twingate;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./firewall.nix
+    # END generated imports
+  ];
+
   options.services.twingate = {
     enable = lib.mkEnableOption "Twingate Client daemon";
     package = lib.mkPackageOption pkgs "twingate" { };

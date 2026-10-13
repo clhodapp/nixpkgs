@@ -950,5 +950,8 @@ in
       "storage"
       "minio"
     ] "Support for Minio storage backend has been removed, as minio is unmaintained.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../networking/firewall.nix
+    # END generated imports
   ];
 }

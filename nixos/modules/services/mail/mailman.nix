@@ -105,6 +105,11 @@ in
     (lib.mkRemovedOptionModule [ "services" "mailman" "extraPythonPackages" ] ''
       Didn't have an effect for several years.
     '')
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/postgresql.nix
+    ../web-servers/nginx/default.nix
+    ./postfix.nix
+    # END generated imports
   ];
 
   options = {

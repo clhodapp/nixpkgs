@@ -29,6 +29,12 @@ let
     ;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.displayManager.noctalia-greeter = {
     enable = mkEnableOption "Noctalia Greeter, a minimal login greeter for greetd";
 

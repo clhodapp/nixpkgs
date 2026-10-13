@@ -9,6 +9,12 @@ let
   cfg = config.programs.labwc;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../services/misc/graphical-desktop.nix
+    # END generated imports
+  ];
+
   meta.maintainers = [ ];
 
   options.programs.labwc = {

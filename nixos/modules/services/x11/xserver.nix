@@ -349,6 +349,15 @@ in
       "xserver"
       "tty"
     ] "'services.xserver.tty' was removed because it was ineffective.")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../display-managers/gdm.nix
+    ../display-managers/lemurs.nix
+    ../display-managers/ly.nix
+    ../display-managers/plasma-login-manager.nix
+    ./display-managers/startx.nix
+    ./display-managers/sx.nix
+    ./display-managers/xpra.nix
+    # END generated imports
   ];
 
   ###### interface

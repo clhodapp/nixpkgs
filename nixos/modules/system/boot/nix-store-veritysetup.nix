@@ -11,6 +11,12 @@ let
   json = pkgs.formats.json { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./systemd/dm-verity.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ nikstur ];
 
   options.boot.initrd.nix-store-veritysetup = {

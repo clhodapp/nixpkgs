@@ -10,6 +10,12 @@ let
   cfg = config.services.cato-client;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../config/users-groups.nix
+    # END generated imports
+  ];
+
   options.services.cato-client = {
     enable = mkEnableOption "cato-client service";
     package = mkPackageOption pkgs "cato-client" { };

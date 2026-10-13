@@ -8,6 +8,12 @@ let
   cfg = config.services.gs1200-exporter;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/systemd.nix
+    # END generated imports
+  ];
+
   meta.maintainers = with lib.maintainers; [ DerGrumpf ];
 
   options.services.gs1200-exporter = {

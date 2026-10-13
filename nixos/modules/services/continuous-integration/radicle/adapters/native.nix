@@ -15,6 +15,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../ci-broker.nix
+    # END generated imports
+  ];
+
   meta.teams = [ lib.teams.radicle ];
 
   options.services.radicle.ci.adapters.native = {

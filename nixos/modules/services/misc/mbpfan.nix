@@ -86,6 +86,9 @@ in
       [ "services" "mbpfan" "maxFanSpeed" ]
       [ "services" "mbpfan" "settings" "general" "max_fan1_speed" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfg.enable {

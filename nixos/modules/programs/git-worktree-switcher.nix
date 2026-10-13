@@ -20,6 +20,12 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash/bash.nix
+    # END generated imports
+  ];
+
   options = {
     programs.git-worktree-switcher = {
       enable = lib.mkEnableOption "git-worktree-switcher, switch between git worktrees with speed.";

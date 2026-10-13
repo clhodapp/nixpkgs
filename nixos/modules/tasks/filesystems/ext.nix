@@ -15,6 +15,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../system/boot/kernel.nix
+    # END generated imports
+  ];
+
   config = {
 
     system.fsPackages = lib.mkIf (config.boot.initrd.systemd.enable -> (inInitrd || inSystem)) [

@@ -24,6 +24,12 @@ let
   ++ (lib.optional (cfg.environmentFile != null) cfg.environmentFile);
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../search/meilisearch.nix
+    # END generated imports
+  ];
+
   options = {
     services.karakeep = {
       enable = lib.mkEnableOption "Enable the Karakeep service";

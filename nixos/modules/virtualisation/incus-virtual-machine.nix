@@ -20,6 +20,12 @@ in
     ./lxc-instance-common.nix
 
     ../profiles/qemu-guest.nix
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../system/boot/grow-partition.nix
+    ../system/boot/loader/limine/limine.nix
+    ../system/boot/loader/systemd-boot/systemd-boot.nix
+    ./incus-agent.nix
+    # END generated imports
   ];
 
   config = {

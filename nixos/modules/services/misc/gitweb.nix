@@ -125,6 +125,9 @@ in
       [ "services" "nginx" "gitweb" "virtualHost" ]
       [ "services" "gitweb" "nginx" "virtualHost" ]
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../web-servers/nginx/default.nix
+    # END generated imports
   ];
 
   config = lib.mkIf cfgNginx.enable {

@@ -32,6 +32,12 @@ let
 in
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/system/nix-daemon.nix
+    # END generated imports
+  ];
+
   config = lib.mkIf (cfg.daemon.enable && nixPackage.pname == "lix") {
     assertions = [
       {

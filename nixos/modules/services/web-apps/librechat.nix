@@ -15,6 +15,13 @@ let
   getLoadCredentialList = lib.mapAttrsToList (n: v: "${n}_FILE:${v}") cfg.credentials;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mongodb.nix
+    ../search/meilisearch.nix
+    # END generated imports
+  ];
+
   options.services.librechat = {
     enable = lib.mkEnableOption "the LibreChat server";
 

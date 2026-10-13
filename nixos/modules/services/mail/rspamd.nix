@@ -554,5 +554,8 @@ in
       "services"
       "rmilter"
     ] "Use services.rspamd.* instead to set up milter service")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./postfix.nix
+    # END generated imports
   ];
 }

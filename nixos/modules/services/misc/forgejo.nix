@@ -115,6 +115,10 @@ in
     (mkRemovedOptionModule [ "services" "forgejo" "ssh" "enable" ]
       "services.forgejo.ssh.enable has been migrated into freeform setting services.forgejo.settings.server.DISABLE_SSH. Keep in mind that the setting is inverted"
     )
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../databases/postgresql.nix
+    # END generated imports
   ];
 
   options = {

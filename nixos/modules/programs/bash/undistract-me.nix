@@ -9,6 +9,12 @@ let
   cfg = config.programs.bash.undistractMe;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./bash.nix
+    # END generated imports
+  ];
+
   options = {
     programs.bash.undistractMe = {
       enable = lib.mkEnableOption "notifications when long-running terminal commands complete";

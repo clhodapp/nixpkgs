@@ -67,6 +67,12 @@ let
       '';
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../config/i18n.nix
+    # END generated imports
+  ];
+
   options = {
     programs.pay-respects = {
       enable = mkEnableOption "pay-respects, an app which corrects your previous console command";

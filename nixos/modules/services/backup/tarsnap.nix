@@ -34,6 +34,9 @@ in
       "tarsnap"
       "cachedir"
     ] "Use services.tarsnap.archives.<name>.cachedir")
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../misc/extra-arguments.nix
+    # END generated imports
   ];
 
   options = {

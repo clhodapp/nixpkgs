@@ -12,6 +12,14 @@ let
 
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../databases/mysql.nix
+    ../web-servers/nginx/default.nix
+    ../web-servers/uwsgi.nix
+    # END generated imports
+  ];
+
   options.services.oncall = {
 
     enable = lib.mkEnableOption "Oncall web app";

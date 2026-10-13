@@ -5,6 +5,12 @@
   ...
 }:
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../misc/label.nix
+    # END generated imports
+  ];
+
   options.image = {
     baseName = lib.mkOption {
       type = lib.types.str;

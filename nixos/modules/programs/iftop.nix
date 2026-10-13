@@ -9,6 +9,12 @@ let
   cfg = config.programs.iftop;
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../security/wrappers/default.nix
+    # END generated imports
+  ];
+
   options = {
     programs.iftop.enable = lib.mkEnableOption "iftop and setcap wrapper for it";
   };

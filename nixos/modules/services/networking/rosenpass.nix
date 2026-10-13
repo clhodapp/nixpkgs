@@ -23,6 +23,13 @@ let
   settingsFormat = pkgs.formats.toml { };
 in
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ./wg-quick.nix
+    ./wireguard.nix
+    # END generated imports
+  ];
+
   options.services.rosenpass =
     let
       inherit (lib)

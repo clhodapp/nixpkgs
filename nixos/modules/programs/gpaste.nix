@@ -7,6 +7,11 @@
 }:
 
 {
+  imports = [
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../services/desktop-managers/gnome.nix
+    # END generated imports
+  ];
 
   ###### interface
   options = {

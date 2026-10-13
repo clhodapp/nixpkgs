@@ -32,6 +32,9 @@ in
     (lib.mkRemovedOptionModule [ "services" "journald" "gateway" "cert" ] tlsOptionRemovedMessage)
     (lib.mkRemovedOptionModule [ "services" "journald" "gateway" "key" ] tlsOptionRemovedMessage)
     (lib.mkRemovedOptionModule [ "services" "journald" "gateway" "trust" ] tlsOptionRemovedMessage)
+    # BEGIN generated imports: nix-module-imports writes the lines up to END
+    ../../../config/users-groups.nix
+    # END generated imports
   ];
 
   meta.maintainers = [ ];
