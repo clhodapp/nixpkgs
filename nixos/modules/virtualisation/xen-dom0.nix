@@ -223,20 +223,6 @@ in
     };
 
     boot = {
-      externalLoaders = mkOption {
-        type = listOf str;
-        default = [ ];
-        example = [ "lanzaboote" ];
-        description = ''
-          The names of the boot loaders that boot this system, can boot Xen
-          and are not part of NixOS, such as `lanzaboote`.
-
-          Xen needs a boot loader that can boot it. This module knows
-          systemd-boot and Limine. It cannot see whether a boot loader
-          from outside NixOS is enabled, so such a boot loader is named
-          here, by the configuration or by the module of the boot loader.
-        '';
-      };
       params = mkOption {
         default = [ ];
         example = literalExpression ''
@@ -692,13 +678,10 @@ in
       {
         assertion =
           config.boot.loader.systemd-boot.enable
-          || config.boot.loader.limine.enable
-          || cfg.boot.externalLoaders != [ ];
-        message = ''
-          Xen only supports booting on systemd-boot, Lanzaboote or Limine.
-          A boot loader that is not part of NixOS, such as Lanzaboote, is
-          named in 'virtualisation.xen.boot.externalLoaders'.
-        '';
+          # A boot loader from outside NixOS, as Lanzaboote is.
+          || config.boot.loader.external.enable
+          || config.boot.loader.limine.enable;
+        message = "Xen only supports booting on systemd-boot, Lanzaboote or Limine.";
       }
       {
         assertion = config.boot.initrd.systemd.enable;
@@ -728,7 +711,8 @@ in
       }
     ];
 
-    warnings = optional (lib.elem "lanzaboote" cfg.boot.externalLoaders) ''
+    warnings = lib.optional config.boot.loader.external.enable ''
+      A boot loader from outside NixOS is used. When it is Lanzaboote:
       Xen support has not yet been merged into Lanzaboote.
       Ensure that your Lanzaboote configuration includes PR #387:
       https://github.com/nix-community/lanzaboote/pull/387
