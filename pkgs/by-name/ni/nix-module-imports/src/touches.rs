@@ -10,7 +10,7 @@
 //! content.
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::rc::Rc;
 
 use serde::Serialize;
@@ -60,6 +60,12 @@ pub struct Touches {
     /// values of the `enum` that the file declares them with. That holds
     /// as long as no other file declares the same option.
     pub enums: BTreeSet<Vec<String>>,
+    /// The files outside the library that the file loads as values,
+    /// with `import`. Such a file is a part of the files that load it,
+    /// and no module of its own.
+    pub loads: BTreeSet<PathBuf>,
+    /// The modules that the file disables with `disabledModules`.
+    pub disables: BTreeSet<PathBuf>,
 }
 
 /// How deep the settings of a module are followed.
@@ -67,6 +73,7 @@ const DEPTH: usize = 64;
 
 struct Reader<'a> {
     interpreter: &'a mut Interpreter,
+    disables: BTreeSet<PathBuf>,
     touches: BTreeSet<Touch>,
 }
 
@@ -147,8 +154,17 @@ impl Reader<'_> {
                                 other => self.read(kind, other, path, depth + 1),
                             }
                         }
-                        // Any other kind is a value of its own, such as
-                        // the declaration of an option.
+                        Some("option") if kind == Kind::Declare => {
+                            // The options inside the option are read
+                            // first. Whether all of them are known says
+                            // how the option itself is listed.
+                            let known = match self.field(&attrs, "type") {
+                                Some(of_type) => self.inside(of_type, path, depth + 1),
+                                None => true,
+                            };
+                            self.touch(kind, path, !known);
+                        }
+                        // Any other kind is a value of its own.
                         Some(_) => self.touch(kind, path, false),
                         None => plain = true,
                     }
@@ -183,6 +199,123 @@ impl Reader<'_> {
             | Value::Null
             | Value::Lambda(_)
             | Value::Builtin(..) => self.touch(kind, path, false),
+        }
+    }
+
+    /// Take down the modules that a module disables, where they are
+    /// named by a path, or by a string that is a path below
+    /// `modulesPath`.
+    fn disabled(&mut self, value: Value) {
+        let (Value::List(items) | Value::Seq(items)) = value else {
+            return;
+        };
+        for item in items.iter() {
+            match self.interpreter.force(item) {
+                Value::Path(path) => {
+                    self.disables.insert(path.as_ref().clone());
+                }
+                Value::Str(text) if text.starts_with('/') => {
+                    self.disables.insert(PathBuf::from(&*text));
+                }
+                Value::Str(text) => {
+                    if let Some(Value::Str(base)) = self.interpreter.arguments.get("modulesPath") {
+                        self.disables.insert(Path::new(&**base).join(&*text));
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+
+    /// A field of a set that is known, by a path of names.
+    fn at(&mut self, value: &Value, names: &[&str]) -> Option<Value> {
+        let mut value = value.clone();
+        for name in names {
+            let Value::Attrs(attrs) = &value else {
+                return None;
+            };
+            value = self.field(attrs, name)?;
+        }
+        Some(value)
+    }
+
+    /// Read the options that a type declares inside the option at
+    /// `path`: those of a `submodule`, also as the value of each name
+    /// of an `attrsOf`. Gives whether all of them are known. A type
+    /// that this does not know can hold options that are not listed.
+    fn inside(&mut self, of_type: Value, path: &mut Vec<String>, depth: usize) -> bool {
+        if depth > DEPTH || self.interpreter.stopped() {
+            return false;
+        }
+        let Some(Value::Str(name)) = self.at(&of_type, &["name"]) else {
+            return false;
+        };
+        match &*name {
+            "submodule" => {
+                let modules = match self.at(&of_type, &["functor", "payload", "modules"]) {
+                    Some(Value::Seq(modules)) => modules,
+                    _ => return false,
+                };
+                let mut known = true;
+                for module in modules.iter() {
+                    let module = self.interpreter.force(module);
+                    known &= self.submodule(module, path, depth + 1);
+                }
+                known
+            }
+            "attrsOf" | "lazyAttrsOf" => {
+                let Some(element) = self.at(&of_type, &["nestedTypes", "elemType"]) else {
+                    return false;
+                };
+                path.push("*".to_string());
+                let known = self.inside(element, path, depth + 1);
+                path.pop();
+                known
+            }
+            "nullOr" | "uniq" | "unique" => match self.at(&of_type, &["nestedTypes", "elemType"]) {
+                Some(element) => self.inside(element, path, depth + 1),
+                None => false,
+            },
+            // A type that is put together from others, which can hold a
+            // `submodule`.
+            "either" | "oneOf" | "coercedTo" | "addCheck" | "functionTo" | "attrTag" => false,
+            // No path of the configuration goes into an element of a
+            // list, and every other type has no options inside it.
+            _ => true,
+        }
+    }
+
+    /// Read the options that one module of a `submodule` declares.
+    fn submodule(&mut self, module: Value, path: &mut Vec<String>, depth: usize) -> bool {
+        if depth > DEPTH {
+            return false;
+        }
+        match module {
+            // The arguments of the module are those of the submodule,
+            // of which nothing is known here.
+            Value::Lambda(_) | Value::Builtin(..) => {
+                let result = self.interpreter.apply(module, Thunk::done(Value::Unknown));
+                self.submodule(result, path, depth + 1)
+            }
+            Value::Either(values) => {
+                let mut known = true;
+                for value in values.iter().cloned() {
+                    known &= self.submodule(value, path, depth + 1);
+                }
+                known
+            }
+            Value::Attrs(attrs) => {
+                if self.properties(&attrs).iter().any(Option::is_some) {
+                    return false;
+                }
+                // A module without `options` holds settings only. What a
+                // module of the submodule imports is not followed.
+                if let Some(options) = self.field(&attrs, "options") {
+                    self.read(Kind::Declare, options, path, depth + 1);
+                }
+                !attrs.fields.contains_key("imports") && attrs.any.is_none()
+            }
+            _ => false,
         }
     }
 
@@ -239,7 +372,8 @@ impl Reader<'_> {
                             false,
                         ),
                         // The parts of a module that are not settings.
-                        "_file" | "key" | "_class" | "disabledModules" => {}
+                        "disabledModules" => self.disabled(field),
+                        "_file" | "key" | "_class" => {}
                         // A module with `options` or `config` has no
                         // other settings. One without has only settings.
                         _ if explicit => {}
@@ -325,8 +459,10 @@ pub fn of_file(
     let mut reader = Reader {
         interpreter,
         touches: BTreeSet::new(),
+        disables: BTreeSet::new(),
     };
     reader.module(module, &inputs, 0);
+    let disables = std::mem::take(&mut reader.disables);
     let mut touches = reader.touches;
     interpreter.settle();
     let mut cuts: Vec<(&String, &usize)> = interpreter.cuts.iter().collect();
@@ -395,6 +531,12 @@ pub fn of_file(
         stopped: interpreter.fatal.clone(),
         problems: std::mem::take(&mut interpreter.problems),
         enums: std::mem::take(&mut interpreter.enums),
+        disables,
+        loads: interpreter
+            .loaded()
+            .filter(|loaded| *loaded != file && !loaded.starts_with(library))
+            .cloned()
+            .collect(),
     }
 }
 
