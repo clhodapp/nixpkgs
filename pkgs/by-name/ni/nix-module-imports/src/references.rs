@@ -559,7 +559,12 @@ pub fn check(modules: &Modules) -> Result<BTreeMap<PathBuf, Report>, String> {
                 && first == "_module"
                 && second == "args"
             {
+                // An argument that several modules set is one that the
+                // caller chooses a module for, as `pkgs` is set by the
+                // module of nixpkgs or by its read-only one. No import
+                // decides that for the caller.
                 if let Some(setting) = arguments.get(name.as_str())
+                    && setting.len() == 1
                     && !modules.caller_arguments.contains(name)
                 {
                     refer(

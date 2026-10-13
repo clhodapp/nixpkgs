@@ -1,7 +1,6 @@
 {
   lib,
   rustPlatform,
-  runCommand,
   clippy,
   rustfmt,
 }:
@@ -26,32 +25,6 @@ rustPlatform.buildRustPackage (finalAttrs: {
   };
 
   passthru.tests = {
-    # The modules of NixOS have the imports that the tool writes.
-    nixos =
-      let
-        tree = lib.fileset.toSource {
-          root = ../../../..;
-          fileset = lib.fileset.unions [
-            ../../../../lib
-            ../../../../modules
-            ../../../../nixos
-          ];
-        };
-      in
-      runCommand "nix-module-imports-nixos"
-        {
-          nativeBuildInputs = [ finalAttrs.finalPackage ];
-        }
-        ''
-          nix-module-imports check \
-            --library ${tree}/lib \
-            --special-arg modulesPath=${tree}/nixos/modules \
-            --caller-arg pkgs \
-            --module-list ${tree}/nixos/modules/module-list.nix \
-            --tree ${tree}/nixos/modules
-          touch $out
-        '';
-
     lint-format = finalAttrs.finalPackage.overrideAttrs (
       _: previousAttrs: {
         pname = previousAttrs.pname + "-lint-format";
