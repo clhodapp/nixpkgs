@@ -130,6 +130,8 @@ in
 
   top-level = callPackage ./top-level { };
 
+  nixos-module-imports = callPackage ./nixos-module-imports { };
+
   haskell = callPackage ./haskell { };
 
   hooks = recurseIntoAttrs (callPackage ./hooks { });
