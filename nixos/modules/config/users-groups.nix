@@ -677,10 +677,7 @@ in
     ../../../lib/modules/generic/assertions.nix
     ../misc/extra-arguments.nix
     ../misc/ids.nix
-    ../programs/fish.nix
     ../programs/shadow.nix
-    ../programs/xonsh.nix
-    ../programs/zsh/zsh.nix
     ../security/google_oslogin.nix
     ../services/networking/ssh/sshd.nix
     ../services/system/userborn.nix
@@ -1146,8 +1143,7 @@ in
       )
       ++ flatten (
         flip mapAttrsToList cfg.users (
-          name: user:
-          [
+          name: user: [
             (
               let
                 # Things fail in various ways with especially non-ascii usernames.
@@ -1218,30 +1214,6 @@ in
               '';
             }
           ]
-          ++ (map
-            (shell: {
-              assertion =
-                !user.ignoreShellProgramCheck
-                -> (user.shell == pkgs.${shell})
-                -> (config.programs.${shell}.enable == true);
-              message = ''
-                users.users.${user.name}.shell is set to ${shell}, but
-                programs.${shell}.enable is not true. This will cause the ${shell}
-                shell to lack the basic nix directories in its PATH and might make
-                logging in as that user impossible. You can fix it with:
-                programs.${shell}.enable = true;
-
-                If you know what you're doing and you are fine with the behavior,
-                set users.users.${user.name}.ignoreShellProgramCheck = true;
-                instead.
-              '';
-            })
-            [
-              "fish"
-              "xonsh"
-              "zsh"
-            ]
-          )
         )
       );
 

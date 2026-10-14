@@ -17,8 +17,10 @@ in
 {
   imports = [
     # BEGIN generated imports, written by `nix-module-imports fix`
+    ../../../lib/modules/generic/assertions.nix
     ../config/shells-environment.nix
     ../config/system-path.nix
+    ../config/users-groups.nix
     ../system/build.nix
     ../system/etc/etc.nix
     # END generated imports
@@ -76,41 +78,62 @@ in
 
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkMerge [
+    {
+      # A user whose login shell is xonsh needs this module. The check
+      # runs also where the module is not enabled, which is the case it
+      # is for.
+      assertions = map (user: {
+        assertion = !user.ignoreShellProgramCheck -> (user.shell == pkgs.xonsh) -> cfg.enable;
+        message = ''
+          users.users.${user.name}.shell is set to xonsh, but
+          programs.xonsh.enable is not true. This will cause the xonsh
+          shell to lack the basic nix directories in its PATH and might make
+          logging in as that user impossible. You can fix it with:
+          programs.xonsh.enable = true;
 
-    environment.etc."xonsh/xonshrc".text = ''
-      # /etc/xonsh/xonshrc: DO NOT EDIT -- this file has been generated automatically.
+          If you know what you're doing and you are fine with the behavior,
+          set users.users.${user.name}.ignoreShellProgramCheck = true;
+          instead.
+        '';
+      }) (lib.attrValues config.users.users);
+    }
+    (lib.mkIf cfg.enable {
+
+      environment.etc."xonsh/xonshrc".text = ''
+        # /etc/xonsh/xonshrc: DO NOT EDIT -- this file has been generated automatically.
 
 
-      if not ''${...}.get('__NIXOS_SET_ENVIRONMENT_DONE'):
-          # The NixOS environment and thereby also $PATH
-          # haven't been fully set up at this point. But
-          # `source-bash` below requires `bash` to be on $PATH,
-          # so add an entry with bash's location:
-          $PATH.add('${pkgs.bash}/bin')
+        if not ''${...}.get('__NIXOS_SET_ENVIRONMENT_DONE'):
+            # The NixOS environment and thereby also $PATH
+            # haven't been fully set up at this point. But
+            # `source-bash` below requires `bash` to be on $PATH,
+            # so add an entry with bash's location:
+            $PATH.add('${pkgs.bash}/bin')
 
-          # Stash xonsh's ls alias, so that we don't get a collision
-          # with Bash's ls alias from environment.shellAliases:
-          _ls_alias = aliases.pop('ls', None)
+            # Stash xonsh's ls alias, so that we don't get a collision
+            # with Bash's ls alias from environment.shellAliases:
+            _ls_alias = aliases.pop('ls', None)
 
-          # Source the NixOS environment config.
-          source-bash "${config.system.build.setEnvironment}"
+            # Source the NixOS environment config.
+            source-bash "${config.system.build.setEnvironment}"
 
-          # Restore xonsh's ls alias, overriding that from Bash (if any).
-          if _ls_alias is not None:
-              aliases['ls'] = _ls_alias
-          del _ls_alias
+            # Restore xonsh's ls alias, overriding that from Bash (if any).
+            if _ls_alias is not None:
+                aliases['ls'] = _ls_alias
+            del _ls_alias
 
-      ${lib.optionalString cfg.bashCompletion.enable "$BASH_COMPLETIONS = '${bashCompletionPath}'"}
+        ${lib.optionalString cfg.bashCompletion.enable "$BASH_COMPLETIONS = '${bashCompletionPath}'"}
 
-      ${cfg.config}
-    '';
+        ${cfg.config}
+      '';
 
-    environment.systemPackages = [ package ];
+      environment.systemPackages = [ package ];
 
-    environment.shells = [
-      "/run/current-system/sw/bin/xonsh"
-      "${lib.getExe package}"
-    ];
-  };
+      environment.shells = [
+        "/run/current-system/sw/bin/xonsh"
+        "${lib.getExe package}"
+      ];
+    })
+  ];
 }
